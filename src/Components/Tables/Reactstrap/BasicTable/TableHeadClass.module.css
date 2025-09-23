@@ -1,0 +1,13 @@
+.tableHeading th{
+    background-color:#87ceeb;
+    color: black;
+}
+.heading{
+    color: #87ceeb;
+}
+.settingIcon{
+    background-color:purple;
+    padding: 5px 3px;
+    
+    color: white;
+}
