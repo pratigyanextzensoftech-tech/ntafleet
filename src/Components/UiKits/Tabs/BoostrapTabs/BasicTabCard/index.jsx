@@ -30,7 +30,7 @@ const BasicTabCard = ({tabContent,title}) => {
           <HeaderCard title={title} />
             <TabContent activeTab={BasicTab}>
             {tabContent.map((tab) => (
-              <TabPane className='mt-5' key={tab.id} tabId={tab.id}>
+              <TabPane className='mt-5 ' key={tab.id} tabId={tab.id}>
                 {tab.component}
               </TabPane>
             ))}

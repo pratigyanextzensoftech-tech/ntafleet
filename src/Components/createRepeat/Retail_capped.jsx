@@ -21,7 +21,7 @@ const Retail_capped = ({title,btnTtitle,type}) => {
   };
   return (
     <Fragment>
-      <Card className="shadow-lg">
+      <Card >
         <CardBody>
               <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
       <HeaderCard title={title}/>

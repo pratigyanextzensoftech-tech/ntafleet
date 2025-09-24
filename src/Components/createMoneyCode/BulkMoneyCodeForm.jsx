@@ -21,7 +21,7 @@ const BulkMOneyCodeForm = ({title,btnTtitle}) => {
   };
   return (
     <Fragment>
-      <Card className="shadow-lg">
+      <Card >
         <CardBody>
               <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
       <HeaderCard title={title}/>

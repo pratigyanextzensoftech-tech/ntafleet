@@ -79,7 +79,7 @@
         color: $dark-editor-document;
         opacity: 0.6;
         font-size: 13px;
-        border-top: 1px solid $light-semi-gray;
+        border-top: 1px solid $dark-gray;
         background: $white;
         &:hover {
           background-color: $white;
@@ -135,7 +135,7 @@
         text-align: left;
         letter-spacing: 0.7px;
         font-family: Roboto;
-        border: 1px solid $light-semi-gray;
+        border: 1px solid $dark-gray;
         border-radius: 0;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
@@ -151,7 +151,7 @@
       padding: 15px 20px;
       line-height: 22px;
       font-size: 13px;
-      border-color: $light-semi-gray;
+      border-color: $dark-gray;
       border-radius: 0;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -163,11 +163,14 @@
 
 // tab-bootstrap css start
 .nav-tabs {
-  border-bottom-color: $light-semi-gray;
+  border-bottom:none !important;
+  
   .nav-bottom {
     .nav-item {
       .nav-link.active {
-        border-color: $light-semi-gray;
+        border-color: $light-gray !important;
+        border-bottom: none;
+      
       }
     }
   }
@@ -182,8 +185,13 @@
   }
   .nav-link {
     color: $dark-color;
+          border: 1px solid #ccc;
     &.active {
       font-weight: 500;
+      color: white;
+      border: none;
+              background-color:$primary-color ;
+
     }
   }
   &.nav-bottom {
@@ -207,7 +215,7 @@
     opacity: 0.6;
     font-size: 13px;
     padding: 6px 12px;
-    border-top: 1px solid $light-semi-gray;
+    border-top: 1px solid $dark-gray;
     background: $white;
     &:hover {
       background-color: $white;

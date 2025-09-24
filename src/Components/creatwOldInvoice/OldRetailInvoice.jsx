@@ -21,7 +21,7 @@ const OldRetailInvoice = ({title,btnTtitle,type}) => {
       };
   return (
     <Fragment>
-      <Card className="shadow-lg">
+      <Card >
         <CardBody>
       <HeaderCard title={title}/>
                 <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
