@@ -20,15 +20,85 @@ export const checkBoxData = [
     { id: '1000157697 ONTARIO INC.', label: '1000157697 ONTARIO INC.',value:'1000157697 ONTARIO INC' },
     {id:' 10002730 MANITOBA INC. ',label:" 10002730 MANITOBA INC. ",value:" 10002730 MANITOBA INC"},
     {id:' 1001021918 ONTARIO INC. ' ,label:"  1001021918 ONTARIO INC.  ",value:"1001021918 ONTARIO INC"},
+];
+export const chooseSupplierCheckBox=[
+        { id: '1', label: 'ESSO.',value:'ESSO' },
+        { id: '2', label: 'ESSO MOBIL.',value:'ESSO MOBIL' },
+        { id: '3', label: 'EXXON.',value:'EXXON' },
+        { id: '4', label: 'Flying J.',value:'Flying J' },
+        { id: '5', label: 'Husky.',value:'Husky' },
+        { id: '6', label: 'IRVING.',value:'IRVING' },
+        { id: '7', label: 'LOVES.',value:'LOVES' },
+        { id: '8', label: 'PETRO CANADA',value:'PETRO CANADA' },
+        { id: '9', label: 'TA-Petro',value:'TA-Petro' },
+        { id: '10', label: 'ULTRAMAR',value:'ULTRAMAR' },
 
+]
+export const discountSheetCheckBox=[
+        { id: '1', label: 'Exclude Flying J.',value:'Exclude Flying J' },
+        { id: '2', label: 'Exclude Petro.',value:'Exclude Petro' },
+        { id: '3', label: 'Exclude Ta-Petro & Love.',value:'Exclude Ta-Petro & Love' },
+        { id: '4', label: 'Exclude ESSO',value:'Exclude ESSO' },
        
 
-];
+]
+export const chooseSupplierCheckBoxOwner=[
+        { id: '1', label: 'ESSO.',value:'ESSO' },
+        { id: '2', label: 'ULTRAMAR',value:'ULTRAMAR' },
+
+]
+export const displayFeatureCheckBox=[
+            { id: '1', label: 'Page Break',value:'Page Break' },
+            { id: '2', label: 'Show Taxes',value:'Show Taxes' },
+            { id: '3', label: 'Exclude Tax',value:'Exclude Tax' },
+            { id: '4', label: 'Show Discount Details.',value:'Show Discount Details' },
+            { id: '5', label: 'No Time.',value:'No Time' },
+
+]
+export const displayFeatureCheckBoxOwner=[
+            { id: '1', label: 'Page Break',value:'Page Break' },
+            { id: '2', label: 'Show Taxes',value:'Show Taxes' },
+            { id: '3', label: 'Exclude Tax',value:'Exclude Tax' },
+            { id: '4', label: 'No Time.',value:'No Time' },
+
+]
  export const InVoiceSupplier=[
 { label: 'Select Supplier' , isDisabled: true },
   { value: 'TA-Petro', label: 'TA-Petro' },
     { value: 'Esso', label: 'Esso' },
 
+]
+ export const groupBy=[
+  { value: 'Card Number', label: 'Card Number' },
+    { value: 'Driver Name', label: 'Driver Name' },
+    { value: 'Date', label: 'Date' },
+    { value: 'State/Provinace', label: 'State/Provinace' },
+    { value: 'Unit No', label: 'Unit No' },
+
+]
+ export const orderBy=[
+    { label: 'Select Order By' , isDisabled: true },
+  { value: 'Fuel Transaction', label: 'Fuel Transaction' },
+    { value: 'Cash Advances', label: 'Cash Advances' },
+    { value: 'DEFD', label: 'DEFD' },
+    { value: 'Fuel and cash Transction', label: 'Fuel and cash Transction' },
+
+]
+ export const fuelType=[
+    { label: 'Select Fuel Type' , isDisabled: true },
+  { value: 'Tractor', label: 'Tractor' },
+    { value: 'Refeer', label: 'REfeer' },
+
+]
+ export const currency=[
+    { label: 'Select Currency' , isDisabled: true },
+        { value: 'USD', label: 'USD' },
+  { value: 'CAD', label: 'CAD' }
+
+]
+ export const VolUnit=[
+  { value: 'Gallon', label: 'Gallon' },
+    { value: 'liter', label: 'liter' }
 ]
  export const Customized_Supplier=[
 { label: 'Select Supplier' , isDisabled: true },
@@ -43,6 +113,16 @@ export const supplier = [
     {value:'Loves',label:"Loves"},
         { value: 'PETRO CANADA', label: 'PETRO CANADA' },
     { value: 'TA-Petro', label: 'TA-Petro' },
+
+];
+export const salesman = [
+            { label: 'Select Salesman' , isDisabled: true },
+    { value: 'Amarjot', label: 'Amarjot' },
+    { value: 'Garry', label: 'Garry' },
+    {value:'Jatinder Gill',label:"Jatinder Gill"},
+        { value: 'Raj Chahal', label: 'Raj Chahal' },
+    { value: 'Rajat Kumar', label: 'Rajat Kumar' },
+    { value: 'Sandeep Karval', label: 'Sandeep Karval' },
 
 ];
 export const invoiceCreation=[
@@ -117,7 +197,14 @@ export const retailInvoice=[
         { value: 'Rack -10', label: 'Rack -10' },
 
  ]
-  
+  export const exportType=[
+                    { label: 'All Types ', isDisabled: true },
+                { value: 'Fuel Transaction', label: 'Fuel Transaction' },
+                { value: 'Cash Advances', label: 'Cash Advances' },
+                { value: 'DEFD', label: 'DEFD' },
+                { value: 'Fuel and Cash Transaction', label: 'Fuel and Cash Transaction' },
+
+  ]
  export const InvoiceShow=[
                 { label: 'All Types ', isDisabled: true },
 
@@ -146,6 +233,12 @@ export const companyStatus=[
     { value: 'Hold', label: 'Hold' },
 
 ]
+export const MoneyCodeStatus=[
+        { label: 'Select Status', isDisabled: true },
+        { value: 'Billed', label: 'Billed' },
+    { value: ' Not Billed', label: 'Not Billed' },
+
+]
 export const invoiceType=[
             { label: 'Select Status', isDisabled: true },
     {value: 'Rack Invoice', label: 'Rack Invoice' },
@@ -171,7 +264,6 @@ export  const userStatus=[
      { value: ' pending', label: 'pending' },
     { value: 'Blocked', label: 'Blocked' },
     { value: 'Active', label: 'Active' },
-
 ]
 export const options2 = [
     { label: 'Developer', isDisabled: true },

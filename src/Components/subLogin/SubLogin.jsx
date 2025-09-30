@@ -2,18 +2,20 @@ import React,{Fragment} from 'react'
 import { Breadcrumbs } from '../../AbstractElements'
 import { Container } from 'reactstrap'
 import HeaderCard from '../Common/Component/HeaderCard'
-import CompareForm from './CompareForm'
 import { tableColumns,dummytabledata } from '../../Data/Table/Defaultdata'
 import DataTableComponent from '../Tables/DataTable/DataTableComponent'
-const index = () => {
+import SubLoginForm from './SubLoginForm'
+const SubLOgin = () => {
   return (
     <Fragment>
-         <Breadcrumbs parent='Invoice' title='Compare Invoice'/>
+         <Breadcrumbs parent='Company' title='Manage SubLogin'/>
          <Container fluid={true}>
-           <HeaderCard title="Compare Invoice " />
-           <CompareForm btnTtitle="Search Data" btnTtitle1="Reset"/>
+        <div className='bg-primary my-2 p-2'>
+           <HeaderCard title="Add Sub-Login  " />
+           </div>
+           <SubLoginForm btnTtitle="Add Sub Login " />
            <div className='bg-primary my-2 p-2'>
-                      <HeaderCard title="Compare Invoice List  " />
+                      <HeaderCard title="Sub-Login List  " />
           </div>
           <DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
@@ -21,4 +23,4 @@ const index = () => {
   )
 }
 
-export default index
+export default SubLOgin

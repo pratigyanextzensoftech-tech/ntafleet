@@ -3,7 +3,6 @@ import ManageUser from '../Components/manageUser'
 import AddCompany from '../Components/addCompany'
 import Crypto from "../Components/Dashboard/Crypto";
 import Default from "../Components/Dashboard/Default";
-import Ecommerce from "../Components/Dashboard/Ecommerce";
 import OnlineCourse from "../Components/Dashboard/OnlineCourse";
 import Social from "../Components/Dashboard/Social";
 
@@ -194,10 +193,41 @@ import CreateUltramar from '../Components/createUltramar/CreateUltramar';
 import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
+import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';
+import ViewCompany from '../Components/viewCompany/ViewCompany';
+import CompanyInfo from '../Components/CompanyInfo/CompanyInfo';
+import SubLOgin from '../Components/subLogin/SubLogin';
+import SupplierList from '../Components/supplier/supplierList/index';
+import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
+import AddMoneyCode from '../Components/moneyCode/addMoneyCode/index';
+import UploadMoney from '../Components/moneyCode/upload/index'
+import CheckInvoicemoneyCode from '../Components/moneyCode/checkInvoic/index';
+import ViewReports from '../Components/reports/viewReports/index';
+import SalesmanVol from '../Components/reports/salesmanVolume/index';
+import CreateReports from '../Components/reports/createReport/index';
+import AddItems from '../Components/items/addItems/index';
+import Upload from '../Components/retailPrice/upload/index';
+import PetroRetail from '../Components/retailPrice/petro/index';
+import AddFuel from '../Components/fuelCards/addFuel/index';
+import ViewFuel from '../Components/fuelCards/view/index';
+import EFSFuel from '../Components/fuelCards/viewEFS/index';
+import HistoryFuel from '../Components/fuelCards/history/index';
+import CreateDiscount from '../Components/discount/createDiscount/index';
+import ViewDiscount from '../Components/discount/view/index';
+import DiscountSheet from '../Components/discount/discountSheet/index';
+import BulkDiscount from '../Components/discount/bulkDiscount/index';
+import ZeroDiscount from '../Components/discount/zeroDiscount/index';
+import UploadTcheck from '../Components/tcheck/upload/index'
+import TcheckList from '../Components/tcheck/list/index'
+import CreateTCheck from '../Components/tcheck/create/index'
+import ViewTCheck from '../Components/tcheck/view/index'
 export const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/manage_user/:layout`, Component: <ManageUser /> },
   { path: `${process.env.PUBLIC_URL}/add_company/:layout`, Component: <AddCompany /> },
+  { path: `${process.env.PUBLIC_URL}/view_company/:layout`, Component: <ViewCompany /> },
+  { path: `${process.env.PUBLIC_URL}/company_info/:layout`, Component: <CompanyInfo /> },
+  { path: `${process.env.PUBLIC_URL}/manage_subLogin/:layout`, Component: <SubLOgin /> },
   { path: `${process.env.PUBLIC_URL}/create_invoice/:layout`, Component: <CreateInvoice /> },
   { path: `${process.env.PUBLIC_URL}/view_invoice/:layout`, Component: <ViewInvoice /> },
   { path: `${process.env.PUBLIC_URL}/check_invoice/:layout`, Component: <CheckOldINvoice /> },
@@ -211,6 +241,34 @@ export const routes = [
     { path: `${process.env.PUBLIC_URL}create_repeat_invoice/:layout`, Component: <CreateRepeat /> },
     { path: `${process.env.PUBLIC_URL}send_bulkMail/:layout`, Component: <SendBulk /> },
     { path: `${process.env.PUBLIC_URL}compare_Invoices/:layout`, Component: <CompareInvoice /> },
+    { path: `${process.env.PUBLIC_URL}view_moneyCode_invoices/:layout`, Component: <ViewMoneyCode /> },
+    { path: `${process.env.PUBLIC_URL}suppler_list/:layout`, Component: <SupplierList /> },
+    { path: `${process.env.PUBLIC_URL}add_supplier/:layout`, Component: <SupplierList /> },
+    { path: `${process.env.PUBLIC_URL}money_code_List/:layout`, Component: <MoneyCodeList /> },
+    { path: `${process.env.PUBLIC_URL}addMoney_code_List/:layout`, Component: <AddMoneyCode /> },
+    { path: `${process.env.PUBLIC_URL}upload_money_code/:layout`, Component: <UploadMoney /> },
+    { path: `${process.env.PUBLIC_URL}check_Invoiced_MoneyCode/:layout`, Component: <CheckInvoicemoneyCode /> },
+    { path: `${process.env.PUBLIC_URL}view_Reports/:layout`, Component: <ViewReports /> },
+    { path: `${process.env.PUBLIC_URL}salesman_volume_Report/:layout`, Component: <SalesmanVol /> },
+    { path: `${process.env.PUBLIC_URL}create_Reports/:layout`, Component: <CreateReports /> },
+    { path: `${process.env.PUBLIC_URL}add_items/:layout`, Component: <AddItems /> },
+    { path: `${process.env.PUBLIC_URL}view_items/:layout`, Component: <AddItems /> },
+    { path: `${process.env.PUBLIC_URL}upload_retail_prices/:layout`, Component: <Upload /> },
+    { path: `${process.env.PUBLIC_URL}petro_retail_prices/:layout`, Component: < PetroRetail/> },
+    { path: `${process.env.PUBLIC_URL}add_fuelCards/:layout`, Component: < AddFuel/> },
+    { path: `${process.env.PUBLIC_URL}view_fuelCards/:layout`, Component: < ViewFuel/> },
+    { path: `${process.env.PUBLIC_URL}fuel_cardList/:layout`, Component: < EFSFuel/> },
+    { path: `${process.env.PUBLIC_URL}last24_update/:layout`, Component: < HistoryFuel/> },
+    { path: `${process.env.PUBLIC_URL}create_discount/:layout`, Component: < CreateDiscount/> },
+    { path: `${process.env.PUBLIC_URL}view_Discount/:layout`, Component: < ViewDiscount/> },
+    { path: `${process.env.PUBLIC_URL}discount_Sheet/:layout`, Component: < DiscountSheet/> },
+    { path: `${process.env.PUBLIC_URL}create_Bulk_Discount/:layout`, Component: < BulkDiscount/> },
+    { path: `${process.env.PUBLIC_URL}zero_Discount_Location/:layout`, Component: < ZeroDiscount/> },
+    { path: `${process.env.PUBLIC_URL}upload_t_check/:layout`, Component: < UploadTcheck/> },
+    { path: `${process.env.PUBLIC_URL}t_checkList/:layout`, Component: < TcheckList/> },
+    { path: `${process.env.PUBLIC_URL}create_t_check_Invoices/:layout`, Component: < CreateTCheck/> },
+    { path: `${process.env.PUBLIC_URL}view_t_check_Invoices/:layout`, Component: < ViewTCheck/> },
+
 
   { path: `${process.env.PUBLIC_URL}/dashboard/online-course/:layout`, Component: <OnlineCourse /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/crypto/:layout`, Component: <Crypto /> },
