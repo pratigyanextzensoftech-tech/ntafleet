@@ -14,10 +14,9 @@ const ManageMacro = () => {
                    <HeaderCard title="Upload US Transaction" />
        
                 <BasicTabCard tabContent={ManageMacroTab}/>
-                <div className='bg-primary p-2 my-5'>
-                            <HeaderCard title="Transaction List" />
-                 </div>           
-<DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+    <div className='mt-3'>                 
+<DataTableComponent title="Transaction List" tableColumns={tableColumns}  tableData={dummytabledata}/>
+</div>    
       </Container>
     </Fragment>
   );

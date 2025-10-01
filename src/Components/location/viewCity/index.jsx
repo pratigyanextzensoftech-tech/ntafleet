@@ -4,14 +4,17 @@ import { Container } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
+import ViewCityForm from './ViewCityForm';
 const index = () => {
   return (
     <Fragment>
-      <Breadcrumbs parent='Fuel Cards' title='View Fual Cards'  />
+      <Breadcrumbs parent='Location' title='Manage City'  />
       <Container fluid={true}>
-                   <HeaderCard title="View Fual Cards" />
-                        
-<DataTableComponent title=" Fual Card list "  tableColumns={tableColumns} tableData={dummytabledata}/>    
+        <HeaderCard title="Manage City "/>
+        <ViewCityForm/>
+           <div className='my-3'>
+<DataTableComponent title="City List " tableColumns={tableColumns} tableData={dummytabledata}/>
+</div>
       </Container>
     </Fragment>
   );

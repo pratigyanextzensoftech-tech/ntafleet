@@ -10,10 +10,8 @@ const index = () => {
       <Breadcrumbs parent='Fuel Cards' title='Fual Cards Update History'  />
       <Container fluid={true}>
                    <HeaderCard title="Fual Cards Update History" />
-                    <div className='bg-primary p-2'>
-                            <HeaderCard title="Fual Cards Update History " />
-                    </div>      
-<DataTableComponent tableColumns={tableColumns} tableData={dummytabledata}/>    
+                        
+<DataTableComponent title="Fual Cards Update History " tableColumns={tableColumns} tableData={dummytabledata}/>    
       </Container>
     </Fragment>
   );

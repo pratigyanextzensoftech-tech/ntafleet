@@ -14,10 +14,8 @@ const SubLOgin = () => {
            <HeaderCard title="Add Sub-Login  " />
            </div>
            <SubLoginForm btnTtitle="Add Sub Login " />
-           <div className='bg-primary my-2 p-2'>
-                      <HeaderCard title="Sub-Login List  " />
-          </div>
-          <DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+        
+          <DataTableComponent title="Sub-Login List  " tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
            </Fragment>
   )

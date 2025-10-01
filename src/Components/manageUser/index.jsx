@@ -1,19 +1,20 @@
 import React, { Fragment } from 'react';
 import { Breadcrumbs } from '../../AbstractElements';
 import FormComponent from './Form'
-import { Container, Row, Col } from 'reactstrap';
-
+import { Container } from 'reactstrap';
+import DataTableComponent from '../Tables/DataTable/DataTableComponent';
+import { tableColumns } from '../../Data/Table/Defaultdata';
+import { dummytabledata } from '../../Data/Table/Defaultdata';
 const index = () => {
   return (
     <Fragment>
       <Breadcrumbs parent='user login' title='user login'  />
       <Container fluid={true}>
-        <Row>
-          <Col sm='12'>
+       
             <FormComponent />
             {/* <BasicInputCard2 /> */}
-          </Col>
-        </Row>
+                      <DataTableComponent title="User List"  tableColumns={tableColumns}  tableData={dummytabledata}/>
+
       </Container>
     </Fragment>
   );

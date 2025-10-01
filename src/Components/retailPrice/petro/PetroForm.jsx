@@ -77,10 +77,6 @@ const PetroForm = ({btnTitle,btnTitle1}) => {
                                                 />
                                             )}
                                         /></Col>
-
-
-
-
                                 </InputGroup>
 
                                 {errors.date && (

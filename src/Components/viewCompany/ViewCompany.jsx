@@ -11,10 +11,8 @@ const ViewCompany = () => {
          <Breadcrumbs parent='Invoice' title='Company List'/>
          <Container fluid={true}>
            <HeaderCard title=" Company List" />
-           <div className='bg-primary p-2'>
-                      <HeaderCard  title="Company List" />
-                      </div>
-                      <DataTableComponent  tableColumns={tableColumns}  tableData={dummytabledata}/>
+          
+                      <DataTableComponent  title="Company List"  tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
            </Fragment>
   )

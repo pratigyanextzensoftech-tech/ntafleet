@@ -9,10 +9,8 @@ const index = () => {
       <Breadcrumbs parent='Fuel Cards' title='Add Fuel Card'  />
       <Container fluid={true}>
                    <HeaderCard title="Add Fuel Cards" />
-                    <div className='bg-primary p-2'>
-                            <HeaderCard title="Add Fuel Cards " />
-                    </div>      
-                 <AddFuel btnTitle="Add Card" />   
+                       
+                 <AddFuel title="Add Fuel Cards " btnTitle="Add Card" />   
            
       </Container>
     </Fragment>

@@ -2,7 +2,8 @@ import React, { Fragment, useCallback, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import { Btn, H4 } from '../../../AbstractElements';
 import {Card,CardBody} from 'reactstrap'
-const DataTableComponent = ({tableData,tableColumns}) => {
+import HeaderCard from '../../Common/Component/HeaderCard';
+const DataTableComponent = ({tableData,tableColumns,title}) => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [toggleDelet, setToggleDelet] = useState(false);
     const [data, setData] = useState(tableData);
@@ -21,8 +22,15 @@ const DataTableComponent = ({tableData,tableColumns}) => {
     };
     return (
         <Fragment>
-         <Card className="shadow-lg my-3">
-    <CardBody>
+                        <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px"}}>       
+
+            {title!==undefined && 
+            <div className='p-2 my-3 bg-primary '>
+                <HeaderCard title={title}/>
+            </div>
+}
+        
+        
         {(selectedRows.length !== 0) &&
             <div className="d-flex align-items-center justify-content-between bg-light-info p-2">
                 <H4 attrH4={{ className: 'text-muted m-0' }}>Delete Selected Data..!</H4>
@@ -43,9 +51,8 @@ const DataTableComponent = ({tableData,tableColumns}) => {
                 clearSelectedRows={toggleDelet}
             />
         </div>
-    </CardBody>
-</Card>
-
+    
+</div>
         </Fragment>
     )
 }

@@ -10,6 +10,15 @@ export const optionscountry = [
     { value: 'United States of America', label: 'United States of America' },
     { value: 'Canada', label: 'Canada' }
 ];
+export const optionsPrimary = [
+    { value: 'Dashboard', label: 'Dashboard' },
+    { value: 'view Discounts', label: 'view Discounts' },
+    { value: 'Retail Prices', label: 'Retail Prices' },
+    { value: 'Location', label: 'Locations' },
+    { value: 'Items', label: 'Items' },
+    { value: 'Company', label: 'Company' },
+    { value: 'Supplier', label: 'Supplier' },
+];
 export const optionscountry1 = [
     { value: 'United States of America', label: 'United States of America' },
     { value: 'Canada', label: 'Canada' },
@@ -99,6 +108,10 @@ export const displayFeatureCheckBoxOwner=[
  export const VolUnit=[
   { value: 'Gallon', label: 'Gallon' },
     { value: 'liter', label: 'liter' }
+]
+ export const type=[
+  { value: 'visible', label: 'visible' },
+    { value: 'hidden', label: 'hidden' }
 ]
  export const Customized_Supplier=[
 { label: 'Select Supplier' , isDisabled: true },

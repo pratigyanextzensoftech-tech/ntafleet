@@ -7,11 +7,10 @@ import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
 const index = () => {
   return (
     <Fragment>
-      <Breadcrumbs parent='Fuel Cards' title='View Fual Cards'  />
+      <Breadcrumbs parent='Setting' title='Track Visitors'  />
       <Container fluid={true}>
-                   <HeaderCard title="View Fual Cards" />
-                        
-<DataTableComponent title=" Fual Card list "  tableColumns={tableColumns} tableData={dummytabledata}/>    
+        <HeaderCard title="Track Visitors"/>
+<DataTableComponent   title="Track Visitors" tableColumns={tableColumns} tableData={dummytabledata}/>
       </Container>
     </Fragment>
   );

@@ -15,10 +15,8 @@ const index = () => {
                             <HeaderCard title="Filters " />
                     </div>      
                  <PetroForm btnTitle="Search Data" btnTitle1="Reset"/>   
-                   <div className='bg-primary p-2 my-5'>
-                        <HeaderCard title="Items List" />
-                 </div>  
-<DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+                    
+<DataTableComponent title="Items List" tableColumns={tableColumns}  tableData={dummytabledata}/>
       </Container>
     </Fragment>
   );

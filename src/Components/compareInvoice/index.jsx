@@ -12,10 +12,8 @@ const index = () => {
          <Container fluid={true}>
            <HeaderCard title="Compare Invoice " />
            <CompareForm btnTtitle="Search Data" btnTtitle1="Reset"/>
-           <div className='bg-primary my-2 p-2'>
-                      <HeaderCard title="Compare Invoice List  " />
-          </div>
-          <DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+           
+          <DataTableComponent title="Compare Invoice List" tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
            </Fragment>
   )

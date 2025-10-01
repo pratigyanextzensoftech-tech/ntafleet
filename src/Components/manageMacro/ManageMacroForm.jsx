@@ -1,11 +1,11 @@
 import React from 'react'
-import { Form, Row, Col, Card, CardBody, FormGroup, Input, InputGroupText } from 'reactstrap'
+import { Form, Row, Col, Card, CardBody, FormGroup, Input, InputGroupText,Container } from 'reactstrap'
 import { Btn } from '../../AbstractElements'
 const ManageMacroForm = () => {
     return (
-        <div>
-            <Form className="form theme-form">
-                <CardBody>
+        <Container fluid={true}>
+            <Form >
+                
                     <Row>
                         <Col sm="9">
                             <Row>
@@ -29,9 +29,8 @@ const ManageMacroForm = () => {
                             </div>
                         </Col>
                     </Row>
-                </CardBody>
             </Form>
-        </div>
+        </Container>
     )
 }
 

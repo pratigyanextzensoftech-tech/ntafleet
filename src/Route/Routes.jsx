@@ -221,6 +221,18 @@ import UploadTcheck from '../Components/tcheck/upload/index'
 import TcheckList from '../Components/tcheck/list/index'
 import CreateTCheck from '../Components/tcheck/create/index'
 import ViewTCheck from '../Components/tcheck/view/index'
+import UserLogin from '../Components/setting/userLogin/index'
+import CompanyLogin from '../Components/setting/companyLogin/index'
+import ManageSalesman from '../Components/setting/manageSalesman/index';
+import ManageMenu from '../Components/setting/manageMenu/Index'
+import TrackVisitor from '../Components/setting/trackVisitor/index'
+import LinamarEsso from '../Components/location/linamarEsso/index';
+import PetroLink from '../Components/location/petroLink/index';
+import ViewCountry from '../Components/location/viewCountry/index'
+import ViewStates from '../Components/location/viewState/index'
+import ViewCity from '../Components/location/viewCity/index'
+import ManageLoc from '../Components/location/manageLoc/index'
+import ManageGroup from '../Components/location/manageGroup/index'
 export const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/default`, Component: <Default /> },
   { path: `${process.env.PUBLIC_URL}/manage_user/:layout`, Component: <ManageUser /> },
@@ -268,6 +280,18 @@ export const routes = [
     { path: `${process.env.PUBLIC_URL}t_checkList/:layout`, Component: < TcheckList/> },
     { path: `${process.env.PUBLIC_URL}create_t_check_Invoices/:layout`, Component: < CreateTCheck/> },
     { path: `${process.env.PUBLIC_URL}view_t_check_Invoices/:layout`, Component: < ViewTCheck/> },
+    { path: `${process.env.PUBLIC_URL}user_login/:layout`, Component: < UserLogin/> },
+    { path: `${process.env.PUBLIC_URL}company_log/:layout`, Component: < CompanyLogin/> },
+    { path: `${process.env.PUBLIC_URL}manage_salesMan/:layout`, Component: < ManageSalesman/> },
+    { path: `${process.env.PUBLIC_URL}manage_Menu/:layout`, Component: < ManageMenu/> },
+    { path: `${process.env.PUBLIC_URL}track_visitors/:layout`, Component: < TrackVisitor/> },
+    { path: `${process.env.PUBLIC_URL}Linamar_Esso_Location/:layout`, Component: < LinamarEsso/> },
+    { path: `${process.env.PUBLIC_URL}esso_ulramar_petroLink/:layout`, Component: < PetroLink/> },
+    { path: `${process.env.PUBLIC_URL}view_Countries/:layout`, Component: < ViewCountry/> },
+    { path: `${process.env.PUBLIC_URL}view_states/:layout`, Component: < ViewStates/> },
+    { path: `${process.env.PUBLIC_URL}view_cities/:layout`, Component: < ViewCity/> },
+    { path: `${process.env.PUBLIC_URL}manage_location/:layout`, Component: < ManageLoc/> },
+    { path: `${process.env.PUBLIC_URL}manage_group/:layout`, Component: < ManageGroup/> },
 
 
   { path: `${process.env.PUBLIC_URL}/dashboard/online-course/:layout`, Component: <OnlineCourse /> },

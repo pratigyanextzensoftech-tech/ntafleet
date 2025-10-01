@@ -15,10 +15,8 @@ const index = () => {
                             <HeaderCard title="Filters " />
                     </div>      
                  <View btnTitle="search Data"/>   
-                   <div className='bg-primary p-2'>
-                            <HeaderCard title="T Check Invoice List  " />
-                    </div>   
-                    <DataTableComponent tableColumns={tableColumns} tableData={dummytabledata}/>
+                    
+                    <DataTableComponent title="T Check Invoice List  " tableColumns={tableColumns} tableData={dummytabledata}/>
       </Container>
     </Fragment>
   );

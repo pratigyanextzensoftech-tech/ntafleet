@@ -16,10 +16,8 @@ const index = () => {
                             <HeaderCard title="Add Items" />
                  </div>      
                  <AddItems btnTitle="Add Item"/>   
-                   <div className='bg-primary p-2 my-5'>
-                            <HeaderCard title="Items List" />
-                 </div>  
-<DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+                  
+<DataTableComponent title="Items List" tableColumns={tableColumns}  tableData={dummytabledata}/>
       </Container>
     </Fragment>
   );
