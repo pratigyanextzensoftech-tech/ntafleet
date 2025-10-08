@@ -11,16 +11,17 @@ const CheckOldINvoice = () => {
    <Fragment>
          <Breadcrumbs parent='Invoice' title='check old Invoices'/>
          <Container fluid={true}>
+                   <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
 
+                <div className='bg-primary p-2 my-3'>
            <HeaderCard title="Check Invoices" />
-           <Card className="shadow-lg">
-            <CardBody>
+
+                </div>
+       
             {/* <BasicTabCard title="Filters"  tabContent={View_Invoice}/> */}
             <Form/>
-            </CardBody>
-           </Card>
-                       <HeaderCard title="Invoices List" />
-                       <DataTableComponent tableColumns={tableColumns} tableData={dummytabledata}/>
+          </div>
+                       <DataTableComponent title="Invoices List" tableColumns={tableColumns} tableData={dummytabledata}/>
            </Container>
            </Fragment>
   )

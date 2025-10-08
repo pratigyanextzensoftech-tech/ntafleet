@@ -21,9 +21,10 @@ const SingleRetailMulti = ({title,btnTtitle,type}) => {
       };
   return (
     <Fragment>
-      <Card >
-        <CardBody>
+     <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+                              <div className='bg-primary p-2 my-3'>
       <HeaderCard title={title}/>
+      </div>
                 <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
 
        <Row className="mt-3">
@@ -165,8 +166,7 @@ const SingleRetailMulti = ({title,btnTtitle,type}) => {
                 </Col>
               </Row>
               </Form>
-              </CardBody>
-      </Card>
+            </div>  
     </Fragment>
   )
 }

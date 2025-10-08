@@ -11,14 +11,14 @@ const index = () => {
       <Breadcrumbs parent='Discount' title='Manage Discount Sheet'  />
       <Container fluid={true}>
                    <HeaderCard title="Manage Discount Sheet" />
-                    <div className='bg-primary p-2 my-5'>
+                                       <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+                    <div className='bg-primary p-2 my-3'>
                             <HeaderCard title="Create Discount Sheet " />
                     </div>      
                  <DiscountSheetForm btnTitle="Create" />   
-                   <div className='bg-primary p-2 my-5'>
-                        <HeaderCard title="Discount Sheet List " />
-                 </div>  
-<DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+                  </div>
+<DataTableComponent title="Discount Sheet List " tableColumns={tableColumns}  tableData={dummytabledata}/>
       </Container>
     </Fragment>
   );

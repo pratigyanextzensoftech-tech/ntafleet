@@ -10,11 +10,13 @@ const index = () => {
       <Breadcrumbs parent='Discount' title='Multiple Rebate Entry'  />
       <Container fluid={true}>
                    <HeaderCard title="Multiple Rebate Entry" />
-                    <div className='bg-primary p-2'>
+                               <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+                    <div className='bg-primary p-2 my-3'>
                             <HeaderCard title="Multiple Rebate Entry  " />
                     </div>      
                  <BulkDiscount btnTitle="Enter Discount Cent" />   
-                   
+                   </div>
       </Container>
     </Fragment>
   );

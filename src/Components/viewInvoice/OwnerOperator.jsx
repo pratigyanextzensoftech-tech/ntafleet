@@ -4,9 +4,10 @@ import { checkBoxData,optionscountry,optionscompany,InvoiceShow,InvoiceCategory 
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
+import HeaderCard from '../Common/Component/HeaderCard';
 import DatePicker from "react-datepicker";
 
-const OwnerOperator = () => {
+const OwnerOperator = ({title}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
     register,
@@ -33,7 +34,10 @@ const OwnerOperator = () => {
     });
 }
   return (
-   
+    <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+  <div className="bg-primary p-2 mt-3 mb-5">
+                      <HeaderCard title={title} />
+                      </div>
      <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
        
               <fieldset className='inputField' >
@@ -277,6 +281,7 @@ const OwnerOperator = () => {
                </fieldset>
            
           </Form>
+          </div>
   )
 }
 

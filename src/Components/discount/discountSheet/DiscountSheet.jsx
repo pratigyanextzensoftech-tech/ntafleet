@@ -37,6 +37,7 @@ const DiscountSheet = ({ title, btnTitle }) => {
 
     return (
         <>
+
             <HeaderCard title={title} />
             <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">

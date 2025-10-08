@@ -37,11 +37,8 @@ const ViewMoneyCodeForm = () => {
         });
     }
     return (
-
-        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-
-           
-             
+        
+        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >   
                 <Row className="mt-3">
                     <Col sm="3">
                         <Row>

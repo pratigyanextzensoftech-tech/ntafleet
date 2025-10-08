@@ -8,6 +8,8 @@ import NotificationSlider from "./NotificationSlider";
 
 const Leftbar = () => {
   const { layoutURL, setToggleIcon, toggleSidebar } = useContext(CustomizerContext);
+    const { addSidebarLayouts } = useContext(CustomizerContext);
+
   const [sidebartoggle] = useState(true);
   const width = useWindowSize();
 
@@ -31,16 +33,28 @@ const Leftbar = () => {
 
   const responsive_openCloseSidebar = (toggle) => {
     if (width <= 991) {
+      console.log("first")
       toggleSidebar(!toggle);
       document.querySelector(".sidebar-wrapper").className = "sidebar-wrapper ";
       document.querySelector(".bg-overlay1").classList.add("active");
-    } else {
+    } 
+    else {
       if (toggle) {
+        console.log("toggle")
         toggleSidebar(!toggle);
+         const currentLayout = localStorage.getItem("sidebar_layout");
+
+    if (currentLayout === "horizontal-wrapper") {
+      // If horizontal, switch to compact (show sidebar)
+      addSidebarLayouts("compact-wrapper");
         document.querySelector(".sidebar-wrapper").className = "sidebar-wrapper close_icon ";
-      } else {
+      } 
+    }
+      else {
         console.log("991 54 else", toggle);
         toggleSidebar(!toggle);
+                addSidebarLayouts("horizontal-wrapper")
+                localStorage.setItem("sidebar_layout", "horizontal-wrapper");
         document.querySelector(".sidebar-wrapper").className = "sidebar-wrapper ";
       }
     }
@@ -53,7 +67,7 @@ const Leftbar = () => {
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`}>
             <Image
               attrImage={{
-                className: "img-fluid for-light",
+                className: "img-fluid for-light logoheader",
                 src: `${require("../../../assets/images/logo/logo.png")}`,
                 alt: "",
               }}

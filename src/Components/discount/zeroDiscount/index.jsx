@@ -11,14 +11,14 @@ const index = () => {
       <Breadcrumbs parent='Discount' title='TA-Petro Zero Discount Location'  />
       <Container fluid={true}>
                    <HeaderCard title="TA-Petro Zero Discount Location" />
-                    <div className='bg-primary p-2'>
+                               <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+                    <div className='bg-primary p-2 my-3'>
                             <HeaderCard title="Add TA-Petro Zero Discount Location  " />
                     </div>      
                  <ZeroDiscount btnTitle="Save Location" />   
-                   <div className='bg-primary p-2 my-5'>
-                        <HeaderCard title="TA-Petro Location List  " />
-                 </div>  
-<DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+                  </div> 
+<DataTableComponent title="TA-Petro Location List  " tableColumns={tableColumns}  tableData={dummytabledata}/>
       </Container>
     </Fragment>
   );

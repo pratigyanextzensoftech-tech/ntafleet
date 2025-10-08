@@ -8,18 +8,18 @@ export const View_Invoice_Table = [
   {
     id: '1',
     label: 'View Invoices',
-    component: <DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>
+    component: <DataTableComponent title="Invoices List "  tableColumns={tableColumns}  tableData={dummytabledata}/>
 ,
   },
   {
     id: '2',
     label: 'View Owner Operator Invoices',
-    component: <DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={dummytabledata}/>,
   },
   {
     id: '3',
     label:'View Customised Invoices',
-    component: <DataTableComponent tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={dummytabledata}/>,
   },
   
 ];

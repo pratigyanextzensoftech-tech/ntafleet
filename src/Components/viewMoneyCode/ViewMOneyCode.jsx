@@ -12,12 +12,15 @@ const ViewMoneyCode = () => {
     <Fragment>
          <Breadcrumbs parent='Invoice' title='view MoneyCode'/>
          <Container fluid={true}>
+                                                                <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+              <div className="bg-primary p-2 my-3">
+
            <HeaderCard title="MoneyCode Invoices List" />
+           </div>
            <ViewMoneyCodeForm/>
-           <div className='bg-primary p-2'>
-                      <HeaderCard  title="MoneyCode Invoices List" />
-                      </div>
-                      <DataTableComponent  tableColumns={tableColumns}  tableData={dummytabledata}/>
+           </div>
+           
+                      <DataTableComponent title="MoneyCode Invoices List"  tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
            </Fragment>
   )

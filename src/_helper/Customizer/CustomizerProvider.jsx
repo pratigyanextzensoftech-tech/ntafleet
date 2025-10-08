@@ -5,7 +5,7 @@ import Context from './index';
 
 const CustomizerProvider = (props) => {
   const customizer = ConfigDB.data;
-  // const [layout, setLayout] = useState('');
+  const [layout, setLayout] = useState('');
   const [showTable,setShowTable]=useState(false)
   const [sidebarIconType, setSidebarIconType] = useState('');
   const [mix_background_layout, setMixBackgroundLayout] = useState('');
@@ -14,12 +14,12 @@ const CustomizerProvider = (props) => {
   const [sidebarResponsive, setSidebarResponsive] = useState(false);
   const [IsOpen, setIsClose] = useState(false);
   const defaultLayoutObj = classes.find((item) => Object.values(item).pop(1) === 'compact-wrapper');
-  // const layoutURL = localStorage.getItem('layout') || Object.keys(defaultLayoutObj).pop();
+  const layoutURL = localStorage.getItem('layout') || Object.keys(defaultLayoutObj).pop();
   const layoutValue = Object.values(defaultLayoutObj).pop();
   const location = window.location.pathname.split('/').pop();
 
   useEffect(() => {
-    // setLayout(layoutValue);
+    setLayout(layoutValue);
     setSidebarIconType(localStorage.getItem('sidebar_icon_type') || ConfigDB.data.settings.sidebar.iconType);
     classes.map((item) => {
       const item1 = Object.keys(item).pop();
@@ -27,7 +27,7 @@ const CustomizerProvider = (props) => {
         const val = Object.values(item).pop();
         localStorage.setItem('sidebar_layout', val);
         ConfigDB.data.settings.sidebar.type = val;
-        // setLayout(val);
+        setLayout(val);
       }
 
       return null;
@@ -36,11 +36,11 @@ const CustomizerProvider = (props) => {
   }, []);
 
   //Set LTR,RTL,BOX Tyoe
-  // const addLayout = (layout) => {
-  //   ConfigDB.data.settings.layout_type = layout;
-  //   localStorage.setItem('layout_type', layout);
-  //   // setLayout(layout);
-  // };
+  const addLayout = (layout) => {
+    ConfigDB.data.settings.layout_type = layout;
+    localStorage.setItem('layout_type', layout);
+    setLayout(layout);
+  };
 
   //Toggle sidebar
   const toggleSidebar = (toggle) => {
@@ -51,7 +51,7 @@ const CustomizerProvider = (props) => {
   const addSidebarLayouts = (sidebar_layout) => {
     localStorage.setItem('sidebar_layout', sidebar_layout);
     ConfigDB.data.settings.sidebar.type = sidebar_layout;
-    // setLayout(sidebar_layout);
+    setLayout(sidebar_layout);
   };
   //SideBar Icon Sidebar
   const addSidebarIconType = (sidebar_Icon_Type) => {
@@ -93,7 +93,7 @@ const CustomizerProvider = (props) => {
     <Context.Provider
       value={{
         ...props,
-        // layout,
+        layout,
         showTable,setShowTable,
         sidebarIconType,
         mix_background_layout,
@@ -101,7 +101,7 @@ const CustomizerProvider = (props) => {
         mixLayout,
         sidebarResponsive,
         IsOpen,
-        // layoutURL,
+        layoutURL,
         customizer,
         setIsClose,
         setToggleIcon,
@@ -110,7 +110,7 @@ const CustomizerProvider = (props) => {
         addSidebarLayouts: addSidebarLayouts,
         addSidebarIconType: addSidebarIconType,
         addSidebarSettings: addSidebarSettings,
-        // addLayout: addLayout,
+        addLayout: addLayout,
         addMixBackgroundLayout: addMixBackgroundLayout,
         addColor: addColor,
         toggleSidebar: toggleSidebar,

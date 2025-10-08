@@ -38,9 +38,6 @@ const AddFuel = ({btnTitle}) => {
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-
-           
-             
                 <Row className="mt-3">
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">

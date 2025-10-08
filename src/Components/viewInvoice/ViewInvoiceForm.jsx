@@ -3,9 +3,10 @@ import Select from 'react-select'
 import { checkBoxData, optionscountry, optionscompany,customizedTypeType,invoiceType,InvoiceCategory,InvoiceShow } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
+import HeaderCard from '../Common/Component/HeaderCard';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-const ViewInvoiceForm = () => {
+const ViewInvoiceForm = ({title}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
@@ -38,7 +39,11 @@ const ViewInvoiceForm = () => {
     }
     return (
 
-        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
+    <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+  <div className="bg-primary p-2 mt-3 mb-5">
+                      <HeaderCard title={title} />
+                      </div>
+        <Form  noValidate='' onSubmit={handleSubmit(onSubmit)}  >
 
             <fieldset className='inputField' >
                 <legend className='legend'>choose Supplier</legend>
@@ -272,6 +277,7 @@ const ViewInvoiceForm = () => {
             </fieldset>
 
         </Form>
+        </div>
     )
 }
 

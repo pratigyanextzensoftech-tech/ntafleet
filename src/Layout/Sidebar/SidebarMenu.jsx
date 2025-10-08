@@ -1,12 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft } from 'react-feather';
 import CustomizerContext from '../../_helper/Customizer';
 import SidebarMenuItems from './SidebarMenuItems';
 
-const SidebarMenu = ({ setMainMenu, props, sidebartoogle, setNavActive, activeClass, width,mainmenu }) => {
+const SidebarMenu = ({ setMainMenu, props, sidebartoogle, setNavActive, activeClass, width, mainmenu }) => {
   const { customizer } = useContext(CustomizerContext);
   const wrapper = customizer.settings.sidebar.type;
   const [margin, setMargin] = useState(0);
+  const [showArrows, setShowArrows] = useState(true);
+
+  useEffect(() => {
+    // Hide arrows if width is larger than 1878
+    if (width >= 1878) {
+      setShowArrows(false);
+    } else {
+      setShowArrows(true);
+    }
+  }, [width]);
 
   const scrollToRight = () => {
     if (margin <= -2598 || margin <= -2034) {
@@ -15,31 +25,27 @@ const SidebarMenu = ({ setMainMenu, props, sidebartoogle, setNavActive, activeCl
       } else {
         setMargin(-3464);
       }
-      document.querySelector('.right-arrow').classList.add('d-none');
-      document.querySelector('.left-arrow').classList.remove('d-none');
     } else {
-      setMargin((margin) => (margin += -width));
-      document.querySelector('.left-arrow').classList.remove('d-none');
+      setMargin((margin) => margin - width);
     }
   };
 
   const scrollToLeft = () => {
     if (margin >= -width) {
       setMargin(0);
-      document.querySelector('.left-arrow').classList.add('d-none');
-      document.querySelector('.right-arrow').classList.remove('d-none');
     } else {
-      setMargin((margin) => (margin += width));
-      document.querySelector('.right-arrow').classList.remove('d-none');
+      setMargin((margin) => margin + width);
     }
   };
 
-
   return (
     <nav className="sidebar-main" id="sidebar-main">
-      <div className="left-arrow" onClick={scrollToLeft}>
-        <ArrowLeft />
-      </div>
+      {showArrows && (
+        <div className="left-arrow" onClick={scrollToLeft}>
+          <ArrowLeft />
+        </div>
+      )}
+
       <div
         id="sidebar-menu"
         style={
@@ -55,15 +61,24 @@ const SidebarMenu = ({ setMainMenu, props, sidebartoogle, setNavActive, activeCl
               <i className="fa fa-angle-right ps-2" aria-hidden="true"></i>
             </div>
           </li>
-          <SidebarMenuItems mainmenu={mainmenu} setMainMenu={setMainMenu} props={props} sidebartoogle={sidebartoogle} setNavActive={setNavActive} activeClass={activeClass} />
+          <SidebarMenuItems
+            mainmenu={mainmenu}
+            setMainMenu={setMainMenu}
+            props={props}
+            sidebartoogle={sidebartoogle}
+            setNavActive={setNavActive}
+            activeClass={activeClass}
+          />
         </ul>
       </div>
-      <div className="right-arrow" onClick={scrollToRight}>
-        <ArrowRight />
-      </div>
+
+      {showArrows && (
+        <div className="right-arrow" onClick={scrollToRight}>
+          <ArrowRight />
+        </div>
+      )}
     </nav>
   );
-
 };
 
 export default SidebarMenu;

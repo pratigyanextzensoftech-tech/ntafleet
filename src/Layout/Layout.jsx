@@ -3,7 +3,6 @@ import { ToastContainer } from "react-toastify";
 import { useContext } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-
 import Taptop from "./TapTop";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -14,8 +13,9 @@ import AnimationThemeContext from "../_helper/AnimationTheme";
 import ConfigDB from "../Config/ThemeConfig";
 import Loader from "./Loader";
 const AppLayout = ({ children, classNames, ...rest }) => {
-  // const { layout } = useContext(CustomizerContext);
+  const { layout } = useContext(CustomizerContext);
   const { sidebarIconType } = useContext(CustomizerContext);
+  const sidebarType = localStorage.getItem('sidebar_types') || ConfigDB.data.settings.sidebar.type;
 
   const layout1 = localStorage.getItem("sidebar_layout");
   const sideBarIcon = localStorage.getItem("sidebar_icon_type") || sidebarIconType;

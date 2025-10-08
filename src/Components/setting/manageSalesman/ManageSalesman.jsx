@@ -1,20 +1,10 @@
 
 import React, { Fragment } from 'react';
-import { Row, Col, Card, CardBody, Form, FormGroup, Label, Input, InputGroup, InputGroupText } from 'reactstrap';
+import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
-import HeaderCard from '../../Common/Component/HeaderCard';
-import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
-import Select from 'react-select'
-import { companyLoginAccess,userStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
 const ManageSalesman = () => {
     return (
         <Fragment >
-            {/* <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px"}}> */}
-                        <div  className='bg-primary p-2 my-3'>
-                <HeaderCard title="Add Sales Man  " />
-                </div>
-               
                     <Form>
                         <Row>
                             <Col md="4">

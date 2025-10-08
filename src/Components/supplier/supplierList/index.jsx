@@ -12,11 +12,13 @@ const index = () => {
                    <Container fluid={true}>
 
         <HeaderCard title="Add Supplier"/>
+                                                      <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+  <div className="bg-primary p-2 my-3">
+                      <HeaderCard title="Add Supplier" />
+                      </div>
       <SupplierList btntitle="Add Supplier" btnTitle1="Reset" />
-      <div className='my-5 p-2 bg-primary'>
-              <HeaderCard title="Item List"/>
-</div>
-      <DataTableComponent tableData={dummytabledata} tableColumns={tableColumns}/>
+     </div>
+      <DataTableComponent title="Item List" tableData={dummytabledata} tableColumns={tableColumns}/>
                </Container>
 
     </>

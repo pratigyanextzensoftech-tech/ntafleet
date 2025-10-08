@@ -1,6 +1,7 @@
 import React from "react";
-import { FaHome, FaTags, FaBuilding, FaQuestionCircle,FaSitemap,FaMoneyBillAlt } from "react-icons/fa";
-import { MdPriceChange,MdReport } from "react-icons/md";
+import {   FaRegBuilding ,FaDollarSign ,FaRegCreditCard ,FaFlag ,FaUserSecret,FaRegCheckSquare  ,FaCogs ,FaQrcode ,FaQuestionCircle,FaSitemap,FaMoneyBillAlt } from "react-icons/fa";
+import { MdReport } from "react-icons/md";
+import { HiMiniComputerDesktop } from "react-icons/hi2";
 import { GrTransaction } from "react-icons/gr";
 import { GiFuelTank } from "react-icons/gi";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
@@ -9,21 +10,21 @@ import { IoIosSettings } from "react-icons/io";
 import { BsFillPatchCheckFill } from "react-icons/bs";
 import { FaTruck  } from "react-icons/fa6";
 const iconMap = {
-  dashboard: FaHome,
-  discount: FaTags,
-  company: FaBuilding,
+  dashboard: HiMiniComputerDesktop,
+  discount: FaDollarSign,
+  company: FaRegBuilding ,
   help: FaQuestionCircle,
-  price:MdPriceChange,
+  price:FaDollarSign,
   item:FaSitemap ,
-  fuel:GiFuelTank,
+  fuel:FaRegCreditCard ,
   transaction:GrTransaction,
     invoices:LiaFileInvoiceSolid,
-report:MdReport,
+report:FaFlag,
 location:FaLocationDot,
-setting:IoIosSettings,
-tcheck:BsFillPatchCheckFill,
-supply:FaTruck,
-moneyCode:FaMoneyBillAlt
+setting:FaCogs,
+tcheck:FaRegCheckSquare,
+supply:FaUserSecret,
+moneyCode:FaQrcode
 
 
 };

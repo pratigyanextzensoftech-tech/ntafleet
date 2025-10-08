@@ -11,11 +11,13 @@ const index = () => {
       <Breadcrumbs parent='Retail Prices' title='Petro Retail Price'  />
       <Container fluid={true}>
                    <HeaderCard title="Petro Retail Price" />
-                    <div className='bg-primary p-2 my-5'>
+                               <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+                    <div className='bg-primary p-2 my-3'>
                             <HeaderCard title="Filters " />
                     </div>      
                  <PetroForm btnTitle="Search Data" btnTitle1="Reset"/>   
-                    
+                    </div>
 <DataTableComponent title="Items List" tableColumns={tableColumns}  tableData={dummytabledata}/>
       </Container>
     </Fragment>

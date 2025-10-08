@@ -3,7 +3,7 @@ export class ConfigDB {
     settings: {
       layout_type: 'ltr',
       sidebar: {
-        type: 'compact-wrapper',
+        type: 'horizontal-wrapper',
         iconType: 'stroke-svg',
       },
       sidebar_setting: 'default-sidebar',

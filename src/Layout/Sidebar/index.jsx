@@ -1,92 +1,74 @@
 import React, { Fragment, useState, useEffect, useContext } from "react";
-import CustomContext from "../../_helper/Customizer";
-// import { MENUITEMS } from "./Menu";
-import SidebarIcon from "./SidebarIcon";
+import CustomizerContext from "../../_helper/Customizer";
 import SidebarLogo from "./SidebarLogo";
 import SidebarMenu from "./SidebarMenu";
-import { MenuApi } from "../../api";
 import axios from "axios";
+import { MenuApi } from "../../api";
+
 const Sidebar = (props) => {
-  // const customizer = useContext(CustomContext);
-  const { toggleIcon } = useContext(CustomContext);
-  const id = window.location.pathname.split("/").pop();
-  // const defaultLayout = Object.keys(customizer.layout);
-
-  // const layout = id ? id : defaultLayout;
-  // eslint-disable-next-line
+  const { addSidebarLayouts, toggleIcon } = useContext(CustomizerContext);
   const [mainmenu, setMainMenu] = useState([]);
+  const [width, setWidth] = useState(window.innerWidth);
 
-  const [width, setWidth] = useState(0);
-
-  const handleScroll = () => {
-    if (window.scrollY > 400) {
-      // if (
-      //   customizer.settings.sidebar.type.split(' ').pop() ===
-      //   'material-type' ||
-      //   customizer.settings.sidebar.type.split(' ').pop() ===
-      //   'advance-layout'
-      // )
-      document.querySelector(".sidebar-main").className = "sidebar-main hovered";
+  // ✅ Handle window resize to switch layouts dynamically
+  const handleResize = () => {
+    const currentWidth = window.innerWidth;
+    setWidth(currentWidth);
+    if (currentWidth > 991) {
+      addSidebarLayouts("horizontal-wrapper");
     } else {
-      if (document.getElementById("sidebar-main")) document.querySelector(".sidebar-main").className = "sidebar-main";
+      addSidebarLayouts("compact-wrapper");
     }
   };
- const MenuData = async () => {
-      try {
-        await axios.get(MenuApi).then((resp) => {
-          console.log(resp.data,"resp---------")
-          setMainMenu(resp.data);
-        });
-      } catch (error) {
-        console.log('cancelled', error);
-      }
-    };
+
+
+
+  // ✅ Fetch Menu API
+  const MenuData = async () => {
+    try {
+      const resp = await axios.get(MenuApi);
+      setMainMenu(resp.data);
+    } catch (error) {
+      console.log("Menu fetch cancelled", error);
+    }
+  };
+
+  // ✅ useEffect to setup listeners and fetch data
   useEffect(() => {
-  document.querySelector(".left-arrow").classList.add("d-none");
-  window.addEventListener("resize", handleResize);
-  handleResize();
-  window.addEventListener("scroll", handleScroll);
-  handleScroll();
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    MenuData();
 
-  // Fetch menu data only once on mount
-  MenuData();
+    document.querySelector(".left-arrow")?.classList.add("d-none");
 
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-    window.removeEventListener("resize", handleResize);
-  };
-}, []); // No dependencies → runs once
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-useEffect(() => {
-  const currentUrl = window.location.pathname;
-
-  mainmenu.forEach((items) => {
-    items.Items.forEach((item) => {
-      if (item.path === currentUrl) return setNavActive(item);
-
-      if (item.children) {
-        item.children.forEach((subItem) => {
-          if (subItem.path === currentUrl) return setNavActive(subItem);
-
-          if (subItem.children) {
-            subItem.children.forEach((subSubItem) => {
-              if (subSubItem.path === currentUrl) return setNavActive(subSubItem);
-            });
-          }
-        });
-      }
+  // ✅ Set active menu item based on URL
+  useEffect(() => {
+    const currentUrl = window.location.pathname;
+    mainmenu.forEach((items) => {
+      items.Items.forEach((item) => {
+        if (item.path === currentUrl) return setNavActive(item);
+        if (item.children) {
+          item.children.forEach((subItem) => {
+            if (subItem.path === currentUrl) return setNavActive(subItem);
+            if (subItem.children) {
+              subItem.children.forEach((subSubItem) => {
+                if (subSubItem.path === currentUrl) return setNavActive(subSubItem);
+              });
+            }
+          });
+        }
+      });
     });
-  });
-}, [mainmenu]); // Run when mainmenu changes
+  }, [mainmenu]);
 
-
-  const handleResize = () => {
-    setWidth(window.innerWidth - 500);
-  };
-
+  // ✅ Handle active classes
   const activeClass = () => {
-    // document.querySelector('.sidebar-link').classList.add('active');
-    document.querySelector(".bg-overlay1").classList.add("active");
+    document.querySelector(".bg-overlay1")?.classList.add("active");
   };
 
   const setNavActive = (item) => {
@@ -94,11 +76,11 @@ useEffect(() => {
       menuItems.Items.filter((Items) => {
         if (Items !== item) {
           Items.active = false;
-          document.querySelector(".bg-overlay1").classList.remove("active");
+          document.querySelector(".bg-overlay1")?.classList.remove("active");
         }
         if (Items.children && Items.children.includes(item)) {
           Items.active = true;
-          document.querySelector(".sidebar-links").classList.add("active");
+          document.querySelector(".sidebar-links")?.classList.add("active");
         }
         if (Items.children) {
           Items.children.filter((submenuItems) => {
@@ -106,9 +88,8 @@ useEffect(() => {
               Items.active = true;
               submenuItems.active = true;
               return true;
-            } else {
-              return false;
             }
+            return false;
           });
         }
         return Items;
@@ -119,22 +100,26 @@ useEffect(() => {
   };
 
   const closeOverlay = () => {
-    document.querySelector(".bg-overlay1").classList.remove("active");
-    document.querySelector(".sidebar-links").classList.remove("active");
+    document.querySelector(".bg-overlay1")?.classList.remove("active");
+    document.querySelector(".sidebar-links")?.classList.remove("active");
   };
 
   return (
     <Fragment>
+      <div className="bg-overlay1" onClick={closeOverlay}></div>
       <div
-        className="bg-overlay1"
-        onClick={() => {
-          closeOverlay();
-        }}></div>
-      <div className={`sidebar-wrapper ${toggleIcon ? "close_icon" : ""}`} sidebar-layout="stroke-svg">
-        {/* <SidebarIcon /> */}
+        className={`sidebar-wrapper ${toggleIcon ? "close_icon" : ""}`}
+        sidebar-layout="stroke-svg"
+      >
         <SidebarLogo />
-        {/* sidebartoogle={sidebartoogle} */}
-        <SidebarMenu setMainMenu={setMainMenu} mainmenu={mainmenu} props={props} setNavActive={setNavActive} activeClass={activeClass} width={width} />
+        <SidebarMenu
+          setMainMenu={setMainMenu}
+          mainmenu={mainmenu}
+          props={props}
+          setNavActive={setNavActive}
+          activeClass={activeClass}
+          width={width}
+        />
       </div>
     </Fragment>
   );

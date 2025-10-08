@@ -10,11 +10,14 @@ const SubLOgin = () => {
     <Fragment>
          <Breadcrumbs parent='Company' title='Manage SubLogin'/>
          <Container fluid={true}>
+           <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+             
         <div className='bg-primary my-2 p-2'>
            <HeaderCard title="Add Sub-Login  " />
            </div>
            <SubLoginForm btnTtitle="Add Sub Login " />
-        
+        </div>
           <DataTableComponent title="Sub-Login List  " tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
            </Fragment>

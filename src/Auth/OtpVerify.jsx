@@ -29,7 +29,7 @@ const OtpVerify = ({ selected }) => {
     setOtp("123456");
     if (otp === "123456" ) {
     //   localStorage.setItem("login", JSON.stringify(true));
-      history(`${process.env.PUBLIC_URL}/dashboard/default`);
+      history(`/dashboard`);
       toast.success("Successfully verify otp!..");
     } else {
       toast.error("wrong otp!..");

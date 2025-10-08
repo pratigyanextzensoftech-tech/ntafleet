@@ -21,9 +21,10 @@ const BulkRetailInvoice = ({title,btnTtitle,type}) => {
   };
   return (
     <Fragment>
-      <Card>
-        <CardBody>
+       <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+                              <div className='bg-primary p-2 my-3'>
       <HeaderCard title={title}/>
+      </div>
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-3">
                 <Col sm="3">
@@ -149,8 +150,7 @@ const BulkRetailInvoice = ({title,btnTtitle,type}) => {
                 <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
               </div>
               </Form>
-              </CardBody>
-      </Card>
+             </div>
     </Fragment>
   )
 }

@@ -1,0 +1,268 @@
+
+[
+  {
+    "menutitle": "General",
+    "menucontent": "Dashboards,Widgets",
+    "Items": [
+      {
+        "title": "Dashboard",
+        "icon": "dashboard",
+        "type": "sub",
+        "badge": "badge badge-light-primary",
+        "active": false,
+        "children": [       
+          { "path": "/dashboard", "title": "Dashbord", "type": "link" },
+          { "path": "/report_Dashboard", "title": "Report Dashboard", "type": "link" },
+          { "path": "/graph_Dashboard", "title": "Graph Dashboard","icon":"fa-solid fa-chart-simple", "type": "link" }
+        ]
+      },
+      {
+        "title": "View Discounts ",
+        "icon": "discount",
+        "type": "sub",
+        "active": false,
+        "children": [
+          { "path": "/create_discount", "title": "Create Discount ", "type": "link" },
+          { "path": "/view_Discount", "title": "View Discounts", "type": "link" },
+         { "path": "/discount_Sheet", "title": "Discount Sheet", "type": "link" },
+        { "path": "/create_Bulk_Discount", "title":"Create Bulk Discount", "type": "link" },
+        { "path": "/zero_Discount_Location", "title": "Zero Discount Location", "type": "link" }
+        ]
+      }
+    ]
+  },
+  {
+    "Items": [
+      {
+        "title": "Retail Prices ",
+        "icon": "price",
+        "type": "sub",
+        "badge": "badge badge-light-secondary",
+        "badgetxt": "New",
+        "active": false,
+        "children": [
+          { "path": "/upload_retail_prices", "type": "link", "title": "Upload Retail Prices" },
+          { "path": "/petro_retail_prices", "type": "link", "title": "Petro Retail Prices" }
+        ]
+      },
+      {
+        "title": "Pricing ",
+        "icon": "price",
+        "type": "sub",
+        "active": false,
+        "children": [
+          { "path": "/download_esso_cent", "title": "Download Esso Cent", "type": "link" },
+          { "path": "/update_esso_centwise", "title": "Update Esso Cent Wise", "type": "link" },
+          { "path": "/manage_esso_cent", "title": "Manage Esso Cent Type", "type": "link" },
+          { "path": "/upload_price", "title": "Upload Pricing", "type": "link" },
+          { "path": "/price_list", "title": "Pricing List", "type": "link" },
+          { "path": "/single_price_pdf", "title": "Single Pricing PDF", "type": "link" },
+          { "path": "/fj_bulk_price", "title": "FJ Bulk Pricing", "type": "link" },
+          { "path": "/ta_petro_bulk_price", "title": "TA-Petro Bulk Pricing", "type": "link" },
+          { "path": "/esso_bulk_price", "title": "ESSO Bulk Pricing", "type": "link" },
+          { "path": "/love_bulk_price", "title": "Love Bulk Pricing", "type": "link" },
+          { "path": "/ultramar_bulk_price", "title": "ULTRAMAR Bulk Pricing", "type": "link" },
+          { "path": "/update_fg_rack_price", "title": "Update FG Rack Pricing", "type": "link" },
+          { "path": "/update_taPetro_rack_price", "title": "Update Ta-Petro Rack Pricing", "type": "link" },
+          { "path": "/update_love_rack_pricing", "title": "Update LOVE Rack Pricing", "type": "link" },
+          { "path": "/OwnerUpdate_rack_price", "title": "Owner Operator Rack Pricing", "type": "link" },
+           { "path": "/esso_group_rack_price", "title": "ESSO Group Rack Pricing (New)", "type": "link" },
+          { "path": "/ultramarGroup_rack_price", "title": "ULTRAMAR Group Rack Pricing", "type": "link" },
+          { "path": "/download_bulk_excel", "title": "Download Bulk Excel", "type": "link" }
+         
+        ]
+      },
+    
+      {
+        "title": "Items ",
+        "icon": "item",
+        "type": "sub",
+        "active": false,
+        "children": [
+          { "path": "/view_items", "type": "link", "title": "View Items" },
+          { "path": "/add_items", "type": "link", "title": "Add Items" }
+        ]
+      },
+      {
+        "title": "Company ",
+        "icon": "company",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/add_company", "type": "link", "title": "Add Company" },
+          { "path": "/view_company", "type": "link", "title": "View Company" },
+          { "path": "/company_info", "type": "link", "title": "Company Info" },
+             { "path": "/manage_subLogin", "type": "link", "title": "Manage Sub-Login" }
+        ]
+      },
+       {
+        "title": "Fuel Cards  ",
+        "icon": "fuel",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/fuel_cardList", "type": "link", "title": "EFS API Fuel Card List" },
+          { "path": "/view_fuelCards", "type": "link", "title": "View Fuel Cards" },
+          { "path": "/add_fuelCards", "type": "link", "title": "Add Fuel Card" },
+             { "path": "/last24_update", "type": "link", "title": "Last 24 Hours Update" }
+        ]
+      },
+        {
+        "title": "Transactions   ",
+        "icon": "transaction",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/view_transaction", "type": "link", "title": "View Transactions" },
+          { "path": "/upload_transaction", "type": "link", "title": "Upload Transactions" },
+          { "path": "/Esso_ftp_transaction", "type": "link", "title": "ESSO FTP Transactions List" },
+             { "path": "/unknown_transaction", "type": "link", "title": "Unknown Transactions" },
+              { "path": "/Esso_ftp_liveTransaction", "type": "link", "title": "ESSO FTP To Live Transactions" },
+          { "path": "/check_transaction", "type": "link", "title": "Check Transactions" },
+          { "path": "/retailTo_rack_transaction", "type": "link", "title": "Retail To Rack Transaction" },
+             { "path": "/rackTo_retail_transaction", "type": "link", "title": "Rack To Retail Transaction" },
+  { "path": "/view_efs_transaction", "type": "link", "title": "View EFS Transactions" },
+             { "path": "/update_unit_driver", "type": "link", "title": "Update Unit / Driver" }
+
+        ]
+      },
+        {
+        "title": "Invoices   ",
+        "icon": "invoices",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/view_invoice", "type": "link", "title": "View Invoices" },
+          { "path": "/create_invoice", "type": "link", "title": "Create New Invoice" },
+          { "path": "/send_bulkMail", "type": "link", "title": "Send Bulk Mail" },
+             { "path": "/check_invoice", "type": "link", "title": "Check Old Invoices" },
+  { "path": "/create_repeat_invoice", "type": "link", "title": "Create Repeat Invoice" },
+          { "path": "/view_moneyCode_invoices", "type": "link", "title": "View MoneyCode Invoice" },
+          { "path": "/create_moneycode_Invoice", "type": "link", "title": "Create MoneyCode Invoice" },
+             { "path": "/create_retail_invoice", "type": "link", "title": "Create Rack Invoice" },
+ { "path": "/create_ui_invoice", "type": "link", "title": "Create ULTRAMAR Invoice" },
+             { "path": "/create_esso_Invoice", "type": "link", "title": "Create Esso Invoice" },
+  { "path": "/create_old_Invoice", "type": "link", "title": "Create Old Invoice" },
+          { "path": "/create_customized_Invoice", "type": "link", "title": "Create Customised Invoice" },
+          { "path": "/manage_Macro", "type": "link", "title": "Manage Macro" },
+             { "path": "/compare_Invoices", "type": "link", "title": "Compare Invoice" }
+
+
+
+        ]
+      },
+        {
+        "title": "Reporting   ",
+        "icon": "report",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/create_Reports", "type": "link", "title": "Create Reports" },
+          { "path": "/view_Reports", "type": "link", "title": "View Reports" },
+          { "path": "/salesman_volume_Report", "type": "link", "title": "Salesman Volume Report" }
+        ]
+      },
+      {
+        "title": "Supplier    ",
+        "icon": "supply",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/add_supplier", "type": "link", "title": "Add Supplier" },
+          { "path": "/suppler_list", "type": "link", "title": "Supplier Lists" }
+        ]
+      },
+      {
+        "title": "Money Code   ",
+        "icon": "moneyCode",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/money_code_List", "type": "link", "title": "Money Code List" },
+          { "path": "/addMoney_code_List", "type": "link", "title": "Add Money Code" },
+          { "path": "/upload_money_code", "type": "link", "title": "Upload Money Code" },
+                    { "path": "/check_Invoiced_MoneyCode", "type": "link", "title": "Check Invoiced MoneyCode" }
+
+        ]
+      },
+       {
+        "title": "Location    ",
+        "icon": "location",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/esso_ulramar_petroLink", "type": "link", "title": "Esso Ultramar Petro Link" },
+          { "path": "/Linamar_Esso_Location", "type": "link", "title": "Linamar Esso Location" },
+          { "path": "/view_Countries", "type": "link", "title": "View Countries" },
+                    { "path": "/view_states", "type": "link", "title": "View States" },
+  { "path": "/view_cities", "type": "link", "title": "View Cities" },
+          { "path": "/manage_location", "type": "link", "title": "Manage Location" },
+          { "path": "/manage_group", "type": "link", "title": "Manage Group" }
+        ]
+      },
+       {
+        "title": "Setting    ",
+        "icon": "setting",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/company_log", "type": "link", "title": "Company Log" },
+          { "path": "/user_login", "type": "link", "title": "User Login Log" },
+          { "path": "/track_visitors", "type": "link", "title": "Track Visitors" },
+                    { "path": "/manage_user", "type": "link", "title": "Manage User" },
+                      { "path": "/manage_salesMan", "type": "link", "title": "Manage Sales Man" },
+          { "path": "/manage_Menu", "type": "link", "title": "Manage Menu" }
+
+        ]
+      },
+       {
+        "title": " T check  ",
+        "icon": "tcheck",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/upload_t_check", "type": "link", "title": "Upload T Check" },
+          { "path": "/t_checkList", "type": "link", "title": "T Check List" },
+          { "path": "/create_t_check_Invoices", "type": "link", "title": "Create T-Check Invoice" },
+                    { "path": "/view_t_check_Invoices", "type": "link", "title": "View T-Check Invoice" }
+
+        ]
+      },
+      {
+        "title": " Help   ",
+        "icon": "help",
+        "path": "/app/users/profile",
+        "type": "sub",
+        "bookmark": true,
+        "active": false,
+        "children": [
+          { "path": "/how_to_use_efsllc.com", "type": "link", "title": "How to use efsllc.com With NTA..?" },
+          { "path": "/how_to_add_card", "type": "link", "title": "How to Add Card..?" },
+          { "path": "/how_to_create_report", "type": "link", "title": "How to create report at client panel..?" },
+                    { "path": "/how_to_createCard", "type": "link", "title": "How to create card discount sheet at client panel..?" }
+
+        ]
+      }
+    ]
+  }
+]

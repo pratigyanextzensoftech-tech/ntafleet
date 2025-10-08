@@ -11,12 +11,13 @@ const index = () => {
       <Breadcrumbs parent='Items' title='Manage Item'  />
       <Container fluid={true}>
                    <HeaderCard title="Manage Item" />
-       
-                <div className='bg-primary p-2 my-5'>
+                   <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+                <div className='bg-primary p-2 my-3'>
                             <HeaderCard title="Add Items" />
                  </div>      
                  <AddItems btnTitle="Add Item"/>   
-                  
+                  </div>
 <DataTableComponent title="Items List" tableColumns={tableColumns}  tableData={dummytabledata}/>
       </Container>
     </Fragment>

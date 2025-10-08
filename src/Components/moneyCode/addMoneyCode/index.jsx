@@ -13,9 +13,13 @@ const index = () => {
          <Breadcrumbs parent='Money Code' title=' Add MoneyCode '/>
          <Container fluid={true}>
            <HeaderCard title=" Add MoneyCode" />
-          
+                                          <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
+           <div className='bg-primary p-2 my-3'>
+                            <HeaderCard title="Add MoneyCode " />
+                    </div>      
            <AddMoneyCodeForm btntitle="Add Money Code" />
-                     
+                 </div>    
            </Container>
            </Fragment>
   )

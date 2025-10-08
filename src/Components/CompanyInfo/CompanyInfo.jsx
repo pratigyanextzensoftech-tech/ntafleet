@@ -10,11 +10,13 @@ const CompanyInfo = () => {
     <Fragment>
          <Breadcrumbs parent='Invoice' title='Company Info'/>
          <Container fluid={true}>
+           <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
         <div className='bg-primary my-2 p-2'>
            <HeaderCard title="Company List " />
            </div>
            <CompanyInfoForm btnTtitle="Search Data" btnTtitle1="Reset"/>
-          
+          </div>
           <DataTableComponent title="Company List "  tableColumns={tableColumns}  tableData={dummytabledata}/>
            </Container>
            </Fragment>

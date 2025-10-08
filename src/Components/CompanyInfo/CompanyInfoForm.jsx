@@ -21,8 +21,7 @@ const CompanyInfoForm = ({title,btnTtitle,btnTtitle1}) => {
       };
   return (
     <Fragment>
-      <Card >
-        <CardBody>
+   
       <HeaderCard title={title}/>
                 <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
 
@@ -87,8 +86,7 @@ const CompanyInfoForm = ({title,btnTtitle,btnTtitle1}) => {
               </Row>
         
               </Form>
-              </CardBody>
-      </Card>
+              
     </Fragment>
   )
 }

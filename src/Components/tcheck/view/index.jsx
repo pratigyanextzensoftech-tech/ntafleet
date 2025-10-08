@@ -11,11 +11,13 @@ const index = () => {
       <Breadcrumbs parent='Tcheck' title='T-Check Invoices List '  />
       <Container fluid={true}>
                    <HeaderCard title="T-Check Invoices List " />
+                                        <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+
                     <div className='bg-primary p-2 mb-4'>
                             <HeaderCard title="Filters " />
                     </div>      
                  <View btnTitle="search Data"/>   
-                    
+                    </div>
                     <DataTableComponent title="T Check Invoice List  " tableColumns={tableColumns} tableData={dummytabledata}/>
       </Container>
     </Fragment>

@@ -26,6 +26,7 @@ const ViewForm = ({title,btnTitle,btnTitle1}) => {
   
     return (
 <>
+
 <HeaderCard title={title}/>
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
@@ -196,6 +197,7 @@ const ViewForm = ({title,btnTitle,btnTitle1}) => {
 
            
         </Form>
+        
         </>
     )
 }

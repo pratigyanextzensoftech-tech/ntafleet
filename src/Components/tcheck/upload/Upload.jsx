@@ -20,7 +20,7 @@ const Upload = ({ btnTitle }) => {
    
     return (
 
-        <Form noValidate='' onSubmit={handleSubmit(onSubmit)} >
+        <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)} >
             <Row>
                 <Col sm="10">
                     <Row>

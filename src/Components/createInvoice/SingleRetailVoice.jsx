@@ -21,10 +21,12 @@ const SingleRetailVoice = ({title,btnTtitle,type}) => {
   };
   return (
     <Fragment>
-      <Card >
-        <CardBody>
-              <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
+      <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+                              <div className='bg-primary p-2 my-3'>
       <HeaderCard title={title}/>
+
+                              </div>
+              <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
        <Row className="mt-3">
                 <Col sm="4">
                   <FormGroup className="m-form__group">
@@ -185,8 +187,7 @@ options={
                 </Col>
               </Row>
               </Form>
-              </CardBody>
-      </Card>
+             </div>
     </Fragment>
   )
 }

@@ -40,7 +40,10 @@ const BulkCustomized_ca = ({title,btnTtitle,type}) => {
     }
     return (
 <>
+ <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+                              <div className='bg-primary p-2 my-3'>
 <HeaderCard title={title}/>
+</div>
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                       <Col sm="4">
@@ -201,6 +204,7 @@ const BulkCustomized_ca = ({title,btnTtitle,type}) => {
 
            
         </Form>
+        </div>
         </>
     )
 }

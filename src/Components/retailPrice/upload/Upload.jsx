@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import Select from 'react-select'
-import {  optionscompany,companyLoginAccess } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
+import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
@@ -38,7 +36,7 @@ const Upload = ({btnTitle}) => {
     }
     return (
 
-        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
+        <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                <Col sm='4'>
                                          <Row>
@@ -90,7 +88,7 @@ const Upload = ({btnTitle}) => {
                         </Row>
                     </Col>
 
-         <Col sm="3">
+         <Col sm="4">
                        
                    
                    

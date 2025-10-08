@@ -30,6 +30,9 @@ export const checkBoxData = [
     {id:' 10002730 MANITOBA INC. ',label:" 10002730 MANITOBA INC. ",value:" 10002730 MANITOBA INC"},
     {id:' 1001021918 ONTARIO INC. ' ,label:"  1001021918 ONTARIO INC.  ",value:"1001021918 ONTARIO INC"},
 ];
+export const transactionCheckBox=[
+    { id: 'All Company', label: 'All Company',value:"All Company" },
+]
 export const chooseSupplierCheckBox=[
         { id: '1', label: 'ESSO.',value:'ESSO' },
         { id: '2', label: 'ESSO MOBIL.',value:'ESSO MOBIL' },
@@ -118,6 +121,16 @@ export const displayFeatureCheckBoxOwner=[
   { value: 'Ultramar', label: 'Ultramar' },
     { value: 'Esso', label: 'Esso' },
 
+]
+ export const Upload_Supplier=[
+{ label: 'Select Supplier' , isDisabled: true },
+  { value: 'Ultramar', label: 'Ultramar' },
+    { value: 'Esso', label: 'Esso' },
+        { value: 'TA-Petro', label: 'TA-Petro' },
+        { value: 'PETRO CANADA', label: 'PETRO CANADA' },
+        { value: 'Esso Mobil', label: 'Esso Mobil' },
+    { value: 'IRVING', label: 'IRVING' },
+      { value: 'Ultramar', label: 'Ultramar' },
 ]
 export const supplier = [
             { label: 'Select Supplier' , isDisabled: true },

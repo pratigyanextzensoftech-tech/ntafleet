@@ -697,7 +697,7 @@
 
     .page-title {
       padding: $page-title-padding;
-      margin: 0 -27px 30px;
+      margin: 0 -27px 0px;
       background-color: $white;
       > .row {
         margin: 0;
@@ -814,7 +814,7 @@
 
     .page-body-wrapper {
       .sidebar-wrapper {
-        height: 54px;
+        height:auto;
         line-height: inherit;
         top: 79px;
         background: $white;
@@ -844,7 +844,7 @@
         .sidebar-main {
           text-align: left;
           position: relative;
-
+          margin-top:20px;
           .left-arrow,
           .right-arrow {
             position: absolute;
@@ -876,7 +876,7 @@
             padding: 0;
             line-height: normal;
             direction: ltr;
-            text-align: left;
+            text-align: left; 
             display: -webkit-box !important;
             padding: 0 5px;
             transition: all 0.5s ease;
@@ -935,8 +935,8 @@
 
             > li {
               position: relative;
-              padding-top: 10px;
-              padding-bottom: 10px;
+              padding-top: 5px;
+              padding-bottom: 5px;
 
               &:hover {
                 > a {
@@ -973,8 +973,7 @@
                 line-height: 23px;
                 text-decoration: none;
                 text-transform: capitalize;
-                padding: 5px 15px;
-                margin: 0 3px;
+                padding: 5px 10px; 
                 letter-spacing: 0.04em;
                 position: relative;
                 border-radius: 5px;
@@ -1005,10 +1004,9 @@
                   width: 18px;
                   height: 18px;
                   vertical-align: middle;
-                  margin-right: 10px;
+                  margin-right: 0px;
                 }
               }
-
               .sidebar-submenu {
                 position: fixed;
                 // left: 0;
@@ -1016,6 +1014,7 @@
                 box-shadow: 0 0 1px 0 $dark-gray;
                 padding: 15px 0px 15px 0px;
                 background: white;
+                width: auto;
                 li {
                   border: 0;
                   float: none;

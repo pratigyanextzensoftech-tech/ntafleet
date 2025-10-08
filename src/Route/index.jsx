@@ -1,5 +1,4 @@
-import React from "react";
-import { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Loader from "../Layout/Loader";
 import { authRoutes } from "./AuthRoutes";
@@ -9,42 +8,36 @@ import PrivateRoute from "./PrivateRoute";
 import { classes } from "../Data/Layouts";
 import OtpVerify from "../Auth/OtpVerify";
 
-// setup fake backend
-
 const Routers = () => {
   const login = useState(JSON.parse(localStorage.getItem("login")))[0];
   const [authenticated, setAuthenticated] = useState(false);
-  const defaultLayoutObj = classes.find((item) => Object.values(item).pop(1) === "compact-wrapper");
-  // const layout = localStorage.getItem("layout") || Object.keys(defaultLayoutObj).pop();
+  const defaultLayoutObj = classes.find(
+    (item) => Object.values(item).pop(1) === "compact-wrapper"
+  );
 
   useEffect(() => {
     let abortController = new AbortController();
     setAuthenticated(JSON.parse(localStorage.getItem("authenticated")));
-    console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
-    console.disableYellowBox = true;
     return () => {
       abortController.abort();
     };
   }, []);
 
   return (
-    <BrowserRouter basename={"/"}>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path={"/"} element={<PrivateRoute />}>
+          <Route path="/" element={<PrivateRoute />}>
             {login || authenticated ? (
               <>
-                <Route exact path={`${process.env.PUBLIC_URL}`} element={<Navigate to={`${process.env.PUBLIC_URL}/dashboard/default`} />} />
-                <Route exact path={`/`} element={<Navigate to={`${process.env.PUBLIC_URL}/dashboard/default`} />} />
+                <Route path="/" element={<Navigate to="dashboard" />} />
               </>
-            ) : (
-              ""
-            )}
-            <Route path={`/*`} element={<LayoutRoutes />} />
+            ) : null}
+            <Route path="/*" element={<LayoutRoutes />} />
           </Route>
 
-          <Route exact path={`${process.env.PUBLIC_URL}/login`} element={<Signin />} />
-                    <Route exact path={`${process.env.PUBLIC_URL}/verify`} element={<OtpVerify />} />
+          <Route path="login" element={<Signin />} />
+          <Route path="verify" element={<OtpVerify />} />
 
           {authRoutes.map(({ path, Component }, i) => (
             <Route path={path} element={Component} key={i} />

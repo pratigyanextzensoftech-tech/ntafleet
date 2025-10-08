@@ -7,17 +7,17 @@ export const View_Invoice = [
   {
     id: '1',
     label: 'View Invoices',
-    component: <ViewInvoiceForm />,
+    component: <ViewInvoiceForm  title="Filters"/>,
   },
   {
     id: '2',
     label: 'View Owner Operator Invoices',
-    component: <OwnerOperator />,
+    component: <OwnerOperator title="Filters" />,
   },
   {
     id: '3',
     label:'View Customised Invoices',
-    component: <CustomizedInvoice />,
+    component: <CustomizedInvoice title="Filters" />,
   },
   
 ];

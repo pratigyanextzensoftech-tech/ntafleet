@@ -13,9 +13,9 @@ const ViewInvoice = () => {
          <Breadcrumbs parent='Invoice' title='view Invoice'/>
          <Container fluid={true}>
            <HeaderCard title="View Invoice" />
-            <BasicTabCard title="Filters"  tabContent={View_Invoice}/>
+            <BasicTabCard   tabContent={View_Invoice}/>
             <div className='my-5'>
-            <BasicTabCard title="Invoices List "  tabContent={View_Invoice_Table}/>
+            <BasicTabCard   tabContent={View_Invoice_Table}/>
 </div>
            </Container>
            </Fragment>
