@@ -2,10 +2,6 @@ const api = `${process.env.PUBLIC_URL}/api`;
 
 export const TaskApi = `${api}/task.json`;
 export const BookmarkApi = `${api}/bookmark.json`;
-export const ChartistApi = `${api}/chartistData.json`;
-export const ChartjsApi = `${api}/chartjsData.json`;
-export const ChatMemberApi = `${api}/chatMember.json`;
-export const ChatApi = `${api}/chat.chats.json`;
 export const ContactApi = `${api}/contacts.json`;
 export const ProductsApi = `${api}/product.json`;
 export const EmailApi = `${api}/email.json`;
@@ -18,8 +14,9 @@ export const SearchAllTabsApi = `${api}/searchAllTabs.json`;
 export const TableDataApi = `${api}/tableData.json`;
 export const HoverableRowsTable = `${api}/hoverableRowsTable.json`;
 export const TodoApi = `${api}/todo.json`;
+
+
 export const JobSearchApi = `${api}/jobSearch.json`;
-export const LearningApi = `${api}/learning.json`;
 export const KnowledgebaseApi = `${api}/knowledgebaseDB.json`;
 export const FaqApi = `${api}/Faq.json`;
 export const FileApi = `${api}/files.json`;

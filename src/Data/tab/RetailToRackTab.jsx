@@ -72,6 +72,5 @@ export const RetailToRackTab = [
     id: '9',
     label:"Linamar Price Update",
     component: <Linamar  btnTtitle="Update Transaction"/>,
- 
   },
 ];
