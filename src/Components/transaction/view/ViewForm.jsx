@@ -313,21 +313,10 @@ const ViewForm = ({btnTitle,btnTitle1}) => {
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                                  <button className='btn btn-secondary'>{btnTitle1}</button>
-
                     </div>
                 </Col>
 </Row>
-
-
-              
-         
-           
-           
-            
-           
         </Form>
     )
 }
-
-
 export default ViewForm

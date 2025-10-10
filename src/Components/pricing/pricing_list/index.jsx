@@ -2,10 +2,9 @@ import React,{Fragment,useState} from 'react'
 import { Breadcrumbs } from '../../../AbstractElements'
 import HeaderCard from '../../Common/Component/HeaderCard'
 import { Container,Row,Col } from 'reactstrap'
-import DataTableComponent from '../../Tables/DataTable/DataTableComponent'
-import { tableColumns,dummytabledata } from '../../../Data/Table/Defaultdata'
 import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard'
-import { pricingListTab } from '../../../Data/tab/PricingListTab'
+import { pricingListTableTab } from '../../../Data/tab/PricingListTableTab'
+import {pricingListTab} from '../../../Data/tab/PricingListTab'
 const index = () => {
   
   return (
@@ -17,6 +16,10 @@ const index = () => {
                            <HeaderCard title="Flying J Pricing List" />
                       </div>
                  <BasicTabCard  tabContent={pricingListTab}/>
+                             <div className='my-5'>
+
+                                  <BasicTabCard  tabContent={pricingListTableTab}/>
+             </div>
            </Container>
            </Fragment>
   )

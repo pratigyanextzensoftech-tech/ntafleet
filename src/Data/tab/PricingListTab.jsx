@@ -1,15 +1,16 @@
 import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
-import EssoPricing from '../../Components/pricing/uploadPricing/EssoPricing';
+import FlyingJ from '../../Components/pricing/pricing_list/FlyingJ';
+import EssoPricing from '../../Components/pricing/pricing_list/EssoPricing';
 import FjPricing from '../../Components/pricing/uploadPricing/FjPricing';
-import LovePricing from '../../Components/pricing/uploadPricing/LovePricing';
-import TaPetro from '../../Components/pricing/uploadPricing/TaPetro';
-import Ultramar from '../../Components/pricing/uploadPricing/UltramarPricing';
+import LovePricing from '../../Components/pricing/pricing_list/LovePricing';
+import TaPetro from '../../Components/pricing/pricing_list/TaPetro';
+import Ultramar from '../../Components/pricing/pricing_list/Ultramar';
 
 export const pricingListTab = [
   {
     id: '1',
     label:"Flying J"  , 
-    component: <FjPricing title="Upload FJ Pricing" btnTtitle="Upload Pricing"/>,
+    component: <FlyingJ title="Search Flying J Pricing" btnTtitle="Search Data"/>,
   },
   {
     id: '2',
@@ -19,7 +20,7 @@ export const pricingListTab = [
        Ta-Petro  - <strong> [Capped]</strong>
       </>
     ), 
-    component: <TaPetro title="Upload Ta-Petro Pricing (Capped)" btnTtitle="Upload Pricing"/>,
+    component: <TaPetro title="Search TA-Petro Pricing List (Capped)" btnTtitle="Search Data"/>,
   },
   {
     id: '3',
@@ -30,12 +31,12 @@ export const pricingListTab = [
       </>
     )
    ,
-    component: <TaPetro title="Upload Ta-Petro Pricing (Capped)" btnTtitle="Upload Pricing"/>,
+    component: <TaPetro title="Search TA-Petro Pricing List (Actual)" btnTtitle="Search Data"/>,
   },
  {
     id: '4',
     label:" Esso ", 
-    component: <EssoPricing title="Upload Esso Pricing" btnTtitle="Upload Pricing"/>,
+    component: <EssoPricing title="Search ESSO Pricing" btnTtitle="Search Data"/>,
   },
    {
     id: '5',
@@ -45,7 +46,7 @@ export const pricingListTab = [
       </>
     )
    ,
-    component: <LovePricing title="Upload Love Pricing (Capped)" btnTtitle="Upload Love Pricing"/>,
+    component: <LovePricing title="Search LOVES Pricing List (Capped)" btnTtitle="Search Data"/>,
   },
    {
     id: '6',
@@ -55,13 +56,13 @@ export const pricingListTab = [
        Love  - <strong> [Actual]</strong>
       </>
     ), 
-    component: <LovePricing title="Upload Love Pricing (Capped)" btnTtitle="Upload Love Pricing"/>,
+    component: <LovePricing title="Search LOVES Pricing List (Actual)" btnTtitle="Search Data"/>,
   },
    {
     id: '7',
     label: "Ultramar",
     
-    component: <Ultramar title="Upload ULTRAMAR Pricing" btnTtitle="Upload ULTRAMAR Pricing"/>,
+    component: <Ultramar title="Search ULTRAMAR Pricing" btnTtitle="Search Data"/>,
   },
   
 ];

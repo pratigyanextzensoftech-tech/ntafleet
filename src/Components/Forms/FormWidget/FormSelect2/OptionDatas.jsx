@@ -141,6 +141,13 @@ export const supplier = [
     { value: 'TA-Petro', label: 'TA-Petro' },
 
 ];
+export const pricigSupplier = [
+            { label: 'Select Supplier' , isDisabled: true },
+    { value: 'Shell Flying J', label: 'Shell Flying J' },
+    { value: 'Pilot Flying J', label: 'Pilot Flying J' },
+    
+
+];
 export const salesman = [
             { label: 'Select Salesman' , isDisabled: true },
     { value: 'Amarjot', label: 'Amarjot' },

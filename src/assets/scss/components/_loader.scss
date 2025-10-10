@@ -2,15 +2,16 @@
      04. Loader CSS Start
 ==========================**/
 .loader-wrapper {
-  height: 100%;
-  width: 100%;
+ position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  background-color: $white;
-  z-index: 11;
-  top: 0;
+  background-color: rgba(255, 255, 255, 0.8); // semi-transparent overlay
+  z-index: 9999; // ensures it is above everything
 
   /*Color Loader*/
   .loader-index {
@@ -66,7 +67,16 @@
       }
     }
   }
-
+.login-page {
+  position: relative;
+    &.loading-active {
+    opacity: 0.5;          // fade the form
+    pointer-events: none;   // disable all interactions
+    user-select: none;      // prevent text selection
+    filter: blur(1px);      // optional slight blur
+    transition: opacity 0.3s ease, filter 0.3s ease;
+  }
+}
   @keyframes grow {
     0% {
       transform: scale(0.5);

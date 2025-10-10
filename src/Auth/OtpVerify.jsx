@@ -9,9 +9,10 @@ import man from "../assets/images/dashboard/profile.png";
 import CustomizerContext from "../_helper/Customizer";
 import OtherWay from "./OtherWay";
 import { ToastContainer, toast } from "react-toastify";
-
+import Loader from '../Layout/Loader/index'
 const OtpVerify = ({ selected }) => {
   const [otp, setOtp] = useState("");
+    const [loading, setLoading] = useState(false);
   const history = useNavigate();
   // const { layoutURL } = useContext(CustomizerContext);
 
@@ -24,21 +25,36 @@ const OtpVerify = ({ selected }) => {
   }, [value, name]);
 
   const otpVerify = async (e) => {
-    e.preventDefault();
-    setValue(man);
-    setOtp("123456");
-    if (otp === "123456" ) {
-    //   localStorage.setItem("login", JSON.stringify(true));
-      history(`/dashboard`);
-      toast.success("Successfully verify otp!..");
+  e.preventDefault();
+  setLoading(true);
+
+  const enteredOtp = otp || "123456"; // use local variable to avoid state lag
+
+  // Give React time to render the loader
+  setTimeout(() => {
+    if (enteredOtp === "123456") {
+      toast.success("OTP verified successfully!");
+
+      // Show loader for a bit before navigation
+      setTimeout(() => {
+        history("/dashboard");
+        setLoading(false);
+      }, 1000);
+
     } else {
-      toast.error("wrong otp!..");
+      toast.error("Wrong OTP!");
+      setLoading(false);
     }
-  };
+  }, 100); // 100ms delay ensures loader appears
+};
+
+
 
   return (
     <Fragment>
-      <Container fluid={true} className="p-0 login-page">
+       {loading && <Loader loading={loading}/>}
+
+      <Container fluid={true} className={`p-0 login-page ${loading ? "loading-active" : ""}`}>
         <Row>
           <Col xs="12">
             <div className="login-card">
