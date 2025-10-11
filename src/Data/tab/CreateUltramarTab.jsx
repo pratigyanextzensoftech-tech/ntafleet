@@ -1,12 +1,12 @@
 import BulkEssoForm from '../../Components/createEssoInvoice/BulkEssoForm';
 import SingleEssoForm from '../../Components/createEssoInvoice/SingleEssoForm';
 import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
-
+import CreateUltramar from '../../Components/pricing/ultramar/CreateUltramar';
 export const CreateUltramarTab = [
   {
     id: '1',
     label: 'Single Ultramar Invoice',
-    component: <SingleEssoForm type="single_ultramar" title="Create Single ULTRAMAR Invoice" btnTtitle="Create  ULTRAMAR   Invoice"/>,
+    component: <CreateUltramar type="single_ultramar" title="Create Single ULTRAMAR Invoice" btnTtitle="Create  ULTRAMAR   Invoice"/>,
   },
   {
     id: '2',

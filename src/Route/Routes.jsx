@@ -69,6 +69,13 @@ import UpdateEssoCent from '../Components/pricing/updateEssoCent/index';
 import ManageEssoCent from '../Components/pricing/manage_essocent/index';
 import UploadFjPrice from '../Components/pricing/uploadPricing/index';
 import PriceList from '../Components/pricing/pricing_list/index';
+import SinglePricing from '../Components/pricing/singlePricingPdf/index';
+import BulkPrice from '../Components/pricing/bulk_price/index';
+import EssoBulk from '../Components/pricing/essoBulk/index';
+import LoveBulk from '../Components/pricing/loveBulk/index';
+import Ultramar from '../Components/pricing/ultramar/index'
+import UpdateFgRack from '../Components/pricing/updateFg/index';
+import UpdateTaPetro from '../Components/pricing//updateTaPetro/index';
 export const routes = [
   { path: `/dashboard`, Component: <ViewTransaction /> },
   { path: `/manage_user/:layout`, Component: <ManageUser /> },
@@ -144,6 +151,11 @@ export const routes = [
     { path: `manage_esso_cent/:layout`, Component: <ManageEssoCent /> },
     { path: `upload_price/:layout`, Component: <UploadFjPrice /> },
     { path: `price_list/:layout`, Component: <PriceList /> },
-    
- 
+    { path: `single_price_pdf/:layout`, Component: <SinglePricing /> },
+    { path: `fj_bulk_price/:layout`, Component: <BulkPrice /> },
+    { path: `esso_bulk_price/:layout`, Component: <EssoBulk /> },
+    { path: `love_bulk_price/:layout`, Component: <LoveBulk /> },
+    { path: `ultramar_bulk_price/:layout`, Component: <Ultramar /> },
+    { path: `update_fg_rack_price/:layout`, Component: <UpdateFgRack /> },
+    { path: `update_taPetro_rack_price/:layout`, Component: <UpdateTaPetro /> },
 ];

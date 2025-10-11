@@ -141,6 +141,20 @@ export const supplier = [
     { value: 'TA-Petro', label: 'TA-Petro' },
 
 ];
+export const TaxOption = [
+            { label: 'Select Option' , isDisabled: true },
+    { value: 'With Tax', label: 'With Tax' },
+    { value: 'Without Tax', label: 'Without Tax' },
+    
+
+];
+export const DiscountType = [
+            { label: 'Select Discount Type' , isDisabled: true },
+    { value: 'Capped', label: 'Capped' },
+    { value: 'Actual', label: 'Actual' },
+    
+
+];
 export const pricigSupplier = [
             { label: 'Select Supplier' , isDisabled: true },
     { value: 'Shell Flying J', label: 'Shell Flying J' },

@@ -1,25 +1,25 @@
-// ✅ Loader.jsx
+import React from "react";
+import { ThreeDots } from "react-loader-spinner"; // choose any spinner
+
 const Loader = ({ loading }) => {
-  if (!loading) return null; // hide when false
+  if (!loading) return null;
+
   return (
     <div className="loader-wrapper">
       <div className="loader-index">
-        <span></span>
+       <ThreeDots
+  visible={true}
+  height="80"
+  width="80"
+  color="#7366ff"
+  radius="9"
+  ariaLabel="three-dots-loading"
+  wrapperStyle={{}}
+  wrapperClass=""
+  />
       </div>
-      <svg>
-        <filter id="goo">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="blur" />
-          <feColorMatrix
-            in="blur"
-            values="1 0 0 0 0  
-                    0 1 0 0 0  
-                    0 0 1 0 0  
-                    0 0 0 19 -9"
-            result="goo"
-          />
-        </filter>
-      </svg>
-    </div>
+   </div>
   );
 };
+
 export default Loader;
