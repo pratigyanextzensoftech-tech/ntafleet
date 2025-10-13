@@ -1,12 +1,13 @@
-import React, { Fragment, useState } from 'react'
-import { Col, Row, Form, FormGroup, InputGroup, InputGroupText,  Input } from 'reactstrap';
+import React, { Fragment } from 'react'
+import { Col, Row, Form, FormGroup, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { supplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { pricigSupplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
-const LovePricing = ({ title, btnTitle }) => {
+
+const CreateBulkForm = ({ title, btnTitle }) => {
     const {
         register,
         control,
@@ -29,7 +30,8 @@ const LovePricing = ({ title, btnTitle }) => {
                 </div>
                 <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                     <Row className="mt-3">
-                         <Col sm="4">
+                     
+                        <Col sm="4">
                                                     <Row>
                                                         <FormGroup className="m-form__group">
                                                             <InputGroup>
@@ -73,13 +75,12 @@ const LovePricing = ({ title, btnTitle }) => {
   name="supplier"
   control={control}
   rules={{ required: "Supplier is required" }}
-defaultValue={
-  supplier[3]
-}
+
   render={({ field }) => (
     <Select
       {...field}
       className="form-control p-0 border-0"
+      options={pricigSupplier}
       placeholder="Select supplier"
       onChange={(selectedOption) => field.onChange(selectedOption)}
       value={field.value}
@@ -109,4 +110,4 @@ defaultValue={
     )
 }
 
-export default LovePricing
+export default CreateBulkForm

@@ -37,7 +37,7 @@ const OtpVerify = ({ selected }) => {
 
       // Show loader for a bit before navigation
       setTimeout(() => {
-        history("/dashboard");
+        history(`/dashboard`);
         setLoading(false);
       }, 1000);
 

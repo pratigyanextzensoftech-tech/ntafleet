@@ -3,13 +3,13 @@ import { Col, Row, Form, FormGroup, InputGroup, InputGroupText,  Input } from 'r
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { pricigSupplier,optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { DiscountType,optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
 
-const FgRackCent = ({ title, btnTitle }) => {
+const EssoGroupForm = ({ title, btnTitle,tabletitle }) => {
     const {
         register,
         control,
@@ -33,7 +33,7 @@ const FgRackCent = ({ title, btnTitle }) => {
                                 <div style={{ border: "1px solid #ccc", padding: "5px 5px", bprderRadius: "3px", marginBottom: "10px" }}>
 
                     <Row className="mt-3">
-                      <Col sm="4">
+                      <Col sm="3">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Company</InputGroupText>
@@ -58,7 +58,8 @@ const FgRackCent = ({ title, btnTitle }) => {
                     )}
                   </FormGroup>
                 </Col>
-                        <Col sm="4">
+                    
+             <Col sm="3">
                                                     <Row>
                                                         <FormGroup className="m-form__group">
                                                             <InputGroup>
@@ -66,7 +67,7 @@ const FgRackCent = ({ title, btnTitle }) => {
                                                                 <Col sm="3">
                                                                     <InputGroupText>
 
-                                            Pricing  Date                                                       
+                                        Pricing     from  Date                                                       
                                                          </InputGroupText>
                                                                 </Col>
                                                                 <Col sm="9">
@@ -94,38 +95,58 @@ const FgRackCent = ({ title, btnTitle }) => {
                                                         </FormGroup>
                                                     </Row>
                              </Col>
-                    <Col sm="4">
-                                                    <FormGroup className=" m-form__group">
-                                                        <InputGroup>
-                                                            <InputGroupText>Rack US </InputGroupText>
-                                                            <Input className="form-control" type="text" />
-                                                        </InputGroup>
-                                                    </FormGroup>
-                                                </Col>
-                       </Row>
-                       <Row>
-                         <Col sm="4">
-                                                    <FormGroup className=" m-form__group">
-                                                        <InputGroup>
-                                                            <InputGroupText>Rack CA </InputGroupText>
-                                                            <Input className="form-control" type="text" />
-                                                        </InputGroup>
-                                                    </FormGroup>
-                                                </Col>
-                        <Col sm="8">
+                                  <Col sm="3">
+                                                    <Row>
+                                                        <FormGroup className="m-form__group">
+                                                            <InputGroup>
+                        
+                                                                <Col sm="3">
+                                                                    <InputGroupText>
+
+                                           Pricing  Upto  Date                                                       
+                                                         </InputGroupText>
+                                                                </Col>
+                                                                <Col sm="9">
+                                                                    <Controller
+                                                                        name="pricingDate"
+                                                                        control={control}
+                                                                        rules={{ required: " Required" }}
+                                                                        render={({ field }) => (
+                                                                            <DatePicker
+                                                                                className={`form-control `}
+                                                                                selected={field.value}
+                                                                                onChange={(date) => field.onChange(date)}
+                                                                            />
+                                                                        )}
+                                                                    /></Col>
+                        
+                        
+                        
+                        
+                                                            </InputGroup>
+                        
+                                                            {errors.pricingDate && (
+                                                                <span className="text-danger">{errors.pricingDate.message}</span>
+                                                            )}
+                                                        </FormGroup>
+                                                    </Row>
+                             </Col>
+                                                    
+                          
+                                                                   <Col sm="3">
                             <div className='text-end'>
                                 <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                             </div>
                         </Col>
-                    </Row>
+                    </Row>                                     
             </div>
 
                 </Form>
 <div className='my-5'>
-                <DataTableComponent title="Rack Cent List" tableData={dummytabledata} tableColumns={tableColumns}/>
+                <DataTableComponent title={tabletitle} tableData={dummytabledata} tableColumns={tableColumns}/>
 </div>
         </Fragment>
     )
 }
 
-export default FgRackCent
+export default EssoGroupForm

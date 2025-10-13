@@ -75,9 +75,18 @@ import EssoBulk from '../Components/pricing/essoBulk/index';
 import LoveBulk from '../Components/pricing/loveBulk/index';
 import Ultramar from '../Components/pricing/ultramar/index'
 import UpdateFgRack from '../Components/pricing/updateFg/index';
-import UpdateTaPetro from '../Components/pricing//updateTaPetro/index';
+import UpdateTaPetro from '../Components/pricing/updateTaPetro/index';
+import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
+import OwnerOperator from '../Components/pricing/ownerOperator/index';
+import EssoGroup from '../Components/pricing/essoGroup/index';
+import UltramarGroup from '../Components/pricing/ultramarGroup/index';
+import DownloadBulk from '../Components/pricing/downloadBulk/index';
+import ReportDashboard from '../Components/dashboard/index';
 export const routes = [
-  { path: `/dashboard`, Component: <ViewTransaction /> },
+{ path: `/dashboard`, Component: <ViewTransaction /> },
+{ path: `/default/:layout`, Component: <ViewTransaction /> },
+{ path: `/report_Dashboard/:layout`, Component: <ReportDashboard /> },
+
   { path: `/manage_user/:layout`, Component: <ManageUser /> },
   { path: `/add_company/:layout`, Component: <AddCompany /> },
   { path: `/view_company/:layout`, Component: <ViewCompany /> },
@@ -158,4 +167,9 @@ export const routes = [
     { path: `ultramar_bulk_price/:layout`, Component: <Ultramar /> },
     { path: `update_fg_rack_price/:layout`, Component: <UpdateFgRack /> },
     { path: `update_taPetro_rack_price/:layout`, Component: <UpdateTaPetro /> },
+    { path: `update_love_rack_pricing/:layout`, Component: <UpdateLoveRack /> },
+    { path: `OwnerUpdate_rack_price/:layout`, Component: <OwnerOperator /> },
+    { path: `esso_group_rack_price/:layout`, Component: <EssoGroup /> },
+    { path: `ultramarGroup_rack_price/:layout`, Component: <UltramarGroup /> },
+    { path: `download_bulk_excel/:layout`, Component: <DownloadBulk /> },
 ];

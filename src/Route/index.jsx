@@ -30,7 +30,7 @@ const Routers = () => {
           <Route path="/" element={<PrivateRoute />}>
             {login || authenticated ? (
               <>
-                <Route path="/" element={<Navigate to="dashboard" />} />
+                <Route index element={<Navigate to= {"/dashborad/*"}/>} />
               </>
             ) : null}
             <Route path="/*" element={<LayoutRoutes />} />

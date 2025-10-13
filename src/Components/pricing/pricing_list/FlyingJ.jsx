@@ -7,7 +7,7 @@ import { pricigSupplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
 
-const FlyingJ = ({ title, btnTtitle }) => {
+const FlyingJ = ({ title, btnTitle }) => {
     const {
         register,
         control,
@@ -98,7 +98,7 @@ const FlyingJ = ({ title, btnTtitle }) => {
                        
                         <Col sm="4">
                             <div className='text-end'>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
+                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                             </div>
                         </Col>
                     </Row>

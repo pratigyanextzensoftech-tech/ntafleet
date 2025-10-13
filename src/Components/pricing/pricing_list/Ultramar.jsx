@@ -7,7 +7,7 @@ import {  Upload_Supplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
 
-const Ultramar = ({ title, btnTtitle }) => {
+const Ultramar = ({ title, btnTitle }) => {
     const {
         register,
         control,
@@ -99,7 +99,7 @@ defaultValue={
                        
                         <Col sm="4">
                             <div className='text-end'>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
+                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                             </div>
                         </Col>
                     </Row>

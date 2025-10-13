@@ -11,7 +11,7 @@
         "badge": "badge badge-light-primary",
         "active": false,
         "children": [       
-          { "path": "/dashboard", "title": "Dashbord", "type": "link" },
+          { "path": "/default", "title": "Dashbord", "type": "link" },
           { "path": "/report_Dashboard", "title": "Report Dashboard", "type": "link" },
           { "path": "/graph_Dashboard", "title": "Graph Dashboard","icon":"fa-solid fa-chart-simple", "type": "link" }
         ]

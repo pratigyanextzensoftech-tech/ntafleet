@@ -6,7 +6,7 @@ import Select from 'react-select';
 import { supplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
-const LovePricing = ({ title, btnTitle }) => {
+const UploadEssoGroupRackForm = ({ title, btnTitle }) => {
     const {
         register,
         control,
@@ -29,7 +29,7 @@ const LovePricing = ({ title, btnTitle }) => {
                 </div>
                 <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                     <Row className="mt-3">
-                         <Col sm="4">
+                            <Col sm="4">
                                                     <Row>
                                                         <FormGroup className="m-form__group">
                                                             <InputGroup>
@@ -65,35 +65,20 @@ const LovePricing = ({ title, btnTitle }) => {
                                                         </FormGroup>
                                                     </Row>
                              </Col>
-                        <Col sm="4">
-                            <FormGroup className="m-form__group">
-                                <InputGroup >
-                                    <InputGroupText>Supplier</InputGroupText>
-                                <Controller
-  name="supplier"
-  control={control}
-  rules={{ required: "Supplier is required" }}
-defaultValue={
-  supplier[3]
-}
-  render={({ field }) => (
-    <Select
-      {...field}
-      className="form-control p-0 border-0"
-      placeholder="Select supplier"
-      onChange={(selectedOption) => field.onChange(selectedOption)}
-      value={field.value}
-    />
-  )}
-/>
+ 
+                         <Col sm="4"  >
+                            <Row>
+                                <Col className='pe-0' sm="3"> <InputGroupText > CSV File</InputGroupText>
+                            </Col> 
+                                <Col className='px-0' sm="9">
+                                    <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />
 
-                                </InputGroup>
+                                </Col>
+                            </Row>
+      
 
-                                {errors.supplier && (
-                                    <span className="text-danger">{errors.supplier?.message}</span>
-                                )}
-                            </FormGroup>
                         </Col>
+                    
                        
                         <Col sm="4">
                             <div className='text-end'>
@@ -109,4 +94,4 @@ defaultValue={
     )
 }
 
-export default LovePricing
+export default UploadEssoGroupRackForm

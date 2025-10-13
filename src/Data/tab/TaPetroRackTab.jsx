@@ -1,5 +1,5 @@
 import UpdateFgRack from '../../Components/pricing/updateFg/UpdateFgRack';
-import FgRackCent from '../../Components/pricing/updateFg/FgRackCent';
+import RackCentList from '../../Components/pricing/updateTaPetro/RackCentLIst';
 export const TaPetroRackTab = [
   {
     id: '1',
@@ -10,6 +10,6 @@ export const TaPetroRackTab = [
   {
     id: '2',
     label: 'Ta-Petro Rack Cent List',
-    component: <FgRackCent title="Filters" btnTitle="Search" />,
+    component: <RackCentList title="Filters" btnTitle="Search" />,
   }
 ];

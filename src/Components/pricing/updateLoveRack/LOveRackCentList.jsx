@@ -3,13 +3,13 @@ import { Col, Row, Form, FormGroup, InputGroup, InputGroupText,  Input } from 'r
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { pricigSupplier,optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { DiscountType,optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
 
-const FgRackCent = ({ title, btnTitle }) => {
+const LoveRackCentList = ({ title, btnTitle }) => {
     const {
         register,
         control,
@@ -58,7 +58,32 @@ const FgRackCent = ({ title, btnTitle }) => {
                     )}
                   </FormGroup>
                 </Col>
-                        <Col sm="4">
+                           <Col sm="4">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Discount Type</InputGroupText>
+                      <Controller
+                        name="discountType"
+                        control={control}
+                        rules={{ required: "  Required" }}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={DiscountType}
+                            className="form-control p-0 border-0"
+                            placeholder="Select Discount Type"
+                          />
+                        )}
+                      />
+
+                    </InputGroup>
+
+                    {errors.discountType && (
+                      <span className="text-danger">{errors.discountType.message}</span>
+                    )}
+                  </FormGroup>
+                </Col>
+             <Col sm="4">
                                                     <Row>
                                                         <FormGroup className="m-form__group">
                                                             <InputGroup>
@@ -66,7 +91,7 @@ const FgRackCent = ({ title, btnTitle }) => {
                                                                 <Col sm="3">
                                                                     <InputGroupText>
 
-                                            Pricing  Date                                                       
+                                             from  Date                                                       
                                                          </InputGroupText>
                                                                 </Col>
                                                                 <Col sm="9">
@@ -94,30 +119,50 @@ const FgRackCent = ({ title, btnTitle }) => {
                                                         </FormGroup>
                                                     </Row>
                              </Col>
-                    <Col sm="4">
-                                                    <FormGroup className=" m-form__group">
-                                                        <InputGroup>
-                                                            <InputGroupText>Rack US </InputGroupText>
-                                                            <Input className="form-control" type="text" />
-                                                        </InputGroup>
-                                                    </FormGroup>
-                                                </Col>
-                       </Row>
-                       <Row>
-                         <Col sm="4">
-                                                    <FormGroup className=" m-form__group">
-                                                        <InputGroup>
-                                                            <InputGroupText>Rack CA </InputGroupText>
-                                                            <Input className="form-control" type="text" />
-                                                        </InputGroup>
-                                                    </FormGroup>
-                                                </Col>
-                        <Col sm="8">
+                                  <Col sm="4">
+                                                    <Row>
+                                                        <FormGroup className="m-form__group">
+                                                            <InputGroup>
+                        
+                                                                <Col sm="3">
+                                                                    <InputGroupText>
+
+                                             Upto  Date                                                       
+                                                         </InputGroupText>
+                                                                </Col>
+                                                                <Col sm="9">
+                                                                    <Controller
+                                                                        name="pricingDate"
+                                                                        control={control}
+                                                                        rules={{ required: " Required" }}
+                                                                        render={({ field }) => (
+                                                                            <DatePicker
+                                                                                className={`form-control `}
+                                                                                selected={field.value}
+                                                                                onChange={(date) => field.onChange(date)}
+                                                                            />
+                                                                        )}
+                                                                    /></Col>
+                        
+                        
+                        
+                        
+                                                            </InputGroup>
+                        
+                                                            {errors.pricingDate && (
+                                                                <span className="text-danger">{errors.pricingDate.message}</span>
+                                                            )}
+                                                        </FormGroup>
+                                                    </Row>
+                             </Col>
+                                                    
+                          
+                                                                   <Col sm="8">
                             <div className='text-end'>
                                 <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                             </div>
                         </Col>
-                    </Row>
+                    </Row>                                     
             </div>
 
                 </Form>
@@ -128,4 +173,4 @@ const FgRackCent = ({ title, btnTitle }) => {
     )
 }
 
-export default FgRackCent
+export default LoveRackCentList

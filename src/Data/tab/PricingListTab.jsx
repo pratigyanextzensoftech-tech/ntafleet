@@ -10,7 +10,7 @@ export const pricingListTab = [
   {
     id: '1',
     label:"Flying J"  , 
-    component: <FlyingJ title="Search Flying J Pricing" btnTtitle="Search Data"/>,
+    component: <FlyingJ title="Search Flying J Pricing" btnTitle="Search Data"/>,
   },
   {
     id: '2',
@@ -20,7 +20,7 @@ export const pricingListTab = [
        Ta-Petro  - <strong> [Capped]</strong>
       </>
     ), 
-    component: <TaPetro title="Search TA-Petro Pricing List (Capped)" btnTtitle="Search Data"/>,
+    component: <TaPetro title="Search TA-Petro Pricing List (Capped)" btnTitle="Search Data"/>,
   },
   {
     id: '3',
@@ -31,12 +31,12 @@ export const pricingListTab = [
       </>
     )
    ,
-    component: <TaPetro title="Search TA-Petro Pricing List (Actual)" btnTtitle="Search Data"/>,
+    component: <TaPetro title="Search TA-Petro Pricing List (Actual)" btnTitle="Search Data"/>,
   },
  {
     id: '4',
     label:" Esso ", 
-    component: <EssoPricing title="Search ESSO Pricing" btnTtitle="Search Data"/>,
+    component: <EssoPricing title="Search ESSO Pricing" btnTitle="Search Data"/>,
   },
    {
     id: '5',
@@ -46,7 +46,7 @@ export const pricingListTab = [
       </>
     )
    ,
-    component: <LovePricing title="Search LOVES Pricing List (Capped)" btnTtitle="Search Data"/>,
+    component: <LovePricing title="Search LOVES Pricing List (Capped)" btnTitle="Search Data"/>,
   },
    {
     id: '6',
@@ -56,13 +56,13 @@ export const pricingListTab = [
        Love  - <strong> [Actual]</strong>
       </>
     ), 
-    component: <LovePricing title="Search LOVES Pricing List (Actual)" btnTtitle="Search Data"/>,
+    component: <LovePricing title="Search LOVES Pricing List (Actual)" btnTitle="Search Data"/>,
   },
    {
     id: '7',
     label: "Ultramar",
     
-    component: <Ultramar title="Search ULTRAMAR Pricing" btnTtitle="Search Data"/>,
+    component: <Ultramar title="Search ULTRAMAR Pricing" btnTitle="Search Data"/>,
   },
   
 ];
