@@ -3,9 +3,17 @@ import DataTable from 'react-data-table-component';
 import { Btn, H4 } from '../../../AbstractElements';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import Loader from '../../../Layout/Loader';
-import { AlignJustify } from 'react-feather';
 
-const DataTableComponent = ({ tableData, tableColumns, title, loading }) => {
+const DataTableComponent = ({
+  tableData,
+  tableColumns,
+  title,
+  loading,
+  paginationTotalRows,
+  onChangePage,
+  onChangeRowsPerPage
+}) => {
+
   const [selectedRows, setSelectedRows] = useState([]);
   const [toggleDelete, setToggleDelete] = useState(false);
   const [data, setData] = useState(tableData);
@@ -20,18 +28,23 @@ const DataTableComponent = ({ tableData, tableColumns, title, loading }) => {
     },
   };
 
+  // ✅ Update local data when new data arrives from API
   useEffect(() => {
     setData(tableData);
   }, [tableData]);
 
+  // ✅ Handle selected rows
   const handleRowSelected = useCallback((state) => {
     setSelectedRows(state.selectedRows);
   }, []);
 
+  // ✅ Handle delete (local only)
   const handleDelete = () => {
     if (
       window.confirm(
-        `Are you sure you want to delete:\r ${selectedRows.map(r => r.title || r.companyName)}?`
+        `Are you sure you want to delete:\r ${selectedRows.map(
+          (r) => r.title || r.companyName
+        )}?`
       )
     ) {
       setToggleDelete(!toggleDelete);
@@ -43,12 +56,14 @@ const DataTableComponent = ({ tableData, tableColumns, title, loading }) => {
   return (
     <Fragment>
       <div style={{ border: "1px solid #ccc", padding: "5px 5px", borderRadius: "3px" }}>
+        {/* ✅ Title section */}
         {title && (
-          <div className='p-2 my-3 bg-primary'>
+          <div className="p-2 my-3 bg-primary">
             <HeaderCard title={title} />
           </div>
         )}
 
+        {/* ✅ Delete bar */}
         {selectedRows.length !== 0 && (
           <div className="d-flex align-items-center justify-content-between bg-light-info p-2">
             <H4 attrH4={{ className: 'text-muted m-0' }}>Delete Selected Data..!</H4>
@@ -56,26 +71,24 @@ const DataTableComponent = ({ tableData, tableColumns, title, loading }) => {
           </div>
         )}
 
-        {/* ✅ Table container with loader overlay */}
-        <div className="table-responsive p-3 position-relative" style={{ minHeight: "550px"}}>
-          
-
+        {/* ✅ DataTable container */}
+        <div className="table-responsive p-3 position-relative" style={{ minHeight: "550px" }}>
           <DataTable
             data={data}
             columns={tableColumns}
-            pagination
             striped
             center
             highlightOnHover
+            pagination
+            paginationServer
+            paginationTotalRows={paginationTotalRows} // ✅ total rows from API
+            onChangePage={onChangePage} // ✅ page change event
+            onChangeRowsPerPage={onChangeRowsPerPage} // ✅ rows per page event
             onSelectedRowsChange={handleRowSelected}
             clearSelectedRows={toggleDelete}
             customStyles={customStyles}
-            progressPending={loading} // optional built-in loader prop
-            progressComponent={  
-              
-     <Loader loading={loading}/>
-      }
-
+            progressPending={loading} // ✅ built-in loading
+            progressComponent={<Loader loading={loading} />} // ✅ custom loader
           />
         </div>
       </div>

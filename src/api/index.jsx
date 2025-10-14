@@ -1,6 +1,8 @@
 const baseurl="http://api.ntafleetsolutions.com"
 const api = `${process.env.PUBLIC_URL}/api`;
 export const Company = `${baseurl}/api/company`;
+export const Transaction = `${baseurl}/api/transactions`;
+
 
 export const BookmarkApi = `${api}/bookmark.json`;
 export const ContactApi = `${api}/contacts.json`;

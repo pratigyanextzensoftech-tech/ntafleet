@@ -82,10 +82,15 @@ import EssoGroup from '../Components/pricing/essoGroup/index';
 import UltramarGroup from '../Components/pricing/ultramarGroup/index';
 import DownloadBulk from '../Components/pricing/downloadBulk/index';
 import ReportDashboard from '../Components/dashboard/index';
+import Help from '../Components/help/index';
+import AddCard from '../Components/help/addCard/index';
+
 export const routes = [
 { path: `/dashboard`, Component: <ViewTransaction /> },
 { path: `/default/:layout`, Component: <ViewTransaction /> },
 { path: `/report_Dashboard/:layout`, Component: <ReportDashboard /> },
+{ path: `/how_to_use_efsllc.com/:layout`, Component: <Help /> },
+{ path: `/how_to_add_card/:layout`, Component: <AddCard /> },
 
   { path: `/manage_user/:layout`, Component: <ManageUser /> },
   { path: `/add_company/:layout`, Component: <AddCompany /> },
