@@ -6,6 +6,8 @@ import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
+import CompanyDropDown from '../../Forms/FormControl/formInput/CompanyDropDown';
+import SupplierDropDown from '../../Forms/FormControl/formInput/SupplierDropDown';
 const Create = ({title,btnTitle}) => {
     const {
         register,
@@ -30,28 +32,7 @@ const Create = ({title,btnTitle}) => {
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                          <Col sm="4">
-                        <FormGroup className="m-form__group">
-                            <InputGroup >
-                                <InputGroupText>Company</InputGroupText>
-                                <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
-
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscompany}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Company Name"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.company && (
-                                <span className="text-danger">{errors.company?.message}</span>
-                            )}
-                        </FormGroup>
+                       <CompanyDropDown name="Company" control={control} />
                     </Col>
                        <Col sm="4">
                   <FormGroup className="m-form__group">
@@ -154,7 +135,8 @@ const Create = ({title,btnTitle}) => {
                         </FormGroup>
                     </Col>
 <Col sm="4">
-                  <FormGroup className="m-form__group">
+<SupplierDropDown name="Company" control={control}/>
+                  {/* <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
@@ -178,7 +160,7 @@ const Create = ({title,btnTitle}) => {
                     {errors.supplier && (
                       <span className="text-danger">{errors.supplier?.message}</span>
                     )}
-                  </FormGroup>
+                  </FormGroup> */}
                 </Col>
 
      <Col sm='3'>

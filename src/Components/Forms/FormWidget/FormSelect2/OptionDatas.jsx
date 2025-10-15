@@ -286,8 +286,16 @@ export const MoneyCodeStatus=[
     { value: ' Not Billed', label: 'Not Billed' },
 
 ]
-export const invoiceType=[
+export const InvoiceStatus=[
+    
             { label: 'Select Status', isDisabled: true },
+        { value: 'Invoiced', label: 'Invoiced' },
+        { value: ' Not Invoiced', label: 'Not Invoiced' },
+
+    
+]
+export const invoiceType=[
+            { label: 'All Type',label: 'All Type' },
     {value: 'Rack Invoice', label: 'Rack Invoice' },
         {value: 'Retail Invoice', label: 'Retail Invoice' },
 ]
@@ -296,6 +304,7 @@ export const customizedTypeType=[
     {value: 'Driver Name', label: 'Driver Name' },
         {value: 'Unit #', label: 'Unit #' },
 ]
+
 export const invoiceType1=[
             { label: 'Select Status', isDisabled: true },
     {value: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },

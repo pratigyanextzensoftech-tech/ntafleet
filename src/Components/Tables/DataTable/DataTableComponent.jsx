@@ -1,8 +1,8 @@
-import React, { Fragment, useCallback, useState, useEffect } from 'react';
-import DataTable from 'react-data-table-component';
-import { Btn, H4 } from '../../../AbstractElements';
-import HeaderCard from '../../Common/Component/HeaderCard';
-import Loader from '../../../Layout/Loader';
+import React, { Fragment, useCallback, useState, useEffect } from "react";
+import DataTable from "react-data-table-component";
+import { Btn, H4 } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import Loader from "../../../Layout/Loader";
 
 const DataTableComponent = ({
   tableData,
@@ -11,12 +11,13 @@ const DataTableComponent = ({
   loading,
   paginationTotalRows,
   onChangePage,
-  onChangeRowsPerPage
+  onChangeRowsPerPage,
 }) => {
-
   const [selectedRows, setSelectedRows] = useState([]);
   const [toggleDelete, setToggleDelete] = useState(false);
   const [data, setData] = useState(tableData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   const customStyles = {
     headCells: {
@@ -28,7 +29,7 @@ const DataTableComponent = ({
     },
   };
 
-  // ✅ Update local data when new data arrives from API
+  // ✅ Sync data when parent updates
   useEffect(() => {
     setData(tableData);
   }, [tableData]);
@@ -48,31 +49,56 @@ const DataTableComponent = ({
       )
     ) {
       setToggleDelete(!toggleDelete);
-      setData(data.filter((item) => !selectedRows.some((row) => row.id === item.id)));
+      setData(
+        data.filter((item) => !selectedRows.some((row) => row.id === item.id))
+      );
       setSelectedRows([]);
     }
   };
 
+  // ✅ Calculate total pages
+  const totalPages = Math.ceil(paginationTotalRows / perPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    onChangePage(page);
+  };
+
+  const handlePerRowsChange = (newPerPage, page) => {
+    setPerPage(newPerPage);
+    onChangeRowsPerPage(newPerPage, page);
+  };
+
   return (
     <Fragment>
-      <div style={{ border: "1px solid #ccc", padding: "5px 5px", borderRadius: "3px" }}>
-        {/* ✅ Title section */}
+      <div
+        style={{
+          border: "1px solid #ccc",
+          padding: "5px 5px",
+          borderRadius: "3px",
+        }}
+      >
         {title && (
           <div className="p-2 my-3 bg-primary">
             <HeaderCard title={title} />
           </div>
         )}
 
-        {/* ✅ Delete bar */}
         {selectedRows.length !== 0 && (
           <div className="d-flex align-items-center justify-content-between bg-light-info p-2">
-            <H4 attrH4={{ className: 'text-muted m-0' }}>Delete Selected Data..!</H4>
-            <Btn attrBtn={{ color: 'danger', onClick: handleDelete }}>Delete</Btn>
+            <H4 attrH4={{ className: "text-muted m-0" }}>
+              Delete Selected Data..!
+            </H4>
+            <Btn attrBtn={{ color: "danger", onClick: handleDelete }}>
+              Delete
+            </Btn>
           </div>
         )}
 
-        {/* ✅ DataTable container */}
-        <div className="table-responsive p-3 position-relative" style={{ minHeight: "550px" }}>
+        <div
+          className="table-responsive p-3 position-relative"
+          style={{ minHeight: "550px" }}
+        >
           <DataTable
             data={data}
             columns={tableColumns}
@@ -81,15 +107,21 @@ const DataTableComponent = ({
             highlightOnHover
             pagination
             paginationServer
-            paginationTotalRows={paginationTotalRows} // ✅ total rows from API
-            onChangePage={onChangePage} // ✅ page change event
-            onChangeRowsPerPage={onChangeRowsPerPage} // ✅ rows per page event
+            paginationTotalRows={paginationTotalRows}
+            paginationPerPage={perPage}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handlePerRowsChange}
             onSelectedRowsChange={handleRowSelected}
             clearSelectedRows={toggleDelete}
             customStyles={customStyles}
-            progressPending={loading} // ✅ built-in loading
-            progressComponent={<Loader loading={loading} />} // ✅ custom loader
+            progressPending={loading}
+            progressComponent={<Loader loading={loading} />}
           />
+
+          {/* ✅ Show total pages */}
+          <div className="text-end text-muted mt-2">
+            Page {currentPage} of {totalPages || 1}
+          </div>
         </div>
       </div>
     </Fragment>
