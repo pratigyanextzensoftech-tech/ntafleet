@@ -6,7 +6,7 @@ import Select from 'react-select';
 import { pricigSupplier,optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import DatePicker from 'react-datepicker'
-
+import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
 const FlyingJPdf = ({ title, btnTtitle }) => {
     const {
         register,
@@ -31,29 +31,8 @@ const FlyingJPdf = ({ title, btnTtitle }) => {
                 <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                     <Row className="mt-3">
                       <Col sm="4">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Company</InputGroupText>
-                      <Controller
-                        name="company"
-                        control={control}
-                        rules={{ required: "company is required" }}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={optionscompany}
-                            className="form-control p-0 border-0"
-                            placeholder="Select a country"
-                          />
-                        )}
-                      />
+                                                              <CompanyDropDown name="Company" control={control} />
 
-                    </InputGroup>
-
-                    {errors.company && (
-                      <span className="text-danger">{errors.company.message}</span>
-                    )}
-                  </FormGroup>
                 </Col>
                         <Col sm="4">
                                                     <Row>

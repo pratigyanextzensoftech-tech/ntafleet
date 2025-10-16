@@ -6,6 +6,7 @@ import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
+import SupplierDropDown from '../../Forms/FormControl/formInput/SupplierDropDown';
 const BulkDiscount = ({title,btnTitle}) => {
     const {
         control,
@@ -122,31 +123,8 @@ const BulkDiscount = ({title,btnTitle}) => {
 
 
 <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                      rules={{ required: "supplier is required" }}
-                       
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                                 options={
-            InVoiceSupplier // your normal supplier array
-            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select supplier"
-                          />
-                        )}
-                      />
-                    </InputGroup>
+               <SupplierDropDown name="Company" control={control}/>
 
-                    {errors.supplier && (
-                      <span className="text-danger">{errors.supplier?.message}</span>
-                    )}
-                  </FormGroup>
                 </Col>
                
 

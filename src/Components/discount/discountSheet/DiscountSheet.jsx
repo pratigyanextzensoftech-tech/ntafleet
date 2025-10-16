@@ -6,6 +6,7 @@ import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
+import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
 const DiscountSheet = ({ title, btnTitle }) => {
         const [selectedValues, setSelectedValues] = useState([]);
     
@@ -42,28 +43,8 @@ const DiscountSheet = ({ title, btnTitle }) => {
             <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                     <Col sm="3">
-                        <FormGroup className="m-form__group">
-                            <InputGroup >
-                                <InputGroupText>Company</InputGroupText>
-                                <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
+                                                                 <CompanyDropDown name="Company" control={control} />
 
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscompany}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Company Name"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.company && (
-                                <span className="text-danger">{errors.company?.message}</span>
-                            )}
-                        </FormGroup>
                     </Col>
                     <Col sm="3">
                         <FormGroup className="m-form__group">

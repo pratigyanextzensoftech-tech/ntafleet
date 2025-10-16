@@ -141,6 +141,13 @@ export const supplier = [
     { value: 'TA-Petro', label: 'TA-Petro' },
 
 ];
+export const viewDiscountsupplier = [
+            { label: 'Select Supplier' , isDisabled: true },
+    { value: 'Flying J', label: 'Flying J' },
+    { value: 'IRVING', label: 'IRVING' },
+        { value: 'PETRO CANADA', label: 'PETRO CANADA' },
+
+];
 export const TaxOption = [
             { label: 'Select Option' , isDisabled: true },
     { value: 'With Tax', label: 'With Tax' },

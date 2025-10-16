@@ -25,5 +25,4 @@ const index = () => {
            </Fragment>
   )
 }
-
 export default index

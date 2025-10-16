@@ -20,10 +20,13 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import ItemsDropDown from "../../Forms/FormControl/formInput/ItemsDropDown";
-import CompanyDropDown from "../../Forms/FormControl/formInput/CompanyDropDown";
-
+import DropDown from "../../Forms/FormControl/formInput/DropDown";
+import useCompany from "../../../Hooks/useCompany";
+import useItems from "../../../Hooks/useItems";
 const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
+const { companies: companyOptions, loading: companyLoading } = useCompany();
+  const { items, loading } = useItems();
 
   const {
     control,
@@ -37,7 +40,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
       startProv: "",
       unit: "",
       cardNo: "",
-      company: null,
+      company: "",
       currency: null,
       items: null,
       status: null,
@@ -49,11 +52,11 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
     const fullData = {
       ...data,
       suppliers: selectedValues,
-      company: data.company?.label || "",
-      currency: data.currency?.label || "",
-      items: data.items?.label || "",
-      status: data.status?.label || "",
-      type: data.type?.label || "",
+      company: data.company?.value || "",
+      currency: data.currency?.value || "",
+      items: data.items?.value || "",
+      status: data.status?.value || "",
+      type: data.type?.value || "",
       from: data.from ? data.from.toISOString().split("T")[0] : "",
       to: data.to ? data.to.toISOString().split("T")[0] : "",
     };
@@ -121,26 +124,32 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             </InputGroup>
           </FormGroup>
         </Col>
-
-        <Col sm="3">
-          <FormGroup>
-            <InputGroup>
-              <InputGroupText>To</InputGroupText>
-              <Controller
-                name="to"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    className="form-control"
-                    selected={field.value}
-                    onChange={field.onChange}
-                    dateFormat="yyyy-MM-dd"
-                  />
-                )}
+      <Col sm="3">
+  <FormGroup>
+    <Row>
+      <Col sm="2">              
+        <InputGroupText>To</InputGroupText>
+      </Col>
+      <Col className="px-0" sm="10">       
+        <InputGroup>
+          <Controller
+            name="to"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                className="form-control"
+                selected={field.value}
+                onChange={field.onChange}
+                dateFormat="yyyy-MM-dd"
               />
-            </InputGroup>
-          </FormGroup>
-        </Col>
+            )}
+          />
+        </InputGroup>
+      </Col>
+    </Row>
+  </FormGroup>
+</Col>
+
 
         <Col sm="3">
           <FormGroup>
@@ -191,7 +200,14 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         </Col>
 
         <Col sm="3">
-          <CompanyDropDown name="company" control={control} />
+          <DropDown
+           name="company"
+  label="Company"
+  control={control}
+  placeholder="Select Company"
+  // loading={companyLoading}
+  options={companyOptions}
+ />
         </Col>
 
         <Col sm="3">
@@ -216,14 +232,30 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         </Col>
 
         <Col sm="3">
-          <ItemsDropDown name="items" control={control} />
+          {/* <ItemsDropDown name="items" control={control} /> */}
+           <DropDown
+           name="items"
+  label="Items"
+  control={control}
+  placeholder="Select Items"
+  // loading={loading}
+  options={items}
+ />
         </Col>
       </Row>
 
       {/* ✅ Row 3: Status, Type, and Buttons */}
       <Row>
         <Col sm="3">
-          <FormGroup>
+          <DropDown
+           name="status"
+  label="Invoice Status"
+  control={control}
+  placeholder="Select Status"
+  // loading={loading}
+  options={InvoiceStatus}
+ />
+          {/* <FormGroup>
             <InputGroup>
               <InputGroupText>Invoice Status</InputGroupText>
               <Controller
@@ -240,28 +272,19 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                 )}
               />
             </InputGroup>
-          </FormGroup>
+          </FormGroup> */}
         </Col>
 
         <Col sm="3">
-          <FormGroup>
-            <InputGroup>
-              <InputGroupText>Invoice Type</InputGroupText>
-              <Controller
-                name="type"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={invoiceType}
-                    placeholder="Select Type"
-                    className="form-control p-0 border-0"
-                    onChange={(val) => field.onChange(val)}
-                  />
-                )}
-              />
-            </InputGroup>
-          </FormGroup>
+         <DropDown
+           name="type"
+  label="Invoice Type"
+  control={control}
+  placeholder="Select Type"
+  // loading={loading}
+  options={invoiceType}
+ />
+        
         </Col>
 
         <Col sm="6" className="text-end">

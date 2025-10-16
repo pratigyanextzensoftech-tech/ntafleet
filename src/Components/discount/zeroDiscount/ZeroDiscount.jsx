@@ -5,6 +5,7 @@ import { Row, Col, Form, FormGroup,  InputGroup, InputGroupText } from 'reactstr
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import HeaderCard from '../../Common/Component/HeaderCard';
+import SupplierDropDown from '../../Forms/FormControl/formInput/SupplierDropDown';
 const ZeroDiscount = ({title,btnTitle}) => {
     const {
         register,
@@ -63,31 +64,8 @@ const ZeroDiscount = ({title,btnTitle}) => {
                           </FormGroup>
                         </Col>
 <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                      rules={{ required: "supplier is required" }}
-                       
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                                 options={
-            InVoiceSupplier // your normal supplier array
-            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select supplier"
-                          />
-                        )}
-                      />
-                    </InputGroup>
-
-                    {errors.supplier && (
-                      <span className="text-danger">{errors.supplier?.message}</span>
-                    )}
-                  </FormGroup>
+              <SupplierDropDown name="Company" control={control}/>
+ 
                 </Col>
 
                   </Row>

@@ -6,7 +6,7 @@ import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
-import CompanyDropDown from '../../Forms/FormControl/formInput/CompanyDropDown';
+import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
 import SupplierDropDown from '../../Forms/FormControl/formInput/SupplierDropDown';
 const Create = ({title,btnTitle}) => {
     const {

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import { checkBoxData, optionscountry, optionscompany,customizedTypeType,invoiceType1,InvoiceCategory,InvoiceShow,InVoiceSupplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { checkBoxData, optionscountry, optionscompany,customizedTypeType,invoiceType1,InvoiceCategory,InvoiceShow,viewDiscountsupplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
+import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
 const ViewForm = ({title,btnTitle,btnTitle1}) => {
     const {
         register,
@@ -31,28 +32,8 @@ const ViewForm = ({title,btnTitle,btnTitle1}) => {
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                          <Col sm="4">
-                        <FormGroup className="m-form__group">
-                            <InputGroup >
-                                <InputGroupText>Company</InputGroupText>
-                                <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
+                                              <CompanyDropDown name="Company" control={control} />
 
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscompany}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Company Name"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.company && (
-                                <span className="text-danger">{errors.company?.message}</span>
-                            )}
-                        </FormGroup>
                     </Col>
                        <Col sm="4">
                   <FormGroup className="m-form__group">
@@ -167,7 +148,7 @@ const ViewForm = ({title,btnTitle,btnTitle1}) => {
                           <Select
                             {...field}
                                  options={
-            InVoiceSupplier // your normal supplier array
+            viewDiscountsupplier // your normal supplier array
             }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
