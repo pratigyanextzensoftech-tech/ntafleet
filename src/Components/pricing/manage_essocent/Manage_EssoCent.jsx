@@ -5,6 +5,7 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Ca
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import InputText from '../../Forms/FormControl/formInput/InputText';
 const DownloadEssoCentForm = ({btnTitle}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
@@ -36,12 +37,16 @@ const DownloadEssoCentForm = ({btnTitle}) => {
                
                     <Row className="mt-3">
                       <Col sm="4">
-                                                 <FormGroup className=" m-form__group">
-                                                     <InputGroup>
-                                                         <InputGroupText>Name</InputGroupText>
-                                                         <Input className="form-control" type="text" />
-                                                     </InputGroup>
-                                                 </FormGroup>
+                       <InputText
+            name="name"
+            label="Name"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Name is required" }}
+          />
+                    
+                                                
                      
                                              </Col>
 
@@ -49,33 +54,40 @@ const DownloadEssoCentForm = ({btnTitle}) => {
 
 
                          <Col sm="4">
-                                                    <FormGroup className=" m-form__group">
-                                                        <InputGroup>
-                                                            <InputGroupText>Value</InputGroupText>
-                                                            <Input className="form-control" type="text" />
-                                                        </InputGroup>
-                                                    </FormGroup>
-                        
+                           <InputText
+            name="value"
+            label="Value"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                    
+                                                
                                                 </Col>
  
                         <Col sm="4">
-                                                   <FormGroup className=" m-form__group">
-                                                       <InputGroup>
-                                                           <InputGroupText>Ord</InputGroupText>
-                                                           <Input className="form-control" type="text" />
-                                                       </InputGroup>
-                                                   </FormGroup>
+                             <InputText
+            name="ord"
+            label="Ord"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                                                   
                        
                                                </Col>
                                                </Row><Row>
                                                 <Col sm="4">
-                                                                           <FormGroup className=" m-form__group">
-                                                                               <InputGroup>
-                                                                                   <InputGroupText>Rack</InputGroupText>
-                                                                                   <Input className="form-control" type="text" />
-                                                                               </InputGroup>
-                                                                           </FormGroup>
-                                               
+                                                    <InputText
+            name="rack"
+            label="Rack"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
                                                                        </Col>
   <Col sm="8">
                     <div className='text-end'>

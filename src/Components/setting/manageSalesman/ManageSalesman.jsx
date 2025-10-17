@@ -2,42 +2,64 @@
 import React, { Fragment } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useForm } from 'react-hook-form';
 const ManageSalesman = () => {
+        const {
+            register,
+            control,
+            handleSubmit,
+            formState: { errors },
+        } = useForm();
     return (
         <Fragment >
                     <Form>
                         <Row>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Name</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                  <InputText
+            name="name"
+            label="Name"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                               
                             </Col>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Email</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                <InputText
+            name="email"
+            label="Email"
+            type="email"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                              
                             </Col>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Phone</InputGroupText>
-                                        <Input className="form-control" type="number"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                <InputText
+            name="phone"
+            label="Phone"
+            type="number"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                              
                             </Col>
                         </Row>
                         <Row>
                             <Col md={8}>
-                                <InputGroup className="mb-3">
-                                    <InputGroupText>Address</InputGroupText>
-                                    <Input className="form-control" type="text"  />
-                                </InputGroup>
+                                  <InputText
+            name="address"
+            label="Address"
+            type="number"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                            
                             </Col>
                             
                            

@@ -1,13 +1,16 @@
 
 import React, { Fragment } from 'react';
-import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
+import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
-import { optionsPrimary } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Controller,useForm } from 'react-hook-form';
-import Select from 'react-select'
+import { useForm } from 'react-hook-form';
 import { type } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import usePmenu from '../../../Hooks/usePmenu';
+
 const SecondaryMenu = () => {
+      const { pmenu, loading, error } = usePmenu();
      const {
             register,
             control,
@@ -24,89 +27,57 @@ const SecondaryMenu = () => {
             <Form>
                 <Row>
                           <Col sm="4">
-                        <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
-
-                                    <Col sm="4">
-                                        <InputGroupText>
-                                              Primary Menu 
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="8">
-                                       
-                                         <Controller
-                                                                           name="primaryMenu"
-                                                                           rules={{ required: "Menu is required" }}
-                                       
-                                                                           control={control}
-                                                                           render={({ field }) => (
-                                                                               <Select
-                                                                                   {...field}
-                                                                                   options={optionsPrimary}
-                                                                                   className="form-control p-0 border-0"
-                                                                                   placeholder="Select Menu"
-                                                                               />
-                                                                           )}
-                                                                       />
-                                                                  </Col>
-
-
-
-
-                                </InputGroup>
-
-                                 {errors.primaryMenu && (
-                                <span className="text-danger">{errors.primaryMenu?.message}</span>
-                            )}
-                            </FormGroup>
-                        </Row>
+                          <DropDown
+           name="primaryMenu"
+  label="Primary Menu "
+  control={control}
+          errors={errors}
+  rules={{ required: "Menu is required" }}
+  placeholder="Select Menu"
+  // loading={companyLoading}
+  options={pmenu}
+ />
+                     
                     </Col>
                     <Col md="4">
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText> Menu Name</InputGroupText>
-                                <Input className="form-control" type="text" />
-                            </InputGroup>
-                        </FormGroup>
+                          <InputText
+            name="menuName"
+            label="Menu Name "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
+                      
+                   
                     </Col>
                     <Col md="4">
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText>Menu Link</InputGroupText>
-                                <Input className="form-control" type="text" />
-                            </InputGroup>
-                        </FormGroup>
+                         <InputText
+            name="menuLink"
+            label="Menu Link "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
+                   
                     </Col>
                    
                                     </Row>
 <Row>
      <Col md="4">
-                        <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Type</InputGroupText>
-                      <Controller
-                        name="type"
-                                                rules={{ required: "Type is required" }}
-
-                                                control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-     options={
-            type
-            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select  Type"
-                          />
-                        )}
-                      />
-                    </InputGroup>
-
-                    {errors.type && (
-                      <span className="text-danger">{errors.type?.message}</span>
-                    )}
-                  </FormGroup>
+         <DropDown
+           name="type"
+  label="Type "
+  control={control}
+          errors={errors}
+  rules={{ required: "Required" }}
+  placeholder="Select Type"
+  // loading={companyLoading}
+  autoSelectFirst={true}
+  options={type}
+ />
+                     
                     </Col>
                         <Col md={8}>
                                                                  <div className='text-end'>

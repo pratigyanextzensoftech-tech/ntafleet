@@ -5,6 +5,7 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Ca
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
 const RetailToRack = ({btnTtitle,type}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
@@ -138,28 +139,18 @@ const RetailToRack = ({btnTtitle,type}) => {
                             </FormGroup>
                         </Col>
                              <Col sm="3">
-                        <FormGroup className="m-form__group">
-                            <InputGroup>
-                                <InputGroupText>Country</InputGroupText>
-                                <Controller
-                                    name="country"
-                                    rules={{ required: "country is required" }}
-                                    control={control}
-                                    defaultValue={optionscountry[1]}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Country"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.country && (
-                                <span className="text-danger">{errors.country?.message}</span>
-                            )}
-                        </FormGroup>
+                                          <DropDown
+           name="country"
+  label="Country"
+          errors={errors}
+  control={control}
+rules={{ required: "Country is required" }}
+  placeholder="Select Country"
+  // loading={companyLoading}
+  options={optionscountry}
+    autoSelectFirst={true} // ✅ automatically select first option
+ />
+                   
                     </Col>
                  
                         

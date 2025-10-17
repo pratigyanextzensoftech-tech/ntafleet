@@ -5,71 +5,114 @@ import { Btn } from "../../AbstractElements";
 import {add_user} from '../../Constant'
 import HeaderCard from '../Common/Component/HeaderCard';
 import Select from 'react-select'
-import { companyLoginAccess,userStatus } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { companyLoginAccess,manageuserStatus } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import InputText from '../Forms/FormControl/formInput/InputText';
+import { useForm } from 'react-hook-form';
+import DropDown from '../Forms/FormControl/formInput/DropDown';
 const FormComponent = () => {
+    const {
+            register,
+            control,
+            reset,
+            handleSubmit,
+            formState: { errors, isSubmitted, isValid },
+        } = useForm();
     return (
         <Fragment>
               
                     <Form>
                         <Row>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Name</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                <InputText
+            name="Name"
+            label="Name"
+            placeholder="Enter Name"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Name is required" }}
+          />
+                        
                             </Col>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Email</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                               <InputText
+            name="email"
+            label="Email"
+            placeholder="Enter Email"
+            type="email"
+            register={register}
+            errors={errors}
+            rules={{ required: "Email is required" }}
+          />
+                             
                             </Col>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Phone</InputGroupText>
-                                        <Input className="form-control" type="number"  />
-                                    </InputGroup>
-                                </FormGroup>
+                              <InputText
+            name="phone"
+            label="Phone"
+            placeholder="Enter Phone"
+            type="number"
+            register={register}
+            errors={errors}
+            rules={{ required: "Number is required" }}
+          />
+                                
                             </Col>
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <InputGroup className="mb-3">
-                                    <InputGroupText>Company</InputGroupText>
-                                    <Input className="form-control" type="text"  />
-                                </InputGroup>
+                              <InputText
+            name="company"
+            label="Company"
+            placeholder="Enter Company"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Company is required" }}
+          />
+                              
                             </Col>
                             <Col md={4}>
-                                <InputGroup className="mb-3">
-                                    <InputGroupText>Password</InputGroupText>
-                                    <Input className="form-control" type="password"  />
-                                </InputGroup>
+                              <InputText
+            name="password"
+            label="Password"
+            placeholder="Enter Password"
+            type="password"
+            register={register}
+            errors={errors}
+            rules={{ required: "Password is required" }}
+          />
+                              
+                         
                             </Col>
                            
                            
                             <Col md={4}>
-                                <InputGroup className="mb-3">
-                                    <InputGroupText>User Status</InputGroupText>
-                                                                                       <Select options={userStatus}   className="form-control p-0 border-0"                                                                    />
-                                </InputGroup>
+                             <DropDown
+           name="status"
+  label="User Status"
+  control={control}
+  rules={{ required: "Status is required" }}
+  placeholder="Select Status"
+  // loading={companyLoading}
+  options={manageuserStatus}
+  autoSelectFirst={true}
+ />
+                               
                             </Col>
 
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <InputGroup className="mb-3">
-                                    <InputGroupText>Company Login Access</InputGroupText>
-                                  
-                                                    <Select options={companyLoginAccess}   className="form-control p-0 border-0"                                                                    />
-
-               
-              
-                                              </InputGroup>
+                                                        <DropDown
+           name="loginAcess"
+  label="Company Login Access"
+  control={control}
+  rules={{ required: "Access is required" }}
+  // loading={companyLoading}
+  options={companyLoginAccess}
+ />
+                             
                             </Col>
 
                    

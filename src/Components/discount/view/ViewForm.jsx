@@ -4,10 +4,14 @@ import { checkBoxData, optionscountry, optionscompany,customizedTypeType,invoice
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
-import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
-import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
+import useCompany from '../../../Hooks/useCompany';
+import useSupplier from '../../../Hooks/useSupplier';
 const ViewForm = ({title,btnTitle,btnTitle1}) => {
+  const { companies: companyOptions, loading: companyLoading } = useCompany();
+  const { supplier, loading, error } = useSupplier();
     const {
         register,
         control,
@@ -32,71 +36,36 @@ const ViewForm = ({title,btnTitle,btnTitle1}) => {
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                          <Col sm="4">
-                                              <CompanyDropDown name="Company" control={control} />
-
+<DropDown
+           name="company"
+  label="Company"
+  control={control}
+          errors={errors}
+  rules={{ required: "Company is required" }}
+  placeholder="Select Company"
+  // loading={companyLoading}
+  options={companyOptions}
+ />
                     </Col>
                        <Col sm="4">
-                  <FormGroup className="m-form__group">
-                    <Row>
-                      <InputGroup>
-
-                        <Col sm="4">        <InputGroupText>Start Date</InputGroupText>
-                        </Col>
-                        <Col sm="8">
- <Controller
-            name="startDate"
-            control={control}
-            rules={{ required: "Start Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select start date"
-                className={`form-control `}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-        
-        </Col>
-                      
-                      </InputGroup>
-  {errors.startDate && (
-            <span className="text-danger">{errors.startDate.message}</span>
-          )}
-                    </Row>
-
-
-                 
-                  </FormGroup>
+                  <DatePickerInput
+        name="startDate"
+        control={control}              // ✅ make sure this is passed
+        label="Start Date"
+        placeholder="Select start date" // ✅ fixed spelling
+        errors={errors}
+                required="start Date is required"
+      />
                 </Col>
                        <Col sm="4">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                    <Col sm="4">   
-                      <InputGroupText>End Date</InputGroupText>
-                      </Col>
-                                          <Col sm="8">   
-
-                   <Controller
-            name="endDate"
-            control={control}
-            rules={{ required: "End Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select end date"
-                className={`form-control digits`}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-          </Col>
-         
-                      </InputGroup>
-                       {errors.endDate && (
-            <span className="text-danger">{errors.endDate.message}</span>
-          )}
-                  </FormGroup>
+             <DatePickerInput
+        name="endDate"
+        control={control}              // ✅ make sure this is passed
+        label="End Date"
+        placeholder="Select end date" // ✅ fixed spelling
+        errors={errors}
+        required="End Date is required"
+      />    
 
                 </Col>
                           
@@ -112,55 +81,29 @@ const ViewForm = ({title,btnTitle,btnTitle1}) => {
                 <Row className="mt-3">
  
               <Col sm="4">
-                        <FormGroup className="m-form__group">
-                            <InputGroup>
-                                <InputGroupText>Country</InputGroupText>
-                                <Controller
-                                    name="country"
-                                    rules={{ required: "country is required" }}
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscountry}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Country"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.country && (
-                                <span className="text-danger">{errors.country?.message}</span>
-                            )}
-                        </FormGroup>
+                            <DropDown
+           name="country"
+  label="Country"
+          errors={errors}
+  control={control}
+rules={{ required: "Country is required" }}
+  placeholder="Select Country"
+  // loading={companyLoading}
+  options={optionscountry}
+ />
                     </Col>
 <Col sm="4">
-                  <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                      rules={{ required: "supplier is required" }}
-                       
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                                 options={
-            viewDiscountsupplier // your normal supplier array
-            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select supplier"
-                          />
-                        )}
-                      />
-                    </InputGroup>
+  <DropDown
+           name="supplier"
+  label="Supplier"
+          errors={errors}
 
-                    {errors.supplier && (
-                      <span className="text-danger">{errors.supplier?.message}</span>
-                    )}
-                  </FormGroup>
+  control={control}
+  rules={{ required: "supplier is required" }}
+  placeholder="Select supplier"
+  // loading={companyLoading}
+  options={viewDiscountsupplier}
+ />
                 </Col>
 
     

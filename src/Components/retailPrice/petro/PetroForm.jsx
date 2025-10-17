@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
+import { Row, Col, Form} from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
-import DatePicker from "react-datepicker";
+import { useForm } from 'react-hook-form';
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
+import InputText from '../../Forms/FormControl/formInput/InputText';
 const PetroForm = ({btnTitle,btnTitle1}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
@@ -11,6 +12,7 @@ const PetroForm = ({btnTitle,btnTitle1}) => {
         control,
         reset,
         handleSubmit,
+
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
@@ -41,47 +43,27 @@ const PetroForm = ({btnTitle,btnTitle1}) => {
                 <Row className="mt-3">
                <Col sm='4'>
                                          <Row>
-                                       
-                                       
-                                                                   <Col className='px-0' sm="2">
-                                       
-                                                                       <InputGroupText className='h-100'>File</InputGroupText>
-                                                                   </Col>
-                                                                   <Col className='px-0' sm="10">
-                                       
-                                                                       <Input style={{border:"1px solid #ccc"}} className="form-control w-100c " type="file" />
-                                                                   </Col>
+                                                                       
+ <InputText
+            name="file"
+            label="File"
+            type="file"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
                                                                                                </Row>
                                       </Col>
          <Col sm="4">
                         <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
-
-                                    <Col sm="3">
-                                        <InputGroupText>
-                                             Date 
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="9">
-                                        <Controller
-                                            name="date"
-                                            control={control}
-                                            rules={{ required: " Required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    className={`form-control `}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        /></Col>
-                                </InputGroup>
-
-                                {errors.date && (
-                                    <span className="text-danger">{errors.date.message}</span>
-                                )}
-                            </FormGroup>
+                             <DatePickerInput
+        name="endDate"
+        control={control}              // ✅ make sure this is passed
+        label="Date"
+        errors={errors}
+        required=" Date is required"
+      />     
+                      
                         </Row>
                     </Col>
 

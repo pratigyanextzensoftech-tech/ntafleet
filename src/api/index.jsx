@@ -50,6 +50,8 @@ export const love_pricing_pdf = `${baseurl}/api/love_pricing_pdf`;
 export const love_rack_cent = `${baseurl}/api/love_rack_cent`;
 export const macro_trans = `${baseurl}/api/macro_trans`;
 export const menu = `${baseurl}/api/menu`;
+export const pmenu = `${baseurl}/api/pmenu`;
+export const pmenuAll = `${baseurl}/api/pmenu/All`;
 export const mond_code = `${baseurl}/api/mond_code`;
 export const moneycode_invoice = `${baseurl}/api/moneycode_invoice`;
 export const moneycode_invoice_detail = `${baseurl}/api/moneycode_invoice_detail`;
@@ -108,7 +110,6 @@ export const user_log = `${baseurl}/api/user_log`;
 export const user_tracking = `${baseurl}/api/user_tracking`;
 export const view_loc = `${baseurl}/api/view_loc`;
 export const zero_discount = `${baseurl}/api/zero_discount`;
-
 
 export const BookmarkApi = `${api}/bookmark.json`;
 export const ContactApi = `${api}/contacts.json`;

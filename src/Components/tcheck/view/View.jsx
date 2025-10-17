@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
 import {  optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import useCompany from '../../../Hooks/useCompany';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
-import DatePicker from "react-datepicker";
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 const List = ({btnTitle1}) => {
     const [selectedValues, setSelectedValues] = useState([]);
+          const { companies: companyOptions, loading: companyLoading } = useCompany();
+
     const {
         register,
         control,
@@ -44,96 +48,37 @@ const List = ({btnTitle1}) => {
              
                 <Row className="mt-3">
                     <Col sm="3">
-                        <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
-
-                                    <Col sm="3">
-                                        <InputGroupText>
-                                            From Date
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="9">
-                                        <Controller
-                                            name="from"
-                                            control={control}
-                                            rules={{ required: " Required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    className={`form-control `}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        /></Col>
-
-
-
-
-                                </InputGroup>
-
-                                {errors.from && (
-                                    <span className="text-danger">{errors.from.message}</span>
-                                )}
-                            </FormGroup>
-                        </Row>
+                      <DatePickerInput
+        name="from"
+        control={control}              // ✅ make sure this is passed
+        label=" From Date"
+        errors={errors}
+        required="Required"
+      />   
+                   
                     </Col>
                     <Col sm="3">
-                        <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
-                                    <Col sm="3">
-
-                                        <InputGroupText>
-                                            To
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="9">
-
-                                        <Controller
-                                            name="to"
-                                            control={control}
-                                            rules={{ required: "Required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    className={`form-control digits`}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        />
-                                    </Col>
-                                </InputGroup>
-
-                                {errors.to && (
-                                    <span className="text-danger">{errors.to.message}</span>
-                                )}
-                            </FormGroup>
-                        </Row>
+                      <DatePickerInput
+        name="to"
+        control={control}              // ✅ make sure this is passed
+        label=" To"
+        errors={errors}
+        required="Required"
+      />   
+                     
                     </Col>
          <Col sm="3">
-                        <FormGroup className="m-form__group">
-                            <InputGroup >
-                                <InputGroupText>Company</InputGroupText>
-                                <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
-
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscompany}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Company Name"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.company && (
-                                <span className="text-danger">{errors.company?.message}</span>
-                            )}
-                        </FormGroup>
+         <DropDown
+           name="company"
+  label="Company"
+  control={control}
+          errors={errors}
+  rules={{ required: "Company is required" }}
+  placeholder="Select Company"
+  // loading={companyLoading}
+  options={companyOptions}
+ />
+                      
                     </Col>
 
       

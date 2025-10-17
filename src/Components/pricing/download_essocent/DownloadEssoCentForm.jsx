@@ -5,10 +5,13 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Ca
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
+import useCompany from '../../../Hooks/useCompany';
 const DownloadEssoCentForm = ({btnTitle}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
+  const { companies: companyOptions, loading: companyLoading } = useCompany();
 
     const {
         register,
@@ -47,84 +50,48 @@ const DownloadEssoCentForm = ({btnTitle}) => {
                
                     <Row className="mt-3">
                         <Col sm="3">
-                                                                         <CompanyDropDown name="Company" control={control} />
-
+<DropDown
+           name="company"
+  label="Company"
+  control={control}
+          errors={errors}
+  rules={{ required: "Company is required" }}
+  placeholder="All Company"
+  // loading={companyLoading}
+  options={companyOptions}
+ />
                         </Col>
 
 
 
 
-                        <Col sm="3">
+                        <Col sm="4">
                                                     <Row>
-                                                        <FormGroup className="m-form__group">
-                                                            <InputGroup>
-                        
-                                                                <Col sm="3">
-                                                                    <InputGroupText>
-Pricing Form Date                                                                    </InputGroupText>
-                                                                </Col>
-                                                                <Col sm="9">
-                                                                    <Controller
-                                                                        name="fromDate"
-                                                                        control={control}
-                                                                        rules={{ required: " Required" }}
-                                                                        render={({ field }) => (
-                                                                            <DatePicker
-                                                                                className={`form-control `}
-                                                                                selected={field.value}
-                                                                                onChange={(date) => field.onChange(date)}
-                                                                            />
-                                                                        )}
-                                                                    /></Col>
-                        
-                        
-                        
-                        
-                                                            </InputGroup>
-                        
-                                                            {errors.fromDate && (
-                                                                <span className="text-danger">{errors.fromDate.message}</span>
-                                                            )}
-                                                        </FormGroup>
+                                                         <DatePickerInput
+        name="fromDate"
+        control={control}             
+        label="Pricing Form Date"                                                                   
+        errors={errors}
+                required="Required"
+      />
+                                                   
                                                     </Row>
                              </Col>
  
-                           <Col sm="3">
+                           <Col sm="4">
                                                     <Row>
-                                                        <FormGroup className="m-form__group">
-                                                            <InputGroup>
-                        
-                                                                <Col sm="3">
-                                                                    <InputGroupText>
-                                                                        Pricing Upto Date
-                                                                    </InputGroupText>
-                                                                </Col>
-                                                                <Col sm="9">
-                                                                    <Controller
-                                                                        name="uptoDate"
-                                                                        control={control}
-                                                                        rules={{ required: " Required" }}
-                                                                        render={({ field }) => (
-                                                                            <DatePicker
-                                                                                className={`form-control `}
-                                                                                selected={field.value}
-                                                                                onChange={(date) => field.onChange(date)}
-                                                                            />
-                                                                        )}
-                                                                    /></Col>
-                        
-                        
-                        
-                        
-                                                            </InputGroup>
-                        
-                                                            {errors.uptoDate && (
-                                                                <span className="text-danger">{errors.uptoDate.message}</span>
-                                                            )}
-                                                        </FormGroup>
+                                                     <DatePickerInput
+        name="uptoDate"
+        control={control}             
+        label="Pricing Upto Date"                                                                
+        errors={errors}
+                required="Required"
+      />
+                                                           
+                                                    
                                                     </Row>
                              </Col>
-  <Col sm="3">
+  <Col sm="1">
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
 

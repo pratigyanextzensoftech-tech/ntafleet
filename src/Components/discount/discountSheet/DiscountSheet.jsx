@@ -6,10 +6,14 @@ import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../../Common/Component/HeaderCard';
-import CompanyDropDown from '../../Forms/FormControl/formInput/DropDown';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
+import useCompany from '../../../Hooks/useCompany';
+import InputText from '../../Forms/FormControl/formInput/InputText';
 const DiscountSheet = ({ title, btnTitle }) => {
         const [selectedValues, setSelectedValues] = useState([]);
-    
+      const { companies: companyOptions, loading: companyLoading } = useCompany();
+
     const {
         register,
         control,
@@ -43,139 +47,99 @@ const DiscountSheet = ({ title, btnTitle }) => {
             <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                     <Col sm="3">
-                                                                 <CompanyDropDown name="Company" control={control} />
-
+<DropDown
+           name="company"
+  label="Company"
+  control={control}
+          errors={errors}
+  rules={{ required: "Company is required" }}
+  placeholder="Select Company"
+  // loading={companyLoading}
+  options={companyOptions}
+ />
                     </Col>
                     <Col sm="3">
-                        <FormGroup className="m-form__group">
-                            <Row>
-                                <InputGroup>
-
-                                    <Col sm="4">        <InputGroupText>Start Date</InputGroupText>
-                                    </Col>
-                                    <Col sm="8">
-                                        <Controller
-                                            name="startDate"
-                                            control={control}
-                                            rules={{ required: "Start Date is required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    placeholderText="Select start date"
-                                                    className={`form-control `}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        />
-
-                                    </Col>
-
-                                </InputGroup>
-                                {errors.startDate && (
-                                    <span className="text-danger">{errors.startDate.message}</span>
-                                )}
-                            </Row>
-
-
-
-                        </FormGroup>
+                  <DatePickerInput
+        name="startDate"
+        control={control}              // ✅ make sure this is passed
+        label="Start Date"
+        placeholder="Select start date" // ✅ fixed spelling
+        errors={errors}
+                required="start Date is required"
+      />
                     </Col>
                     <Col sm="3">
-                        <FormGroup className="m-form__group">
-                            <InputGroup>
-                                <Col sm="4">
-                                    <InputGroupText>End Date</InputGroupText>
-                                </Col>
-                                <Col sm="8">
-
-                                    <Controller
-                                        name="endDate"
-                                        control={control}
-                                        rules={{ required: "End Date is required" }}
-                                        render={({ field }) => (
-                                            <DatePicker
-                                                placeholderText="Select end date"
-                                                className={`form-control digits`}
-                                                selected={field.value}
-                                                onChange={(date) => field.onChange(date)}
-                                            />
-                                        )}
-                                    />
-                                </Col>
-
-                            </InputGroup>
-                            {errors.endDate && (
-                                <span className="text-danger">{errors.endDate.message}</span>
-                            )}
-                        </FormGroup>
+                    <DatePickerInput
+        name="endDate"
+        control={control}              // ✅ make sure this is passed
+        label="End Date"
+        placeholder="Select end date" // ✅ fixed spelling
+        errors={errors}
+        required="End Date is required"
+      />  
 
                     </Col>
 
                     <Col sm='3'>
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText>  ESSO Discount Cent (Canada)  </InputGroupText>
-                                <input style={{ border: "1px solid #ccc" }} className="form-control " type="text"  {...register('discountCanada', { required: true })} />
-                            </InputGroup>
-                            {errors.discountCanada && (
-                                <span className="text-danger"> Required</span>
-                            )}
-                        </FormGroup>
+                                              <InputText
+            name="discountCanada"
+            label="ESSO Discount Cent (Canada)"
+            type="number"
+            register={register}
+            errors={errors}
+            rules={{ required: "Esso Discount is required" }}
+          />
+                      
                     </Col>
-
-
-
-
-
-
-
-
                 </Row>
                 <Row className="mt-3">
                     <Col sm='3'>
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText> Flying J Discount Cent (USA) </InputGroupText>
-                                <input style={{ border: "1px solid #ccc" }} className="form-control " type="text"  {...register('discountUSA', { required: true })} />
-                            </InputGroup>
-                            {errors.discountUSA && (
-                                <span className="text-danger"> Required</span>
-                            )}
-                        </FormGroup>
+                        <InputText
+            name="discountUSA"
+            label="Flying J Discount Cent (USA) "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
+                      
+                  
                     </Col>
                    
                     <Col sm='3'>
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText>  Flying J Discount Cent (Canada)  </InputGroupText>
-                                <input style={{ border: "1px solid #ccc" }} className="form-control " type="text"  {...register('Flyingdiscount', { required: true })} />
-                            </InputGroup>
-                            {errors.Flyingdiscount && (
-                                <span className="text-danger"> Required</span>
-                            )}
-                        </FormGroup>
+                          <InputText
+            name="Flyingdiscount"
+            label=" Flying J Discount Cent (Canada) "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
+                   
                     </Col>
                     <Col sm='3'>
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText> Petro Discount Cent (Canada) </InputGroupText>
-                                <input style={{ border: "1px solid #ccc" }} className="form-control " type="text"  {...register('Petrodiscount', { required: true })} />
-                            </InputGroup>
-                            {errors.Petrodiscount && (
-                                <span className="text-danger"> Required</span>
-                            )}
-                        </FormGroup>
+                       <InputText
+            name="Petrodiscount"
+            label=" Petro Discount Cent (Canada)  "
+            placeholder=" "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
+                
                     </Col>
                      <Col sm='3'>
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText> Ta-Petro & Love Discount Cent (USA) </InputGroupText>
-                                <input style={{ border: "1px solid #ccc" }} className="form-control " type="text"  {...register('TaPetrodiscount', { required: true })} />
-                            </InputGroup>
-                            {errors.TaPetrodiscount && (
-                                <span className="text-danger"> Required</span>
-                            )}
-                        </FormGroup>
+                         <InputText
+            name="TaPetrodiscount"
+            label=" Ta-Petro & Love Discount Cent (USA)  "
+            placeholder=" "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: " Required" }}
+          />
+                       
                     </Col>
                 </Row>
                 <Row>

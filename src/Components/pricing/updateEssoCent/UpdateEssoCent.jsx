@@ -4,6 +4,7 @@ import { Row, Col, Form, FormGroup, InputGroup, InputGroupText, Card, CardBody }
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 const UpdateEssoCent = ({btnTitle}) => {
     
 
@@ -38,38 +39,14 @@ const UpdateEssoCent = ({btnTitle}) => {
 
                         <Col sm="6">
                                                     <Row>
-                                                        <FormGroup className="m-form__group">
-                                                            <InputGroup>
-                        
-                                                                <Col sm="3">
-                                                                    <InputGroupText>
-
-                                            Pricing  Date                                                       
-                                                         </InputGroupText>
-                                                                </Col>
-                                                                <Col sm="9">
-                                                                    <Controller
-                                                                        name="pricingDate"
-                                                                        control={control}
-                                                                        rules={{ required: " Required" }}
-                                                                        render={({ field }) => (
-                                                                            <DatePicker
-                                                                                className={`form-control `}
-                                                                                selected={field.value}
-                                                                                onChange={(date) => field.onChange(date)}
-                                                                            />
-                                                                        )}
-                                                                    /></Col>
-                        
-                        
-                        
-                        
-                                                            </InputGroup>
-                        
-                                                            {errors.pricingDate && (
-                                                                <span className="text-danger">{errors.pricingDate.message}</span>
-                                                            )}
-                                                        </FormGroup>
+                                                          <DatePickerInput
+        name="pricingDate"
+        control={control}              // ✅ make sure this is passed
+        label="Pricing  Date "
+        errors={errors}
+        required="Required"
+      />    
+                                                      
                                                     </Row>
                              </Col>
  

@@ -6,7 +6,7 @@ export const options = [
     { value: 'WY', label: 'John Doe' },
 ];
 export const optionscountry = [
-                { label: 'Select Country' , isDisabled: true },
+                { label: 'All Country' , isDisabled: true },
     { value: 'United States of America', label: 'United States of America' },
     { value: 'Canada', label: 'Canada' }
 ];
@@ -113,6 +113,8 @@ export const displayFeatureCheckBoxOwner=[
     { value: 'liter', label: 'liter' }
 ]
  export const type=[
+    { label: '' , isDisabled: true },
+
   { value: 'visible', label: 'visible' },
     { value: 'hidden', label: 'hidden' }
 ]
@@ -216,6 +218,8 @@ export const optionsSearch = [
     { value: 'Greater than', label: 'Greater than' }
 ];
 export const companyLoginAccess=[
+                { label: 'select Option.',isDisabled: true },
+
     { value: 'yes', label: 'yes' },
     { value: 'No', label: 'No' },
 
@@ -327,6 +331,11 @@ export  const userStatus=[
      { value: ' pending', label: 'pending' },
     { value: 'Blocked', label: 'Blocked' },
     { value: 'Active', label: 'Active' },
+]
+export  const manageuserStatus=[
+    { value: 'Blocked', label: 'Blocked' },
+            { value: 'Active', label: 'Active' },
+
 ]
 export const options2 = [
     { label: 'Developer', isDisabled: true },

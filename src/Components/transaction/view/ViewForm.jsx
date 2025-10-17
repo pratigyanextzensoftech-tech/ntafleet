@@ -106,9 +106,13 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
       {/* ✅ Row 1: Dates + StartProv + Unit */}
       <Row>
         <Col sm="3">
-          <FormGroup>
+        <Row>
+          <FormGroup className="m-form__group">
             <InputGroup>
+            <Col sm="3">
               <InputGroupText>From</InputGroupText>
+              </Col>
+              <Col sm="9">
               <Controller
                 name="from"
                 control={control}
@@ -121,33 +125,43 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
                   />
                 )}
               />
+              </Col>
             </InputGroup>
           </FormGroup>
+          </Row>
         </Col>
       <Col sm="3">
-  <FormGroup>
-    <Row>
-      <Col sm="2">              
-        <InputGroupText>To</InputGroupText>
-      </Col>
-      <Col className="px-0" sm="10">       
-        <InputGroup>
-          <Controller
-            name="to"
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                className="form-control"
-                selected={field.value}
-                onChange={field.onChange}
-                dateFormat="yyyy-MM-dd"
-              />
-            )}
-          />
-        </InputGroup>
-      </Col>
-    </Row>
-  </FormGroup>
+   <Row>
+                                <FormGroup className="m-form__group">
+                                    <InputGroup>
+                                        <Col sm="3">
+
+                                            <InputGroupText>
+                                                To
+                                            </InputGroupText>
+                                        </Col>
+                                        <Col sm="9">
+
+                                            <Controller
+                                                name="to"
+                                                control={control}
+                                                rules={{ required: "Required" }}
+                                                render={({ field }) => (
+                                                    <DatePicker
+                                                        className={`form-control digits`}
+                                                        selected={field.value}
+                                                        onChange={(date) => field.onChange(date)}
+                                                    />
+                                                )}
+                                            />
+                                        </Col>
+                                    </InputGroup>
+
+                                    {errors.to && (
+                                        <span className="text-danger">{errors.to.message}</span>
+                                    )}
+                                </FormGroup>
+                            </Row>
 </Col>
 
 

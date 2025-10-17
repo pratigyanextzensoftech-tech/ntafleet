@@ -5,8 +5,12 @@ import { Row, Col, Form, FormGroup,  InputGroup, InputGroupText } from 'reactstr
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import HeaderCard from '../../Common/Component/HeaderCard';
-import SupplierDropDown from '../../Forms/FormControl/formInput/SupplierDropDown';
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import useSupplier from '../../../Hooks/useSupplier';
 const ZeroDiscount = ({title,btnTitle}) => {
+    const { supplier, loading, error } = useSupplier();
+
     const {
         register,
         control,
@@ -31,41 +35,49 @@ const ZeroDiscount = ({title,btnTitle}) => {
                
                 <Row className="mt-3">
   <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  State </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control " type="text"  {...register('state', { required: true })} />
-                            </InputGroup>
-                            {errors.state && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+        <InputText
+            name="state"
+            label="State"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "State is required" }}
+          />
+                    
                         </Col>
     <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  City Name </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control " type="text"  {...register('city', { required: true })} />
-                            </InputGroup>
-                            {errors.city && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+     <InputText
+            name="city"
+            label=" City Name "
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "City is required" }}
+          />
+                      
                         </Col>
                         <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Location #(6 Digit) </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control " type="text"  {...register('location', { required: true })} />
-                            </InputGroup>
-                            {errors.location && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                        <InputText
+            name="location"
+            label=" Location #(6 Digit)"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                      
                         </Col>
 <Col sm="3">
-              <SupplierDropDown name="Company" control={control}/>
- 
+ <DropDown
+           name="supplier"
+  label="Supplier"
+          errors={errors}
+  control={control}
+  rules={{ required: "supplier is required" }}
+  placeholder="Select supplier"
+  // loading={companyLoading}
+  options={supplier}
+ /> 
                 </Col>
 
                   </Row>

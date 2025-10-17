@@ -3,7 +3,7 @@ import { Form, Row, Col, Card, CardBody, FormGroup, Input, InputGroupText ,Input
 import { Btn } from '../../../AbstractElements';
 import { useForm } from 'react-hook-form';
 
-
+import InputText from '../../Forms/FormControl/formInput/InputText';
 const SupplierList = ({btntitle,btnTitle1}) => {
      const {
             register,
@@ -27,15 +27,15 @@ const SupplierList = ({btntitle,btnTitle1}) => {
 <Row>
  
                  <Col sm='9'>
-                    <FormGroup className=" m-form__group">
-                      <InputGroup>
-                        <InputGroupText>  Supplier Name </InputGroupText>
-                        <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('SupplierName', { required: true })} />
-                      </InputGroup>
-                      {errors.userName && (
-                        <span className="text-danger">Supplier Name is required</span>
-                      )}
-                    </FormGroup>
+                   <InputText
+            name="supplier"
+            label="Supplier Name"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                   
                   </Col>
              
 

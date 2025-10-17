@@ -1,11 +1,12 @@
 
 import React, { Fragment } from 'react';
-import { Row, Col, Card, CardBody, Form, FormGroup, Label, Input, InputGroup, InputGroupText } from 'reactstrap';
+import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
-import { Controller,useForm } from 'react-hook-form';
-import Select from 'react-select'
+import { useForm } from 'react-hook-form';
 import { type } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
 const PrimaryMenu = () => {
      const {
             register,
@@ -23,47 +24,40 @@ const PrimaryMenu = () => {
             <Form>
                 <Row>
                     <Col md="3">
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText> Menu Name</InputGroupText>
-                                <Input className="form-control" type="text" />
-                            </InputGroup>
-                        </FormGroup>
+                       <InputText
+            name="name"
+            label="Menu Name"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                   
                     </Col>
                     <Col md="3">
-                        <FormGroup className=" m-form__group">
-                            <InputGroup>
-                                <InputGroupText>Menu Link</InputGroupText>
-                                <Input className="form-control" type="text" />
-                            </InputGroup>
-                        </FormGroup>
+                       <InputText
+            name="link"
+            label="Menu Link"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                    
                     </Col>
                     <Col md="3">
-                        <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Type</InputGroupText>
-                      <Controller
-                        name="type"
-                                                rules={{ required: "Type is required" }}
-
-                                                control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-     options={
-            type
-            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select  Type"
-                          />
-                        )}
-                      />
-                    </InputGroup>
-
-                    {errors.type && (
-                      <span className="text-danger">{errors.type?.message}</span>
-                    )}
-                  </FormGroup>
+                    <DropDown
+           name="type"
+  label="Type"
+  control={control}
+          errors={errors}
+  rules={{ required: "Type is required" }}
+  autoSelectFirst={true}
+  placeholder="Select Type"
+  // loading={companyLoading}
+  options={type}
+ />
+                  
                     </Col>
                      <Col md={3}>
                                              <div className='text-end'>

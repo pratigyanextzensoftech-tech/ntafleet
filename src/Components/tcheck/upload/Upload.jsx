@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Row, Col, Form,  Input, InputGroupText } from 'reactstrap';
+import { Row, Col, Form } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import InputText from '../../Forms/FormControl/formInput/InputText';
 const Upload = ({ btnTitle }) => {
     const {
         register,
@@ -23,16 +24,15 @@ const Upload = ({ btnTitle }) => {
         <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)} >
             <Row>
                 <Col sm="10">
-                    <Row>
-                        <Col className='px-0' sm="2">
-
-                            <InputGroupText className='h-100'>Select File</InputGroupText>
-                        </Col>
-                        <Col className='px-0' sm="10">
-
-                            <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />
-                        </Col>
-                    </Row>
+                                 <InputText
+            name="file"
+            label="File"
+            type="file"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                       
                 </Col>
                 <Col sm="2" >
                     <div className='text-end'>
