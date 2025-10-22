@@ -24,8 +24,7 @@ const StateForm = () => {
             <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px"}}>
                         <div  className='bg-primary p-2 my-3'>
                 <HeaderCard title="Add State    " />
-                </div>
-               
+                </div>   
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Row>
                             <Col md="4">

@@ -2,65 +2,87 @@
 import React, { Fragment } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
-import HeaderCard from '../../Common/Component/HeaderCard';
-
+import { useForm } from 'react-hook-form';
+import InputText from '../../Forms/FormControl/formInput/InputText';
 const UltramarPetro = () => {
+      const {
+                register,
+                control,
+                reset,
+                handleSubmit,
+                formState: { errors, isSubmitted, isValid },
+            } = useForm();
     return (
         <Fragment >
             <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px"}}>
-                  
-               
                     <Form>
                         <Row>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Esso Location</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                              <InputText
+            name="essoLoc"
+            label="Esso Location"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                               
                             </Col>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Esso City</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                              <InputText
+            name="essoCity"
+            label="Esso City"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                              
                             </Col>
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Esso State</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                    <InputText
+            name="essoState"
+            label="Esso State"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
                             </Col>
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <InputGroup className="mb-3">
-                                    <InputGroupText>Petro Location</InputGroupText>
-                                    <Input className="form-control" type="text"  />
-                                </InputGroup>
+                               <InputText
+            name="petroLoc"
+            label="Petro Location"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                              
                             </Col>
                             
                             <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Petro City</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                <InputText
+            name="petroCity"
+            label="Petro City"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
                             </Col>
                            
                              <Col md="4">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Petro State</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                                      <InputText
+            name="petroState"
+            label="Petro State"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
                             </Col>
 
                       

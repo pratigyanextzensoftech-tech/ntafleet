@@ -3,8 +3,16 @@ import React, { Fragment } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
-
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useForm } from 'react-hook-form';
 const CountryForm = () => {
+       const {
+                register,
+                control,
+                reset,
+                handleSubmit,
+                formState: { errors, isSubmitted, isValid },
+            } = useForm();
     return (
         <Fragment >
             <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px"}}>
@@ -15,12 +23,15 @@ const CountryForm = () => {
                     <Form>
                         <Row>
                             <Col md="8">
-                                <FormGroup className=" m-form__group">
-                                    <InputGroup>
-                                        <InputGroupText>Country</InputGroupText>
-                                        <Input className="form-control" type="text"  />
-                                    </InputGroup>
-                                </FormGroup>
+                               <InputText
+            name="country"
+            label="Country Name"
+            type="text"
+            register={register}
+            errors={errors}
+            rules={{ required: "Required" }}
+          />
+                              
                             </Col>
                             <Col md="4">
                               <div className='text-end'>
