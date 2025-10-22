@@ -9,7 +9,7 @@ const Sidebar = (props) => {
   const { addSidebarLayouts, toggleIcon } = useContext(CustomizerContext);
   const [mainmenu, setMainMenu] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
-
+  
   // ✅ Handle window resize to switch layouts dynamically
   const handleResize = () => {
     const currentWidth = window.innerWidth;
@@ -25,16 +25,25 @@ const Sidebar = (props) => {
 
   // ✅ Fetch Menu API
   const MenuData = async () => {
+         const userID=localStorage.getItem("userId");
+
     try {
-      const resp = await axios.get(MenuApi);
-      setMainMenu(resp.data);
+      const resp = await axios.post(MenuApi,{"userID":userID});
+          console.log(resp);
+
+      console.log(userID);
+      setMainMenu(resp.data.Menu);
     } catch (error) {
       console.log("Menu fetch cancelled", error);
     }
   };
 
+  
+
   // ✅ useEffect to setup listeners and fetch data
   useEffect(() => {
+    //  const userID=localStorage.getItem("userId");
+
     handleResize();
     window.addEventListener("resize", handleResize);
     MenuData();

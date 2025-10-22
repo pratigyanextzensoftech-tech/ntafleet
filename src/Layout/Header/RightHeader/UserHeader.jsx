@@ -10,7 +10,7 @@ import { Account, Admin, Inbox, LogOut, Taskboard } from "../../../Constant";
 const UserHeader = () => {
   const history = useNavigate();
   const [profile, setProfile] = useState("");
-  const [name, setName] = useState("Emay Walter");
+  const [name, setName] = useState("");
   const { layoutURL } = useContext(CustomizerContext);
   const authenticated = JSON.parse(localStorage.getItem("authenticated"));
   const auth0_profile = JSON.parse(localStorage.getItem("auth0_profile"));
@@ -25,6 +25,9 @@ const UserHeader = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("auth0_profile");
     localStorage.removeItem("Name");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("login");
+
     localStorage.setItem("authenticated", false);
     history(`${process.env.PUBLIC_URL}/login`);
   };

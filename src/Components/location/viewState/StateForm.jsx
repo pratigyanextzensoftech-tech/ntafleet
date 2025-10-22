@@ -17,7 +17,6 @@ const StateForm = () => {
       const onSubmit = (data) => {
         console.log("Form Data:", data);  // ✅ This will print your inputs
         // alert("Form submitted successfully!");
-       
       };   
     return (
         <Fragment >

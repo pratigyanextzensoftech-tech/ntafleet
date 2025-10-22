@@ -17,7 +17,6 @@ const index = () => {
 
            <div className="bg-primary p-2 my-3">
                            <HeaderCard title="Filters" />
-
                       </div>
 <TransactionList btnTitle="Search Data" btnTitle1="Reset"/>
 </div>

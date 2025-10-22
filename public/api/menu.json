@@ -28,11 +28,8 @@
         { "path": "/create_Bulk_Discount", "title":"Create Bulk Discount", "type": "link" },
         { "path": "/zero_Discount_Location", "title": "Zero Discount Location", "type": "link" }
         ]
-      }
-    ]
-  },
-  {
-    "Items": [
+      },
+     
       {
         "title": "Retail Prices ",
         "icon": "price",
@@ -173,7 +170,7 @@
         ]
       },
       {
-        "title": "Supplier    ",
+        "title": "Supplier",
         "icon": "supply",
         "path": "/app/users/profile",
         "type": "sub",

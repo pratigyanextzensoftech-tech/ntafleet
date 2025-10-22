@@ -1,80 +1,80 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
-import { Btn, H4, P } from "../AbstractElements";
-import { Otp,Verify_otp } from "../Constant";
-import {Image} from "../AbstractElements";
+import { Btn, H4, P, Image } from "../AbstractElements";
+import { Otp as OtpLabel, Verify_otp } from "../Constant";
 import NtaIcon from "../assets/images/logo/textLogo.webp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import man from "../assets/images/dashboard/profile.png";
-import CustomizerContext from "../_helper/Customizer";
-import OtherWay from "./OtherWay";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from '../Layout/Loader/index'
-const OtpVerify = ({ selected }) => {
-  const [otp, setOtp] = useState("");
-    const [loading, setLoading] = useState(false);
+import OtherWay from "./OtherWay";
+
+const OtpVerify = () => {
+  const location = useLocation();
   const history = useNavigate();
-  // const { layoutURL } = useContext(CustomizerContext);
+  const [enteredOtp, setEnteredOtp] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [value, setValue] = useState(localStorage.getItem("profileURL" || man));
-  const [name, setName] = useState(localStorage.getItem("Name"));
+  // OTP and user info sent from login page
+  const { otp: sentOtp, userId, name } = location.state || {};
 
-  useEffect(() => {
-    localStorage.setItem("profileURL", man);
-    localStorage.setItem("Name", "Emay Walter");
-  }, [value, name]);
+  // useEffect(() => {
+  //   if (!sentOtp) {
+  //     toast.error("OTP not found! Please login again.");
+  //     history("/login");
+  //   }
+  // }, [sentOtp, history]);
 
-  const otpVerify = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const otpVerify = (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const enteredOtp = otp || "123456"; // use local variable to avoid state lag
-
-  // Give React time to render the loader
-  setTimeout(() => {
-    if (enteredOtp === "123456") {
-      toast.success("OTP verified successfully!");
-
-      // Show loader for a bit before navigation
-      setTimeout(() => {
-        history(`/dashboard`);
+    setTimeout(() => {
+      if (enteredOtp == sentOtp) {
+        toast.success("OTP verified successfully!");
         setLoading(false);
-      }, 1000);
-
-    } else {
-      toast.error("Wrong OTP!");
-      setLoading(false);
-    }
-  }, 100); // 100ms delay ensures loader appears
-};
-
-
+        history("/dashboard"); // navigate to next page
+      } else {
+        toast.error("Invalid OTP!");
+        setLoading(false);
+      }
+    }, 500);
+  };
 
   return (
     <Fragment>
-       {loading && <Loader loading={loading}/>}
+      {loading && <Loader loading={loading}/>}
 
       <Container fluid={true} className={`p-0 login-page ${loading ? "loading-active" : ""}`}>
         <Row>
           <Col xs="12">
             <div className="login-card">
               <div className="login-main login-tab">
-                          <Image attrImage={{ className: "img-fluid  my-4 ", src: `${NtaIcon}`, alt: "", width:"200px" }} />
+                <Image attrImage={{ className: "img-fluid my-4", src: NtaIcon, alt: "", width:"200px" }} />
                 <Form className="theme-form">
-                  <H4>{selected === "simpleLogin" ? "" : "Please Enter Otp Send on Email"}</H4>
-                  <P>{"otp send at given Email"}</P>
+                  <H4>Please Enter OTP sent to {name || "your email"}</H4>
+                  <P>Enter the OTP to verify your account</P>
                   <FormGroup>
-                    <Label className="col-form-label">{Otp}</Label>
-                    <Input className="form-control" type="text" onChange={(e) => setOtp(e.target.value)} value={otp} />
-                  </FormGroup>     
+                    <Label className="col-form-label">{OtpLabel}</Label>
+                    <Input
+                      type="text"
+                      onChange={(e) => setEnteredOtp(e.target.value)}
+                      value={enteredOtp}
+                    />
+                  </FormGroup>
                   <OtherWay />
-                      <Btn attrBtn={{ color: "primary", className: "d-block w-100 mt-2", onClick: (e) => otpVerify(e) }}>{Verify_otp}</Btn>
+                  <Btn
+                    attrBtn={{ color: "primary", className: "d-block w-100 mt-2", onClick: otpVerify }}
+                  >
+                    {Verify_otp}
+                  </Btn>
                 </Form>
               </div>
             </div>
           </Col>
         </Row>
       </Container>
+
       <ToastContainer />
     </Fragment>
   );
