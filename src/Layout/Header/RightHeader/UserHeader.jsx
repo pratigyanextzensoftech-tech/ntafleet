@@ -29,7 +29,7 @@ const UserHeader = () => {
     localStorage.removeItem("login");
 
     localStorage.setItem("authenticated", false);
-    history(`${process.env.PUBLIC_URL}/login`);
+    history(`/login`);
   };
 
   const UserMenuRedirect = (redirect) => {

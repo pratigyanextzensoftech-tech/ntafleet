@@ -40,7 +40,7 @@ const Signin = ({ selected }) => {
 console.log(response);
 
       // Assuming API returns { success: true, data: { token, name, profileURL } }
-      if (response.data.admin) {
+      if (response.data.message==="OTP Sent successful") {
         const userData = response.data.admin;
 
         // Save token or user info in localStorage
@@ -50,7 +50,7 @@ console.log(response);
         localStorage.setItem("Name", userData.name || "User");
         localStorage.setItem("userId", userData.id || "UserId");
 
-        toast.success("Successfully logged in!");
+        toast.success(response.data.message);
 
         setTimeout(() => {
           setLoading(false);
@@ -58,13 +58,13 @@ console.log(response);
         }, 500);
       } 
       else {
-        toast.error(response.data.message || "Invalid credentials!");
+        toast.error(response.data.message );
         
         setLoading(false);
       }
     } catch (error) {
       console.error("Login error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong!");
+      toast.error(error.response?.data?.message);
       setLoading(false);
     }
   };

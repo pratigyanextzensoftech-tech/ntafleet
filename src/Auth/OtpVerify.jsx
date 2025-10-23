@@ -1,43 +1,41 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { Btn, H4, P, Image } from "../AbstractElements";
 import { Otp as OtpLabel, Verify_otp } from "../Constant";
 import NtaIcon from "../assets/images/logo/textLogo.webp";
 import { useNavigate, useLocation } from "react-router-dom";
-import man from "../assets/images/dashboard/profile.png";
 import { ToastContainer, toast } from "react-toastify";
-import Loader from '../Layout/Loader/index'
+import Loader from "../Layout/Loader";
 import OtherWay from "./OtherWay";
-
+import {MenuContext} from "../_helper/Menu/MenuProvider";
 const OtpVerify = () => {
+  const { mainmenu } = useContext(MenuContext); // ✅ from provider
   const location = useLocation();
-  const history = useNavigate();
+  const navigate = useNavigate();
+
   const [enteredOtp, setEnteredOtp] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // OTP and user info sent from login page
-  const { otp: sentOtp, userId, name } = location.state || {};
-
-  // useEffect(() => {
-  //   if (!sentOtp) {
-  //     toast.error("OTP not found! Please login again.");
-  //     history("/login");
-  //   }
-  // }, [sentOtp, history]);
+  const { otp: sentOtp, userId } = location.state || {};
 
   const otpVerify = (e) => {
     e.preventDefault();
     setLoading(true);
 
     setTimeout(() => {
-      if (enteredOtp == sentOtp) {
+      if (enteredOtp === sentOtp) {
         toast.success("OTP verified successfully!");
+
+        // ✅ Save user info only
+        localStorage.setItem("userId", userId);
+
+        // ✅ Menu is already loaded in MenuProvider from localStorage
         setLoading(false);
-        history("/dashboard"); // navigate to next page
+        navigate("/dashboard");
       } else {
         toast.error("Invalid OTP!");
         setLoading(false);
-                history("/dashboard"); // navigate to next page
+                navigate("/dashboard");
 
       }
     }, 500);
@@ -45,28 +43,39 @@ const OtpVerify = () => {
 
   return (
     <Fragment>
-      {loading && <Loader loading={loading}/>}
-
-      <Container fluid={true} className={`p-0 login-page ${loading ? "loading-active" : ""}`}>
+      {loading && <Loader loading={loading} />}
+      <Container fluid className="p-0 login-page">
         <Row>
           <Col xs="12">
             <div className="login-card">
               <div className="login-main login-tab">
-                <Image attrImage={{ className: "img-fluid my-4", src: NtaIcon, alt: "", width:"200px" }} />
+                <Image
+                  attrImage={{
+                    className: "img-fluid my-4",
+                    src: NtaIcon,
+                    alt: "",
+                    width: "200px",
+                  }}
+                />
                 <Form className="theme-form">
-                  <H4>Please Enter OTP sent to {name || "your email"}</H4>
-                  <P>Enter the OTP to verify your account</P>
+                  <H4>Enter the OTP sent to your email</H4>
+                  <P>Please enter the one-time password to verify your account.</P>
                   <FormGroup>
                     <Label className="col-form-label">{OtpLabel}</Label>
                     <Input
                       type="text"
                       onChange={(e) => setEnteredOtp(e.target.value)}
                       value={enteredOtp}
+                      placeholder="Enter OTP here"
                     />
                   </FormGroup>
                   <OtherWay />
                   <Btn
-                    attrBtn={{ color: "primary", className: "d-block w-100 mt-2", onClick: otpVerify }}
+                    attrBtn={{
+                      color: "primary",
+                      className: "d-block w-100 mt-2",
+                      onClick: otpVerify,
+                    }}
                   >
                     {Verify_otp}
                   </Btn>
@@ -76,7 +85,6 @@ const OtpVerify = () => {
           </Col>
         </Row>
       </Container>
-
       <ToastContainer />
     </Fragment>
   );
