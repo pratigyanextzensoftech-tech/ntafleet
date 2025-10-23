@@ -23,7 +23,7 @@ const OtpVerify = () => {
     setLoading(true);
 
     setTimeout(() => {
-      if (enteredOtp === sentOtp) {
+      if (enteredOtp == sentOtp) {
         toast.success("OTP verified successfully!");
 
         // ✅ Save user info only
