@@ -219,6 +219,7 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
   label="Company"
   control={control}
   placeholder="Select Company"
+  defaultValueId={0}
   // loading={companyLoading}
   options={companyOptions}
  />

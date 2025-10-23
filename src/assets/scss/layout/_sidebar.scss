@@ -8,6 +8,11 @@
   width: 8px;
   border-top: 1px solid rgba($theme-body-sub-title-color, 0.4);
 }
+ .header-logo-wrapper .media  {
+      max-height: 59px;
+ 
+    }
+
 
 %sidebar-active-dot {
   position: absolute;
@@ -106,10 +111,10 @@
     .header-wrapper {
       width: 100%;
       align-items: center;
-      padding: $header-wrapper-padding;
+      padding: 10px 20px;
       position: relative;
       @media (max-width: 1399px) {
-        padding: 22px 20px;
+        padding: 10px 20px;
       }
       .search-full {
         background-color: $white;
@@ -282,14 +287,6 @@
             font-size: 16px;
           }
         }
-.sidebar-icon {
-  color: #333; /* or desired color */
-  font-size: 1.5rem;
-}
-
-.sidebar-link:hover .sidebar-icon {
-  color: #007bff; /* Change to your desired hover color */
-}
 
         .bookmark-flip {
           width: unset !important;
@@ -697,7 +694,7 @@
 
     .page-title {
       padding: $page-title-padding;
-      margin: 0 -27px 0px;
+      margin: 0 -27px 30px;
       background-color: $white;
       > .row {
         margin: 0;
@@ -814,7 +811,7 @@
 
     .page-body-wrapper {
       .sidebar-wrapper {
-        height:auto;
+        height: 54px;
         line-height: inherit;
         top: 79px;
         background: $white;
@@ -844,7 +841,7 @@
         .sidebar-main {
           text-align: left;
           position: relative;
-          margin-top:20px;
+
           .left-arrow,
           .right-arrow {
             position: absolute;
@@ -876,7 +873,7 @@
             padding: 0;
             line-height: normal;
             direction: ltr;
-            text-align: left; 
+            text-align: left;
             display: -webkit-box !important;
             padding: 0 5px;
             transition: all 0.5s ease;
@@ -935,8 +932,8 @@
 
             > li {
               position: relative;
-              padding-top: 5px;
-              padding-bottom: 5px;
+              padding-top: 10px;
+              padding-bottom: 10px;
 
               &:hover {
                 > a {
@@ -973,7 +970,8 @@
                 line-height: 23px;
                 text-decoration: none;
                 text-transform: capitalize;
-                padding: 5px 10px; 
+                padding: 7px 7px;
+                margin: 0 3px;
                 letter-spacing: 0.04em;
                 position: relative;
                 border-radius: 5px;
@@ -1004,9 +1002,10 @@
                   width: 18px;
                   height: 18px;
                   vertical-align: middle;
-                  margin-right: 0px;
+                  margin-right: 2px;
                 }
               }
+
               .sidebar-submenu {
                 position: fixed;
                 // left: 0;
@@ -1014,7 +1013,6 @@
                 box-shadow: 0 0 1px 0 $dark-gray;
                 padding: 15px 0px 15px 0px;
                 background: white;
-                width: auto;
                 li {
                   border: 0;
                   float: none;
@@ -1252,15 +1250,6 @@
         }
       }
     }
-.sidebar-submenu,
-.nav-sub-childmenu {
-  display: none;
-}
-
-.sidebar-submenu.show,
-.nav-sub-childmenu.show {
-  display: block;
-}
 
     .page-body-wrapper {
       div {
@@ -1278,7 +1267,7 @@
 
           .logo-wrapper,
           .logo-icon-wrapper {
-            padding: 27px 10px;
+            padding: 27px 30px;
             box-shadow: -9px 0 20px rgba($semi-dark, 0.1);
           }
 

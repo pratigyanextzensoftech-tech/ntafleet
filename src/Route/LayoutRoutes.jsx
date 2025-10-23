@@ -1,22 +1,19 @@
-import React, { Fragment } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { routes } from './Routes';
-import AppLayout from '../Layout/Layout';
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { routes } from "./Routes";
+import AppLayout from "../Layout/Layout";
 
 const LayoutRoutes = () => {
-
   return (
-    <>
-      <Routes>
+    <Routes>
+      <Route element={<AppLayout />}>
+        {/* Default redirect when logged in */}
+        <Route index element={<Navigate to="/dashboard" replace />} />
         {routes.map(({ path, Component }, i) => (
-          <Fragment key={i}>
-          <Route element={<AppLayout />} key={i}>
-            <Route path={path} element={Component} />
-          </Route>
-          </Fragment>
+          <Route key={i} path={path} element={Component} />
         ))}
-      </Routes>
-    </>
+      </Route>
+    </Routes>
   );
 };
 

@@ -85,7 +85,7 @@ const SidebarMenuItems = ({ setMainMenu, mainmenu, sidebartoogle, setNavActive, 
 
               {menuItem.type === "link" && (
                 <Link
-                  to={`${menuItem.path}/${layoutId}`}
+                  to={`${menuItem.path}`}
                   className="sidebar-link sidebar-title link-nav"
                   onClick={() => toggletNavActive(menuItem)}
                 >
@@ -126,7 +126,7 @@ const SidebarMenuItems = ({ setMainMenu, mainmenu, sidebartoogle, setNavActive, 
 
                       {childrenItem.type === "link" && (
                         <Link
-                          to={`${childrenItem.path}/${layoutId}`}
+                          to={`${childrenItem.path}`}
                           className={`sidebar-link ${childrenItem.active ? "active" : ""}`}
                           onClick={() => toggletNavActive(childrenItem)}
                         >
@@ -140,7 +140,7 @@ const SidebarMenuItems = ({ setMainMenu, mainmenu, sidebartoogle, setNavActive, 
                             <li key={key}>
                               {childrenSubItem.type === "link" && (
                                 <Link
-                                  to={`${childrenSubItem.path}/${layoutId}`}
+                                  to={`${childrenSubItem.path}`}
                                   className={`sidebar-link ${childrenSubItem.active ? "active" : ""}`}
                                   onClick={() => toggletNavActive(childrenSubItem)}
                                 >

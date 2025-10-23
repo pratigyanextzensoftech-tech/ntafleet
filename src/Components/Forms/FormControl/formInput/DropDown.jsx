@@ -7,25 +7,25 @@ const DropDown = ({
   control,
   name,
   label = "Select Option",
-  placeholder = "Select  option",
+  placeholder = "Select option",
   loading = false,
   options = [],
   rules = {},
   errors = {},
-  autoSelectFirst = false, // ✅ flexibility flag
+  defaultValueId = null, // ✅ ID of the option to select by default
 }) => {
   const errorMsg = errors?.[name]?.message;
 
-  // ✅ Automatically set SECOND option (index 1) if available
+  // ✅ Automatically set default value based on ID
   useEffect(() => {
-    if (
-      autoSelectFirst &&
-      options?.length > 1 &&
-      control?._formValues[name] == null
-    ) {
-      control._formValues[name] = options[1];
+    console.log(options,"options")
+    if (defaultValueId != null && control?._formValues[name] == null) {
+      const defaultOption = options.find((opt) => opt.value === defaultValueId);
+      if (defaultOption) {
+        control._formValues[name] = defaultOption;
+      }
     }
-  }, [options, control, name, autoSelectFirst]);
+  }, [defaultValueId, options, control, name]);
 
   if (loading) return <p>Loading items...</p>;
 
@@ -38,22 +38,19 @@ const DropDown = ({
           name={name}
           control={control}
           rules={rules}
-          defaultValue={autoSelectFirst ? options?.[1] || null : null} // ✅ now index 1
+          defaultValue={options.find((opt) => opt.value === defaultValueId) || null}
           render={({ field }) => (
             <Select
               {...field}
               options={options}
               placeholder={placeholder}
-              className={`form-control p-0 border-0 ${
-                errorMsg ? "is-invalid" : ""
-              }`}
+              className={`form-control p-0 border-0 ${errorMsg ? "is-invalid" : ""}`}
               onChange={(selected) => field.onChange(selected)}
               value={
                 field.value
-                  ? options.find((opt) => opt.value === field.value?.value) ||
-                    field.value
-                  : autoSelectFirst
-                  ? options?.[1] || null // ✅ second option
+                  ? options.find((opt) => opt.value === field.value?.value) || field.value
+                  : defaultValueId != null
+                  ? options.find((opt) => opt.value === defaultValueId) || null
                   : null
               }
             />

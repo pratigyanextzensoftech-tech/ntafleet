@@ -4,12 +4,13 @@ import SidebarLogo from "./SidebarLogo";
 import SidebarMenu from "./SidebarMenu";
 import axios from "axios";
 import { MenuApi } from "../../api";
-
 const Sidebar = (props) => {
   const { addSidebarLayouts, toggleIcon } = useContext(CustomizerContext);
   const [mainmenu, setMainMenu] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
+  // const{loading,mainmenu,error,setMainMenu}=useMenu();
 
+    // const { mainmenu, loading,error,setMainMenu } = useContext(MenuContext);
   // ✅ Handle window resize to switch layouts dynamically
   const handleResize = () => {
     const currentWidth = window.innerWidth;
@@ -25,20 +26,33 @@ const Sidebar = (props) => {
 
   // ✅ Fetch Menu API
   const MenuData = async () => {
+         const userID=localStorage.getItem("userId");
+
     try {
-      const resp = await axios.get(MenuApi);
-      setMainMenu(resp.data);
+      const resp = await axios.post(MenuApi,{"userID":userID});
+          console.log(resp);
+
+      console.log(userID);
+      setMainMenu(resp.data.Menu);
     } catch (error) {
       console.log("Menu fetch cancelled", error);
     }
   };
 
+  
+
   // ✅ useEffect to setup listeners and fetch data
   useEffect(() => {
+   
+    // const storedMenu = localStorage.getItem("Menu");
+    // if (storedMenu) {
+    //   setMainMenu(JSON.parse(storedMenu));
+    // }
+MenuData();
+    //  const userID=localStorage.getItem("userId");
     handleResize();
     window.addEventListener("resize", handleResize);
-    MenuData();
-
+    // MenuData();
     document.querySelector(".left-arrow")?.classList.add("d-none");
 
     return () => {

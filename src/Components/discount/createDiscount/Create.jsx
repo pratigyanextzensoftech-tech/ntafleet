@@ -93,8 +93,9 @@ rules={{ required: "Country is required" }}
     <DropDown
            name="supplier"
   label="Supplier"
-   errors={errors}
+  errors={errors}
   control={control}
+  autoSelectFirst={true}
   rules={{ required: "supplier is required" }}
   placeholder="Select supplier"
   // loading={companyLoading}
