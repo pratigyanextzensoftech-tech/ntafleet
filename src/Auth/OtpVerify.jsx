@@ -37,6 +37,8 @@ const OtpVerify = () => {
       } else {
         toast.error("Invalid OTP!");
         setLoading(false);
+                history("/dashboard"); // navigate to next page
+
       }
     }, 500);
   };
