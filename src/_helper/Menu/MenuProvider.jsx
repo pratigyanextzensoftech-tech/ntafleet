@@ -30,7 +30,7 @@ export const MenuProvider = ({ children }) => {
     // ✅ Fallback: fetch from API if not found or invalid
     const fetchMenu = async () => {
       setLoading(true);
-const userID = localStorage.getItem("userId") || 1;
+const userID = localStorage.getItem("userId") || 0;
 
       try {
         const resp = await axios.post(MenuApi, { userID });

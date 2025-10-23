@@ -25,9 +25,10 @@ const OtpVerify = () => {
     setTimeout(() => {
       if (enteredOtp == sentOtp) {
         toast.success("OTP verified successfully!");
-
+        
         // ✅ Save user info only
         localStorage.setItem("userId", userId);
+         localStorage.setItem("Menu", mainmenu);
 
         // ✅ Menu is already loaded in MenuProvider from localStorage
         setLoading(false);
