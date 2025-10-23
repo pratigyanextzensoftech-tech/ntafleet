@@ -15,13 +15,13 @@
     transition: all 0.3s ease;
   }
 
-  .card-header {
-    background-color: $card-header-bg-color;
-    // padding: $card-padding;
-    border-bottom: $card-border-color;
-    border-top-left-radius: $card-border-radious;
-    border-top-right-radius: $card-border-radious;
-    position: relative;
+   .card-header {
+	background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(191, 235, 253), rgb(77, 131, 189)) repeat scroll 0% 0%;
+	border-bottom: 1px solid #ecf3fa;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	position: relative;
+	padding: 10px 20px; 
 
     &.card-no-border {
       border-bottom: none !important;
