@@ -147,6 +147,18 @@ const Index = () => {
     fetchData(1, perPage, formData); // fetch new data immediately
   };
 
+  
+  const stickyColumns = tableColumns.map((col, index) => {
+    if (index === 0) {
+      return { ...col, style: { position: "sticky", left: 0, background: "#f9f9f9", zIndex: 2 } };
+    }
+    if (index === tableColumns.length - 1) {
+      return { ...col, style: { position: "sticky", right: 0, background: "#f9f9f9", zIndex: 2 } };
+    }
+    return col;
+  });
+
+
   return (
    
 
@@ -164,10 +176,10 @@ const Index = () => {
        </Col>
      </Row>
 
-     <DataTableComponent
+     <DataTableComponent 
           title="Transactions List"
           tableData={data}
-          tableColumns={tableColumns}
+          tableColumns={stickyColumns}
           loading={loading}
           pagination
           paginationServer

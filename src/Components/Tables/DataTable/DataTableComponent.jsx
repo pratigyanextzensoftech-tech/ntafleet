@@ -19,17 +19,23 @@ const DataTableComponent = ({
   const [data, setData] = useState(tableData);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-
-  const customStyles = {
-    headCells: {
-      style: {
-        fontWeight: "bold",
-        fontSize: "14px",
-        color: "#333",
-      },
+const customStyles = {
+  headCells: {
+    style: {
+      fontWeight: "bold",
+      fontSize: "14px",
+      color: "#e2e5f5ff",
+      backgroundColor: "#0a4f88ff", // ✅ light gray background
+      borderBottom: "2px solid #ddd", // optional: bottom border
     },
-  };
-
+  },
+  cells: {
+    style: {
+      fontSize: "13px",
+      color: "#444",
+    },
+  },
+};
   // ✅ Sync data when parent updates
   useEffect(() => {
     setData(tableData);
@@ -72,7 +78,6 @@ const DataTableComponent = ({
 
   return (
     <Fragment>
-
       <Row>
        <Col sm="12">
          <Card>
@@ -80,6 +85,7 @@ const DataTableComponent = ({
             <HeaderCard title={title} />         
            )} 
            <CardBody>
+               
            <DataTable
             data={data}
             columns={tableColumns}
@@ -97,7 +103,7 @@ const DataTableComponent = ({
             customStyles={customStyles}
             progressPending={loading}
             progressComponent={<Loader loading={loading} />}
-          /> 
+          />  
            </CardBody>
          </Card>
        </Col>
