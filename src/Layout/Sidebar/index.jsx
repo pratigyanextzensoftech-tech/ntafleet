@@ -25,30 +25,30 @@ const Sidebar = (props) => {
 
 
   // ✅ Fetch Menu API
-  const MenuData = async () => {
-         const userID=localStorage.getItem("userId");
+  // const MenuData = async () => {
+  //        const userID=localStorage.getItem("userId");
 
-    try {
-      const resp = await axios.post(MenuApi,{"userID":userID});
-          console.log(resp);
+  //   try {
+  //     const resp = await axios.post(MenuApi,{"userID":userID});
+  //         console.log(resp);
 
-      console.log(userID);
-      setMainMenu(resp.data.Menu);
-    } catch (error) {
-      console.log("Menu fetch cancelled", error);
-    }
-  };
+  //     console.log(userID);
+  //     setMainMenu(resp.data.Menu);
+  //   } catch (error) {
+  //     console.log("Menu fetch cancelled", error);
+  //   }
+  // };
 
   
 
   // ✅ useEffect to setup listeners and fetch data
   useEffect(() => {
    
-    // const storedMenu = localStorage.getItem("Menu");
-    // if (storedMenu) {
-    //   setMainMenu(JSON.parse(storedMenu));
-    // }
-MenuData();
+    const storedMenu = localStorage.getItem("Menu");
+    if (storedMenu) {
+      setMainMenu(JSON.parse(storedMenu));
+    }
+// MenuData();
     //  const userID=localStorage.getItem("userId");
     handleResize();
     window.addEventListener("resize", handleResize);
