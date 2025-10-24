@@ -280,6 +280,4 @@ const OwnerOperator = ({title}) => {
           </Fragment>
   )
 }
-
-
 export default OwnerOperator

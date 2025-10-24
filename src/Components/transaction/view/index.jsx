@@ -17,6 +17,17 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
 
+  
+  const [totals, setTotals] = useState({
+    taxamt: 0,
+    amtcad: 0, 
+    qtyltr: 0,
+    qtygln: 0,
+    amtusd: 0, 
+    fee: 0,
+    amtreal: 0,
+  });
+
   // ✅ Column mapping between UI and API
   const columnsMap = {
     CARD: "card_no",
@@ -38,6 +49,36 @@ const Index = () => {
     TaxAmt: "tax_amt",
     Currency: "currency",
   };
+  
+
+   const fetchTotals = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.ntafleetsolutions.com/api/transactions/totals` 
+      );
+       setTotals({
+        taxamt: Number(response.data.taxamt || 0),
+        amtcad: Number(response.data.amtcad || 0),       
+        qtyltr: Number(response.data.qtyltr || 0),
+        qtygln: Number(response.data.qtygln || 0),
+        amtusd: Number(response.data.amtusd || 0), 
+        fee: Number(response.data.fee || 0),
+        amtreal: Number(response.data.amtreal || 0),
+      });
+    } catch (error) {
+      console.error("Error fetching totals:", error);
+      setTotals({
+        taxamt: 0,
+        amtcad: 0,
+        qtyltr: 0,
+        qtygln: 0,
+        amtusd: 0,
+        fee: 0,
+        amtreal: 0,
+      });
+    }
+  };
+
 
   // ✅ Build column definitions for DataTable
   useEffect(() => {
@@ -119,6 +160,7 @@ const Index = () => {
   // ✅ Initial load
   useEffect(() => {
     fetchData(currentPage, perPage, filters);
+    fetchTotals();
   }, [perPage]);
 
   // ✅ Page change
@@ -147,6 +189,18 @@ const Index = () => {
     fetchData(1, perPage, formData); // fetch new data immediately
   };
 
+  
+  const stickyColumns = tableColumns.map((col, index) => {
+    if (index === 0) {
+      return { ...col, style: { position: "sticky", left: 0, background: "#f9f9f9", zIndex: 2 } };
+    }
+    if (index === tableColumns.length - 1) {
+      return { ...col, style: { position: "sticky", right: 0, background: "#f9f9f9", zIndex: 2 } };
+    }
+    return col;
+  });
+
+
   return (
    
 
@@ -164,10 +218,11 @@ const Index = () => {
        </Col>
      </Row>
 
-     <DataTableComponent
+     <DataTableComponent 
           title="Transactions List"
+          totalData={totals}
           tableData={data}
-          tableColumns={tableColumns}
+          tableColumns={stickyColumns}
           loading={loading}
           pagination
           paginationServer
@@ -175,6 +230,9 @@ const Index = () => {
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
         />
+         
+      
+       
    </Container>
  </Fragment>
 
