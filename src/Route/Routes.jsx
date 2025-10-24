@@ -74,6 +74,7 @@ import BulkPrice from '../Components/pricing/bulk_price/index';
 import EssoBulk from '../Components/pricing/essoBulk/index';
 import LoveBulk from '../Components/pricing/loveBulk/index';
 import Ultramar from '../Components/pricing/ultramar/index'
+import TaPetroBulk from '../Components/pricing/taPetroBulk/index';
 import UpdateFgRack from '../Components/pricing/updateFg/index';
 import UpdateTaPetro from '../Components/pricing/updateTaPetro/index';
 import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
@@ -95,7 +96,7 @@ export const routes = [
   { path: `/add_company`, Component: <AddCompany /> },
   { path: `/view_company`, Component: <ViewCompany /> },
   { path: `/company_info`, Component: <CompanyInfo /> },
-  { path: `/manage_subLogin`, Component: <SubLOgin /> },
+  { path: `/sub_login`, Component: <SubLOgin /> },
   { path: `/create_invoice`, Component: <CreateInvoice /> },
   { path: `/view_invoice`, Component: <ViewInvoice /> },
   { path: `/check_invoice`, Component: <CheckOldINvoice /> },
@@ -105,10 +106,10 @@ export const routes = [
     { path: `/create_esso_Invoice`, Component: <CreateEssoInvoice /> },
     { path: `/manage_Macro`, Component: <ManageMacro /> },
     { path: `/create_customized_Invoice`, Component: <CreateCustomized /> },
-    { path: `/create_ui_invoice`, Component: <CreateUltramar /> },
+    { path: `/create_ul_invoice`, Component: <CreateUltramar /> },
     { path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
     { path: `/send_bulk_mail`, Component: <SendBulk /> },
-    { path: `/compare_Invoices`, Component: <CompareInvoice /> },
+    { path: `/compare_invoice`, Component: <CompareInvoice /> },
     { path: `/view_moneyCode_invoices`, Component: <ViewMoneyCode /> },
     { path: `/suppler_list`, Component: <SupplierList /> },
     { path: `/add_supplier`, Component: <SupplierList /> },
@@ -126,7 +127,7 @@ export const routes = [
     { path: `/add_card`, Component: < AddFuel/> },
     { path: `/view_fuelCards`, Component: < ViewFuel/> },
     { path: `/efs_view_card`, Component: < EFSFuel/> },
-    { path: `/last24_update`, Component: < HistoryFuel/> },
+    { path: `/card_update`, Component: < HistoryFuel/> },
     { path: `/create_discount`, Component: < CreateDiscount/> },
     { path: `/view_Discount`, Component: < ViewDiscount/> },
     { path: `/discount_Sheet`, Component: < DiscountSheet/> },
@@ -174,6 +175,7 @@ export const routes = [
     { path: `/update_love_rack_pricing`, Component: <UpdateLoveRack /> },
     { path: `/OwnerUpdate_rack_price`, Component: <OwnerOperator /> },
     { path: `/esso_group_rack_price`, Component: <EssoGroup /> },
-    { path: `/ultramarGroup_rack_price`, Component: <UltramarGroup /> },
+    { path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
     { path: `/download_bulk_excel`, Component: <DownloadBulk /> },
+    { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
 ];
