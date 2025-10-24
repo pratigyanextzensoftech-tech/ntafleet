@@ -8,10 +8,7 @@
   width: 8px;
   border-top: 1px solid rgba($theme-body-sub-title-color, 0.4);
 }
- .header-logo-wrapper .media  {
-      max-height: 59px;
  
-    }
 
 
 %sidebar-active-dot {
@@ -813,7 +810,7 @@
       .sidebar-wrapper {
         height: 54px;
         line-height: inherit;
-        top: 79px;
+        top: 55px;
         background: $white;
         box-shadow: 0px 9px 24px rgba($semi-dark, 0.05);
         overflow-x: hidden;
@@ -1159,7 +1156,7 @@
         }
       }
       .page-body {
-        margin-top: 135px;
+        margin-top: 105px;
       }
       .sidebar-main-title {
         display: none !important;

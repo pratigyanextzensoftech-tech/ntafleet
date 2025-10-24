@@ -13,7 +13,7 @@ const Breadcrumbs = (props) => {
         <div className='page-title'>
           <Row>
             <Col xs='6'>
-              <h4>{props.title}</h4>
+              <h5>{props.title}</h5>
             </Col>
             <Col xs='6'>
               <ol className='breadcrumb'>

@@ -1,25 +1,87 @@
-import React,{Fragment,useState} from 'react'
-import { Breadcrumbs } from '../../AbstractElements'
-import HeaderCard from '../Common/Component/HeaderCard'
-import { Container } from 'reactstrap'
-import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard'
-import { View_Invoice_Table } from '../../Data/tab/ViewInvoiceTable'
-import { View_Invoice } from '../../Data/tab/ViewInvoice'
+import React, { Fragment, useState } from "react";
+import { Breadcrumbs } from "../../AbstractElements";
+import HeaderCard from "../Common/Component/HeaderCard";
+import { Container,Row,Col,Card,CardBody } from "reactstrap";
+import BasicTabCard from "../UiKits/Tabs/BoostrapTabs/BasicTabCard"; 
+
+import BulkRetailInvoice from '../createInvoice/BulkRetailInvoice';
+import SingleRetailMulti from '../createInvoice/SingleRetailMulti';
+import OwnerOperator from '../viewInvoice/OwnerOperator';
+import ViewInvoiceForm from '../viewInvoice/ViewInvoiceForm';
+import CustomizedInvoice from '../viewInvoice/CustomizedInvoice';
+import { tableColumns,dummytabledata } from '../../Data/Table/Defaultdata';
+import DataTableComponent from '../Tables/DataTable/DataTableComponent';
+ 
+const View_Invoice = [
+  {
+    id: '1',
+    label: 'View Invoices',
+    component: <ViewInvoiceForm  title="Filters"/>,
+  },
+  {
+    id: '2',
+    label: 'View Owner Operator Invoices',
+    component: <OwnerOperator title="Filters" />,
+  },
+  {
+    id: '3',
+    label:'View Customised Invoices',
+    component: <CustomizedInvoice title="Filters" />,
+  },
+  
+];
+const View_Invoice_Table = [
+  {
+    id: '1',
+    label: 'View Invoices',
+    component: "Tab1 Content",
+  },
+  {
+    id: '2',
+    label: 'View Owner Operator Invoices',
+    component: "Tab2 Content",
+  },
+  {
+    id: '3',
+    label:'View Customised Invoices',
+    component: "Tab3 Content",
+  },
+  
+];
+
 
 const ViewInvoice = () => {
-  
   return (
     <Fragment>
-         <Breadcrumbs parent='Invoice' title='view Invoice'/>
-         <Container fluid={true}>
-           <HeaderCard title="View Invoice" />
-            <BasicTabCard   tabContent={View_Invoice}/>
-            <div className='my-5'>
-            <BasicTabCard   tabContent={View_Invoice_Table}/>
-</div>
-           </Container>
-           </Fragment>
-  )
-}
+      <Breadcrumbs parent="Invoice" title="View Invoice" />
+      <Container fluid={true}>
 
-export default ViewInvoice
+      <Row>
+       <Col sm="12">
+         <Card>
+           <HeaderCard title="Invoice Filter" />
+           <CardBody>
+            <BasicTabCard tabContent={View_Invoice} />
+           </CardBody>
+         </Card>
+       </Col>
+     </Row>
+
+     <Row>
+       <Col sm="12">
+         <Card>
+           <HeaderCard title="Invoice Filter" />
+           <CardBody>
+            <BasicTabCard tabContent={View_Invoice_Table} />
+           </CardBody>
+         </Card>
+       </Col>
+     </Row>
+
+ 
+      </Container>
+    </Fragment>
+  );
+};
+
+export default ViewInvoice;

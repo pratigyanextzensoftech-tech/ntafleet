@@ -25,7 +25,7 @@ import useCompany from "../../../Hooks/useCompany";
 import useItems from "../../../Hooks/useItems";
 const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
-const { companies: companyOptions, loading: companyLoading } = useCompany();
+  const { companies: companyOptions, loading: companyLoading } = useCompany();
   const { items, loading } = useItems();
 
   const {
@@ -105,65 +105,61 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
 
       {/* ✅ Row 1: Dates + StartProv + Unit */}
       <Row>
+        
         <Col sm="3">
-        <Row>
-          <FormGroup className="m-form__group">
-            <InputGroup>
-            <Col sm="3">
-              <InputGroupText>From</InputGroupText>
-              </Col>
-              <Col sm="9">
-              <Controller
-                name="from"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    className="form-control"
-                    selected={field.value}
-                    onChange={field.onChange}
-                    dateFormat="yyyy-MM-dd"
+          <Row>
+            <FormGroup>
+              <InputGroup>
+                <Col sm="3">
+                  <InputGroupText>From</InputGroupText>
+                </Col>
+                <Col sm="9">
+                  <Controller
+                    name="from"
+                    control={control}
+                    render={({ field }) => (
+                      <DatePicker
+                        className="form-control"
+                        selected={field.value}
+                        onChange={field.onChange}
+                        dateFormat="yyyy-MM-dd"
+                      />
+                    )}
                   />
-                )}
-              />
-              </Col>
-            </InputGroup>
-          </FormGroup>
+                </Col>
+              </InputGroup>
+            </FormGroup>
           </Row>
         </Col>
-      <Col sm="3">
-   <Row>
-                                <FormGroup className="m-form__group">
-                                    <InputGroup>
-                                        <Col sm="3">
+        <Col sm="3">
+          <Row>
+            <FormGroup className="m-form__group">
+              <InputGroup>
+                <Col sm="3">
+                  <InputGroupText>To</InputGroupText>
+                </Col>
+                <Col sm="9">
+                  <Controller
+                    name="to"
+                    control={control}
+                    rules={{ required: "Required" }}
+                    render={({ field }) => (
+                      <DatePicker
+                        className={`form-control digits`}
+                        selected={field.value}
+                        onChange={(date) => field.onChange(date)}
+                      />
+                    )}
+                  />
+                </Col>
+              </InputGroup>
 
-                                            <InputGroupText>
-                                                To
-                                            </InputGroupText>
-                                        </Col>
-                                        <Col sm="9">
-
-                                            <Controller
-                                                name="to"
-                                                control={control}
-                                                rules={{ required: "Required" }}
-                                                render={({ field }) => (
-                                                    <DatePicker
-                                                        className={`form-control digits`}
-                                                        selected={field.value}
-                                                        onChange={(date) => field.onChange(date)}
-                                                    />
-                                                )}
-                                            />
-                                        </Col>
-                                    </InputGroup>
-
-                                    {errors.to && (
-                                        <span className="text-danger">{errors.to.message}</span>
-                                    )}
-                                </FormGroup>
-                            </Row>
-</Col>
-
+              {errors.to && (
+                <span className="text-danger">{errors.to.message}</span>
+              )}
+            </FormGroup>
+          </Row>
+        </Col>
 
         <Col sm="3">
           <FormGroup>
@@ -215,15 +211,16 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
 
         <Col sm="3">
           <DropDown
-           name="company"
-  label="Company"
-  control={control}
-  placeholder="Select Company"
-  defaultValueId={0}
-  // loading={companyLoading}
-  options={companyOptions}
- />
+            name="company"
+            label="Company"
+            control={control}
+            placeholder="Select Company"
+            defaultValueId={0}
+            // loading={companyLoading}
+            options={companyOptions}
+          />
         </Col>
+ 
 
         <Col sm="3">
           <FormGroup>
@@ -248,14 +245,14 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
 
         <Col sm="3">
           {/* <ItemsDropDown name="items" control={control} /> */}
-           <DropDown
-           name="items"
-  label="Items"
-  control={control}
-  placeholder="Select Items"
-  // loading={loading}
-  options={items}
- />
+          <DropDown
+            name="items"
+            label="Items"
+            control={control}
+            placeholder="Select Items"
+            // loading={loading}
+            options={items}
+          />
         </Col>
       </Row>
 
@@ -263,13 +260,13 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
       <Row>
         <Col sm="3">
           <DropDown
-           name="status"
-  label="Invoice Status"
-  control={control}
-  placeholder="Select Status"
-  // loading={loading}
-  options={InvoiceStatus}
- />
+            name="status"
+            label="Invoice Status"
+            control={control}
+            placeholder="Select Status"
+            // loading={loading}
+            options={InvoiceStatus}
+          />
           {/* <FormGroup>
             <InputGroup>
               <InputGroupText>Invoice Status</InputGroupText>
@@ -291,15 +288,14 @@ const { companies: companyOptions, loading: companyLoading } = useCompany();
         </Col>
 
         <Col sm="3">
-         <DropDown
-           name="type"
-  label="Invoice Type"
-  control={control}
-  placeholder="Select Type"
-  // loading={loading}
-  options={invoiceType}
- />
-        
+          <DropDown
+            name="type"
+            label="Invoice Type"
+            control={control}
+            placeholder="Select Type"
+            // loading={loading}
+            options={invoiceType}
+          />
         </Col>
 
         <Col sm="6" className="text-end">

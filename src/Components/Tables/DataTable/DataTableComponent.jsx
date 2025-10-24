@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import { Btn, H4 } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import Loader from "../../../Layout/Loader";
+import { Row, Col, Card, CardBody } from 'reactstrap'; 
 
 const DataTableComponent = ({
   tableData,
@@ -71,35 +72,15 @@ const DataTableComponent = ({
 
   return (
     <Fragment>
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: "5px 5px",
-          borderRadius: "3px",
-        }}
-      >
-        {title && (
-          <div className="p-2 my-3 bg-primary">
-            <HeaderCard title={title} />
-          </div>
-        )}
 
-        {selectedRows.length !== 0 && (
-          <div className="d-flex align-items-center justify-content-between bg-light-info p-2">
-            <H4 attrH4={{ className: "text-muted m-0" }}>
-              Delete Selected Data..!
-            </H4>
-            <Btn attrBtn={{ color: "danger", onClick: handleDelete }}>
-              Delete
-            </Btn>
-          </div>
-        )}
-
-        <div
-          className="table-responsive p-3 position-relative"
-          style={{ minHeight: "550px" }}
-        >
-          <DataTable
+      <Row>
+       <Col sm="12">
+         <Card>
+           {title && ( 
+            <HeaderCard title={title} />         
+           )} 
+           <CardBody>
+           <DataTable
             data={data}
             columns={tableColumns}
             striped
@@ -116,16 +97,12 @@ const DataTableComponent = ({
             customStyles={customStyles}
             progressPending={loading}
             progressComponent={<Loader loading={loading} />}
-          />
-
-          {/* ✅ Show total pages */}
-          <div className="text-end text-muted mt-2">
-            Page {currentPage} of {totalPages || 1}
-          </div>
-        </div>
-      </div>
+          /> 
+           </CardBody>
+         </Card>
+       </Col>
+     </Row> 
     </Fragment>
   );
-};
-
+}; 
 export default DataTableComponent;

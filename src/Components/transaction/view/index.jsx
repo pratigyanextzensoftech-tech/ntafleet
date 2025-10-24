@@ -1,13 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
-import HeaderCard from "../../Common/Component/HeaderCard";
-import { Container } from "reactstrap";
+import HeaderCard from "../../Common/Component/HeaderCard"; 
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { transactions } from "../../../api";
 import ViewForm from "./ViewForm";
-import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
-
+import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa"; 
+import { Container, Row, Col, Card, CardBody } from 'reactstrap'; 
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -149,33 +148,23 @@ const Index = () => {
   };
 
   return (
-    <Fragment>
-      <Breadcrumbs parent="Transaction" title="View Transaction" />
-      <Container fluid={true}>
-        <HeaderCard title="Transactions List" />
+   
 
-        {/* ✅ Filter Section */}
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "5px 10px",
-            borderRadius: "3px",
-            marginBottom: "10px",
-          }}
-        >
-          <div className="bg-primary p-2 my-3">
-            <HeaderCard title="Filters" />
-          </div>
+ <Fragment>
+  <Breadcrumbs parent="Transaction" title="View Transaction" />
+   <Container fluid={true}>
+    <Row>
+       <Col sm="12">
+         <Card>
+           <HeaderCard title="Select Multiple and Delete Single Data" />
+           <CardBody>
+             <ViewForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}  /> 
+           </CardBody>
+         </Card>
+       </Col>
+     </Row>
 
-          <ViewForm
-            btnTitle="Search Data"
-            btnTitle1="Reset"
-            onSearch={handleSearch}
-          />
-        </div>
-
-        {/* ✅ Data Table */}
-        <DataTableComponent
+     <DataTableComponent
           title="Transactions List"
           tableData={data}
           tableColumns={tableColumns}
@@ -186,8 +175,9 @@ const Index = () => {
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
         />
-      </Container>
-    </Fragment>
+   </Container>
+ </Fragment>
+
   );
 };
 

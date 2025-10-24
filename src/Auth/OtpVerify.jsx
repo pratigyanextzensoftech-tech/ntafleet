@@ -58,8 +58,8 @@ const OtpVerify = () => {
                   }}
                 />
                 <Form className="theme-form">
-                  <H4>Enter the OTP sent to your email</H4>
-                  <P>Please enter the one-time password to verify your account.</P>
+                  <H4>Enter The OTP </H4>
+                  <P>Please enter the one-time sent to your email.</P>
                   <FormGroup>
                     <Label className="col-form-label">{OtpLabel}</Label>
                     <Input
@@ -69,7 +69,7 @@ const OtpVerify = () => {
                       placeholder="Enter OTP here"
                     />
                   </FormGroup>
-                  <OtherWay />
+                  {/* <OtherWay /> */}
                   <Btn
                     attrBtn={{
                       color: "primary",
