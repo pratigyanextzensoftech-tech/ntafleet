@@ -34,17 +34,18 @@ const View_Invoice_Table = [
   {
     id: '1',
     label: 'View Invoices',
-    component: "Tab1 Content",
+    component: <DataTableComponent title="Invoices List "  tableColumns={tableColumns}  tableData={dummytabledata}/>
+,
   },
   {
     id: '2',
     label: 'View Owner Operator Invoices',
-    component: "Tab2 Content",
+    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={dummytabledata}/>,
   },
   {
     id: '3',
     label:'View Customised Invoices',
-    component: "Tab3 Content",
+    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={dummytabledata}/>,
   },
   
 ];

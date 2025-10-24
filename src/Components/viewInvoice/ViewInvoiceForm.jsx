@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Select from "react-select";
 import {
-  checkBoxData,
   optionscountry,
-  optionscompany,
-  customizedTypeType,
   invoiceType,
   InvoiceCategory,
   InvoiceShow,
@@ -15,62 +12,102 @@ import {
   Form,
   FormGroup,
   Label,
-  Input,
   InputGroup,
   InputGroupText,
-  Container,
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
-import HeaderCard from "../Common/Component/HeaderCard";
+import useSupplier from "../../Hooks/useSupplier";
+import useCompany from "../../Hooks/useCompany";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-const ViewInvoiceForm = ({ title }) => {
+
+const ViewInvoiceForm = ({ title,onSearch  }) => {
+  const { supplier } = useSupplier();
+  const { companies } = useCompany();
+
   const [selectedValues, setSelectedValues] = useState([]);
+  const [selectAll, setSelectAll] = useState(true);
+
   const {
-    register,
     control,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitted, isValid },
+    formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
-  const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
+  // ✅ When suppliers load, mark all as checked by default
+  useEffect(() => {
+    if (supplier.length > 0) {
+      setSelectedValues(supplier.map((item) => item.value));
+    }
+  }, [supplier]);
 
+  // ✅ Handle individual checkbox change
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
     setSelectedValues((prev) => {
       if (checked) {
-        return [...prev, value];
+        const newSelected = [...prev, value];
+        if (newSelected.length === supplier.length) {
+          setSelectAll(true);
+        }
+        return newSelected;
       } else {
+        setSelectAll(false);
         return prev.filter((item) => item !== value);
       }
     });
   };
+
+  // ✅ Handle "Select All" checkbox
+  const handleSelectAll = (e) => {
+    const checked = e.target.checked;
+    setSelectAll(checked);
+    if (checked) {
+      setSelectedValues(supplier.map((item) => item.value));
+    } else {
+      setSelectedValues([]);
+    }
+  };
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);
+    console.log("Selected Suppliers:", selectedValues);
+     if (onSearch) onSearch({ ...data, suppliers: selectedValues });
+    // here you can trigger API call and show table data
+  };
+
+  const handleReset = () => {
+    reset();
+    setSelectedValues(supplier.map((item) => item.value));
+    setSelectAll(true);
+  };
+
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "5px 5px",
-        bprderRadius: "3px",
-        marginBottom: "10px",
-      }}
-    >
-      <div className="bg-primary p-2 mt-3 mb-5">
-        <HeaderCard title={title} />
-      </div>
-      <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <fieldset className="inputField">
-          <legend className="legend">choose Supplier</legend>
+    <Fragment>
+      <Form  noValidate onSubmit={handleSubmit(onSubmit)}>
+        <fieldset  className="inputField mt-3">
+          <legend className="legend ">
+            <div className="d-flex align-items-center gap-2">
+              Choose Supplier
+              <div className="checkbox checkbox-dark ms-3">
+                <input
+                  id="selectAll"
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                />
+                <Label for="selectAll" className="ms-1">
+                  Select All
+                </Label>
+              </div>
+            </div>
+          </legend>
+
           <Row>
-            {checkBoxData.map((item, index) => (
-              <Col sm="3">
+            {supplier.map((item, index) => (
+              <Col sm="3" key={index}>
                 <div className="checkbox checkbox-dark">
                   <input
                     id={`checkbox-${index}`}
@@ -86,130 +123,45 @@ const ViewInvoiceForm = ({ title }) => {
               </Col>
             ))}
           </Row>
+
+          {/* ✅ Rest of your form remains unchanged */}
           <Row className="mt-3">
             <Col sm="3">
-              <Row>
-                <FormGroup className="m-form__group">
-                  <InputGroup>
-                    <Col sm="3">
-                      <InputGroupText>From</InputGroupText>
-                    </Col>
-                    <Col sm="9">
-                      <Controller
-                        name="from"
-                        control={control}
-                        rules={{ required: " Required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            className={`form-control `}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
-                          />
-                        )}
-                      />
-                    </Col>
-                  </InputGroup>
-
-                  {errors.from && (
-                    <span className="text-danger">{errors.from.message}</span>
-                  )}
-                </FormGroup>
-              </Row>
-            </Col>
-            <Col sm="3">
-              <Row>
-                <FormGroup className="m-form__group">
-                  <InputGroup>
-                    <Col sm="3">
-                      <InputGroupText>To</InputGroupText>
-                    </Col>
-                    <Col sm="9">
-                      <Controller
-                        name="to"
-                        control={control}
-                        rules={{ required: "Required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            className={`form-control digits`}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
-                          />
-                        )}
-                      />
-                    </Col>
-                  </InputGroup>
-
-                  {errors.to && (
-                    <span className="text-danger">{errors.to.message}</span>
-                  )}
-                </FormGroup>
-              </Row>
-            </Col>
-
-            <Col sm="3">
-              <FormGroup className="m-form__group">
+              <FormGroup>
                 <InputGroup>
-                  <InputGroupText>Company</InputGroupText>
+                  <InputGroupText>From</InputGroupText>
                   <Controller
-                    name="company"
-                    rules={{ required: "company Name is required" }}
+                    name="from"
                     control={control}
+                    rules={{ required: "Required" }}
                     render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={optionscompany}
-                        className="form-control p-0 border-0"
-                        placeholder="Select Company Name"
+                      <DatePicker
+                        className="form-control"
+                        selected={field.value}
+                        onChange={(date) => field.onChange(date)}
                       />
                     )}
                   />
                 </InputGroup>
-
-                {errors.company && (
-                  <span className="text-danger">{errors.company?.message}</span>
+                {errors.from && (
+                  <span className="text-danger">{errors.from.message}</span>
                 )}
               </FormGroup>
             </Col>
 
             <Col sm="3">
-              <FormGroup className="m-form__group">
+              <FormGroup>
                 <InputGroup>
-                  <InputGroupText>Country</InputGroupText>
+                  <InputGroupText>To</InputGroupText>
                   <Controller
-                    name="country"
-                    rules={{ required: "country is required" }}
+                    name="to"
                     control={control}
+                    rules={{ required: "Required" }}
                     render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={optionscountry}
-                        className="form-control p-0 border-0"
-                        placeholder="Select Country"
-                      />
-                    )}
-                  />
-                </InputGroup>
-
-                {errors.country && (
-                  <span className="text-danger">{errors.country?.message}</span>
-                )}
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col sm="3">
-              <FormGroup className="m-form__group">
-                <InputGroup>
-                  <InputGroupText>Invoice Type</InputGroupText>
-                  <Controller
-                    name="company"
-                    rules={{ required: "company Name is required" }}
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={invoiceType}
-                        className="form-control p-0 border-0"
+                      <DatePicker
+                        className="form-control"
+                        selected={field.value}
+                        onChange={(date) => field.onChange(date)}
                       />
                     )}
                   />
@@ -221,13 +173,83 @@ const ViewInvoiceForm = ({ title }) => {
             </Col>
 
             <Col sm="3">
-              <FormGroup className="m-form__group">
+              <FormGroup>
+                <InputGroup>
+                  <InputGroupText>Company</InputGroupText>
+                  <Controller
+                    name="company"
+                    control={control}
+                    rules={{ required: "Company Name is required" }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={companies}
+                        className="form-control p-0 border-0"
+                        placeholder="Select Company"
+                      />
+                    )}
+                  />
+                </InputGroup>
+                {errors.company && (
+                  <span className="text-danger">{errors.company.message}</span>
+                )}
+              </FormGroup>
+            </Col>
+
+            <Col sm="3">
+              <FormGroup>
+                <InputGroup>
+                  <InputGroupText>Country</InputGroupText>
+                  <Controller
+                    name="country"
+                    control={control}
+                    rules={{ required: "Country is required" }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={optionscountry}
+                        className="form-control p-0 border-0"
+                        placeholder="Select Country"
+                      />
+                    )}
+                  />
+                </InputGroup>
+                {errors.country && (
+                  <span className="text-danger">{errors.country.message}</span>
+                )}
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row className="mt-3">
+            <Col sm="3">
+              <FormGroup>
+                <InputGroup>
+                  <InputGroupText>Invoice Type</InputGroupText>
+                  <Controller
+                    name="invoiceType"
+                    control={control}
+                    rules={{ required: "Invoice Type is required" }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={invoiceType}
+                        className="form-control p-0 border-0"
+                      />
+                    )}
+                  />
+                </InputGroup>
+              </FormGroup>
+            </Col>
+
+            <Col sm="3">
+              <FormGroup>
                 <InputGroup>
                   <InputGroupText>Invoice Category</InputGroupText>
                   <Controller
                     name="category"
-                    rules={{ required: "company Name is required" }}
                     control={control}
+                    rules={{ required: "Category is required" }}
                     render={({ field }) => (
                       <Select
                         {...field}
@@ -237,23 +259,17 @@ const ViewInvoiceForm = ({ title }) => {
                     )}
                   />
                 </InputGroup>
-
-                {errors.category && (
-                  <span className="text-danger">
-                    {errors.category?.message}
-                  </span>
-                )}
               </FormGroup>
             </Col>
 
             <Col sm="3">
-              <FormGroup className="m-form__group">
+              <FormGroup>
                 <InputGroup>
-                  <InputGroupText>Invoice(Show/Hide) </InputGroupText>
+                  <InputGroupText>Invoice (Show/Hide)</InputGroupText>
                   <Controller
-                    name="invoice"
-                    rules={{ required: "country is required" }}
+                    name="invoiceShow"
                     control={control}
+                    rules={{ required: "This field is required" }}
                     render={({ field }) => (
                       <Select
                         {...field}
@@ -263,32 +279,31 @@ const ViewInvoiceForm = ({ title }) => {
                     )}
                   />
                 </InputGroup>
-
-                {errors.invoice && (
-                  <span className="text-danger">{errors.invoice?.message}</span>
-                )}
               </FormGroup>
             </Col>
-            <Col sm="3">
-              <div className="text-end">
-                <Btn
-                  attrBtn={{
-                    color: "primary",
-                    className: "m-r-15",
-                    type: "submit",
-                  }}
-                >
-                  Search Data
-                </Btn>
-                <btn className="m-r-15 btn btn-primary" onClick={handleReset}>
-                  Reset
-                </btn>
-              </div>
+
+            <Col sm="3" className="text-end">
+              <Btn
+                attrBtn={{
+                  color: "primary",
+                  className: "m-r-15",
+                  type: "submit",
+                }}
+              >
+                Search Data
+              </Btn>
+              <button
+                type="button"
+                className="m-r-15 btn btn-primary"
+                onClick={handleReset}
+              >
+                Reset
+              </button>
             </Col>
           </Row>
         </fieldset>
       </Form>
-    </div>
+    </Fragment>
   );
 };
 

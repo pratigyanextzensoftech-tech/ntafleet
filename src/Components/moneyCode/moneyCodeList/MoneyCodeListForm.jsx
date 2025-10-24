@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
 import { optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import useCompany from '../../../Hooks/useCompany';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 const MoneyCodeListForm = ({btntitle,btnTitle1}) => {
+    const{companies} =useCompany()
     const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
@@ -122,7 +124,7 @@ const MoneyCodeListForm = ({btntitle,btnTitle1}) => {
                                     render={({ field }) => (
                                         <Select
                                             {...field}
-                                            options={optionscompany}
+                                            options={companies}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Company Name"
                                         />

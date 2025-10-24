@@ -28,8 +28,7 @@ const OtpVerify = () => {
         
         // ✅ Save user info only
         localStorage.setItem("userId", userId);
-         localStorage.setItem("Menu", mainmenu);
-
+localStorage.setItem("Menu", JSON.stringify(mainmenu));
         // ✅ Menu is already loaded in MenuProvider from localStorage
         setLoading(false);
         navigate("/dashboard");

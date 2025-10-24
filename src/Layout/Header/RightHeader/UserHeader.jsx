@@ -27,6 +27,7 @@ const UserHeader = () => {
     localStorage.removeItem("Name");
     localStorage.removeItem("userId");
     localStorage.removeItem("login");
+    localStorage.removeItem("Menu");
 
     localStorage.setItem("authenticated", false);
     history(`/login`);

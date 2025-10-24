@@ -38,8 +38,7 @@ const OwnerOperator = ({title}) => {
   
      <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
        
-              <fieldset className='inputField' >
-                <legend className='legend'>choose Supplier</legend>
+          
           
               <Row className="mt-3">
                 <Col sm="3">
@@ -276,8 +275,7 @@ const OwnerOperator = ({title}) => {
 
               </div>
 
-               </fieldset>
-           
+               
           </Form>
           </Fragment>
   )

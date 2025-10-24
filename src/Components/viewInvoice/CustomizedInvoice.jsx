@@ -24,13 +24,10 @@ const CustomizedInvoice = ({title}) => {
      
   return (
     <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
-  <div className="bg-primary p-2 mt-3 mb-5">
-                      <HeaderCard title={title} />
-                      </div>
+  
      <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
        
-              <fieldset className='inputField' >
-                <legend className='legend'>choose Supplier</legend>
+              
                 
               <Row className="mt-3">
                 <Col sm="3">
@@ -292,7 +289,6 @@ const CustomizedInvoice = ({title}) => {
 </Col>
               </Row>
                           
-               </fieldset>
            
           </Form>
           </div>
