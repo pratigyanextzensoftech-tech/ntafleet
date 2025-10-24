@@ -62,20 +62,20 @@ const Leftbar = () => {
 
   return (
     <Fragment>
-      <Col className="header-logo-wrapper col-auto p-0" id="out_side_click">
-        <div className="logo-wrapper">
+       <Col className="header-logo-wrapper col-auto p-0" id="out_side_click">
+   <div className="logo-wrapper">
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`}>
             <Image
               attrImage={{
                 className: "img-fluid for-light logoheader",
-                src: `${require("../../../assets/images/logo/logo.png")}`,
+                src: `${require("../../../assets/images/logo/textLogo.webp")}`,
                 alt: "",
               }}
             />
             <Image
               attrImage={{
                 className: "img-fluid for-dark",
-                src: `${require("../../../assets/images/logo/logo.png")}`,
+                src: `${require("../../../assets/images/logo/textLogo.webp")}`,
                 alt: "",
               }}
             />

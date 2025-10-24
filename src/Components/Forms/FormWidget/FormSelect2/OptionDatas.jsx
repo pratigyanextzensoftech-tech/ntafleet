@@ -125,7 +125,7 @@ export const displayFeatureCheckBoxOwner=[
 
 ]
  export const Upload_Supplier=[
-{ label: 'Select Supplier' , isDisabled: true },
+    { label: 'Select Supplier' , isDisabled: true },
   { value: 'Ultramar', label: 'Ultramar' },
     { value: 'Esso', label: 'Esso' },
         { value: 'TA-Petro', label: 'TA-Petro' },
@@ -234,14 +234,14 @@ export const retailInvoice=[
     { label: 'Select Esso Rack' , isDisabled: true },
     { value: 'Rack +3', label: 'Rack +3' },
         { value: 'Rack +3', label: 'Rack +3' },
-                { value: 'Rack +2', label: 'Rack +2' },
+        { value: 'Rack +2', label: 'Rack +2' },
         { value: 'Rack +1', label: 'Rack +1' },
         { value: 'Rack +0', label: 'Rack +0' },
         { value: 'Rack -1', label: 'Rack -1' },
         { value: 'Rack -1.5', label: 'Rack -1.5' },
         { value: 'Rack -3', label: 'Rack -3.5' },
         { value: 'Rack -4', label: 'Rack -4' },
-                { value: 'Rack -4.5', label: 'Rack -4.5' },
+        { value: 'Rack -4.5', label: 'Rack -4.5' },
         { value: 'Rack -5', label: 'Rack -5' },
         { value: 'Rack -5.5', label: 'Rack -5.5' },
         { value: 'Rack -6', label: 'Rack -6' },
@@ -264,100 +264,91 @@ export const retailInvoice=[
 
   ]
  export const InvoiceShow=[
-                { label: 'All Types ', isDisabled: true },
-
-                { value: 'Show', label: 'Show' },
-            { value: 'Hide', label: 'Hide' },
+        { label: 'All Types ', isDisabled: true },
+        { value: 'Show', label: 'Show' },
+        { value: 'Hide', label: 'Hide' },
  ]
  export const InvoiceCategory=[
-                { value: 'All Invoice', label: 'All Invoice' },
-
-            { value: 'Total Not Zero (0)', label: 'Total Not Zero (0)' },
+        { value: 'All Invoice', label: 'All Invoice' },
+        { value: 'Total Not Zero (0)', label: 'Total Not Zero (0)' },
         { value: 'Total Only Zero (0)', label: 'Total Only Zero (0)' },
 
  ]
  export const Units=[
-            { label: 'Select ', isDisabled: true },
+        { label: 'Select ', isDisabled: true },
         { value: 'EFS', label: 'EFS' },
         { value: 'NTA', label: 'NTA' },
-
-
  ]
 export const companyStatus=[
         { label: 'Select Status', isDisabled: true },
-
         { value: 'Active', label: 'Active' },
-    { value: ' InActive', label: 'InActive' },
-    { value: 'Hold', label: 'Hold' },
-
+        { value: ' InActive', label: 'InActive' },
+        { value: 'Hold', label: 'Hold' },
 ]
 export const MoneyCodeStatus=[
         { label: 'Select Status', isDisabled: true },
         { value: 'Billed', label: 'Billed' },
-    { value: ' Not Billed', label: 'Not Billed' },
+        { value: ' Not Billed', label: 'Not Billed' },
 
 ]
-export const InvoiceStatus=[
-    
-            { label: 'Select Status', isDisabled: true },
+export const InvoiceStatus=[    
+        { label: 'Select Status', isDisabled: true },
         { value: 'Invoiced', label: 'Invoiced' },
-        { value: ' Not Invoiced', label: 'Not Invoiced' },
-
-    
+        { value: ' Not Invoiced', label: 'Not Invoiced' },    
 ]
 export const invoiceType=[
-            { label: 'All Type',label: 'All Type' },
-    {value: 'Rack Invoice', label: 'Rack Invoice' },
+        { label: 'All Type',label: 'All Type' },
+        {value: 'Rack Invoice', label: 'Rack Invoice' },
         {value: 'Retail Invoice', label: 'Retail Invoice' },
 ]
 export const customizedTypeType=[
-            { label: 'Select Status', isDisabled: true },
-    {value: 'Driver Name', label: 'Driver Name' },
+        { label: 'Select Status', isDisabled: true },
+        {value: 'Driver Name', label: 'Driver Name' },
         {value: 'Unit #', label: 'Unit #' },
 ]
 
 export const invoiceType1=[
-            { label: 'Select Status', isDisabled: true },
-    {value: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
+        { label: 'Select Status', isDisabled: true },
+        {value: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
         {value: 'R (Rack Invoice/Show Discount)', label: 'R (Rack Invoice/Show Discount)' },
         {value:"RG (Rack Invoice with general unit price update)",label:"RG (Rack Invoice with general unit price update)"},
         {value:"RP (Rack Invoice with daily pricing pdf unit price update)",label:"RP (Rack Invoice with daily pricing pdf unit price update)"}
 ]
 export const optionSalesMan=[
-    {value: 'rahul', label: 'rahul' },
+        {value: 'rahul', label: 'rahul' },
         {value: 'hrithik', label: 'hrithik' },
 ]
 export  const userStatus=[
-     { value: ' pending', label: 'pending' },
-    { value: 'Blocked', label: 'Blocked' },
-    { value: 'Active', label: 'Active' },
+        { value: ' pending', label: 'pending' },
+        { value: 'Blocked', label: 'Blocked' },
+        { value: 'Active', label: 'Active' },
 ]
 export  const manageuserStatus=[
-    { value: 'Blocked', label: 'Blocked' },
-            { value: 'Active', label: 'Active' },
+        { value: 'Blocked', label: 'Blocked' },
+        { value: 'Active', label: 'Active' },
 
 ]
 export const options2 = [
-    { label: 'Developer', isDisabled: true },
-    { value: 'AL', label: 'Alabama' },
-    { value: 'WY', label: 'Wyoming' },
-    { label: 'Designer', isDisabled: true },
-    { value: 'WY', label: 'Coming' },
-    { value: 'WY', label: 'Hanry Die' },
-    { value: 'WY', label: 'John Doe' },
+        { label: 'Developer', isDisabled: true },
+        { value: 'AL', label: 'Alabama' },
+        { value: 'WY', label: 'Wyoming' },
+        { label: 'Designer', isDisabled: true },
+        { value: 'WY', label: 'Coming' },
+        { value: 'WY', label: 'Hanry Die' },
+        { value: 'WY', label: 'John Doe' },
 ];
 
 export const options3 = [
-    { value: 'AL', label: 'First' },
-    { value: 'WY', label: 'Second', isDisabled: true },
-    { value: 'WY', label: 'Third' },
+        { value: 'AL', label: 'First' },
+        { value: 'WY', label: 'Second', isDisabled: true },
+        { value: 'WY', label: 'Third' },
 ];
 
 export const options4 = [
-    { label: 'Developer', isDisabled: true },
-    { value: 'AL', label: 'Alabama' },
-    { value: 'WY', label: 'Wyoming' },
-    { value: 'WY', label: 'Coming' },
-    { value: 'WY', label: 'Hanry Die' },
-    { value: 'WY', label: 'John Doe' },
+        { label: 'Developer', isDisabled: true },
+        { value: 'AL', label: 'Alabama' },
+        { value: 'WY', label: 'Wyoming' },
+        { value: 'WY', label: 'Coming' },
+        { value: 'WY', label: 'Hanry Die' },
+        { value: 'WY', label: 'John Doe' },
 ];

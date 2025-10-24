@@ -13,12 +13,12 @@ const Breadcrumbs = (props) => {
         <div className='page-title'>
           <Row>
             <Col xs='6'>
-              <H3>{props.mainTitle}</H3>
+              <h5>{props.title}</h5>
             </Col>
             <Col xs='6'>
               <ol className='breadcrumb'>
                 <li className='breadcrumb-item'>
-                  <Link to={`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`}>
+                  <Link to={`/dashboard/`}>
                     <SvgIcon iconId='stroke-home' />
                   </Link>
                 </li>
