@@ -61,7 +61,7 @@ const Leftbar = () => {
   };
 
   return (
-    <Fragment>
+    <Fragment> 
        <Col className="header-logo-wrapper col-auto p-0" id="out_side_click">
    <div className="logo-wrapper">
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`}>

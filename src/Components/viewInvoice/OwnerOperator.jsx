@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,Fragment} from 'react';
 import Select from 'react-select'
 import { checkBoxData,optionscountry,optionscompany,InvoiceShow,InvoiceCategory } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
@@ -34,10 +34,8 @@ const OwnerOperator = ({title}) => {
     });
 }
   return (
-    <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
-  <div className="bg-primary p-2 mt-3 mb-5">
-                      <HeaderCard title={title} />
-                      </div>
+    <Fragment>
+  
      <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
        
               <fieldset className='inputField' >
@@ -281,7 +279,7 @@ const OwnerOperator = ({title}) => {
                </fieldset>
            
           </Form>
-          </div>
+          </Fragment>
   )
 }
 

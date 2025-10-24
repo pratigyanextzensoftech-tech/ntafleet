@@ -188,9 +188,9 @@
           border: 1px solid #ccc;
     &.active {
       font-weight: 500;
-      color: white;
+      color: rgb(32, 27, 27);
       border: none;
-              background-color:$primary-color ;
+      background:rgba(0, 0, 0, 0) linear-gradient(to right, rgb(191, 235, 253), rgb(77, 131, 189)) repeat scroll 0% 0%;
 
     }
   }

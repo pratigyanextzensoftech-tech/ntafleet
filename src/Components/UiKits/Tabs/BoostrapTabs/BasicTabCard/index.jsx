@@ -1,44 +1,53 @@
-import React, { useState } from 'react';
-import { Card, CardBody, Col, Nav, NavItem, NavLink, TabContent, TabPane} from 'reactstrap';
-import HeaderCard from '../../../../Common/Component/HeaderCard';
-import { useNavigate } from 'react-router';
+import React, { useState, useEffect } from "react";
+import {
+  Col,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
+} from "reactstrap";
+import { useNavigate, useLocation } from "react-router";
 
-const BasicTabCard = ({tabContent,title}) => {
-  const [BasicTab, setBasicTab] = useState('1');
+const BasicTabCard = ({ tabContent, title }) => {
   const navigate = useNavigate();
-  const handleTabClick = (tabId) => {
-    setBasicTab(tabId);
-    navigate(`?tab=${tabId}`);   // Update URL without refreshing
+  const location = useLocation();
+
+  // ✅ Read ?tab= from URL (optional)
+  const queryParams = new URLSearchParams(location.search);
+  const initialTab = queryParams.get("tab") || (tabContent?.[0]?.id ?? "1");
+
+  const [BasicTab, setBasicTab] = useState(String(initialTab));
+
+  const handleTabClick = (e, tabId) => {
+    e.preventDefault(); // stop href jump
+    setBasicTab(String(tabId)); // make sure it's a string
+    navigate(`?tab=${tabId}`, { replace: true });
   };
+
   return (
     <Col>
-      <Nav className='mb-3' tabs>
+      <Nav className="mb-3" tabs>
         {tabContent?.map((tab) => (
           <NavItem key={tab.id}>
             <NavLink
-              href="#javascript"
-              className={BasicTab === tab.id ? 'active' : ''}
-              onClick={() => handleTabClick(tab.id)}
+              href="#"
+              className={BasicTab === String(tab.id) ? "active" : ""}
+              onClick={(e) => handleTabClick(e, tab.id)}
             >
               {tab.label}
             </NavLink>
           </NavItem>
         ))}
       </Nav>
-      {/* <Card className='shadow-lg'>
-        <CardBody> */}
-          <HeaderCard title={title} />
-            <TabContent activeTab={BasicTab}>
-            {tabContent.map((tab) => (
-              <TabPane className='mt-3 ' key={tab.id} tabId={tab.id}>
-                {tab.component}
-              </TabPane>
-            ))}
-          </TabContent>
-        {/* </CardBody>
-      </Card> */}
 
-
+      <TabContent activeTab={BasicTab}>
+        {tabContent.map((tab) => (
+          <TabPane className="mt-3" key={tab.id} tabId={String(tab.id)}>
+            {tab.component}
+          </TabPane>
+        ))}
+      </TabContent>
     </Col>
   );
 };

@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import { Btn, H4 } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import Loader from "../../../Layout/Loader";
-import { Container, Row, Col, Card, CardBody } from 'reactstrap'; 
+import { Row, Col, Card, CardBody } from 'reactstrap'; 
 
 const DataTableComponent = ({
   tableData,
