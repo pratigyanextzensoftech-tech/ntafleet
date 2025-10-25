@@ -6,7 +6,7 @@ export const options = [
     { value: 'WY', label: 'John Doe' },
 ];
 export const optionscountry = [
-                { label: 'All Country' , isDisabled: true },
+    { label: 'All Country' , isDisabled: true },
     { value: 'United States of America', label: 'United States of America' },
     { value: 'Canada', label: 'Canada' }
 ];
@@ -208,9 +208,9 @@ export const customerType = [
 
 ];
 export const optionscompany = [
-            { label: 'Select Company.',isDisabled: true },
-    { value: 'customer', label: 'Customer' },
-    { value: 'Non customer', label: 'Non customer' }
+    { label: 'Select Company.',isDisabled: true },
+    { value: '0', label: 'Customer' },
+    { value: '1', label: 'Non customer' }
 ];
 export const optionsSearch = [
             { label: 'select Type.',isDisabled: true },
@@ -218,8 +218,13 @@ export const optionsSearch = [
     { value: 'Greater than', label: 'Greater than' }
 ];
 export const companyLoginAccess=[
-                { label: 'select Option.',isDisabled: true },
+    { label: 'select Option.',isDisabled: true },
+    { value: 'Yes', label: 'Yes' },
+    { value: 'No', label: 'No' },
 
+]
+export const YesNo=[
+    { label: 'select Option.',isDisabled: true },
     { value: 'Yes', label: 'Yes' },
     { value: 'No', label: 'No' },
 
@@ -227,7 +232,14 @@ export const companyLoginAccess=[
 export const retailInvoice=[
     { value: 'Retail Invoice', label: 'Retail Invoice' },
     { value: 'Capped Discount', label: 'Capped Discount' },
-        { value: 'Actual Discount', label: 'Actual Discount' },
+    { value: 'Actual Discount', label: 'Actual Discount' },
+
+]
+
+export const TaretailInvoice=[
+    { value: 'Retail', label: 'Retail Invoice' },
+    { value: 'Capped', label: 'Capped Discount' },
+    { value: 'Actual', label: 'Actual Discount' },
 
 ]
  export const essoRack=[
@@ -274,7 +286,12 @@ export const retailInvoice=[
         { value: 'Total Only Zero (0)', label: 'Total Only Zero (0)' },
 
  ]
- export const Units=[
+  export const Units=[
+        { label: 'Select ', isDisabled: true },
+        { value: 'EFS', label: 'EFS' },
+        { value: 'NTA', label: 'NTA' },
+ ]
+ export const DefaultUnits=[
         { label: 'Select ', isDisabled: true },
         { value: 'EFS', label: 'EFS' },
         { value: 'NTA', label: 'NTA' },
@@ -282,7 +299,7 @@ export const retailInvoice=[
 export const companyStatus=[
         { label: 'Select Status', isDisabled: true },
         { value: 'Active', label: 'Active' },
-        { value: ' InActive', label: 'InActive' },
+        { value: 'InActive', label: 'InActive' },
         { value: 'Hold', label: 'Hold' },
 ]
 export const MoneyCodeStatus=[

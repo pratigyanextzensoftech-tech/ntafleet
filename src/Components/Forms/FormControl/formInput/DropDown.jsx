@@ -18,7 +18,7 @@ const DropDown = ({
 
   // ✅ Automatically set default value based on ID
   useEffect(() => {
-    console.log(options,"options")
+    
     if (defaultValueId != null && control?._formValues[name] == null) {
       const defaultOption = options.find((opt) => opt.value === defaultValueId);
       if (defaultOption) {
