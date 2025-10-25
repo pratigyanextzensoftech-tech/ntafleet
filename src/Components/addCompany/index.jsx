@@ -5,12 +5,23 @@ import { FaPhoneAlt, FaBuilding, FaUser } from "react-icons/fa";
 import { useForm, Controller } from 'react-hook-form';
 import { RiLockPasswordFill } from "react-icons/ri";
 import Select from 'react-select'
-import { optionscountry, optionscompany, optionSalesMan, companyStatus, companyLoginAccess, retailInvoice, optionscountry1, essoRack, Units, invoiceType, invoiceType1, invoiceCreation, invoiceDay, invoiceWeek, customerType } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { optionscountry,YesNo,
+   optionscompany,  
+   companyStatus, companyLoginAccess, retailInvoice, optionscountry1, essoRack, 
+   Units, invoiceType, invoiceType1, invoiceCreation, invoiceDay, invoiceWeek, customerType,
+   TaretailInvoice, DefaultUnits
+    } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { RiBuilding4Fill } from "react-icons/ri";
 import HeaderCard from '../Common/Component/HeaderCard';
 import { Row, Col, Card, CardBody, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
+import DropDown from '../Forms/FormControl/formInput/DropDown'; 
+import { useCompany, useSalesman, useSupplier,useEssoRack } from "../../Hooks/Dropdowns";
 const Index = () => {
+ // const { data: companies, loading: companyLoading } = useCompany();
+  const { data: salesman, loading: salesmanLoading } = useSalesman();
+  //const { data: suppliers, loading: supplierLoading } = useSupplier(); 
+  const { data: essoRacks, loading: essoRackLoading } = useEssoRack();
   const [showMessage, setShowMessage] = useState(true);
   const {
     register,
@@ -39,19 +50,17 @@ const Index = () => {
               <fieldset className='inputField' >
                 <legend className='legend'>Add Company</legend>
                 <Row className="mt-3">
+
+                  
                   <Col sm="6">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>
                           Company Name <span className="text-danger fw-bold mx-1">*</span>
                         </InputGroupText>
-                        <input className='form-control'
-                          type="text"
-                          {...register('companyName', { required: true })}
-                        />
-                      </InputGroup>
-
-                      {errors.companyName && (
+                         <input className='form-control' name='company_name' type="text" {...register('company_name', { required: true })} />
+                      </InputGroup> 
+                      {errors.company_name && (
                         <span className="text-danger">Company Name is required</span>
                       )}
                     </FormGroup>
@@ -63,13 +72,10 @@ const Index = () => {
                         <InputGroupText>
                           <MdEmail className="mx-1" /> Email-1 <span className="text-danger fw-bold mx-1">*</span>
                         </InputGroupText>
-                        <input className='form-control'
-                          type="text"
-                          aria-invalid={errors.email ? "true" : "false"}
-                          {...register("email", {
-                            required: "Email-1 is required",
-                            pattern: {
-                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        <input className='form-control' name='email'  type="email" {...register("email", {
+                          required: "Email-1 is required",
+                          pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                               message: "Invalid email address",
                             },
                           })}
@@ -79,21 +85,17 @@ const Index = () => {
                         <span className="text-danger">{errors.email?.message}</span>
                       )}
                     </FormGroup>
-                  </Col>
-
+                  </Col> 
                   <Col sm="3">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>
                           <MdEmail className="mx-1" /> Email-2
                         </InputGroupText>
-                        <input className='form-control'
-                          type="text"
-                          name="email2"
-                          {...register('email2', {
-                            pattern: {
-                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                              message: 'Invalid email format',
+                       <input className='form-control' name='email2'  type="email" {...register("email2", {
+                          pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                              message: "Invalid email address",
                             },
                           })}
                         />
@@ -105,21 +107,21 @@ const Index = () => {
                   </Col>
                 </Row>
 
-
                 <Row>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText><MdEmail className='mx-1 ' /> Other Email</InputGroupText>
-                        <input name="otherEmail" className="form-control" type="text"  {...register("otherEmail", {
+                        <input className='form-control' name='other_email'  type="email" {...register("other_email", {
                           pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Invalid email format",
-                          },
-                        })} />
+                              message: "Invalid email address",
+                            },
+                          })}
+                        />
                       </InputGroup>
-                      {errors.otherEmail && (
-                        <p className="text-danger">{errors.otherEmail?.message}</p>
+                      {errors.other_email && (
+                        <p className="text-danger">{errors.other_email?.message}</p>
                       )}
                     </FormGroup>
                   </Col>
@@ -127,7 +129,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText> <MdEmail className='mx-1 ' /> Otp Email-1 <span className='text-danger fw-bold  mx-1'>*</span></InputGroupText>
-                        <input name="otpEmail1" className="form-control" type="text" {...register("otpEmail1", {
+                        <input  className="form-control" name="otp_email" type="email" {...register("otp_email", {
                           required: "Otp Email-1 is required",
                           pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -135,7 +137,7 @@ const Index = () => {
                           },
                         })} />
                       </InputGroup>
-                      {errors.otpEmail1 && <p className="text-danger">{errors.otpEmail1?.message}</p>}
+                      {errors.otp_email && <p className="text-danger">{errors.otp_email?.message}</p>}
 
                     </FormGroup>
                   </Col>
@@ -143,30 +145,29 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText> <MdEmail className='mx-1 ' /> Otp Email-2</InputGroupText>
-                        <input name="otpEmail2" className="form-control" type="email"  {...register("otpEmail2", {
+                        <input name="otp_email2" className="form-control" type="email"  {...register("otp_email2", {
                           pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                             message: "Invalid email format",
                           },
                         })} />
                       </InputGroup>
-                      {errors.otpEmail2 && <p>{errors.otpEmail2?.message}</p>}
-
+                      {errors.otp_email2 && <p>{errors.otp_email2?.message}</p>} 
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText> <FaPhoneAlt className='mx-1 ' />Otp Phone</InputGroupText>
-                        <input className="form-control" type="number" {...register("otpPhone", {
+                        <input className="form-control" type="text" name='otp_phone' {...register("otp_phone", {
                           pattern: {
                             value: /^[0-9]{10}$/,  // ✅ 10 digit only
                             message: "Phone number must be 10 digits",
                           },
                         })} />
                       </InputGroup>
-                      {errors.otpPhone && (
-                        <span className="text-danger">{errors.otpPhone.message}</span>
+                      {errors.otp_phone && (
+                        <span className="text-danger">{errors.otp_phone.message}</span>
                       )}
                     </FormGroup>
                   </Col>
@@ -176,7 +177,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText><FaBuilding className='mx-1 ' /> Address</InputGroupText>
-                        <input className="form-control" type="text" />
+                        <input className="form-control" type="text" name='address' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -184,7 +185,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText> <RiBuilding4Fill className='mx-1 ' /> Authorized Location</InputGroupText>
-                        <Input className="form-control" type="email" />
+                        <Input className="form-control" type="text" name='auth_location' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -194,29 +195,26 @@ const Index = () => {
                   <Col sm="3">
                     <InputGroup className="mb-3">
                       <InputGroupText>Country</InputGroupText>
-                      <Select options={optionscountry} className="form-control p-0 border-0" />
+                      <Select options={optionscountry} className="form-control p-0 border-0" name='country_name' />
 
                     </InputGroup>
                   </Col>
                   <Col sm="3">
                     <InputGroup className="mb-3">
                       <InputGroupText>Company Type</InputGroupText>
-
-                      <Select options={optionscompany} className="form-control p-0 border-0" />
-
-
+                      <Select options={optionscompany} className="form-control p-0 border-0" name='company_type' />
                     </InputGroup>
                   </Col>
                   <Col sm="3">
                     <InputGroup>
                       <InputGroupText> <FaPhoneAlt className='mx-1' /> Phone</InputGroupText>
-                      <Input className="form-control" type="number" placeholder="+1 (999) 999-9999" />
+                      <Input className="form-control" type="text" name='phone' placeholder="+1 (999) 999-9999" />
                     </InputGroup>
                   </Col>
                   <Col sm="3">
                     <InputGroup>
                       <InputGroupText> <FaPhoneAlt className='mx-1 ' /> Mobile</InputGroupText>
-                      <Input className="form-control" type="number" placeholder="+1 (999) 999-9999" />
+                      <Input className="form-control" type="text" name='mobile' placeholder="+1 (999) 999-9999" />
                     </InputGroup>
                   </Col>
                 </Row>
@@ -225,36 +223,26 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText><FaPhoneAlt className='mx-1 ' /> Fax</InputGroupText>
-                        <Input className="form-control" type="number" placeholder="+1 (999) 999-9999" />
+                        <Input className="form-control" type="text" name='fax' placeholder="+1 (999) 999-9999" />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
-                    <InputGroup>
-
-                      <InputGroupText>Sales Man</InputGroupText>
-
-                      <Select options={optionSalesMan} className="form-control p-0 border-0" />
-
-
-                    </InputGroup>
+                     <DropDown  name="salesman_id" label="Sales Man" control={control} placeholder="Select SalesMan" defaultValueId={0} options={salesman}
+            />  
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText>  Policy Number</InputGroupText>
-                        <Input className="form-control" type="email" />
+                        <Input className="form-control" type="text" name='policy_number' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
-                    <InputGroup>
-
-                      <InputGroupText>Company Status</InputGroupText>
-
-                      <Select options={companyStatus} className="form-control p-0 border-0" />
-
-
+                    <InputGroup>  
+                      <InputGroupText>Company Status</InputGroupText> 
+                      <Select options={companyStatus} className="form-control p-0 border-0" name='company_status' /> 
                     </InputGroup>
                   </Col>
                 </Row>
@@ -263,7 +251,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText> Sub Fleet Identifier</InputGroupText>
-                        <Input className="form-control" type="text" />
+                        <Input className="form-control" type="text" name='identifier' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -271,7 +259,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText>  Irving Sub Fleet Name</InputGroupText>
-                        <Input className="form-control" type="text" />
+                        <Input className="form-control" type="text" name='irving' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -279,7 +267,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText>  Rack-Canada</InputGroupText>
-                        <Input className="form-control" type="text" />
+                        <Input className="form-control" type="text" name='rack_ca' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -287,7 +275,7 @@ const Index = () => {
                     <FormGroup className=" m-form__group">
                       <InputGroup>
                         <InputGroupText>Rack-USA</InputGroupText>
-                        <Input className="form-control" type="text" />
+                        <Input className="form-control" type="text" name='rack_us' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -295,42 +283,26 @@ const Index = () => {
                 <Row>
                   <Col sm='3'>
                     <InputGroup>
-
                       <InputGroupText>AOI</InputGroupText>
-
-                      <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                      <Select options={YesNo} className="form-control p-0 border-0" name='aoi' />
                     </InputGroup>
                   </Col>
                   <Col sm='3'>
                     <InputGroup>
-
-                      <InputGroupText>Drivers License</InputGroupText>
-
-                      <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                      <InputGroupText>Drivers License</InputGroupText> 
+                      <Select options={YesNo} className="form-control p-0 border-0" name='drivers_license' />
                     </InputGroup>
                   </Col>
                   <Col sm='3'>
                     <InputGroup>
-
                       <InputGroupText>Signed Agreement</InputGroupText>
-
-                      <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                      <Select options={YesNo} className="form-control p-0 border-0" name='signed_agreement' />
                     </InputGroup>
                   </Col>
                   <Col sm='3'>
                     <InputGroup>
-
                       <InputGroupText>Void Cheque</InputGroupText>
-
-                      <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                      <Select options={YesNo} className="form-control p-0 border-0"  name='void_cheque' />
                     </InputGroup>
                   </Col>
                 </Row>
@@ -338,105 +310,66 @@ const Index = () => {
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Check Rebate</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='check_rebate' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>FJ Rack Invoice</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='retail_invoice' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>TA Petro Rack Invoice</InputGroupText>
-
-                        <Select options={retailInvoice} className="form-control p-0 border-0" />
-
-
+                        <Select options={TaretailInvoice} className="form-control p-0 border-0" name='ta_retail_invoice' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Esso Rack Invoice</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='esso_retail_invoice' />
                       </InputGroup>
                     </FormGroup>
-
                   </Col>
                 </Row>
                 <Row >
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Loves Rack Invoice</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0"  name='love_retail_invoice'/>
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Show Supplier Fee (FJ)</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='supplier_fee' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Show IBP Adjustment (TA)</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='ibp_adjustment' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Show Pumping Fee(LOVES)</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='pumping_fee'/>
                       </InputGroup>
                     </FormGroup>
 
@@ -446,196 +379,113 @@ const Index = () => {
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Show Net Price (ESSO)</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='net_price' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Show (ESSO) Live Data</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='esso_live' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
-                  <Col sm='3'>
-                    <FormGroup className=" m-form__group">
-
-                      <InputGroup>
-
-                        <InputGroupText>ESSO Rack</InputGroupText>
-
-                        <Select options={essoRack} className="form-control p-0 border-0" />
-
-
-                      </InputGroup>
-                    </FormGroup>
+                  <Col sm='3'>                    
+                    <DropDown  name="esso_rack" label="ESSO Rack" control={control} placeholder="Select ESSO Rack" defaultValueId={0} options={essoRacks}
+            />                     
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>CADV FEE</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='fee' />
                       </InputGroup>
                     </FormGroup>
-
                   </Col>
                 </Row>
                 <Row >
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Show Owner Operator Invoice</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='sw_owner_invoice' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Self Owner Operator Report
                         </InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='self_owner_invoice' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Show Customised Invoices</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='sw_customised_inv' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Default Unit</InputGroupText>
-
-                        <Select options={Units} className="form-control p-0 border-0" />
-
-
+                        <Select options={DefaultUnits} className="form-control p-0 border-0" name='default_unit' />
                       </InputGroup>
                     </FormGroup>
-
                   </Col>
                 </Row>
                 <Row >
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Default Driver</InputGroupText>
-
-                        <Select options={Units} className="form-control p-0 border-0" />
-
-
+                        <Select options={DefaultUnits} className="form-control p-0 border-0" name='default_driver' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
-                    <FormGroup className=" m-form__group">
-
-                      <InputGroup>
-
-                        <InputGroupText>ESSO Rack ON
-
-                        </InputGroupText>
-
-                        <Select options={essoRack} className="form-control p-0 border-0" />
-
-
-                      </InputGroup>
-                    </FormGroup>
+                   <DropDown  name="esso_rack_on" label="ESSO Rack" control={control} placeholder="Select ESSO Rack" defaultValueId={0} options={essoRacks}
+            />              
+                  </Col>
+                  <Col sm='3'>
+                     <DropDown  name="esso_rack_oon" label="ESSO Rack" control={control} placeholder="Select ESSO Rack" defaultValueId={0} options={essoRacks}
+            />          
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
-                        <InputGroupText>ESSO Rack OON</InputGroupText>
-
-                        <Select options={essoRack} className="form-control p-0 border-0" />
-
-
-                      </InputGroup>
-                    </FormGroup>
-                  </Col>
-                  <Col sm='3'>
-                    <FormGroup className=" m-form__group">
-
-                      <InputGroup>
-
                         <InputGroupText>Suspicious Company</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
+                        <Select options={YesNo} className="form-control p-0 border-0" name='susp_comp' />
                       </InputGroup>
                     </FormGroup>
-
                   </Col>
                 </Row>
                 <Row >
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>DEFD Mark Up</InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='defd_mark_up' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm='3'>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Daily Volume Report
-
                         </InputGroupText>
-
-                        <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
+                        <Select options={YesNo} className="form-control p-0 border-0" name='daily_report' />
                       </InputGroup>
                     </FormGroup>
                   </Col>
-
                 </Row> </fieldset>
-            </CardBody>
-
+            </CardBody> 
           </Card>
           <Card className="shadow-lg my-3 py-3">
             <CardBody >
@@ -645,27 +495,17 @@ const Index = () => {
                   <Col sm='4'>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Ultramar INVOICE TYPE</InputGroupText>
-
                         <Select options={invoiceType1} className="form-control p-0 border-0" />
-
-
                       </InputGroup>
                     </FormGroup>
                   </Col>
                   <Col sm={{ size: 4, offset: 4 }}>
                     <FormGroup className=" m-form__group">
-
                       <InputGroup>
-
                         <InputGroupText>Owner Operator Invoice
-
-
                         </InputGroupText>
-
                         <Select options={companyLoginAccess} className="form-control p-0 border-0" />
-
                       </InputGroup>
                     </FormGroup>
                   </Col>
@@ -728,12 +568,8 @@ const Index = () => {
                   <Col sm={{ size: 4 }}>
                     <FormGroup className=" m-form__group">
                       <InputGroup>
-
                         <InputGroupText>Customized Invoice Type</InputGroupText>
-
                         <Select options={invoiceType} className="form-control p-0 border-0" />
-
-
                       </InputGroup>
                     </FormGroup>
                   </Col>

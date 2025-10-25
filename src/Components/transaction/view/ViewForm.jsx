@@ -21,12 +21,11 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import ItemsDropDown from "../../Forms/FormControl/formInput/ItemsDropDown";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
-import useCompany from "../../../Hooks/useCompany";
-import useItems from "../../../Hooks/useItems";
+import {  useCompany, useSalesman, useSupplier,useEssoRack,useItems} from "../../../Hooks/Dropdowns";
 const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
-  const { companies: companyOptions, loading: companyLoading } = useCompany();
-  const { items, loading } = useItems();
+  const { data: companyOptions, loading: companyLoading } = useCompany();
+  const { data: items, loading: itemsLoading } = useItems();
 
   const {
     control,
