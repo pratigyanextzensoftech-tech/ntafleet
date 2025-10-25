@@ -6,6 +6,8 @@ import axios from "axios";
 import { Container } from "reactstrap";
 import { company } from "../../api";
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
+import { Navigate, useNavigate } from "react-router";
+import { use } from "react";
 
 const ViewCompany = () => {
   const [companyData, setCompanyData] = useState([]);
@@ -18,6 +20,8 @@ const ViewCompany = () => {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
+
+  const edit=useNavigate();
 
   // ✅ Build column definitions
   useEffect(() => {
@@ -157,7 +161,7 @@ const ViewCompany = () => {
   };
 
   // ✅ Action handlers
-  const handleEdit = (row) => console.log("Edit:", row);
+  const handleEdit = (row) => {edit("/edit_company")};
   const handleLogin = (row) => console.log("Login:", row);
   const handleDelete = (row) => {
     if (window.confirm(`Delete "${row.companyName}"?`)) {
@@ -180,8 +184,7 @@ const ViewCompany = () => {
   return (
     <Fragment>
       <Breadcrumbs parent="Invoice" title="Company List" />
-      <Container fluid>
-        <HeaderCard title="Company List" />
+      <Container fluid> 
         <DataTableComponent
           title="Company List"
           loading={loading}

@@ -1,6 +1,5 @@
 // dashbaord
 import ManageUser from '../Components/manageUser'
-import AddCompany from '../Components/addCompany'
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';
 import ViewInvoice from '../Components/viewInvoice/ViewInvoice';
 import CheckOldINvoice from '../Components/checkOldInvoice/CheckOldINvoice';
@@ -15,7 +14,10 @@ import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
 import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';
-import ViewCompany from '../Components/viewCompany/ViewCompany';
+
+import AddCompany from '../Components/company/AddCompany'
+import ViewCompany from '../Components/company/ViewCompany';
+import EditCompany from '../Components/company/EditCompany'
 import CompanyInfo from '../Components/CompanyInfo/CompanyInfo';
 import SubLOgin from '../Components/subLogin/SubLogin';
 import SupplierList from '../Components/supplier/supplierList/index';
@@ -94,7 +96,9 @@ export const routes = [
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
   { path: `/add_company`, Component: <AddCompany /> },
+  { path: `/edit_company`, Component: <EditCompany /> },
   { path: `/view_company`, Component: <ViewCompany /> },
+  
   { path: `/company_info`, Component: <CompanyInfo /> },
   { path: `/sub_login`, Component: <SubLOgin /> },
   { path: `/create_invoice`, Component: <CreateInvoice /> },

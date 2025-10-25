@@ -27,8 +27,8 @@ export const optionscountry1 = [
 export const checkBoxData = [
     { id: 'All Company', label: 'All Company',value:"All Company" },
     { id: '1000157697 ONTARIO INC.', label: '1000157697 ONTARIO INC.',value:'1000157697 ONTARIO INC' },
-    {id:' 10002730 MANITOBA INC. ',label:" 10002730 MANITOBA INC. ",value:" 10002730 MANITOBA INC"},
-    {id:' 1001021918 ONTARIO INC. ' ,label:"  1001021918 ONTARIO INC.  ",value:"1001021918 ONTARIO INC"},
+    { id:' 10002730 MANITOBA INC. ',label:" 10002730 MANITOBA INC. ",value:" 10002730 MANITOBA INC"},
+    { id:' 1001021918 ONTARIO INC. ' ,label:"  1001021918 ONTARIO INC.  ",value:"1001021918 ONTARIO INC"},
 ];
 export const transactionCheckBox=[
     { id: 'All Company', label: 'All Company',value:"All Company" },
