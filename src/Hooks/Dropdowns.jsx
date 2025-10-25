@@ -5,7 +5,8 @@ import {
   itemsAll,
   supplierAll,
   salesmanAll,
-  esso_rack_all
+  esso_rack_all,
+  country_all,
 } from "../api/index";
 
 /**
@@ -80,4 +81,20 @@ export const useSalesman = () =>
     value: s.id,
     label: s.name,
   }));
+ 
+
+  export const useCountry = () => {
+  const { data, loading, error } = useDropdown(country_all, (s) => ({
+    value: s.country_id,
+    label: s.country_name,
+  }));
+
+  // Add static first entry (e.g., "Select Country")
+  const countries = [
+    { value: "0", label: "Both Country" }, // 👈 static option
+    ...data,
+  ];
+
+  return { data: countries, loading, error };
+};
 

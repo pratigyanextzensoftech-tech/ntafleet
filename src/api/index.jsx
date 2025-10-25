@@ -24,6 +24,7 @@ export const comp_owner_report = `${baseurl}/api/comp_owner_report`;
 export const company_fee = `${baseurl}/api/company_fee`;
 export const company_with_ulcent = `${baseurl}/api/company_with_ulcent`;
 export const country = `${baseurl}/api/country`;
+export const country_all = `${baseurl}/api/country/all`;
 export const currency_rate = `${baseurl}/api/currency_rate`;
 export const customized_invoice = `${baseurl}/api/customized_invoice`;
 export const customized_invoice_detail = `${baseurl}/api/customized_invoice_detail`;

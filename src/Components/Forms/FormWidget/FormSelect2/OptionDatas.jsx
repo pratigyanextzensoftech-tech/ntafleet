@@ -182,18 +182,18 @@ export const salesman = [
 
 ];
 export const invoiceCreation=[
-        { value: 'Weekly', label: 'Weekly' },
-        { value: 'Many Times In A Week', label: 'Many Times In A Week' },
+        { value: 'weekly', label: 'Weekly' },
+        { value: 'many_times', label: 'Many Times In A Week' },
 ]
 export const invoiceDay = [
         { label: 'Select Invoice Day' , isDisabled: true },
-  { value: 'Monday', label: 'Monday' },
-  { value: 'Tuesday', label: 'Tuesday' },
-  { value: 'Wednesday', label: 'Wednesday' },
-  { value: 'Thursday', label: 'Thursday' },
-  { value: 'Friday', label: 'Friday' },
-  { value: 'Saturday', label: 'Saturday' },
-  { value: 'Sunday', label: 'Sunday' },
+  { value: 'monday', label: 'Monday' },
+  { value: 'tuesday', label: 'Tuesday' },
+  { value: 'wednesday', label: 'Wednesday' },
+  { value: 'thursday', label: 'Thursday' },
+  { value: 'friday', label: 'Friday' },
+  { value: 'saturday', label: 'Saturday' },
+  { value: 'sunday', label: 'Sunday' },
 ];
 export const invoiceWeek = [
         { label: 'Select Invoice Week.',isDisabled: true },
@@ -319,17 +319,17 @@ export const invoiceType=[
         {value: 'Retail Invoice', label: 'Retail Invoice' },
 ]
 export const customizedTypeType=[
-        { label: 'Select Status', isDisabled: true },
-        {value: 'Driver Name', label: 'Driver Name' },
-        {value: 'Unit #', label: 'Unit #' },
+        {label: 'Select Status', isDisabled: true },
+        {value: 'driver_name', label: 'Driver Name' },
+        {value: 'unit', label: 'Unit #' },
 ]
 
 export const invoiceType1=[
-        { label: 'Select Status', isDisabled: true },
-        {value: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
-        {value: 'R (Rack Invoice/Show Discount)', label: 'R (Rack Invoice/Show Discount)' },
-        {value:"RG (Rack Invoice with general unit price update)",label:"RG (Rack Invoice with general unit price update)"},
-        {value:"RP (Rack Invoice with daily pricing pdf unit price update)",label:"RP (Rack Invoice with daily pricing pdf unit price update)"}
+        {label: 'Select Status', isDisabled: true },
+        {value: 'RT', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
+        {value: 'R', label: 'R (Rack Invoice/Show Discount)' },
+        {value: "RG",label:"RG (Rack Invoice with general unit price update)"},
+        {value: "RP",label:"RP (Rack Invoice with daily pricing pdf unit price update)"}
 ]
 export const optionSalesMan=[
         {value: 'rahul', label: 'rahul' },
