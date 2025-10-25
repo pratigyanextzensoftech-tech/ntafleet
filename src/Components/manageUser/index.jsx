@@ -7,7 +7,7 @@ import { FaEdit, FaTrashAlt, FaPaperPlane } from "react-icons/fa";
 import axios from "axios";
 import { administrator } from "../../api/index";
 import FormComponent from "./Form";
-
+import Swal from "sweetalert2";
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -17,6 +17,7 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
+  const [editUser, setEditUser] = useState(null);
 
   // ✅ Fetch user list API
   const fetchUsers = async (page = 1, limit = 10) => {
@@ -39,6 +40,7 @@ const Index = () => {
         added_by: item.added_by_name ,
         company_login: item.company_login ,
         status: item.status ,
+         password: item.password 
       }));
 
       setData(formatted);
@@ -68,12 +70,51 @@ const Index = () => {
   };
 
   // ✅ Edit / Delete / Send Details
-  const handleEdit = (row) => alert(`✏️ Edit user: ${row.name}`);
-  const handleDelete = (row) => {
-    if (window.confirm(`Delete user "${row.name}"?`)) {
-      setData((prev) => prev.filter((item) => item.id !== row.id));
-    }
+  const handleEdit = (row) => {
+    console.log(row)
+    setEditUser(row)
+    axios.put(administrator,row.id)
+    .then((res)=>{
+      console.log(res);
+    })
+    .catch((err)=>{
+      console.log(err)
+    });
   };
+  const handleDelete = (row) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you really want to delete user "${row.name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // ✅ Call API to delete
+      axios.delete(`${administrator}/${row.id}`)
+        .then((res) => {
+          console.log(res);
+          // ✅ Remove from state
+          setData((prevData) => prevData.filter((item) => item.id !== row.id));
+
+          // ✅ Success alert
+          Swal.fire(
+            'Deleted!',
+            `User "${row.name}" has been deleted.`,
+            'success'
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          Swal.fire('Error!', 'Failed to delete user.', 'error');
+        });
+    }
+  });
+};
+
   const handleSendDetails = (row) => alert(`📤 Send details for: ${row.email}`);
 
   // ✅ Close dropdown when clicking outside
@@ -204,7 +245,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add User" />
               <CardBody>
-                <FormComponent  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])}/>
+                <FormComponent  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
               </CardBody>
             </Card>
           </Col>

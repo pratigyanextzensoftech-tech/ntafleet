@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../AbstractElements";
 import { add_user } from '../../Constant';
@@ -10,15 +10,35 @@ import DropDown from '../Forms/FormControl/formInput/DropDown';
 import { companyLoginAccess, manageuserStatus } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { administrator } from '../../api'; // ✅ Adjust API endpoint if needed
 import { toast } from 'react-toastify';
-const FormComponent = ({ onUserAdded }) => {
+const FormComponent = ({ onUserAdded,editUser }) => {
   const {
     register,
     control,
     reset,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
-
+ useEffect(() => {
+  console.log(editUser)
+    if (editUser) {
+      setValue("name", editUser.name);
+      setValue("email", editUser.email);
+      setValue("phone", editUser.phone);
+      setValue("company", editUser.company);
+      setValue("password", editUser.password ); // optional
+      setValue("status", {
+        value: editUser.status,
+        label: editUser.status == "0" ? "Active" : "Blocked",
+      });
+      setValue("company_login", {
+        value: editUser.company_login,
+        label: editUser.company_login,
+      });
+    } else {
+      reset();
+    }
+  }, [editUser, setValue, reset]);
   // ✅ Handle form submission
   const onSubmit = async (formData) => {
     try {
@@ -38,7 +58,6 @@ const FormComponent = ({ onUserAdded }) => {
         created:new Date().toISOString().slice(0, 19).replace('T', ' '), 
         admin_del:0,
         added_by:0,
-        id:""
 
       };
 
@@ -49,14 +68,19 @@ const FormComponent = ({ onUserAdded }) => {
       toast.success("Add Succesfully")
 if (onUserAdded) {
         onUserAdded({
-          id: res.data.id || Math.random(), // fallback if API doesn't return id
           name: payload.name,
           email: payload.email,
           phone: payload.phone,
+         password: payload.password,
           company: payload.company,
           added_by: "Admin",
           company_login: payload.company_login,
           status: payload.status,
+          gender:"",
+        pic:"",
+        created:new Date().toISOString().slice(0, 19).replace('T', ' '), 
+        admin_del:0,
+        added_by:0,
         });
       }
       reset(); // Reset the form on success
