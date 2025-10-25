@@ -57,8 +57,7 @@ const FormComponent = ({ onUserAdded,editUser }) => {
         pic:"",
         created:new Date().toISOString().slice(0, 19).replace('T', ' '), 
         admin_del:0,
-        added_by:0,
-
+        added_by:0, 
       };
 
       // ✅ POST request
@@ -66,7 +65,8 @@ const FormComponent = ({ onUserAdded,editUser }) => {
 
       console.log("✅ API Response:", res.data);
       toast.success("Add Succesfully")
-if (onUserAdded) {
+
+    if (onUserAdded) {
         onUserAdded({
           name: payload.name,
           email: payload.email,

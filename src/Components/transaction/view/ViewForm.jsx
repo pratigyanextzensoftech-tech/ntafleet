@@ -26,6 +26,8 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const { data: companyOptions, loading: companyLoading } = useCompany();
   const { data: items, loading: itemsLoading } = useItems();
+  const { data: allSuppliercheckbox, loading: allSuppliercheckboxLoading } = useSupplier();
+   
 
   const {
     control,
@@ -86,7 +88,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
       <fieldset className="inputField my-3 py-3">
         <legend className="legend">Choose Supplier Check All</legend>
         <Row>
-          {chooseSupplierCheckBox.map((item, index) => (
+          {allSuppliercheckbox.map((item, index) => (
             <Col sm="3" key={index}>
               <div className="checkbox checkbox-dark">
                 <input
