@@ -220,7 +220,7 @@ export const optionsSearch = [
 export const companyLoginAccess=[
                 { label: 'select Option.',isDisabled: true },
 
-    { value: 'yes', label: 'yes' },
+    { value: 'Yes', label: 'Yes' },
     { value: 'No', label: 'No' },
 
 ]
@@ -324,8 +324,8 @@ export  const userStatus=[
         { value: 'Active', label: 'Active' },
 ]
 export  const manageuserStatus=[
-        { value: 'Blocked', label: 'Blocked' },
-        { value: 'Active', label: 'Active' },
+        { value: '1', label: 'Blocked' },
+        { value: '0', label: 'Active' },
 
 ]
 export const options2 = [
