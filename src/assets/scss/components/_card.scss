@@ -382,3 +382,22 @@
 	padding: 10px;
 	margin-top: -16px;
 }
+
+
+fieldset {
+	float: left;
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+legend {
+	width: auto;
+	padding: 0px 12px;
+	margin: 0px 10px;
+	text-transform: uppercase;
+	border: 1px solid #ccc;
+	font-size: 15px;
+  float:unset;
+}

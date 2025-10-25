@@ -6,7 +6,7 @@ export const options = [
     { value: 'WY', label: 'John Doe' },
 ];
 export const optionscountry = [
-                { label: 'All Country' , isDisabled: true },
+    { label: 'All Country' , isDisabled: true },
     { value: 'United States of America', label: 'United States of America' },
     { value: 'Canada', label: 'Canada' }
 ];
@@ -27,8 +27,8 @@ export const optionscountry1 = [
 export const checkBoxData = [
     { id: 'All Company', label: 'All Company',value:"All Company" },
     { id: '1000157697 ONTARIO INC.', label: '1000157697 ONTARIO INC.',value:'1000157697 ONTARIO INC' },
-    {id:' 10002730 MANITOBA INC. ',label:" 10002730 MANITOBA INC. ",value:" 10002730 MANITOBA INC"},
-    {id:' 1001021918 ONTARIO INC. ' ,label:"  1001021918 ONTARIO INC.  ",value:"1001021918 ONTARIO INC"},
+    { id:' 10002730 MANITOBA INC. ',label:" 10002730 MANITOBA INC. ",value:" 10002730 MANITOBA INC"},
+    { id:' 1001021918 ONTARIO INC. ' ,label:"  1001021918 ONTARIO INC.  ",value:"1001021918 ONTARIO INC"},
 ];
 export const transactionCheckBox=[
     { id: 'All Company', label: 'All Company',value:"All Company" },
@@ -182,18 +182,18 @@ export const salesman = [
 
 ];
 export const invoiceCreation=[
-        { value: 'Weekly', label: 'Weekly' },
-        { value: 'Many Times In A Week', label: 'Many Times In A Week' },
+        { value: 'weekly', label: 'Weekly' },
+        { value: 'many_times', label: 'Many Times In A Week' },
 ]
 export const invoiceDay = [
         { label: 'Select Invoice Day' , isDisabled: true },
-  { value: 'Monday', label: 'Monday' },
-  { value: 'Tuesday', label: 'Tuesday' },
-  { value: 'Wednesday', label: 'Wednesday' },
-  { value: 'Thursday', label: 'Thursday' },
-  { value: 'Friday', label: 'Friday' },
-  { value: 'Saturday', label: 'Saturday' },
-  { value: 'Sunday', label: 'Sunday' },
+  { value: 'monday', label: 'Monday' },
+  { value: 'tuesday', label: 'Tuesday' },
+  { value: 'wednesday', label: 'Wednesday' },
+  { value: 'thursday', label: 'Thursday' },
+  { value: 'friday', label: 'Friday' },
+  { value: 'saturday', label: 'Saturday' },
+  { value: 'sunday', label: 'Sunday' },
 ];
 export const invoiceWeek = [
         { label: 'Select Invoice Week.',isDisabled: true },
@@ -208,9 +208,9 @@ export const customerType = [
 
 ];
 export const optionscompany = [
-            { label: 'Select Company.',isDisabled: true },
-    { value: 'customer', label: 'Customer' },
-    { value: 'Non customer', label: 'Non customer' }
+    { label: 'Select Company.',isDisabled: true },
+    { value: '0', label: 'Customer' },
+    { value: '1', label: 'Non customer' }
 ];
 export const optionsSearch = [
             { label: 'select Type.',isDisabled: true },
@@ -218,16 +218,28 @@ export const optionsSearch = [
     { value: 'Greater than', label: 'Greater than' }
 ];
 export const companyLoginAccess=[
-                { label: 'select Option.',isDisabled: true },
+    { label: 'select Option.',isDisabled: true },
+    { value: 'Yes', label: 'Yes' },
+    { value: 'No', label: 'No' },
 
-    { value: 'yes', label: 'yes' },
+]
+export const YesNo=[
+    { label: 'select Option.',isDisabled: true },
+    { value: 'Yes', label: 'Yes' },
     { value: 'No', label: 'No' },
 
 ]
 export const retailInvoice=[
     { value: 'Retail Invoice', label: 'Retail Invoice' },
     { value: 'Capped Discount', label: 'Capped Discount' },
-        { value: 'Actual Discount', label: 'Actual Discount' },
+    { value: 'Actual Discount', label: 'Actual Discount' },
+
+]
+
+export const TaretailInvoice=[
+    { value: 'Retail', label: 'Retail Invoice' },
+    { value: 'Capped', label: 'Capped Discount' },
+    { value: 'Actual', label: 'Actual Discount' },
 
 ]
  export const essoRack=[
@@ -274,7 +286,12 @@ export const retailInvoice=[
         { value: 'Total Only Zero (0)', label: 'Total Only Zero (0)' },
 
  ]
- export const Units=[
+  export const Units=[
+        { label: 'Select ', isDisabled: true },
+        { value: 'EFS', label: 'EFS' },
+        { value: 'NTA', label: 'NTA' },
+ ]
+ export const DefaultUnits=[
         { label: 'Select ', isDisabled: true },
         { value: 'EFS', label: 'EFS' },
         { value: 'NTA', label: 'NTA' },
@@ -282,7 +299,7 @@ export const retailInvoice=[
 export const companyStatus=[
         { label: 'Select Status', isDisabled: true },
         { value: 'Active', label: 'Active' },
-        { value: ' InActive', label: 'InActive' },
+        { value: 'InActive', label: 'InActive' },
         { value: 'Hold', label: 'Hold' },
 ]
 export const MoneyCodeStatus=[
@@ -302,17 +319,17 @@ export const invoiceType=[
         {value: 'Retail Invoice', label: 'Retail Invoice' },
 ]
 export const customizedTypeType=[
-        { label: 'Select Status', isDisabled: true },
-        {value: 'Driver Name', label: 'Driver Name' },
-        {value: 'Unit #', label: 'Unit #' },
+        {label: 'Select Status', isDisabled: true },
+        {value: 'driver_name', label: 'Driver Name' },
+        {value: 'unit', label: 'Unit #' },
 ]
 
 export const invoiceType1=[
-        { label: 'Select Status', isDisabled: true },
-        {value: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
-        {value: 'R (Rack Invoice/Show Discount)', label: 'R (Rack Invoice/Show Discount)' },
-        {value:"RG (Rack Invoice with general unit price update)",label:"RG (Rack Invoice with general unit price update)"},
-        {value:"RP (Rack Invoice with daily pricing pdf unit price update)",label:"RP (Rack Invoice with daily pricing pdf unit price update)"}
+        {label: 'Select Status', isDisabled: true },
+        {value: 'RT', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
+        {value: 'R', label: 'R (Rack Invoice/Show Discount)' },
+        {value: "RG",label:"RG (Rack Invoice with general unit price update)"},
+        {value: "RP",label:"RP (Rack Invoice with daily pricing pdf unit price update)"}
 ]
 export const optionSalesMan=[
         {value: 'rahul', label: 'rahul' },
@@ -324,8 +341,8 @@ export  const userStatus=[
         { value: 'Active', label: 'Active' },
 ]
 export  const manageuserStatus=[
-        { value: 'Blocked', label: 'Blocked' },
-        { value: 'Active', label: 'Active' },
+        { value: '1', label: 'Blocked' },
+        { value: '0', label: 'Active' },
 
 ]
 export const options2 = [
