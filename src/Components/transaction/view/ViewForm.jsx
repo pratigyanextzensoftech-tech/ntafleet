@@ -36,31 +36,34 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
     defaultValues: {
       from: null,
       to: null,
-      startProv: "",
+      state_prov: "",
       unit: "",
-      cardNo: "",
+      card_no: "",
       company: "",
       currency: null,
       items: null,
       status: null,
-      type: null,
+      invoice_type: null,
     },
   });
 
   const onSubmit = (data) => {
     const fullData = {
-      ...data,
-      suppliers: selectedValues,
-      company: data.company?.value || "",
-      currency: data.currency?.value || "",
-      items: data.items?.value || "",
-      status: data.status?.value || "",
-      type: data.type?.value || "",
+      // ...data,
+      supplier_id: [...selectedValues],
       from: data.from ? data.from.toISOString().split("T")[0] : "",
       to: data.to ? data.to.toISOString().split("T")[0] : "",
+      state_prov:data.state_prov,
+      unit:data.unit,
+      card_no:data.card_no,
+      company_id: data.company?.value || "",
+      currency: data.currency?.value || "",
+      item: data.items?.value ,
+      invoiced: data.status?.value || "",
+      invoice_type: data.invoice_type?.value || "",
     };
 
-    console.log("✅ Full Form Data:", fullData);
+    console.log("✅ Full Form Data:", data);
     if (onSearch) onSearch(fullData); // ✅ trigger parent to refresh table
   };
 
@@ -165,7 +168,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             <InputGroup>
               <InputGroupText>State Prov</InputGroupText>
               <Controller
-                name="startProv"
+                name="state_prov"
                 control={control}
                 render={({ field }) => (
                   <Input {...field} type="text" className="form-control" />
@@ -198,7 +201,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             <InputGroup>
               <InputGroupText>Card No.</InputGroupText>
               <Controller
-                name="cardNo"
+                name="card_no"
                 control={control}
                 render={({ field }) => (
                   <Input {...field} type="text" className="form-control" />
@@ -288,7 +291,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
 
         <Col sm="3">
           <DropDown
-            name="type"
+            name="invoice_type"
             label="Invoice Type"
             control={control}
             placeholder="Select Type"
