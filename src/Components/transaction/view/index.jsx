@@ -229,10 +229,7 @@ const Index = () => {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
-        />
-         
-      
-       
+        /> 
    </Container>
  </Fragment>
 

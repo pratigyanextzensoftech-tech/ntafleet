@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
-import { Container } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import DiscountSheetForm from "./DiscountSheet";
@@ -64,9 +64,12 @@ const DiscountSheetPage = () => {
   };
 
   // Dropdown action handlers
-  const handleDiscountSheet = (row) => alert(`Open Discount Sheet for ID ${row.id}`);
-  const handleDiscountDetail = (row) => alert(`View Discount Detail for ID ${row.id}`);
-  const handleEmailSheet = (row) => alert(`Email Discount Sheet for ID ${row.id}`);
+  const handleDiscountSheet = (row) =>
+    alert(`Open Discount Sheet for ID ${row.id}`);
+  const handleDiscountDetail = (row) =>
+    alert(`View Discount Detail for ID ${row.id}`);
+  const handleEmailSheet = (row) =>
+    alert(`Email Discount Sheet for ID ${row.id}`);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -80,16 +83,66 @@ const DiscountSheetPage = () => {
   // Table Columns
   const tableColumns = [
     { name: "ID", selector: (row) => row.id, sortable: true, width: "100px" },
-    { name: "Company Name", selector: (row) => row.company_name, sortable: true, width:"200px" },
-    { name: "Start Date", selector: (row) => row.start_date, sortable: true, width:"200px" },
-    { name: "End Date", selector: (row) => row.end_date, sortable: true, width:"200px" },
-    { name: "Discount_Cent", selector: (row) => row.discount_percent, sortable: true, width:"200px" },
-    { name: "Discount_For", selector: (row) => row.discount_for, sortable: true, width:"200px" },
-    { name: "Litre", selector: (row) => row.litre, sortable: true, width:"150px" },
-    { name: "Gallons", selector: (row) => row.gallons, sortable: true, width:"150px" },
-    { name: "Discount (USD)", selector: (row) => row.discount_usd, sortable: true, width:"200px" },
-    { name: "Discount (CAD)", selector: (row) => row.discount_cad, sortable: true, width:"200px" },
-    { name: "Added By", selector: (row) => row.added_by, sortable: true, width:"150px" },
+    {
+      name: "Company Name",
+      selector: (row) => row.company_name,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Start Date",
+      selector: (row) => row.start_date,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "End Date",
+      selector: (row) => row.end_date,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Discount_Cent",
+      selector: (row) => row.discount_percent,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Discount_For",
+      selector: (row) => row.discount_for,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Litre",
+      selector: (row) => row.litre,
+      sortable: true,
+      width: "150px",
+    },
+    {
+      name: "Gallons",
+      selector: (row) => row.gallons,
+      sortable: true,
+      width: "150px",
+    },
+    {
+      name: "Discount (USD)",
+      selector: (row) => row.discount_usd,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Discount (CAD)",
+      selector: (row) => row.discount_cad,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Added By",
+      selector: (row) => row.added_by,
+      sortable: true,
+      width: "150px",
+    },
     {
       name: "Action",
       cell: (row) => (
@@ -101,14 +154,35 @@ const DiscountSheetPage = () => {
             Action
           </button>
           {openRowId === row.id && (
-            <div className="position-absolute bg-white border rounded shadow" style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 180, padding: "5px 0" }}>
-              <button className="dropdown-item d-flex align-items-center" style={{ padding: "8px 12px", gap: "8px" }} onClick={() => handleDiscountSheet(row)}>
+            <div
+              className="position-absolute bg-white border rounded shadow"
+              style={{
+                zIndex: 1000,
+                right: 0,
+                marginTop: 5,
+                minWidth: 180,
+                padding: "5px 0",
+              }}
+            >
+              <button
+                className="dropdown-item d-flex align-items-center"
+                style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={() => handleDiscountSheet(row)}
+              >
                 <FaFileAlt /> Discount Sheet
               </button>
-              <button className="dropdown-item d-flex align-items-center" style={{ padding: "8px 12px", gap: "8px" }} onClick={() => handleDiscountDetail(row)}>
+              <button
+                className="dropdown-item d-flex align-items-center"
+                style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={() => handleDiscountDetail(row)}
+              >
                 <FaClipboardList /> Discount Sheet Detail
               </button>
-              <button className="dropdown-item d-flex align-items-center" style={{ padding: "8px 12px", gap: "8px" }} onClick={() => handleEmailSheet(row)}>
+              <button
+                className="dropdown-item d-flex align-items-center"
+                style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={() => handleEmailSheet(row)}
+              >
                 <FaEnvelope /> Email Discount Sheet
               </button>
             </div>
@@ -126,15 +200,16 @@ const DiscountSheetPage = () => {
     <Fragment>
       <Breadcrumbs parent="Discount" title="Manage Discount Sheet" />
       <Container fluid>
-        <HeaderCard title="Manage Discount Sheet" />
-
-        <div style={{ border: "1px solid #ccc", padding: "5px 10px", borderRadius: "3px", marginBottom: "10px" }}>
-          <div className="bg-primary p-2 my-3">
-            <HeaderCard title="Create Discount Sheet" />
-          </div>
-          <DiscountSheetForm btnTitle="Create" />
-        </div>
-
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Create Discount Sheet" />
+              <CardBody>
+                <DiscountSheetForm btnTitle="Create" />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <DataTableComponent
           title="Discount Sheet List"
           tableColumns={tableColumns}

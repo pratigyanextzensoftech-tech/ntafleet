@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
-import { Container } from 'reactstrap';
+import { Container,Row,Col,Card,CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import Create from './Create';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
@@ -145,16 +145,19 @@ const Index = () => {
 
   return (
     <Fragment>
-      <Breadcrumbs parent="Discount" title="Create Single Discount" />
-      <Container fluid>
-        <HeaderCard title="Create Single Discount" />
-
-        <div style={{ border: '1px solid #ccc', padding: '5px', borderRadius: '3px', marginBottom: '10px' }}>
-          <div className='bg-primary p-2 my-3'>
-            <HeaderCard title="Create Single Discount" />
-          </div>
-          <Create btnTitle="Create" onCreateSuccess={() => fetchDiscounts(currentPage, perPage)} />
-        </div>
+      <Breadcrumbs parent="Discount" title="Create Single Discount" /> 
+         <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Create Single Discount" />
+              <CardBody>
+                 <Create btnTitle="Create" onCreateSuccess={() => fetchDiscounts(currentPage, perPage)} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+ 
 
         <DataTableComponent
           title="Discount List"

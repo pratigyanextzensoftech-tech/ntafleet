@@ -80,8 +80,8 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       {/* ✅ Supplier Checkboxes */}
-      <fieldset className="inputField my-3 py-3">
-        <legend className="legend">Choose Supplier Check All</legend>
+      <fieldset>
+        <legend >Choose Supplier Check All</legend>
         <Row>
           {chooseSupplierCheckBox.map((item, index) => (
             <Col sm="3" key={index}>

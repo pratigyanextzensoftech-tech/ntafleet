@@ -5,7 +5,7 @@ import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import { optionscountry,supplier, chooseSupplierCheckBox, invoiceType,  currency,optionscompany,checkBoxData } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-const  ReportDashboardForm= ({btnTitle,btnTitle1}) => {
+const  SearchForm= ({btnTitle,btnTitle1}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
 
@@ -205,4 +205,4 @@ const  ReportDashboardForm= ({btnTitle,btnTitle1}) => {
         </Form>
     )
 }
-export default ReportDashboardForm
+export default SearchForm
