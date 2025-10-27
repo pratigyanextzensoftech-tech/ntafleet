@@ -1,88 +1,109 @@
-import React, { Fragment, useState } from 'react'
-import { Col, Row, Form, FormGroup, InputGroup, InputGroupText,  Input } from 'reactstrap';
-import { Btn } from '../../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
-import Select from 'react-select';
-import { supplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import HeaderCard from '../../Common/Component/HeaderCard';
-import DatePicker from 'react-datepicker'
+import React, { Fragment, useState } from "react";
+import {
+  Col,
+  Row,
+  Form,
+  FormGroup,
+  InputGroup,
+  InputGroupText,
+  Input,
+} from "reactstrap";
+import { Btn } from "../../../AbstractElements";
+import { useForm, Controller } from "react-hook-form";
+import Select from "react-select";
+import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import DatePicker from "react-datepicker";
 const FjPricing = ({ title, btnTtitle }) => {
-    const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors, isSubmitted, isValid },
-    } = useForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitted, isValid },
+  } = useForm();
 
+  const onSubmit = (data) => {
+    console.log("Form Data:", data); // ✅ This will print your inputs
+    // alert("Form submitted successfully!");
+  };
+  return (
+    <Fragment>
+      <Row>
+        <Col>
+          <fieldset>
+            <legend>{title}</legend>
+            <Form
+              className="px-2"
+              noValidate=""
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Row className="mt-3">
+                <Col sm="4">
+                  <Row>
+                    <Col className="pe-0" sm="3">
+                      {" "}
+                      <InputGroupText>File</InputGroupText>
+                    </Col>
+                    <Col className="px-0" sm="9">
+                      <Input
+                        style={{ border: "1px solid #ccc" }}
+                        className="form-control w-100c "
+                        type="file"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                <Col sm="4">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Supplier</InputGroupText>
+                      <Controller
+                        name="supplier"
+                        control={control}
+                        rules={{ required: "Supplier is required" }}
+                        defaultValue={supplier[1]}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            className="form-control p-0 border-0"
+                            placeholder="Select supplier"
+                            onChange={(selectedOption) =>
+                              field.onChange(selectedOption)
+                            }
+                            value={field.value}
+                          />
+                        )}
+                      />
+                    </InputGroup>
 
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-    };
-    return (
-        <Fragment>
-            <div style={{ border: "1px solid #ccc", padding: "5px 5px", bprderRadius: "3px", marginBottom: "10px" }}>
+                    {errors.supplier && (
+                      <span className="text-danger">
+                        {errors.supplier?.message}
+                      </span>
+                    )}
+                  </FormGroup>
+                </Col>
 
-                <div className='bg-primary p-2 my-3'>
-                    <HeaderCard title={title} />
+                <Col sm="4">
+                  <div className="text-end">
+                    <Btn
+                      attrBtn={{
+                        color: "primary",
+                        className: "m-r-15",
+                        type: "submit",
+                      }}
+                    >
+                      {btnTtitle}
+                    </Btn>
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          </fieldset>
+        </Col>
+      </Row>
+    </Fragment>
+  );
+};
 
-                </div>
-                <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-                    <Row className="mt-3">
-                         <Col sm="4"  >
-                            <Row>
-                                <Col className='pe-0' sm="3"> <InputGroupText >File</InputGroupText>
-                            </Col> 
-                                <Col className='px-0' sm="9">
-                                    <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />
-
-                                </Col>
-                            </Row>
-      
-
-                        </Col>
-                        <Col sm="4">
-                            <FormGroup className="m-form__group">
-                                <InputGroup >
-                                    <InputGroupText>Supplier</InputGroupText>
-                                <Controller
-  name="supplier"
-  control={control}
-  rules={{ required: "Supplier is required" }}
-defaultValue={
-  supplier[1]
-}
-  render={({ field }) => (
-    <Select
-      {...field}
-      className="form-control p-0 border-0"
-      placeholder="Select supplier"
-      onChange={(selectedOption) => field.onChange(selectedOption)}
-      value={field.value}
-    />
-  )}
-/>
-
-                                </InputGroup>
-
-                                {errors.supplier && (
-                                    <span className="text-danger">{errors.supplier?.message}</span>
-                                )}
-                            </FormGroup>
-                        </Col>
-                       
-                        <Col sm="4">
-                            <div className='text-end'>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
-                            </div>
-                        </Col>
-                    </Row>
-
-                </Form>
-
-            </div>
-        </Fragment>
-    )
-}
-
-export default FjPricing
+export default FjPricing;

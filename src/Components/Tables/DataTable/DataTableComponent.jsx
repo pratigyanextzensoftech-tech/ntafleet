@@ -130,13 +130,13 @@ const DataTableComponent = ({
                                 className="d-flex justify-content-start"
                               >
                                 <span style={{ marginRight: "15px" }}>
-                                  Fees: {totalData.fee}
+                                  <strong>Fees:</strong> {totalData.fee}
                                 </span>
                                 <span style={{ marginRight: "15px" }}>
-                                  Quantity : {totalData.qtygln} ``
+                                   <strong>Quantity:</strong> {totalData.qtygln} 
                                 </span>
                                 <span style={{ marginRight: "15px" }}>
-                                  Amount: {totalData.amtusd}
+                                  <strong>Amount:</strong> {totalData.amtusd}
                                 </span>
                               </Col>
                             </Row>

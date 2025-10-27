@@ -1,6 +1,6 @@
 import React,{Fragment} from 'react'
 import { Breadcrumbs } from '../../AbstractElements'
-import { Container } from 'reactstrap'
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from '../Common/Component/HeaderCard'
 import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import {CreateCustomizedTab} from '../../Data/tab/CreateCustomizedTab'

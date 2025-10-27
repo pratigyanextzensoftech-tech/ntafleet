@@ -100,9 +100,13 @@
 	top:-30px
 }
 .input-group-text {
-	background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(191, 235, 253), rgb(77, 131, 189)) repeat scroll 0% -1%;
+	background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(255, 255, 255), rgb(213, 233, 255)) repeat scroll 0% -1%;
 	color: #23262a !important;
-	border: 1px solid #77a9d5;
+	border: 1px solid #dee2e6;
+	border-radius: 5px 0px 0px 5px;
+}
+.form-control { 
+	border-radius: 0px 5px 5px 0px; 
 }
 /**=====================
      29. Form Input CSS Ends

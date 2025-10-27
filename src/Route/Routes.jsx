@@ -1,6 +1,21 @@
 // dashbaord
+import Dashboard from '../Components/dashboard/dashboard'
+import Report_Dashboard from '../Components/dashboard/report_dashboard'
+import Ggraph_Dashboard from '../Components/dashboard/graph_dashboard'
+
+// discount
+import CreateDiscount from '../Components/discount/createDiscount/index';
+import ViewDiscount from '../Components/discount/view/index';
+import DiscountSheet from '../Components/discount/discountSheet/index';
+import BulkDiscount from '../Components/discount/bulkDiscount/index';
+import ZeroDiscount from '../Components/discount/zeroDiscount/index';
+
+//Retail Price
+import Upload from '../Components/retailPrice/upload/index';
+import PetroRetail from '../Components/retailPrice/petro/index';
+
+
 import ManageUser from '../Components/manageUser'
-import AddCompany from '../Components/addCompany'
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';
 import ViewInvoice from '../Components/viewInvoice/ViewInvoice';
 import CheckOldINvoice from '../Components/checkOldInvoice/CheckOldINvoice';
@@ -15,7 +30,10 @@ import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
 import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';
-import ViewCompany from '../Components/viewCompany/ViewCompany';
+
+import AddCompany from '../Components/company/AddCompany'
+import ViewCompany from '../Components/company/ViewCompany';
+import EditCompany from '../Components/company/EditCompany'
 import CompanyInfo from '../Components/CompanyInfo/CompanyInfo';
 import SubLOgin from '../Components/subLogin/SubLogin';
 import SupplierList from '../Components/supplier/supplierList/index';
@@ -27,17 +45,12 @@ import ViewReports from '../Components/reports/viewReports/index';
 import SalesmanVol from '../Components/reports/salesmanVolume/index';
 import CreateReports from '../Components/reports/createReport/index';
 import AddItems from '../Components/items/addItems/index';
-import Upload from '../Components/retailPrice/upload/index';
-import PetroRetail from '../Components/retailPrice/petro/index';
+
 import AddFuel from '../Components/fuelCards/addFuel/index';
 import ViewFuel from '../Components/fuelCards/view/index';
 import EFSFuel from '../Components/fuelCards/viewEFS/index';
 import HistoryFuel from '../Components/fuelCards/history/index';
-import CreateDiscount from '../Components/discount/createDiscount/index';
-import ViewDiscount from '../Components/discount/view/index';
-import DiscountSheet from '../Components/discount/discountSheet/index';
-import BulkDiscount from '../Components/discount/bulkDiscount/index';
-import ZeroDiscount from '../Components/discount/zeroDiscount/index';
+
 import UploadTcheck from '../Components/tcheck/upload/index'
 import TcheckList from '../Components/tcheck/list/index'
 import CreateTCheck from '../Components/tcheck/create/index'
@@ -81,20 +94,30 @@ import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
 import OwnerOperator from '../Components/pricing/ownerOperator/index';
 import EssoGroup from '../Components/pricing/essoGroup/index';
 import UltramarGroup from '../Components/pricing/ultramarGroup/index';
-import DownloadBulk from '../Components/pricing/downloadBulk/index';
-import ReportDashboard from '../Components/dashboard/index';
+import DownloadBulk from '../Components/pricing/downloadBulk/index'; 
 import Help from '../Components/help/index';
 import AddCard from '../Components/help/addCard/index';
 
 export const routes = [
-{ path: `/dashboard`, Component: <ViewTransaction /> },
-{ path: `/default`, Component: <ViewTransaction /> },
-{ path: `/report_Dashboard`, Component: <ReportDashboard /> },
+//Dashboard
+{ path: `/dashboard`, Component: <Dashboard /> },
+{ path: `/report_dashboard`, Component: <Report_Dashboard/> },
+{ path: `/graph_dashboard`, Component: <Ggraph_Dashboard/> },
+
+//Discount
+{ path: `/create_discount`, Component: <CreateDiscount/> },
+{ path: `/view_discount`, Component: <ViewDiscount/> },
+{ path: `/discount_Sheet`, Component: <DiscountSheet/> },
+{ path: `/create_bulk_discount`, Component: <BulkDiscount/> },
+{ path: `/zero_discount_location`, Component: <ZeroDiscount/> },
+
 { path: `/how_to_use_efsllc.com`, Component: <Help /> },
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
   { path: `/add_company`, Component: <AddCompany /> },
+  { path: `/edit_company`, Component: <EditCompany /> },
   { path: `/view_company`, Component: <ViewCompany /> },
+  
   { path: `/company_info`, Component: <CompanyInfo /> },
   { path: `/sub_login`, Component: <SubLOgin /> },
   { path: `/create_invoice`, Component: <CreateInvoice /> },
@@ -127,12 +150,7 @@ export const routes = [
     { path: `/add_card`, Component: < AddFuel/> },
     { path: `/view_fuelCards`, Component: < ViewFuel/> },
     { path: `/efs_view_card`, Component: < EFSFuel/> },
-    { path: `/card_update`, Component: < HistoryFuel/> },
-    { path: `/create_discount`, Component: < CreateDiscount/> },
-    { path: `/view_Discount`, Component: < ViewDiscount/> },
-    { path: `/discount_Sheet`, Component: < DiscountSheet/> },
-    { path: `/create_Bulk_Discount`, Component: < BulkDiscount/> },
-    { path: `/zero_Discount_Location`, Component: < ZeroDiscount/> },
+    { path: `/card_update`, Component: < HistoryFuel/> }, 
     { path: `/upload_tcheck`, Component: < UploadTcheck/> },
     { path: `/tcheck_list`, Component: < TcheckList/> },
     { path: `/create_tcheck_invoice`, Component: < CreateTCheck/> },

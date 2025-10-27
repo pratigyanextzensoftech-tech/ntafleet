@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
-import { Container } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import ViewForm from "./ViewForm";
@@ -122,51 +122,121 @@ const Index = () => {
   // ✅ Grouped Table Columns like Screenshot
   const tableColumns = [
     { name: "ID#", selector: (row) => row.id, sortable: true, width: "100px" },
-    { name: "Company", selector: (row) => row.company_name, sortable: true,wrap:true,width: "150px" },
-    { name: "Start_Date", selector: (row) => row.start_date, sortable: true,wrap:true,width: "150px" },
-    { name: "End_Date", selector: (row) => row.end_date, sortable: true,wrap:true,width: "150px" },
-    { name: "Country", selector: (row) => row.country, sortable: true ,wrap:true,width: "150px"},
-    { name: "Supplier", selector: (row) => row.supplier, sortable: true,wrap:true,width: "150px" },
+    {
+      name: "Company",
+      selector: (row) => row.company_name,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "Start_Date",
+      selector: (row) => row.start_date,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "End_Date",
+      selector: (row) => row.end_date,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "Country",
+      selector: (row) => row.country,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "Supplier",
+      selector: (row) => row.supplier,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
 
     // === Discount Cent ===
     {
       name: "Discount Cent (CA)",
       selector: (row) => row.cent_ca,
       sortable: true,
-      wrap:true,
+      wrap: true,
       width: "200px",
     },
     {
       name: "Discount Cent (US)",
       selector: (row) => row.cent_us,
       sortable: true,
-      wrap:true,
+      wrap: true,
       width: "200px",
     },
 
     // === Total ===
-    { name: "Total (CA)", selector: (row) => row.total_ca, sortable: true,wrap:true  ,     width: "150px",
-},
-    { name: "Total (US)", selector: (row) => row.total_us, sortable: true,wrap:true   ,   width: "150px",
- },
+    {
+      name: "Total (CA)",
+      selector: (row) => row.total_ca,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "Total (US)",
+      selector: (row) => row.total_us,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
 
     // === Retail ===
-    { name: "Retail Total (CA)", selector: (row) => row.retail_ca, sortable: true,wrap:true     , width: "200px",
- },
-    { name: "Retail Total (US)", selector: (row) => row.retail_us, sortable: true ,wrap:true,      width: "200px",
-},
+    {
+      name: "Retail Total (CA)",
+      selector: (row) => row.retail_ca,
+      sortable: true,
+      wrap: true,
+      width: "200px",
+    },
+    {
+      name: "Retail Total (US)",
+      selector: (row) => row.retail_us,
+      sortable: true,
+      wrap: true,
+      width: "200px",
+    },
 
     // === Quantity ===
-    { name: "Qty (CA)", selector: (row) => row.qty_ca, sortable: true,wrap:true ,      width: "150px",
-},
-    { name: "Qty (US)", selector: (row) => row.qty_us, sortable: true,wrap:true,      width: "150px",
- },
+    {
+      name: "Qty (CA)",
+      selector: (row) => row.qty_ca,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "Qty (US)",
+      selector: (row) => row.qty_us,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
 
     // === Discount ===
-    { name: "Discount (CA)", selector: (row) => row.disc_ca, sortable: true,wrap:true,      width: "150px",
- },
-    { name: "Discount (US)", selector: (row) => row.disc_us, sortable: true,wrap:true,      width: "150px",
- },
+    {
+      name: "Discount (CA)",
+      selector: (row) => row.disc_ca,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
+    {
+      name: "Discount (US)",
+      selector: (row) => row.disc_us,
+      sortable: true,
+      wrap: true,
+      width: "150px",
+    },
 
     // === Action ===
     {
@@ -183,20 +253,16 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent="Discount" title="View Discounts" />
       <Container fluid>
-        <HeaderCard title="View Discounts" />
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "5px 10px",
-            borderRadius: "3px",
-            marginBottom: "10px",
-          }}
-        >
-          <div className="bg-primary p-2 my-3">
-            <HeaderCard title="Filters" />
-          </div>
-          <ViewForm btnTitle="Search Data" btnTitle1="Reset" />
-        </div>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Filters" />
+              <CardBody>
+                <ViewForm btnTitle="Search Data" btnTitle1="Reset" />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
         <DataTableComponent
           title="Discount List"

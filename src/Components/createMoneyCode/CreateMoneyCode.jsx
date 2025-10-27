@@ -1,7 +1,7 @@
 import React,{Fragment} from 'react'
 import { Breadcrumbs } from '../../AbstractElements'
 import HeaderCard from '../Common/Component/HeaderCard'
-import { Container } from 'reactstrap'
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import { CreateMoneyCodeTab } from '../../Data/tab/CreateMOneycodeTab'
 const CreateMoneyCode = () => {
