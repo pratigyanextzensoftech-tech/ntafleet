@@ -1,30 +1,34 @@
-import React,{Fragment,useState} from 'react'
-import { Breadcrumbs } from '../../../AbstractElements'
-import HeaderCard from '../../Common/Component/HeaderCard'
-import { Container,Row,Col } from 'reactstrap'
-import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard'
-import { SinglepricingTableTab } from '../../../Data/tab/SinglePricingTableTab'
-import { BulkPricingTab } from '../../../Data/tab/BulkPricingTab'
-import { TaPetroTab } from '../../../Data/tab/TaPetroTab'
-import {LovePricingTab} from '../../../Data/tab/LovePricingTab'
-import DataTableComponent from '../../Tables/DataTable/DataTableComponent'
-import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata'
+import React, { Fragment, useState } from "react";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import { Container, Row, Col,Card, CardBody } from "reactstrap";
+import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard"; 
+import { LovePricingTab } from "../../../Data/tab/LovePricingTab";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
+import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
 const index = () => {
-  
   return (
     <Fragment>
-         <Breadcrumbs parent='Pricing' title='Manage LOVE Bulk Pricing PDF'/>
-         <Container fluid={true}>
-           <HeaderCard title="Manage LOVE Bulk Pricing PDF" />
-           
-                 <BasicTabCard  tabContent={LovePricingTab}/>
-                             <div className='my-5'>
+      <Breadcrumbs parent="Pricing" title="Manage LOVE Bulk Pricing PDF" />
+      <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Create LOVE Bulk Pricing" />
+              <CardBody>
+                <BasicTabCard tabContent={LovePricingTab} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row> 
+        <DataTableComponent
+          title="Pricing PDF List "
+          tableData={dummytabledata}
+          tableColumns={tableColumns}
+        />
+      </Container>
+    </Fragment>
+  );
+};
 
-<DataTableComponent title="Pricing PDF List " tableData={dummytabledata} tableColumns={tableColumns}/>
-             </div>
-           </Container>
-           </Fragment>
-  )
-}
-
-export default index
+export default index;

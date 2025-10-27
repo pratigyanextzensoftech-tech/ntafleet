@@ -5,6 +5,7 @@ export const MenuApi=`${baseurl}/api/usermenu`;
 export const discount_sheet = `${baseurl}/api/discount_sheet`;
 export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
+
 export const companyall = `${baseurl}/api/company/all`;
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;

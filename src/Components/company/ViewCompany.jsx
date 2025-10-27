@@ -8,6 +8,7 @@ import { company } from "../../api";
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
 import { Navigate, useNavigate } from "react-router";
 import { use } from "react";
+import { Link } from "react-router-dom";
 
 const ViewCompany = () => {
   const [companyData, setCompanyData] = useState([]);
@@ -26,7 +27,7 @@ const ViewCompany = () => {
   // ✅ Build column definitions
   useEffect(() => {
     const columns = [
-      { key: "id", label: "Sr.No." },
+      { key: "company_id", label: "Sr.No." },
       { key: "companyName", label: "Company Name" },
       { key: "firstName", label: "First Name" },
       { key: "lastName", label: "Last Name" },
@@ -61,13 +62,11 @@ const ViewCompany = () => {
                   padding: "5px 0",
                 }}
               >
-                <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleEdit(row)}
-                >
+                
+              <Link to={`/edit_company/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
+>
                   <FaEdit /> Edit
-                </button>
+             </Link>
                 <button
                   className="dropdown-item d-flex align-items-center"
                   style={{ padding: "8px 12px", gap: "8px" }}
@@ -78,7 +77,7 @@ const ViewCompany = () => {
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"
                   style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleDelete(row)}
+                  onClick={() => handleDelete(row.company_id)}
                 >
                   <FaTrashAlt /> Delete
                 </button>
@@ -160,11 +159,8 @@ const ViewCompany = () => {
     fetchData(page, newPerPage);
   };
 
-  // ✅ Action handlers
-  const handleEdit = (row) => 
-    {edit("/edit_company",{state:row})
 
-    };
+  // ✅ Action handlers 
   const handleLogin = (row) => console.log("Login:", row);
   const handleDelete = (row) => {
     if (window.confirm(`Delete "${row.companyName}"?`)) {

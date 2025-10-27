@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard"; 
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
 import axios from "axios";
-import { transactions } from "../../api";
+import { transactions,totals } from "../../api";
 import SearchForm from "./SearchForm";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa"; 
 import { Container, Row, Col, Card, CardBody } from 'reactstrap'; 
@@ -51,9 +51,7 @@ const Index = () => {
 
    const fetchTotals = async () => {
     try {
-      const response = await axios.get(
-        `https://api.ntafleetsolutions.com/api/transactions/totals` 
-      );
+      const response = await axios.get(totals);
        setTotals({
         taxamt: Number(response.data.taxamt || 0),
         amtcad: Number(response.data.amtcad || 0),       

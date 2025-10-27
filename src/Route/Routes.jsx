@@ -115,7 +115,7 @@ export const routes = [
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
   { path: `/add_company`, Component: <AddCompany /> },
-  { path: `/edit_company`, Component: <EditCompany /> },
+  { path: `/edit_company/:id`, Component: <EditCompany /> },
   { path: `/view_company`, Component: <ViewCompany /> },
   
   { path: `/company_info`, Component: <CompanyInfo /> },
