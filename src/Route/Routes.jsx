@@ -41,9 +41,17 @@ import AddItems from '../Components/items/addItems/index';
 import AddCompany from '../Components/company/AddCompany'
 import ViewCompany from '../Components/company/ViewCompany';
 import EditCompany from '../Components/company/EditCompany'
-import CompanyInfo from '../Components/CompanyInfo/CompanyInfo';
+import CompanyInfo from '../Components/company/CompanyInfo/CompanyInfo';
+import SubLOgin from '../Components/company/subLogin/SubLogin';
 
-import ManageUser from '../Components/manageUser'
+//Fuel Card
+import AddFuel from '../Components/fuelCards/addFuel/index';
+import ViewFuel from '../Components/fuelCards/view/index';
+import EFSFuel from '../Components/fuelCards/viewEFS/index';
+import HistoryFuel from '../Components/fuelCards/history/index';
+
+
+import ManageUser from '../Components/setting/manageUser/index'
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';
 import ViewInvoice from '../Components/viewInvoice/ViewInvoice';
 import CheckOldINvoice from '../Components/checkOldInvoice/CheckOldINvoice';
@@ -58,7 +66,6 @@ import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
 import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';  
-import SubLOgin from '../Components/subLogin/SubLogin';
 import SupplierList from '../Components/supplier/supplierList/index';
 import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
 import AddMoneyCode from '../Components/moneyCode/addMoneyCode/index';
@@ -66,11 +73,7 @@ import UploadMoney from '../Components/moneyCode/upload/index'
 import CheckInvoicemoneyCode from '../Components/moneyCode/checkInvoic/index';
 import ViewReports from '../Components/reports/viewReports/index';
 import SalesmanVol from '../Components/reports/salesmanVolume/index';
-import CreateReports from '../Components/reports/createReport/index'; 
-import AddFuel from '../Components/fuelCards/addFuel/index';
-import ViewFuel from '../Components/fuelCards/view/index';
-import EFSFuel from '../Components/fuelCards/viewEFS/index';
-import HistoryFuel from '../Components/fuelCards/history/index';
+import CreateReports from '../Components/reports/createReport/index';  
 import UploadTcheck from '../Components/tcheck/upload/index'
 import TcheckList from '../Components/tcheck/list/index'
 import CreateTCheck from '../Components/tcheck/create/index'
@@ -99,6 +102,7 @@ import RackToRetail from '../Components/transaction/rackToRetail/index';
 import RetailToRack from '../Components/transaction/retailToRack/index';
 import Help from '../Components/help/index';
 import AddCard from '../Components/help/addCard/index';
+
 
 export const routes = [
 //Dashboard
@@ -141,12 +145,19 @@ export const routes = [
 { path: `/edit_company/:id`, Component: <EditCompany /> },
 { path: `/view_company`, Component: <ViewCompany /> },  
 { path: `/company_info`, Component: <CompanyInfo /> },
+{ path: `/sub_login`, Component: <SubLOgin /> },
+
+//Fuel Card
+{ path: `/add_card`, Component: < AddFuel/> },
+{ path: `/view_fuelCards`, Component: < ViewFuel/> },
+{ path: `/efs_view_card`, Component: < EFSFuel/> },
+{ path: `/card_update`, Component: < HistoryFuel/> }, 
 
 { path: `/how_to_use_efsllc.com`, Component: <Help /> },
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
 
-  { path: `/sub_login`, Component: <SubLOgin /> },
+  
   { path: `/create_invoice`, Component: <CreateInvoice /> },
   { path: `/view_invoice`, Component: <ViewInvoice /> },
   { path: `/check_invoice`, Component: <CheckOldINvoice /> },
@@ -172,10 +183,7 @@ export const routes = [
     { path: `/create_Reports`, Component: <CreateReports /> }, 
     { path: `/upload_retail_prices`, Component: <Upload /> },
     { path: `petro_retail_prices`, Component: < PetroRetail/> },
-    { path: `/add_card`, Component: < AddFuel/> },
-    { path: `/view_fuelCards`, Component: < ViewFuel/> },
-    { path: `/efs_view_card`, Component: < EFSFuel/> },
-    { path: `/card_update`, Component: < HistoryFuel/> }, 
+   
     { path: `/upload_tcheck`, Component: < UploadTcheck/> },
     { path: `/tcheck_list`, Component: < TcheckList/> },
     { path: `/create_tcheck_invoice`, Component: < CreateTCheck/> },

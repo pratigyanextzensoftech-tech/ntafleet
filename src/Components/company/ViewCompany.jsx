@@ -45,13 +45,13 @@ const ViewCompany = () => {
             <button
               className="btn btn-sm btn-primary px-2"
               onClick={() =>
-                setOpenRowId(openRowId === row.id ? null : row.id)
+                setOpenRowId(openRowId === row.company_id ? null : row.company_id)
               }
             >
               Action
             </button>
 
-            {openRowId === row.id && (
+            {openRowId === row.company_id && (
               <div
                 className="position-absolute bg-white border rounded shadow"
                 style={{
@@ -63,7 +63,7 @@ const ViewCompany = () => {
                 }}
               >
                 
-              <Link to={`/edit_company/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
+              <Link to={`/edit_company/${btoa(row.company_id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
 >
                   <FaEdit /> Edit
              </Link>
@@ -118,7 +118,7 @@ const ViewCompany = () => {
         : res.data.data || [];
 
       const filteredData = responseData.map((item) => ({
-        id: item.company_id,
+        company_id: item.company_id,
         companyName: item.company_name,
         firstName: item.first_name,
         lastName: item.last_name,
@@ -164,7 +164,7 @@ const ViewCompany = () => {
   const handleLogin = (row) => console.log("Login:", row);
   const handleDelete = (row) => {
     if (window.confirm(`Delete "${row.companyName}"?`)) {
-      setCompanyData(companyData.filter((item) => item.id !== row.id));
+      setCompanyData(companyData.filter((item) => item.company_id !== row.company_id));
       setOpenRowId(null);
     }
   };

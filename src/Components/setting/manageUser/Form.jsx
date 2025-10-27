@@ -1,15 +1,15 @@
 import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form } from 'reactstrap';
-import { Btn } from "../../AbstractElements";
-import { add_user } from '../../Constant';
-import HeaderCard from '../Common/Component/HeaderCard';
+import { Btn } from "../../../AbstractElements";
+import { add_user } from '../../../Constant';
+import HeaderCard from '../../Common/Component/HeaderCard';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import InputText from '../Forms/FormControl/formInput/InputText';
-import DropDown from '../Forms/FormControl/formInput/DropDown';
-import { companyLoginAccess, manageuserStatus } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-import { administrator } from '../../api'; // ✅ Adjust API endpoint if needed
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
 
 const FormComponent = ({ onUserAdded,editUser }) => {
   const {
@@ -27,7 +27,6 @@ const FormComponent = ({ onUserAdded,editUser }) => {
       setValue("email", editUser.email);
       setValue("phone", editUser.phone);
       setValue("company", editUser.company);
-      setValue("password", editUser.password ); // optional
       setValue("status", {
         value: editUser.status,
         label: editUser.status == "0" ? "Active" : "Blocked",
@@ -72,9 +71,9 @@ const FormComponent = ({ onUserAdded,editUser }) => {
           name: payload.name,
           email: payload.email,
           phone: payload.phone,
-         password: payload.password,
+          password: payload.password,
           company: payload.company,
-          added_by: "Admin",
+          added_by: "1",
           company_login: payload.company_login,
           status: payload.status,
           gender:"",
@@ -147,8 +146,8 @@ const FormComponent = ({ onUserAdded,editUser }) => {
           <Col md={4}>
             <InputText
               name="password"
-              label="Password"
-              placeholder="Enter Password"
+              label={!editUser?"Password":"New Password"}
+              placeholder={!editUser?"Enter Password":"Enter New Password"}
               type="password"
               register={register}
               errors={errors}

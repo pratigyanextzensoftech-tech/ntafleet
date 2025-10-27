@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Breadcrumbs } from "../../AbstractElements";
-import HeaderCard from "../Common/Component/HeaderCard";
-import DataTableComponent from "../Tables/DataTable/DataTableComponent";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaEdit, FaTrashAlt, FaPaperPlane } from "react-icons/fa";
 import axios from "axios";
-import { administrator } from "../../api/index";
+import { administrator } from "../../../api/index";
 import FormComponent from "./Form";
 import Swal from "sweetalert2";
 const Index = () => {
