@@ -49,8 +49,14 @@ import {
   useEssoRack,
   useCountry,
 } from "../../Hooks/Dropdowns";
+import { useParams } from "react-router-dom";
 import { company } from "../../api";
 const Index = () => {
+
+  const { id } = useParams();
+  const company_id = atob(decodeURIComponent(id)); 
+
+  
   // const { data: companies, loading: companyLoading } = useCompany();
   const { data: salesman, loading: salesmanLoading } = useSalesman();
   //const { data: suppliers, loading: supplierLoading } = useSupplier();

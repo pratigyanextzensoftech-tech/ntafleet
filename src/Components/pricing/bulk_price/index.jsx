@@ -21,8 +21,7 @@ const index = () => {
               </CardBody>
             </Card>
           </Col>
-        </Row>  
-        <HeaderCard title="Manage Bulk Pricing PDF" /> 
+        </Row>   
         <DataTableComponent
           title="Pricing PDF List "
           tableData={dummytabledata}
