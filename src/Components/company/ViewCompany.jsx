@@ -37,58 +37,61 @@ const ViewCompany = () => {
       { key: "loginBefore", label: "Login Before" },
       { key: "latitude", label: "Latitude" },
       { key: "Status", label: "Status" },
-      {
-        key: "Action",
-        label: "Action",
-        cell: (row) => (
-          <div className="position-relative dropdown-action">
-            <button
-              className="btn btn-sm btn-primary px-2"
-              onClick={() =>
-                setOpenRowId(openRowId === row.id ? null : row.id)
-              }
-            >
-              Action
-            </button>
+     {
+  key: "Action",
+  label: "Action",
+  cell: (row) => (
+    <div className="position-relative dropdown-action">
+      <button
+        className="btn btn-sm btn-primary px-2"
+        onClick={() =>
+          setOpenRowId(openRowId === row.company_id ? null : row.company_id)
+        }
+      >
+        Action
+      </button>
 
-            {openRowId === row.id && (
-              <div
-                className="position-absolute bg-white border rounded shadow"
-                style={{
-                  zIndex: 1000,
-                  right: 0,
-                  marginTop: 5,
-                  minWidth: 150,
-                  padding: "5px 0",
-                }}
-              >
-                
-              <Link to={`/edit_company/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
->
-                  <FaEdit /> Edit
-             </Link>
-                <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleLogin(row)}
-                >
-                  <FaSignInAlt /> Login
-                </button>
-                <button
-                  className="dropdown-item d-flex align-items-center text-danger"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleDelete(row.company_id)}
-                >
-                  <FaTrashAlt /> Delete
-                </button>
-              </div>
-            )}
-          </div>
-        ),
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
-      },
+      {openRowId === row.company_id && (
+        <div
+          className="position-absolute bg-white border rounded shadow"
+          style={{
+            zIndex: 1000,
+            right: 0,
+            marginTop: 5,
+            minWidth: 150,
+            padding: "5px 0",
+          }}
+        >
+          <Link
+            to={`/edit_company/${btoa(row.company_id)}`}
+            className="dropdown-item d-flex align-items-center text-success"
+            style={{ padding: "8px 12px", gap: "8px" }}
+          >
+            <FaEdit /> Edit
+          </Link>
+          <button
+            className="dropdown-item d-flex align-items-center"
+            style={{ padding: "8px 12px", gap: "8px" }}
+            onClick={() => handleLogin(row)}
+          >
+            <FaSignInAlt /> Login
+          </button>
+          <button
+            className="dropdown-item d-flex align-items-center text-danger"
+            style={{ padding: "8px 12px", gap: "8px" }}
+            onClick={() => handleDelete(row)}
+          >
+            <FaTrashAlt /> Delete
+          </button>
+        </div>
+      )}
+    </div>
+  ),
+  ignoreRowClick: true,
+  allowOverflow: true,
+  button: true,
+}
+
     ].map((col) => ({
       name: col.label,
       selector: (row) => row[col.key],
@@ -118,7 +121,7 @@ const ViewCompany = () => {
         : res.data.data || [];
 
       const filteredData = responseData.map((item) => ({
-        id: item.company_id,
+       company_id : item.company_id,
         companyName: item.company_name,
         firstName: item.first_name,
         lastName: item.last_name,
@@ -159,7 +162,11 @@ const ViewCompany = () => {
     fetchData(page, newPerPage);
   };
 
+  // ✅ Action handlers
+  const handleEdit = (row) => 
+    {edit("/edit_company",{state:row})
 
+    };
   // ✅ Action handlers 
   const handleLogin = (row) => console.log("Login:", row);
   const handleDelete = (row) => {

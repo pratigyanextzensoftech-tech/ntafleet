@@ -199,110 +199,91 @@ axios.get(`${company}/${company_id}`).then((res)=>{
  const onSubmit = async (formData) => {
     try {
 
+       
+
       // Create request payload (if needed, map keys)
-    //   const payload = {  
-    //     company_name: formData.company_name || '',
-    //     email: formData.email || '',
-    //     email2: formData.email2 || '',
-    //     other_email: formData.other_email || '',
-    //     otp_email: formData.otp_email || '',
-    //     otp_email2: formData.otp_email2 || '',
-    //     otp_phone: formData.otp_phone || '',
-    //     logo: formData.logo || '',
-    //     address: formData.address || '',
-    //     street: formData.street || '',
-    //     city: formData.city || '',
-    //     location: formData.location || '',
-    //     auth_location: formData.auth_location || '',
-    //     province: formData.province || '',
-    //     postal_code: formData.postal_code || '',
-    //     country_name: formData.country_name || '',
-    //     phone: formData.phone || '',
-    //     fax: formData.fax || '',
-    //     mobile: formData.mobile || '',
-    //     company_type: formData.company_type?.value || '0',
-    //     website: formData.website || '',
-    //     country_id: formData.country_id?.value || '0',
-    //     country: formData.country || '',
-    //     salesman_id: formData.salesman_id?.value || '0',
-    //     policy_number: formData.policy_number || '',
-    //     company_status: formData.company_status?.value || '', 
-    //     susp_comp: formData.susp_comp?.value || '',
-    //     defd_mark_up: formData.defd_mark_up || '',
-    //     daily_report: formData.daily_report || '',
-    //     identifier: formData.identifier || '',
-    //     irving: formData.irving || '',
-    //     fees: formData.fees || '',
-    //     shell_pricing: formData.shell_pricing || '0',
-    //     pilot_pricing: formData.pilot_pricing || '0', 
-    //     discount_canada: formData.discount_canada || '0',
-    //     discount_usa: formData.discount_usa || '0',
-    //     rack_ca: formData.rack_ca || '0',
-    //     rack_us: formData.rack_us || '0',
-    //     aoi: formData.aoi || '',
-    //     drivers_license: formData.drivers_license || '',
-    //     signed_agreement: formData.signed_agreement || '',
-    //     void_cheque: formData.void_cheque || '',
-    //     check_rebate: formData.check_rebate || '',
-    //     retail_invoice: formData.retail_invoice || '',
-    //     ta_retail_invoice: formData.ta_retail_invoice || '',
-    //     esso_retail_invoice: formData.esso_retail_invoice || '',
-    //     esso_inv_type: formData.esso_inv_type?.value || '',
-    //     cust_inv_type: formData.cust_inv_type?.value || '',
-    //     ul_cust_inv_type: formData.ul_cust_inv_type?.value || '',
-    //     ul_inv_type: formData.ul_inv_type?.value || '',
-    //     esso_rcent: formData.esso_rcent || '0',
-    //     ul_rcent: formData.ul_rcent || '0',
-    //     esso_rack: formData.esso_rack || '0',
-    //     esso_rack_on: formData.esso_rack_on || '0',
-    //     esso_rack_oon: formData.esso_rack_oon || '0',
-    //     fee: formData.fee || '',
-    //     owner_operator_invoice: formData.owner_operator_invoice?.value || '',
-    //     ul_owner_operator_invoice: formData.ul_owner_operator_invoice?.value || '',
-    //     sw_owner_invoice: formData.sw_owner_invoice?.value || '',
-    //     self_owner_invoice: formData.self_owner_invoice?.value || '',
-    //     sw_customised_inv: formData.sw_customised_inv?.value || '',
-    //     default_unit: formData.default_unit || '',
-    //     default_driver: formData.default_driver || '',
-    //     love_retail_invoice: formData.love_retail_invoice || '',
-    //     supplier_fee: formData.supplier_fee || '',
-    //     ibp_adjustment: formData.ibp_adjustment || '',
-    //     pumping_fee: formData.pumping_fee || '',
-    //     net_price: formData.net_price || '',
-    //     daily_pricing: formData.daily_pricing || '',
-    //     ta_daily_pricing: formData.ta_daily_pricing || '',
-    //     esso_daily_pricing: formData.esso_daily_pricing || '',
-    //     esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || '',
-    //     love_daily_pricing: formData.love_daily_pricing || '',
-    //     ul_daily_pricing: formData.ul_daily_pricing || '',
-    //     ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || '',
-    //     invoice_creation: formData.invoice_creation?.value || '',
-    //     invoice_day: formData.invoice_day?.value || '',
-    //     invoice_week: formData.invoice_week?.value || '',
-    //     customer_type: formData.customer_type?.value || '',
-    //     special_instructions: formData.special_instructions || '',
-    //     first_name: formData.first_name || '',
-    //     last_name: formData.last_name || '',
-    //     card_discount: formData.card_discount || '',
-    //     username: formData.username || '',
-    //     password: formData.password || '',
-    //     date: formData.date || '1970-01-01 00:00:00',
-    //     esso_live: formData.esso_live || '',
-    //     remarks: formData.remarks || '',
-    //     rest_OTP: formData.rest_OTP || '',
-    //     last_login: formData.last_login || '1970-01-01 00:00:00',
-    //     lang: formData.lang || '',
-    //     lat: formData.lat || '',
-    //     login_failed: formData.login_failed || '0',
-    //     last_failed: formData.last_failed || '1970-01-01 00:00:00', 
-    //     added_on: new Date().toISOString().slice(0, 19).replace('T', ' '), 
-    //   };
-    // console.log("📤 Submitting data:", payload);
-      // ✅ POST request
-      const res = await axios.put(`${company}/${company_id}`); 
+      const payload = {  
+        company_name: formData.company_name || '', 
+        otp_phone: formData.otp_phone || '', 
+        address: formData.address || '', 
+        auth_location: formData.auth_location || '',  
+        country_name: formData.country_name || '',
+        phone: formData.phone || '',
+        fax: formData.fax || '',
+        mobile: formData.mobile || '',
+        company_type: formData.company_type?.value || '0', 
+        country_id: formData.country_id?.value || '0',
+        country: formData.country || '', 
+        policy_number: formData.policy_number || '',
+        company_status: formData.company_status?.value || '', 
+        susp_comp: formData.susp_comp?.value || '',
+        defd_mark_up: formData.defd_mark_up || '',
+        daily_report: formData.daily_report || '',
+        identifier: formData.identifier || '',
+        irving: formData.irving || '',
+        fees: formData.fees || '',
+        shell_pricing: formData.shell_pricing || '0',
+        pilot_pricing: formData.pilot_pricing || '0', 
+        discount_canada: formData.discount_canada || '0',
+        discount_usa: formData.discount_usa || '0',
+        rack_ca: formData.rack_ca || '0',
+        rack_us: formData.rack_us || '0',
+        aoi: formData.aoi || '',
+        drivers_license: formData.drivers_license || '',
+        signed_agreement: formData.signed_agreement || '',
+        void_cheque: formData.void_cheque || '',
+        check_rebate: formData.check_rebate || '',
+        retail_invoice: formData.retail_invoice || '',
+        ta_retail_invoice: formData.ta_retail_invoice || '',
+        esso_retail_invoice: formData.esso_retail_invoice || '',
+        esso_inv_type: formData.esso_inv_type?.value || '',
+        cust_inv_type: formData.cust_inv_type?.value || '',
+        ul_cust_inv_type: formData.ul_cust_inv_type?.value || '',
+        ul_inv_type: formData.ul_inv_type?.value || '',
+        esso_rcent: formData.esso_rcent || '0',
+        ul_rcent: formData.ul_rcent || '0',
+        esso_rack: formData.esso_rack || '0',
+        esso_rack_on: formData.esso_rack_on || '0',
+        esso_rack_oon: formData.esso_rack_oon || '0',
+        fee: formData.fee || '',
+        owner_operator_invoice: formData.owner_operator_invoice?.value || '',
+        ul_owner_operator_invoice: formData.ul_owner_operator_invoice?.value || '',
+        sw_owner_invoice: formData.sw_owner_invoice?.value || '',
+        self_owner_invoice: formData.self_owner_invoice?.value || '',
+        sw_customised_inv: formData.sw_customised_inv?.value || '',
+        default_unit: formData.default_unit || '',
+        default_driver: formData.default_driver || '',
+        love_retail_invoice: formData.love_retail_invoice || '',
+        supplier_fee: formData.supplier_fee || '',
+        ibp_adjustment: formData.ibp_adjustment || '',
+        pumping_fee: formData.pumping_fee || '',
+        net_price: formData.net_price || '',
+        daily_pricing: formData.daily_pricing || '',
+        ta_daily_pricing: formData.ta_daily_pricing || '',
+        esso_daily_pricing: formData.esso_daily_pricing || '',
+        esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || '',
+        love_daily_pricing: formData.love_daily_pricing || '',
+        ul_daily_pricing: formData.ul_daily_pricing || '',
+        ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || '',
+        invoice_creation: formData.invoice_creation?.value || '',
+        invoice_day: formData.invoice_day?.value || '',
+        invoice_week: formData.invoice_week?.value || '',
+        customer_type: formData.customer_type?.value || '',
+        special_instructions: formData.special_instructions || '',
+        first_name: formData.first_name || '',
+        last_name: formData.last_name || '',
+        card_discount: formData.card_discount || '',
+        username: formData.username || '',
+        password: formData.password || '',
+        date: formData.date || '1970-01-01 00:00:00',
+        esso_live: formData.esso_live || '',
+        remarks: formData.remarks || '', 
+      };
+    console.log("📤 Submitting data:", payload); 
+      const res = await axios.put(`${company}/${company_id}`, payload);
       console.log("✅ API Response:", res.data);
-      toast.success("Company Add Succesfully") 
-      reset(); // Reset the form on success
+      toast.success("Company Updated Succesfully") 
+      //reset(); // Reset the form on success
     } catch (error) {
       console.error("❌ Error submitting form:", error);
     }
@@ -358,6 +339,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               className="form-control"
                               name="email"
                               type="email"
+                               disabled
                               {...register("email", {
                                 required: "Email-1 is required",
                                 pattern: {
@@ -384,6 +366,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               className="form-control"
                               name="email2"
                               type="email"
+                               disabled
                               {...register("email2", {
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -410,6 +393,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             <input
                               className="form-control"
                               name="other_email"
+                               disabled
                               type="email"
                               {...register("other_email", {
                                 pattern: {
@@ -439,6 +423,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             <input
                               className="form-control"
                               name="otp_email"
+                               disabled
                               type="email"
                               {...register("otp_email", {
                                 required: "Otp Email-1 is required",
@@ -465,6 +450,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             </InputGroupText>
                             <input
                               name="otp_email2"
+                               disabled
                               className="form-control"
                               type="email"
                               {...register("otp_email2", {
@@ -1475,6 +1461,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               className="form-control"
                               type="text"
                               name="username"
+                               disabled
                               {...register("username", { required: true })}
                             />
                           </InputGroup>
@@ -1485,28 +1472,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                           )}
                         </FormGroup>
                       </Col>
-                      <Col sm="4">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText><RiLockPasswordFill className="mx-1 " /> Password   </InputGroupText>
-                            <input
-                              className="form-control"
-                              type="password"
-                              name="password"
-                              {...register("password", {
-                                required: "Password is required",
-                                
-                              })}
-                            />
-                          </InputGroup>
-
-                          {errors.password && (
-                            <span className="text-danger">
-                              {errors.password.message}
-                            </span>
-                          )}
-                        </FormGroup>
-                      </Col>
+                    
                     </Row>
                   </fieldset>
                   <Row>

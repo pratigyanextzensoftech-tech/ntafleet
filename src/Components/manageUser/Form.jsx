@@ -182,7 +182,7 @@ const FormComponent = ({ onUserAdded,editUser }) => {
 
           <Col md={8} className="text-end">
             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }}>
-              {add_user}
+              {editUser?"Update User":'Add User'}
             </Btn>
           </Col>
         </Row>

@@ -71,11 +71,10 @@ const Index = () => {
 
   // ✅ Edit / Delete / Send Details
   const handleEdit = (row) => {
-    console.log(row)
     setEditUser(row)
     axios.put(administrator,row.id)
     .then((res)=>{
-      console.log(res);
+      console.log(res,"edit api");
     })
     .catch((err)=>{
       console.log(err)
