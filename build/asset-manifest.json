@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/card-admin/static/css/main.8f09e575.css",
-    "main.js": "/card-admin/static/js/main.9f0be063.js",
-    "static/js/488.431d4bcd.chunk.js": "/card-admin/static/js/488.431d4bcd.chunk.js",
+    "main.css": "/card-admin/static/css/main.759d97c3.css",
+    "main.js": "/card-admin/static/js/main.83c91bf9.js",
+    "static/js/488.592bd66b.chunk.js": "/card-admin/static/js/488.592bd66b.chunk.js",
     "static/media/icofont.svg?v=1.0.0-beta": "/card-admin/static/media/icofont.9999a483fca7c18fdec0.svg",
     "static/media/3.jpg": "/card-admin/static/media/3.f59b5eff4264637cb1a3.jpg",
     "static/media/1.jpg": "/card-admin/static/media/1.8e9a44706c23d47eb951.jpg",
@@ -300,12 +300,12 @@
     "static/media/am.svg": "/card-admin/static/media/am.e09c50929ba249c8833e.svg",
     "static/media/de.svg": "/card-admin/static/media/de.32cd606b653fdcc4a90c.svg",
     "static/media/bd.svg": "/card-admin/static/media/bd.571e114056c8791c87dd.svg",
-    "main.8f09e575.css.map": "/card-admin/static/css/main.8f09e575.css.map",
-    "main.9f0be063.js.map": "/card-admin/static/js/main.9f0be063.js.map",
-    "488.431d4bcd.chunk.js.map": "/card-admin/static/js/488.431d4bcd.chunk.js.map"
+    "main.759d97c3.css.map": "/card-admin/static/css/main.759d97c3.css.map",
+    "main.83c91bf9.js.map": "/card-admin/static/js/main.83c91bf9.js.map",
+    "488.592bd66b.chunk.js.map": "/card-admin/static/js/488.592bd66b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8f09e575.css",
-    "static/js/main.9f0be063.js"
+    "static/css/main.759d97c3.css",
+    "static/js/main.83c91bf9.js"
   ]
 }

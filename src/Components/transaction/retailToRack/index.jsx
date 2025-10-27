@@ -1,25 +1,26 @@
-import React,{Fragment,useState} from 'react'
-import { Breadcrumbs } from '../../../AbstractElements'
-import HeaderCard from '../../Common/Component/HeaderCard'
+import React, { Fragment, useState } from "react";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard'
-import { RetailToRackTab } from '../../../Data/tab/RetailToRackTab'
+import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
+import { RetailToRackTab } from "../../../Data/tab/RetailToRackTab";
 const index = () => {
-  
   return (
     <Fragment>
-         <Breadcrumbs parent='Transaction' title='TA-Petro Retail To Rack(Capped)'/>
-         <Container fluid={true}>
-                                           <div style={{border:"1px solid #ccc",padding:"5px 10px",bprderRadius:"3px",marginBottom:"10px"}}>
-<div className="bg-primary p-2 my-3">
-           <HeaderCard title="TA-Petro Retail To Rack(Capped)" />
-
-                      </div>
-            <BasicTabCard   tabContent={RetailToRackTab}/>
-          </div>
-           </Container>
-           </Fragment>
-  )
-}
-
-export default index
+      <Breadcrumbs parent="Transaction" title="Retail To Rack" />
+      <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Retail To Rack" />
+              <CardBody>
+                <BasicTabCard tabContent={RetailToRackTab} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
+  );
+}; 
+export default index;

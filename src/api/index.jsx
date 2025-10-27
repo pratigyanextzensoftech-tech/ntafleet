@@ -44,6 +44,7 @@ export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_rack_cent = `${baseurl}/api/esso_rack_cent`;
 export const esso_transactions = `${baseurl}/api/esso_transactions`;
+export const unknown_transactions = `${baseurl}/api/transactions/unknown`;
 export const esso_ultramar_petro = `${baseurl}/api/esso_ultramar_petro`;
 export const fual_card = `${baseurl}/api/fual_card`;
 export const invoice = `${baseurl}/api/invoice`;
