@@ -9,16 +9,16 @@ import {
   Card,
   CardBody,
 } from "reactstrap";
-import { Btn } from "../../AbstractElements";
+import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import {
   optionscountry,
   optionscompany,
   companyStatus,
-} from "../Forms/FormWidget/FormSelect2/OptionDatas";
+} from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import HeaderCard from "../Common/Component/HeaderCard";
+import HeaderCard from "../../Common/Component/HeaderCard";
 const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
   const {
     register,

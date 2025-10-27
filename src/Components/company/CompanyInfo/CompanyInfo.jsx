@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import { Breadcrumbs } from "../../AbstractElements";
+import { Breadcrumbs } from "../../../AbstractElements";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import HeaderCard from "../Common/Component/HeaderCard";
-import { tableColumns, dummytabledata } from "../../Data/Table/Defaultdata";
-import DataTableComponent from "../Tables/DataTable/DataTableComponent";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import { tableColumns, dummytabledata } from "../../../Data/Table/Defaultdata";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import CompanyInfoForm from "./CompanyInfoForm";
 const CompanyInfo = () => {
   return (

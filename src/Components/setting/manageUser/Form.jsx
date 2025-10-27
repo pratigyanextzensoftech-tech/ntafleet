@@ -1,17 +1,18 @@
 import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form } from 'reactstrap';
-import { Btn } from "../../AbstractElements";
-import { add_user } from '../../Constant';
-import HeaderCard from '../Common/Component/HeaderCard';
+import { Btn } from "../../../AbstractElements";
+import { add_user } from '../../../Constant';
+import HeaderCard from '../../Common/Component/HeaderCard';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import InputText from '../Forms/FormControl/formInput/InputText';
-import DropDown from '../Forms/FormControl/formInput/DropDown';
-import { companyLoginAccess, manageuserStatus } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-import { administrator } from '../../api'; // ✅ Adjust API endpoint if needed
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import DropDown from '../../Forms/FormControl/formInput/DropDown';
+import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
 
-const FormComponent = ({ onUserAdded,editUser }) => {
+const FormComponent = ({ onUserAdded,editUser,Edit_id }) => {
+  console.log(Edit_id)
   const {
     register,
     control,
@@ -27,7 +28,7 @@ const FormComponent = ({ onUserAdded,editUser }) => {
       setValue("email", editUser.email);
       setValue("phone", editUser.phone);
       setValue("company", editUser.company);
-      setValue("password", editUser.password ); // optional
+     // setValue("password", editUser.password ); // optional
       setValue("status", {
         value: editUser.status,
         label: editUser.status == "0" ? "Active" : "Blocked",
@@ -41,54 +42,50 @@ const FormComponent = ({ onUserAdded,editUser }) => {
     }
   }, [editUser, setValue, reset]);
   // ✅ Handle form submission
-  const onSubmit = async (formData) => {
-    try {
-      console.log("📤 Submitting data:", formData);
+const onSubmit = async (formData) => {
+  console.log(formData)
+  const payload = {
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    company: formData.company,
+    password: formData.password,
+    status: formData.status?.value, // dropdown gives {label, value}
+    company_login: formData.company_login?.value,
+    gender: "",
+    pic: "",
+    created: new Date().toISOString().slice(0, 19).replace("T", " "),
+    admin_del: 0,
+    added_by: 0,
+  };
 
-      // Create request payload (if needed, map keys)
-      const payload = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
-        password: formData.password,
-        status: formData.status?.value, // DropDown gives object with label & value
-        company_login: formData.company_login?.value,
-        gender:"",
-        pic:"",
-        created:new Date().toISOString().slice(0, 19).replace('T', ' '), 
-        admin_del:0,
-        added_by:0, 
-      };
-
-      // ✅ POST request
+  try {
+    if (Edit_id) {
+      // 🟢 UPDATE (Edit mode)
+      const res = await axios.put(`${administrator}/${Edit_id}`, payload);
+      console.log("✅ User Updated:", res.data);
+      toast.success("User updated successfully!");
+    } else {
+      // 🟢 ADD (Create mode)
       const res = await axios.post(administrator, payload);
+      console.log("✅ User Added:", res.data);
+      toast.success("User added successfully!");
 
-      console.log("✅ API Response:", res.data);
-      toast.success("Add Succesfully")
-
-    if (onUserAdded) {
+      if (onUserAdded) {
         onUserAdded({
-          name: payload.name,
-          email: payload.email,
-          phone: payload.phone,
-         password: payload.password,
-          company: payload.company,
-          added_by: "Admin",
-          company_login: payload.company_login,
-          status: payload.status,
-          gender:"",
-        pic:"",
-        created:new Date().toISOString().slice(0, 19).replace('T', ' '), 
-        admin_del:0,
-        added_by:0,
+          ...payload,
+          added_by: "1",
         });
       }
-      reset(); // Reset the form on success
-    } catch (error) {
-      console.error("❌ Error submitting form:", error);
     }
-  };
+
+    reset(); // reset form after submit
+  } catch (error) {
+    console.error("❌ Error submitting form:", error);
+    toast.error("Something went wrong!");
+  }
+};
+
 
   return (
     <Fragment>
@@ -147,8 +144,8 @@ const FormComponent = ({ onUserAdded,editUser }) => {
           <Col md={4}>
             <InputText
               name="password"
-              label="Password"
-              placeholder="Enter Password"
+              label={!editUser?"Password":"New Password"}
+              placeholder={!editUser?"Enter Password":"Enter New Password"}
               type="password"
               register={register}
               errors={errors}
@@ -182,7 +179,7 @@ const FormComponent = ({ onUserAdded,editUser }) => {
 
           <Col md={8} className="text-end">
             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }}>
-              {editUser?"Update User":'Add User'}
+              {Edit_id?"Update User":'Add User'}
             </Btn>
           </Col>
         </Row>

@@ -1,13 +1,14 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Breadcrumbs } from "../../AbstractElements";
-import HeaderCard from "../Common/Component/HeaderCard";
-import DataTableComponent from "../Tables/DataTable/DataTableComponent";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaEdit, FaTrashAlt, FaPaperPlane } from "react-icons/fa";
 import axios from "axios";
-import { administrator } from "../../api/index";
+import { administrator } from "../../../api/index";
 import FormComponent from "./Form";
 import Swal from "sweetalert2";
+import { Link,useParams } from "react-router-dom";
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -18,8 +19,25 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
   const [editUser, setEditUser] = useState(null);
+  const [editId, setEditId] = useState(null);
 
-  // ✅ Fetch user list API
+ const { id } = useParams();
+  useEffect(()=>{
+let Edit_id = null;
+
+try {
+  if (id) {
+    Edit_id = atob(id);
+setEditId(Edit_id)
+  }
+} catch (error) {
+  console.error("❌ Invalid Base64 string:", id, error);
+  Edit_id = id; // fallback to raw id
+}
+
+console.log("Decoded ID:", Edit_id);
+
+  },[])
   const fetchUsers = async (page = 1, limit = 10) => {
     setLoading(true);
     try {
@@ -201,13 +219,10 @@ const Index = () => {
                   padding: "5px 0",
                 }}
               >
-                <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleEdit(row)}
+                <Link to={`/manage_user/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
                 >
-                  <FaEdit /> Edit
-                </button>
+                                  <FaEdit /> Edit
+             </Link>
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"
                   style={{ padding: "8px 12px", gap: "8px" }}
@@ -244,7 +259,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add User" />
               <CardBody>
-                <FormComponent  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
+                <FormComponent Edit_id={editId}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
               </CardBody>
             </Card>
           </Col>
