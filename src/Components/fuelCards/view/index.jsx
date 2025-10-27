@@ -172,8 +172,7 @@ const ViewFuelCards = () => {
   return (
     <Fragment>
       <Breadcrumbs parent="Fuel Cards" title="View Fuel Cards" />
-      <Container fluid>
-      
+      <Container fluid> 
         <DataTableComponent
           title="Fuel Card List"
           loading={loading}

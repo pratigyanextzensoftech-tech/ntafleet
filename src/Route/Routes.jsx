@@ -50,6 +50,18 @@ import ViewFuel from '../Components/fuelCards/view/index';
 import EFSFuel from '../Components/fuelCards/viewEFS/index';
 import HistoryFuel from '../Components/fuelCards/history/index';
 
+//Transaction
+import ViewTransaction from '../Components/transaction/view/index'
+import UploadTransaction from '../Components/transaction/upload/index'
+import TransactionList from '../Components/transaction/transactionList/index';
+import UnknownTransaction from '../Components/transaction/unKnownTransaction/index';
+import EssoFtpLive from '../Components/transaction/essoFtpLive/index';
+import CheckTransaction from '../Components/transaction/checkTransaction/index';
+import RackToRetail from '../Components/transaction/rackToRetail/index';
+import RetailToRack from '../Components/transaction/retailToRack/index';
+import ViewEfs from '../Components/transaction/viewEfs/index';
+import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
+
 
 import ManageUser from '../Components/setting/manageUser/index'
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';
@@ -90,16 +102,8 @@ import ViewStates from '../Components/location/viewState/index'
 import ViewCity from '../Components/location/viewCity/index'
 import ManageLoc from '../Components/location/manageLoc/index'
 import ManageGroup from '../Components/location/manageGroup/index'
-import ViewTransaction from '../Components/transaction/view/index'
-import UploadTransaction from '../Components/transaction/upload/index'
-import TransactionList from '../Components/transaction/transactionList/index';
-import UnknownTransaction from '../Components/transaction/unKnownTransaction/index';
-import EssoFtpLive from '../Components/transaction/essoFtpLive/index';
-import CheckTransaction from '../Components/transaction/checkTransaction/index';
-import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
-import ViewEfs from '../Components/transaction/viewEfs/index';
-import RackToRetail from '../Components/transaction/rackToRetail/index';
-import RetailToRack from '../Components/transaction/retailToRack/index';
+
+
 import Help from '../Components/help/index';
 import AddCard from '../Components/help/addCard/index';
 
@@ -153,6 +157,19 @@ export const routes = [
 { path: `/efs_view_card`, Component: < EFSFuel/> },
 { path: `/card_update`, Component: < HistoryFuel/> }, 
 
+//Transaction
+{ path: `/view_transaction`, Component: < ViewTransaction/> },
+{ path: `/upload_transaction`, Component: < UploadTransaction/> },
+{ path: `/Esso_ftp_transaction`, Component: < TransactionList/> },
+{ path: `/unknown_transaction`, Component: < UnknownTransaction/> }, 
+{ path: `/Esso_ftp_liveTransaction`, Component: < EssoFtpLive/> },
+{ path: `/check_transaction`, Component: < CheckTransaction/> }, 
+{ path: `/rack_to_retail_transaction`, Component: < RackToRetail/> },
+{ path: `/to_retail_transaction`, Component: < RetailToRack/> }, 
+{ path: `/view_efs_transaction`, Component: < ViewEfs/> },
+{ path: `/update_unit`, Component: < UpdateUnit/> },
+
+ 
 { path: `/how_to_use_efsllc.com`, Component: <Help /> },
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
@@ -200,18 +217,6 @@ export const routes = [
     { path: `/view_states`, Component: < ViewStates/> },
     { path: `/view_cities`, Component: < ViewCity/> },
     { path: `/manage_location`, Component: < ManageLoc/> },
-    { path: `/manage_group`, Component: < ManageGroup/> },
-    { path: `/view_transaction`, Component: < ViewTransaction/> },
-    { path: `/upload_transaction`, Component: < UploadTransaction/> },
-    { path: `/Esso_ftp_transaction`, Component: < TransactionList/> },
-    { path: `/unknown_transaction`, Component: < UnknownTransaction/> },
-    { path: `/unknown_transaction`, Component: < UnknownTransaction/> },
-    { path: `/Esso_ftp_liveTransaction`, Component: < EssoFtpLive/> },
-    { path: `/check_transaction`, Component: < CheckTransaction/> },
-    { path: `/update_unit`, Component: < UpdateUnit/> },
-    { path: `/view_efs_transaction`, Component: < ViewEfs/> },
-    { path: `/rack_to_retail_transaction`, Component: < RackToRetail/> },
-    { path: `/to_retail_transaction`, Component: < RetailToRack/> },
-   
+    { path: `/manage_group`, Component: < ManageGroup/> }, 
     { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
 ];

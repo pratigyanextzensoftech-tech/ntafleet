@@ -1,28 +1,28 @@
-import React,{Fragment,useState} from 'react'
-import { Breadcrumbs } from '../../../AbstractElements'
-import HeaderCard from '../../Common/Component/HeaderCard'
-import { Container,Row,Col } from 'reactstrap'
+import React, { Fragment, useState } from "react";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import { Container, Row, Col,Card,CardBody } from "reactstrap";
 
-import UpdateUnitForm from './UpdateUnitForm'
+import UpdateUnitForm from "./UpdateUnitForm";
 const index = () => {
-  
   return (
     <Fragment>
-         <Breadcrumbs parent='Transaction' title=' Update Unit / Driver'/>
-         <Container fluid={true}>
-           <HeaderCard title=" Update Unit / Driver" />
-                               <div style={{border:"1px solid #ccc",padding:"5px 10px",bprderRadius:"3px",marginBottom:"10px"}}>
+      <Breadcrumbs parent="Transaction" title=" Update Unit / Driver" />
+      <Container fluid={true}> 
 
-           <div className="bg-primary p-2 my-3">
-                           <HeaderCard title="Update Unit / Driver" />
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Update Unit / Driver" />
+              <CardBody>
+                <UpdateUnitForm btnTitle="Search Data" btnTitle1="Reset"/>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
+  );
+};
 
-                      </div>
-<UpdateUnitForm btnTitle="Search Data" />
-</div>
-           </Container>
-           
-           </Fragment>
-  )
-}
-
-export default index
+export default index;
