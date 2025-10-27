@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Col,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-} from "reactstrap";
+import { Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { useNavigate, useLocation } from "react-router";
 
 const BasicTabCard = ({ tabContent, title }) => {

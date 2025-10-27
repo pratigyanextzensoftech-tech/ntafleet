@@ -1,7 +1,7 @@
 import React,{Fragment,useState} from 'react'
 import { Breadcrumbs } from '../../../AbstractElements'
 import HeaderCard from '../../Common/Component/HeaderCard'
-import { Container } from 'reactstrap'
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import { upload_transaction_tab } from '../../../Data/tab/UploadTransactionTab'
 const index = () => {

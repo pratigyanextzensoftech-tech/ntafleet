@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Container } from 'reactstrap'
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { H2, H4, LI, UL } from "../../../AbstractElements";
 
 const Maintenance = () => {

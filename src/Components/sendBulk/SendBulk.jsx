@@ -1,5 +1,5 @@
 import React,{Fragment} from 'react'
-import { Container } from 'reactstrap'
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import { Breadcrumbs } from '../../AbstractElements'
 import { SendBulkTab } from '../../Data/tab/SendBulkTab'
