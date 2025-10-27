@@ -27,6 +27,7 @@ const FormComponent = ({ onUserAdded,editUser }) => {
       setValue("email", editUser.email);
       setValue("phone", editUser.phone);
       setValue("company", editUser.company);
+     // setValue("password", editUser.password ); // optional
       setValue("status", {
         value: editUser.status,
         label: editUser.status == "0" ? "Active" : "Blocked",

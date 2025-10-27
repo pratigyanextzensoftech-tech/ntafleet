@@ -5,9 +5,9 @@ import { FaPhoneAlt, FaBuilding, FaUser } from "react-icons/fa";
 import { useForm, Controller } from "react-hook-form";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Select from "react-select";
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { companyall, company as table_name ,company} from '../../api'; 
+import axios from "axios";
+import { toast } from "react-toastify";
+import { companyall, company as table_name, company } from "../../api";
 import {
   optionscountry,
   YesNo,
@@ -51,12 +51,10 @@ import {
 } from "../../Hooks/Dropdowns";
 import { useParams } from "react-router-dom";
 const Index = () => {
-
-
   const { id } = useParams();
-  const company_id = atob(decodeURIComponent(id)); 
+  const company_id = atob(decodeURIComponent(id));
 
-    // const { data: companies, loading: companyLoading } = useCompany();
+  // const { data: companies, loading: companyLoading } = useCompany();
   const { data: salesman, loading: salesmanLoading } = useSalesman();
   //const { data: suppliers, loading: supplierLoading } = useSupplier();
   const { data: essoRacks, loading: essoRackLoading } = useEssoRack();
@@ -70,219 +68,211 @@ const Index = () => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-useEffect(()=>{
-axios.get(`${company}/${company_id}`).then((res)=>{
-  console.log(res.data)
-     reset(
-   {
-  company_name: res.data.company_name || '',
-  email: res.data.email || '',
-  email2: res.data.email2 || '',
-  other_email: res.data.other_email || '',
-  otp_email: res.data.otp_email || '',
-  otp_email2: res.data.otp_email2 || '',
-  otp_phone: res.data.otp_phone || '',
-  logo: res.data.logo || '',
-  address: res.data.address || '',
-  street: res.data.street || '',
-  city: res.data.city || '',
-  location: res.data.location || '',
-  auth_location: res.data.auth_location || '',
-  province: res.data.province || '',
-  postal_code: res.data.postal_code || '',
-  country_name: res.data.country_name || '',
-  phone: res.data.phone || '',
-  fax: res.data.fax || '',
-  mobile: res.data.mobile || '',
-  company_type: res.data.company_type?.value || '0',
-  website: res.data.website || '',
-  country_id: res.data.country_id?.value || '0',
-  country: res.data.country || '',
-  salesman_id: res.data.salesman_id?.value || '0',
-  policy_number: res.data.policy_number || '',
-  company_status: res.data.company_status?.value || '', 
-  susp_comp: res.data.susp_comp?.value || '',
-  defd_mark_up: res.data.defd_mark_up || '',
-  daily_report: res.data.daily_report || '',
-  identifier: res.data.identifier || '',
-  irving: res.data.irving || '',
-  fees: res.data.fees || '',
-  shell_pricing: res.data.shell_pricing || '0',
-  pilot_pricing: res.data.pilot_pricing || '0', 
-  discount_canada: res.data.discount_canada || '0',
-  discount_usa: res.data.discount_usa || '0',
-  rack_ca: res.data.rack_ca || '0',
-  rack_us: res.data.rack_us || '0',
-  aoi: res.data.aoi || '',
-  drivers_license: res.data.drivers_license || '',
-  signed_agreement: res.data.signed_agreement || '',
-  void_cheque: res.data.void_cheque || '',
-  check_rebate: res.data.check_rebate || '',
-  retail_invoice: res.data.retail_invoice || '',
-  ta_retail_invoice: res.data.ta_retail_invoice || '',
-  esso_retail_invoice: res.data.esso_retail_invoice || '',
-  esso_inv_type: res.data.esso_inv_type?.value || '',
-  cust_inv_type: res.data.cust_inv_type?.value || '',
-  ul_cust_inv_type: res.data.ul_cust_inv_type?.value || '',
-  ul_inv_type: res.data.ul_inv_type?.value || '',
-  esso_rcent: res.data.esso_rcent || '0',
-  ul_rcent: res.data.ul_rcent || '0',
-  esso_rack: res.data.esso_rack || '0',
-  esso_rack_on: res.data.esso_rack_on || '0',
-  esso_rack_oon: res.data.esso_rack_oon || '0',
-  fee: res.data.fee || '',
-  owner_operator_invoice: res.data.owner_operator_invoice?.value || '',
-  ul_owner_operator_invoice: res.data.ul_owner_operator_invoice?.value || '',
-  sw_owner_invoice: res.data.sw_owner_invoice?.value || '',
-  self_owner_invoice: res.data.self_owner_invoice?.value || '',
-  sw_customised_inv: res.data.sw_customised_inv?.value || '',
-  default_unit: res.data.default_unit || '',
-  default_driver: res.data.default_driver || '',
-  love_retail_invoice: res.data.love_retail_invoice || '',
-  supplier_fee: res.data.supplier_fee || '',
-  ibp_adjustment: res.data.ibp_adjustment || '',
-  pumping_fee: res.data.pumping_fee || '',
-  net_price: res.data.net_price || '',
-  daily_pricing: res.data.daily_pricing || '',
-  ta_daily_pricing: res.data.ta_daily_pricing || '',
-  esso_daily_pricing: res.data.esso_daily_pricing || '',
-  esso_daily_pricing_wtax: res.data.esso_daily_pricing_wtax || '',
-  love_daily_pricing: res.data.love_daily_pricing || '',
-  ul_daily_pricing: res.data.ul_daily_pricing || '',
-  ul_daily_pricing_wtax: res.data.ul_daily_pricing_wtax || '',
-   invoice_creation:
-        invoiceCreation.find(
-          (opt) => opt.value === res.data.invoice_creation
-        ) || null,
-  invoice_day:
-   invoiceDay.find(
-          (opt) => opt.value === res.data.invoice_day 
-        ) || null,
- 
-  invoice_week:
-  invoiceWeek.find(
-          (opt) => opt.value === res.data.invoice_week  
-        ) || null,
-  customer_type:
-  customerType.find(
-          (opt) => opt.value === res.data.customer_type  
-        ) || null,
- 
-  special_instructions: res.data.special_instructions || '',
-  first_name: res.data.first_name || '',
-  last_name: res.data.last_name || '',
-  card_discount: res.data.card_discount || '',
-  username: res.data.username || '',
-  password: res.data.password || '',
-  date: res.data.date || '1970-01-01 00:00:00',
-  esso_live: res.data.esso_live || '',
-  remarks: res.data.remarks || '',
-  rest_OTP: res.data.rest_OTP || '',
-  last_login: res.data.last_login || '1970-01-01 00:00:00',
-  lang: res.data.lang || '',
-  lat: res.data.lat || '',
-  login_failed: res.data.login_failed || '0',
-  last_failed: res.data.last_failed || '1970-01-01 00:00:00', 
-  added_on: new Date().toISOString().slice(0, 19).replace('T', ' '), 
-}
+  useEffect(() => {
+    axios
+      .get(`${company}/${company_id}`)
+      .then((res) => {
+        console.log(res.data);
+        reset({
+          company_name: res.data.company_name || "",
+          email: res.data.email || "",
+          email2: res.data.email2 || "",
+          other_email: res.data.other_email || "",
+          otp_email: res.data.otp_email || "",
+          otp_email2: res.data.otp_email2 || "",
+          otp_phone: res.data.otp_phone || "",
+          logo: res.data.logo || "",
+          address: res.data.address || "",
+          street: res.data.street || "",
+          city: res.data.city || "",
+          location: res.data.location || "",
+          auth_location: res.data.auth_location || "",
+          province: res.data.province || "",
+          postal_code: res.data.postal_code || "",
+          country_name: res.data.country_name || "",
+          phone: res.data.phone || "",
+          fax: res.data.fax || "",
+          mobile: res.data.mobile || "",
+          company_type: res.data.company_type?.value || "0",
+          website: res.data.website || "",
+          country_id: res.data.country_id?.value || "0",
+          country: res.data.country || "",
+          salesman_id: res.data.salesman_id?.value || "0",
+          policy_number: res.data.policy_number || "",
+          company_status: res.data.company_status?.value || "",
+          susp_comp: res.data.susp_comp?.value || "",
+          defd_mark_up: res.data.defd_mark_up || "",
+          daily_report: res.data.daily_report || "",
+          identifier: res.data.identifier || "",
+          irving: res.data.irving || "",
+          fees: res.data.fees || "",
+          shell_pricing: res.data.shell_pricing || "0",
+          pilot_pricing: res.data.pilot_pricing || "0",
+          discount_canada: res.data.discount_canada || "0",
+          discount_usa: res.data.discount_usa || "0",
+          rack_ca: res.data.rack_ca || "0",
+          rack_us: res.data.rack_us || "0",
+          aoi: res.data.aoi || "",
+          drivers_license: res.data.drivers_license || "",
+          signed_agreement: res.data.signed_agreement || "",
+          void_cheque: res.data.void_cheque || "",
+          check_rebate: res.data.check_rebate || "",
+          retail_invoice: res.data.retail_invoice || "",
+          ta_retail_invoice: res.data.ta_retail_invoice || "",
+          esso_retail_invoice: res.data.esso_retail_invoice || "",
+          esso_inv_type: res.data.esso_inv_type?.value || "",
+          cust_inv_type: res.data.cust_inv_type?.value || "",
+          ul_cust_inv_type: res.data.ul_cust_inv_type?.value || "",
+          ul_inv_type: res.data.ul_inv_type?.value || "",
+          esso_rcent: res.data.esso_rcent || "0",
+          ul_rcent: res.data.ul_rcent || "0",
+          esso_rack: res.data.esso_rack || "0",
+          esso_rack_on: res.data.esso_rack_on || "0",
+          esso_rack_oon: res.data.esso_rack_oon || "0",
+          fee: res.data.fee || "",
+          owner_operator_invoice: res.data.owner_operator_invoice?.value || "",
+          ul_owner_operator_invoice:
+            res.data.ul_owner_operator_invoice?.value || "",
+          sw_owner_invoice: res.data.sw_owner_invoice?.value || "",
+          self_owner_invoice: res.data.self_owner_invoice?.value || "",
+          sw_customised_inv: res.data.sw_customised_inv?.value || "",
+          default_unit: res.data.default_unit || "",
+          default_driver: res.data.default_driver || "",
+          love_retail_invoice: res.data.love_retail_invoice || "",
+          supplier_fee: res.data.supplier_fee || "",
+          ibp_adjustment: res.data.ibp_adjustment || "",
+          pumping_fee: res.data.pumping_fee || "",
+          net_price: res.data.net_price || "",
+          daily_pricing: res.data.daily_pricing || "",
+          ta_daily_pricing: res.data.ta_daily_pricing || "",
+          esso_daily_pricing: res.data.esso_daily_pricing || "",
+          esso_daily_pricing_wtax: res.data.esso_daily_pricing_wtax || "",
+          love_daily_pricing: res.data.love_daily_pricing || "",
+          ul_daily_pricing: res.data.ul_daily_pricing || "",
+          ul_daily_pricing_wtax: res.data.ul_daily_pricing_wtax || "",
+          invoice_creation:
+            invoiceCreation.find(
+              (opt) => opt.value === res.data.invoice_creation
+            ) || null,
+          invoice_day:
+            invoiceDay.find((opt) => opt.value === res.data.invoice_day) ||
+            null,
 
-)
-})
-  .catch((err)=>{
-    console.log(err);
-  })
+          invoice_week:
+            invoiceWeek.find((opt) => opt.value === res.data.invoice_week) ||
+            null,
+          customer_type:
+            customerType.find((opt) => opt.value === res.data.customer_type) ||
+            null,
 
+          special_instructions: res.data.special_instructions || "",
+          first_name: res.data.first_name || "",
+          last_name: res.data.last_name || "",
+          card_discount: res.data.card_discount || "",
+          username: res.data.username || "",
+          password: res.data.password || "",
+          date: res.data.date || "1970-01-01 00:00:00",
+          esso_live: res.data.esso_live || "",
+          remarks: res.data.remarks || "",
+          rest_OTP: res.data.rest_OTP || "",
+          last_login: res.data.last_login || "1970-01-01 00:00:00",
+          lang: res.data.lang || "",
+          lat: res.data.lat || "",
+          login_failed: res.data.login_failed || "0",
+          last_failed: res.data.last_failed || "1970-01-01 00:00:00",
+          added_on: new Date().toISOString().slice(0, 19).replace("T", " "),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-
-
-},[])
-
- const onSubmit = async (formData) => {
+  const onSubmit = async (formData) => {
     try {
-       
-
       // Create request payload (if needed, map keys)
-      const payload = {  
-        company_name: formData.company_name || '', 
-        otp_phone: formData.otp_phone || '', 
-        address: formData.address || '', 
-        auth_location: formData.auth_location || '',  
-        country_name: formData.country_name || '',
-        phone: formData.phone || '',
-        fax: formData.fax || '',
-        mobile: formData.mobile || '',
-        company_type: formData.company_type?.value || '0', 
-        country_id: formData.country_id?.value || '0',
-        country: formData.country || '', 
-        policy_number: formData.policy_number || '',
-        company_status: formData.company_status?.value || '', 
-        susp_comp: formData.susp_comp?.value || '',
-        defd_mark_up: formData.defd_mark_up || '',
-        daily_report: formData.daily_report || '',
-        identifier: formData.identifier || '',
-        irving: formData.irving || '',
-        fees: formData.fees || '',
-        shell_pricing: formData.shell_pricing || '0',
-        pilot_pricing: formData.pilot_pricing || '0', 
-        discount_canada: formData.discount_canada || '0',
-        discount_usa: formData.discount_usa || '0',
-        rack_ca: formData.rack_ca || '0',
-        rack_us: formData.rack_us || '0',
-        aoi: formData.aoi || '',
-        drivers_license: formData.drivers_license || '',
-        signed_agreement: formData.signed_agreement || '',
-        void_cheque: formData.void_cheque || '',
-        check_rebate: formData.check_rebate || '',
-        retail_invoice: formData.retail_invoice || '',
-        ta_retail_invoice: formData.ta_retail_invoice || '',
-        esso_retail_invoice: formData.esso_retail_invoice || '',
-        esso_inv_type: formData.esso_inv_type?.value || '',
-        cust_inv_type: formData.cust_inv_type?.value || '',
-        ul_cust_inv_type: formData.ul_cust_inv_type?.value || '',
-        ul_inv_type: formData.ul_inv_type?.value || '',
-        esso_rcent: formData.esso_rcent || '0',
-        ul_rcent: formData.ul_rcent || '0',
-        esso_rack: formData.esso_rack || '0',
-        esso_rack_on: formData.esso_rack_on || '0',
-        esso_rack_oon: formData.esso_rack_oon || '0',
-        fee: formData.fee || '',
-        owner_operator_invoice: formData.owner_operator_invoice?.value || '',
-        ul_owner_operator_invoice: formData.ul_owner_operator_invoice?.value || '',
-        sw_owner_invoice: formData.sw_owner_invoice?.value || '',
-        self_owner_invoice: formData.self_owner_invoice?.value || '',
-        sw_customised_inv: formData.sw_customised_inv?.value || '',
-        default_unit: formData.default_unit || '',
-        default_driver: formData.default_driver || '',
-        love_retail_invoice: formData.love_retail_invoice || '',
-        supplier_fee: formData.supplier_fee || '',
-        ibp_adjustment: formData.ibp_adjustment || '',
-        pumping_fee: formData.pumping_fee || '',
-        net_price: formData.net_price || '',
-        daily_pricing: formData.daily_pricing || '',
-        ta_daily_pricing: formData.ta_daily_pricing || '',
-        esso_daily_pricing: formData.esso_daily_pricing || '',
-        esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || '',
-        love_daily_pricing: formData.love_daily_pricing || '',
-        ul_daily_pricing: formData.ul_daily_pricing || '',
-        ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || '',
-        invoice_creation: formData.invoice_creation?.value || '',
-        invoice_day: formData.invoice_day?.value || '',
-        invoice_week: formData.invoice_week?.value || '',
-        customer_type: formData.customer_type?.value || '',
-        special_instructions: formData.special_instructions || '',
-        first_name: formData.first_name || '',
-        last_name: formData.last_name || '',
-        card_discount: formData.card_discount || '',
-        username: formData.username || '',
-        password: formData.password || '',
-        date: formData.date || '1970-01-01 00:00:00',
-        esso_live: formData.esso_live || '',
-        remarks: formData.remarks || '', 
+      const payload = {
+        company_name: formData.company_name || "",
+        otp_phone: formData.otp_phone || "",
+        address: formData.address || "",
+        auth_location: formData.auth_location || "",
+        country_name: formData.country_name || "",
+        phone: formData.phone || "",
+        fax: formData.fax || "",
+        mobile: formData.mobile || "",
+        company_type: formData.company_type?.value || "0",
+        country_id: formData.country_id?.value || "0",
+        country: formData.country || "",
+        policy_number: formData.policy_number || "",
+        company_status: formData.company_status?.value || "",
+        susp_comp: formData.susp_comp?.value || "",
+        defd_mark_up: formData.defd_mark_up || "",
+        daily_report: formData.daily_report || "",
+        identifier: formData.identifier || "",
+        irving: formData.irving || "",
+        fees: formData.fees || "",
+        shell_pricing: formData.shell_pricing || "0",
+        pilot_pricing: formData.pilot_pricing || "0",
+        discount_canada: formData.discount_canada || "0",
+        discount_usa: formData.discount_usa || "0",
+        rack_ca: formData.rack_ca || "0",
+        rack_us: formData.rack_us || "0",
+        aoi: formData.aoi || "",
+        drivers_license: formData.drivers_license || "",
+        signed_agreement: formData.signed_agreement || "",
+        void_cheque: formData.void_cheque || "",
+        check_rebate: formData.check_rebate || "",
+        retail_invoice: formData.retail_invoice || "",
+        ta_retail_invoice: formData.ta_retail_invoice || "",
+        esso_retail_invoice: formData.esso_retail_invoice || "",
+        esso_inv_type: formData.esso_inv_type?.value || "",
+        cust_inv_type: formData.cust_inv_type?.value || "",
+        ul_cust_inv_type: formData.ul_cust_inv_type?.value || "",
+        ul_inv_type: formData.ul_inv_type?.value || "",
+        esso_rcent: formData.esso_rcent || "0",
+        ul_rcent: formData.ul_rcent || "0",
+        esso_rack: formData.esso_rack || "0",
+        esso_rack_on: formData.esso_rack_on || "0",
+        esso_rack_oon: formData.esso_rack_oon || "0",
+        fee: formData.fee || "",
+        owner_operator_invoice: formData.owner_operator_invoice?.value || "",
+        ul_owner_operator_invoice:
+          formData.ul_owner_operator_invoice?.value || "",
+        sw_owner_invoice: formData.sw_owner_invoice?.value || "",
+        self_owner_invoice: formData.self_owner_invoice?.value || "",
+        sw_customised_inv: formData.sw_customised_inv?.value || "",
+        default_unit: formData.default_unit || "",
+        default_driver: formData.default_driver || "",
+        love_retail_invoice: formData.love_retail_invoice || "",
+        supplier_fee: formData.supplier_fee || "",
+        ibp_adjustment: formData.ibp_adjustment || "",
+        pumping_fee: formData.pumping_fee || "",
+        net_price: formData.net_price || "",
+        daily_pricing: formData.daily_pricing || "",
+        ta_daily_pricing: formData.ta_daily_pricing || "",
+        esso_daily_pricing: formData.esso_daily_pricing || "",
+        esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || "",
+        love_daily_pricing: formData.love_daily_pricing || "",
+        ul_daily_pricing: formData.ul_daily_pricing || "",
+        ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || "",
+        invoice_creation: formData.invoice_creation?.value || "",
+        invoice_day: formData.invoice_day?.value || "",
+        invoice_week: formData.invoice_week?.value || "",
+        customer_type: formData.customer_type?.value || "",
+        special_instructions: formData.special_instructions || "",
+        first_name: formData.first_name || "",
+        last_name: formData.last_name || "",
+        card_discount: formData.card_discount || "",
+        username: formData.username || "",
+        password: formData.password || "",
+        date: formData.date || "1970-01-01 00:00:00",
+        esso_live: formData.esso_live || "",
+        remarks: formData.remarks || "",
       };
-    console.log("📤 Submitting data:", payload); 
+      console.log("📤 Submitting data:", payload);
       const res = await axios.put(`${company}/${company_id}`, payload);
       console.log("✅ API Response:", res.data);
-      toast.success("Company Updated Succesfully") 
+      toast.success("Company Updated Succesfully");
       //reset(); // Reset the form on success
     } catch (error) {
       console.error("❌ Error submitting form:", error);
@@ -290,7 +280,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
   };
   return (
     <Fragment>
-      <Breadcrumbs parent="company" title="Edit Company" /> 
+      <Breadcrumbs parent="company" title="Edit Company" />
       <Container fluid={true}>
         <Row>
           <Col sm="12">
@@ -338,7 +328,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               className="form-control"
                               name="email"
                               type="email"
-                               disabled
+                              disabled
                               {...register("email", {
                                 required: "Email-1 is required",
                                 pattern: {
@@ -365,7 +355,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               className="form-control"
                               name="email2"
                               type="email"
-                               disabled
+                              disabled
                               {...register("email2", {
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -392,7 +382,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             <input
                               className="form-control"
                               name="other_email"
-                               disabled
+                              disabled
                               type="email"
                               {...register("other_email", {
                                 pattern: {
@@ -422,7 +412,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             <input
                               className="form-control"
                               name="otp_email"
-                               disabled
+                              disabled
                               type="email"
                               {...register("otp_email", {
                                 required: "Otp Email-1 is required",
@@ -449,7 +439,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             </InputGroupText>
                             <input
                               name="otp_email2"
-                               disabled
+                              disabled
                               className="form-control"
                               type="email"
                               {...register("otp_email2", {
@@ -511,7 +501,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                       <Col sm="6">
                         <FormGroup className=" m-form__group">
                           <InputGroup>
-                            <InputGroupText> 
+                            <InputGroupText>
                               <RiBuilding4Fill className="mx-1 " /> Authorized
                               Location
                             </InputGroupText>
@@ -542,13 +532,12 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                             options={optionscompany}
                             className="form-control p-0 border-0"
                             name="company_type"
-                            
                           />
                         </InputGroup>
                       </Col>
                       <Col sm="3">
                         <InputGroup>
-                          <InputGroupText> 
+                          <InputGroupText>
                             <FaPhoneAlt className="mx-1" /> Phone
                           </InputGroupText>
                           <Input
@@ -562,7 +551,6 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                       <Col sm="3">
                         <InputGroup>
                           <InputGroupText>
-                       
                             <FaPhoneAlt className="mx-1 " /> Mobile
                           </InputGroupText>
                           <Input
@@ -1094,7 +1082,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                           <Col sm="12">
+                          <Col sm="12">
                             <FormGroup className="m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1156,7 +1144,12 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                           </Col>
                           <Col sm="2">
                             <div className="checkbox checkbox-dark">
-                              <Input id="checkbox1" type="checkbox" name="fees" value="1"/>
+                              <Input
+                                id="checkbox1"
+                                type="checkbox"
+                                name="fees"
+                                value="1"
+                              />
                               <Label for="checkbox1">Fees</Label>
                             </div>
                           </Col>
@@ -1198,21 +1191,36 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                     <Row className="my-3">
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox1" type="checkbox" name="daily_pricing" value="1"/>
+                          <Input
+                            id="checkbox1"
+                            type="checkbox"
+                            name="daily_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox1">FJ Daily Pricing PDF</Label>
                         </div>
                       </Col>
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox2" type="checkbox" name="ta_daily_pricing" value="1" /> 
+                          <Input
+                            id="checkbox2"
+                            type="checkbox"
+                            name="ta_daily_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox2">
                             Ta-Petro Daily Pricing PDF
                           </Label>
                         </div>
-                      </Col> 
+                      </Col>
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox3" type="checkbox" name="esso_daily_pricing" value="1"/>
+                          <Input
+                            id="checkbox3"
+                            type="checkbox"
+                            name="esso_daily_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox3">
                             ESSO Daily Pricing PDF (With Tax)
                           </Label>
@@ -1221,29 +1229,49 @@ axios.get(`${company}/${company_id}`).then((res)=>{
 
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox4" type="checkbox" name="esso_daily_pricing_wtax" value="1"/>
+                          <Input
+                            id="checkbox4"
+                            type="checkbox"
+                            name="esso_daily_pricing_wtax"
+                            value="1"
+                          />
                           <Label for="checkbox4">
                             ESSO Daily Pricing PDF (Without Tax)
                           </Label>
                         </div>
                       </Col>
-                    
+
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox5" type="checkbox" name="pilot_pricing" value="1" />
+                          <Input
+                            id="checkbox5"
+                            type="checkbox"
+                            name="pilot_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox5">Pilot Flying J</Label>
                         </div>
                       </Col>
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox6" type="checkbox" name="shell_pricing" value="1"/>
+                          <Input
+                            id="checkbox6"
+                            type="checkbox"
+                            name="shell_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox6">Shell Flying J</Label>
                         </div>
                       </Col>
 
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox7" type="checkbox" name="ul_daily_pricing" value="1"/>
+                          <Input
+                            id="checkbox7"
+                            type="checkbox"
+                            name="ul_daily_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox7">
                             Ultramar Daily Pricing PDF (With Tax)
                           </Label>
@@ -1252,16 +1280,26 @@ axios.get(`${company}/${company_id}`).then((res)=>{
 
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox8" type="checkbox" name="ul_daily_pricing_wtax" value="1"/>
+                          <Input
+                            id="checkbox8"
+                            type="checkbox"
+                            name="ul_daily_pricing_wtax"
+                            value="1"
+                          />
                           <Label for="checkbox8">
                             Ultramar Daily Pricing PDF (Without Tax)
                           </Label>
                         </div>
                       </Col>
-                    
+
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input id="checkbox9" type="checkbox" name="love_daily_pricing" value="1"/>
+                          <Input
+                            id="checkbox9"
+                            type="checkbox"
+                            name="love_daily_pricing"
+                            value="1"
+                          />
                           <Label for="checkbox9">Loves Daily Pricing PDF</Label>
                         </div>
                       </Col>
@@ -1276,7 +1314,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                         <FormGroup>
                           <InputGroup>
                             <InputGroupText>
-                              Invoice Creation 
+                              Invoice Creation
                               <span className="text-danger fw-bold mx-1">
                                 *
                               </span>
@@ -1288,12 +1326,11 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                                 required: "Invoice creation is required",
                               }}
                               render={({ field }) => (
-                                <Select 
+                                <Select
                                   {...field}
                                   options={invoiceCreation}
                                   className="form-control p-0 border-0"
                                   placeholder="Select option"
-                                  
                                 />
                               )}
                             />
@@ -1339,10 +1376,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                       <Col sm="3">
                         <FormGroup>
                           <InputGroup>
-                            <InputGroupText>
-                              Invoice Week 
-                             
-                            </InputGroupText>
+                            <InputGroupText>Invoice Week</InputGroupText>
                             <Controller
                               name="invoice_week"
                               control={control}
@@ -1402,7 +1436,11 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText>Special Instructions</InputGroupText>
-                          <Input className="form-control" type="text" name="special_instructions" />
+                          <Input
+                            className="form-control"
+                            type="text"
+                            name="special_instructions"
+                          />
                         </InputGroup>
                       </FormGroup>
                     </Row>
@@ -1414,20 +1452,28 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                       <Col sm="6">
                         <FormGroup className=" m-form__group">
                           <InputGroup>
-                            <InputGroupText> 
-                              <FaUser className="mx-1 " /> First Name 
+                            <InputGroupText>
+                              <FaUser className="mx-1 " /> First Name
                             </InputGroupText>
-                            <Input className="form-control" type="text" name="first_name" />
+                            <Input
+                              className="form-control"
+                              type="text"
+                              name="first_name"
+                            />
                           </InputGroup>
                         </FormGroup>
                       </Col>
                       <Col sm="6">
                         <FormGroup className=" m-form__group">
                           <InputGroup>
-                            <InputGroupText> 
+                            <InputGroupText>
                               <FaUser className="mx-1 " /> Last Name
                             </InputGroupText>
-                            <Input className="form-control" type="text" name="last_name" />
+                            <Input
+                              className="form-control"
+                              type="text"
+                              name="last_name"
+                            />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -1442,15 +1488,19 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                           <InputGroup className="mb-3">
                             <InputGroupText>
                               Card Discount Sheet Menu
-                            </InputGroupText> 
-                            <Select options={YesNo} className="form-control p-0 border-0" name="card_discount" />
+                            </InputGroupText>
+                            <Select
+                              options={YesNo}
+                              className="form-control p-0 border-0"
+                              name="card_discount"
+                            />
                           </InputGroup>
                         </FormGroup>
                       </Col>
                       <Col sm="4">
                         <FormGroup className=" m-form__group">
                           <InputGroup>
-                            <InputGroupText> 
+                            <InputGroupText>
                               <FaUser className="mx-1 " /> Username
                               <span className="text-danger fw-bold  mx-1">
                                 *
@@ -1460,7 +1510,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                               className="form-control"
                               type="text"
                               name="username"
-                               disabled
+                              disabled
                               {...register("username", { required: true })}
                             />
                           </InputGroup>
@@ -1471,7 +1521,6 @@ axios.get(`${company}/${company_id}`).then((res)=>{
                           )}
                         </FormGroup>
                       </Col>
-                    
                     </Row>
                   </fieldset>
                   <Row>

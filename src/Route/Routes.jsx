@@ -156,6 +156,7 @@ export const routes = [
 { path: `/how_to_use_efsllc.com`, Component: <Help /> },
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
+  { path: `/manage_user/:id`, Component: <ManageUser /> },
 
   
   { path: `/create_invoice`, Component: <CreateInvoice /> },

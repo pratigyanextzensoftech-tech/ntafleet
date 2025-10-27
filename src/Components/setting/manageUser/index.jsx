@@ -8,6 +8,7 @@ import axios from "axios";
 import { administrator } from "../../../api/index";
 import FormComponent from "./Form";
 import Swal from "sweetalert2";
+import { Link,useParams } from "react-router-dom";
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -19,6 +20,7 @@ const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [editUser, setEditUser] = useState(null);
 
+ 
   // ✅ Fetch user list API
   const fetchUsers = async (page = 1, limit = 10) => {
     setLoading(true);
@@ -202,13 +204,10 @@ const Index = () => {
                   padding: "5px 0",
                 }}
               >
-                <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleEdit(row)}
+                <Link to={`/manage_user/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
                 >
-                  <FaEdit /> Edit
-                </button>
+                                  <FaEdit /> Edit
+             </Link>
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"
                   style={{ padding: "8px 12px", gap: "8px" }}
