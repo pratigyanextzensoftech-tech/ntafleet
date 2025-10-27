@@ -14,6 +14,34 @@ import ZeroDiscount from '../Components/discount/zeroDiscount/index';
 import Upload from '../Components/retailPrice/upload/index';
 import PetroRetail from '../Components/retailPrice/petro/index';
 
+//Pricing
+import DownloadEssoCent from '../Components/pricing/download_essocent/index';
+import UpdateEssoCent from '../Components/pricing/updateEssoCent/index';
+import ManageEssoCent from '../Components/pricing/manage_essocent/index';
+import UploadFjPrice from '../Components/pricing/uploadPricing/index';
+import PriceList from '../Components/pricing/pricing_list/index';
+import SinglePricing from '../Components/pricing/singlePricingPdf/index';
+import BulkPrice from '../Components/pricing/bulk_price/index';
+import EssoBulk from '../Components/pricing/essoBulk/index';
+import LoveBulk from '../Components/pricing/loveBulk/index';
+import Ultramar from '../Components/pricing/ultramar/index'
+import TaPetroBulk from '../Components/pricing/taPetroBulk/index';
+import UpdateFgRack from '../Components/pricing/updateFg/index';
+import UpdateTaPetro from '../Components/pricing/updateTaPetro/index';
+import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
+import OwnerOperator from '../Components/pricing/ownerOperator/index';
+import EssoGroup from '../Components/pricing/essoGroup/index';
+import UltramarGroup from '../Components/pricing/ultramarGroup/index';
+import DownloadBulk from '../Components/pricing/downloadBulk/index'; 
+
+//Items
+import AddItems from '../Components/items/addItems/index';
+
+//Company
+import AddCompany from '../Components/company/AddCompany'
+import ViewCompany from '../Components/company/ViewCompany';
+import EditCompany from '../Components/company/EditCompany'
+import CompanyInfo from '../Components/CompanyInfo/CompanyInfo';
 
 import ManageUser from '../Components/manageUser'
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';
@@ -29,12 +57,7 @@ import CreateUltramar from '../Components/createUltramar/CreateUltramar';
 import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
-import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';
-
-import AddCompany from '../Components/company/AddCompany'
-import ViewCompany from '../Components/company/ViewCompany';
-import EditCompany from '../Components/company/EditCompany'
-import CompanyInfo from '../Components/CompanyInfo/CompanyInfo';
+import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';  
 import SubLOgin from '../Components/subLogin/SubLogin';
 import SupplierList from '../Components/supplier/supplierList/index';
 import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
@@ -43,14 +66,11 @@ import UploadMoney from '../Components/moneyCode/upload/index'
 import CheckInvoicemoneyCode from '../Components/moneyCode/checkInvoic/index';
 import ViewReports from '../Components/reports/viewReports/index';
 import SalesmanVol from '../Components/reports/salesmanVolume/index';
-import CreateReports from '../Components/reports/createReport/index';
-import AddItems from '../Components/items/addItems/index';
-
+import CreateReports from '../Components/reports/createReport/index'; 
 import AddFuel from '../Components/fuelCards/addFuel/index';
 import ViewFuel from '../Components/fuelCards/view/index';
 import EFSFuel from '../Components/fuelCards/viewEFS/index';
 import HistoryFuel from '../Components/fuelCards/history/index';
-
 import UploadTcheck from '../Components/tcheck/upload/index'
 import TcheckList from '../Components/tcheck/list/index'
 import CreateTCheck from '../Components/tcheck/create/index'
@@ -77,24 +97,6 @@ import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
 import ViewEfs from '../Components/transaction/viewEfs/index';
 import RackToRetail from '../Components/transaction/rackToRetail/index';
 import RetailToRack from '../Components/transaction/retailToRack/index';
-import DownloadEssoCent from '../Components/pricing/download_essocent/index';
-import UpdateEssoCent from '../Components/pricing/updateEssoCent/index';
-import ManageEssoCent from '../Components/pricing/manage_essocent/index';
-import UploadFjPrice from '../Components/pricing/uploadPricing/index';
-import PriceList from '../Components/pricing/pricing_list/index';
-import SinglePricing from '../Components/pricing/singlePricingPdf/index';
-import BulkPrice from '../Components/pricing/bulk_price/index';
-import EssoBulk from '../Components/pricing/essoBulk/index';
-import LoveBulk from '../Components/pricing/loveBulk/index';
-import Ultramar from '../Components/pricing/ultramar/index'
-import TaPetroBulk from '../Components/pricing/taPetroBulk/index';
-import UpdateFgRack from '../Components/pricing/updateFg/index';
-import UpdateTaPetro from '../Components/pricing/updateTaPetro/index';
-import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
-import OwnerOperator from '../Components/pricing/ownerOperator/index';
-import EssoGroup from '../Components/pricing/essoGroup/index';
-import UltramarGroup from '../Components/pricing/ultramarGroup/index';
-import DownloadBulk from '../Components/pricing/downloadBulk/index'; 
 import Help from '../Components/help/index';
 import AddCard from '../Components/help/addCard/index';
 
@@ -111,14 +113,39 @@ export const routes = [
 { path: `/create_bulk_discount`, Component: <BulkDiscount/> },
 { path: `/zero_discount_location`, Component: <ZeroDiscount/> },
 
+//Pricing
+{ path: `/download_esso_cent`, Component: < DownloadEssoCent/> },
+{ path: `/update_esso_centwise`, Component: < UpdateEssoCent/> },
+{ path: `/manage_esso_cent`, Component: <ManageEssoCent /> },
+{ path: `/upload_price`, Component: <UploadFjPrice /> },
+{ path: `/price_list`, Component: <PriceList /> },
+{ path: `/single_price_pdf`, Component: <SinglePricing /> },
+{ path: `/fj_bulk_price`, Component: <BulkPrice /> },
+{ path: `/esso_bulk_price`, Component: <EssoBulk /> },
+{ path: `/love_bulk_price`, Component: <LoveBulk /> },
+{ path: `/ultramar_bulk_price`, Component: <Ultramar /> },
+{ path: `/update_fg_rack_price`, Component: <UpdateFgRack /> },
+{ path: `/update_taPetro_rack_price`, Component: <UpdateTaPetro /> },
+{ path: `/update_love_rack_pricing`, Component: <UpdateLoveRack /> },
+{ path: `/OwnerUpdate_rack_price`, Component: <OwnerOperator /> },
+{ path: `/esso_group_rack_price`, Component: <EssoGroup /> },
+{ path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
+{ path: `/download_bulk_excel`, Component: <DownloadBulk /> },
+
+ //Items
+{ path: `/add_items`, Component: <AddItems /> },
+{ path: `/view_items`, Component: <AddItems /> },
+
+//Company
+{ path: `/add_company`, Component: <AddCompany /> },
+{ path: `/edit_company/:id`, Component: <EditCompany /> },
+{ path: `/view_company`, Component: <ViewCompany /> },  
+{ path: `/company_info`, Component: <CompanyInfo /> },
+
 { path: `/how_to_use_efsllc.com`, Component: <Help /> },
 { path: `/how_to_add_card`, Component: <AddCard /> },
   { path: `/manage_user`, Component: <ManageUser /> },
-  { path: `/add_company`, Component: <AddCompany /> },
-  { path: `/edit_company/:id`, Component: <EditCompany /> },
-  { path: `/view_company`, Component: <ViewCompany /> },
-  
-  { path: `/company_info`, Component: <CompanyInfo /> },
+
   { path: `/sub_login`, Component: <SubLOgin /> },
   { path: `/create_invoice`, Component: <CreateInvoice /> },
   { path: `/view_invoice`, Component: <ViewInvoice /> },
@@ -142,9 +169,7 @@ export const routes = [
     { path: `/check_moneycode`, Component: <CheckInvoicemoneyCode /> },
     { path: `/view_Reports`, Component: <ViewReports /> },
     { path: `/salesman_report`, Component: <SalesmanVol /> },
-    { path: `/create_Reports`, Component: <CreateReports /> },
-    { path: `/add_items`, Component: <AddItems /> },
-    { path: `/view_items`, Component: <AddItems /> },
+    { path: `/create_Reports`, Component: <CreateReports /> }, 
     { path: `/upload_retail_prices`, Component: <Upload /> },
     { path: `petro_retail_prices`, Component: < PetroRetail/> },
     { path: `/add_card`, Component: < AddFuel/> },
@@ -178,22 +203,6 @@ export const routes = [
     { path: `/view_efs_transaction`, Component: < ViewEfs/> },
     { path: `/rack_to_retail_transaction`, Component: < RackToRetail/> },
     { path: `/to_retail_transaction`, Component: < RetailToRack/> },
-    { path: `/download_esso_cent`, Component: < DownloadEssoCent/> },
-    { path: `/update_esso_centwise`, Component: < UpdateEssoCent/> },
-    { path: `/manage_esso_cent`, Component: <ManageEssoCent /> },
-    { path: `/upload_price`, Component: <UploadFjPrice /> },
-    { path: `/price_list`, Component: <PriceList /> },
-    { path: `/single_price_pdf`, Component: <SinglePricing /> },
-    { path: `/fj_bulk_price`, Component: <BulkPrice /> },
-    { path: `/esso_bulk_price`, Component: <EssoBulk /> },
-    { path: `/love_bulk_price`, Component: <LoveBulk /> },
-    { path: `/ultramar_bulk_price`, Component: <Ultramar /> },
-    { path: `/update_fg_rack_price`, Component: <UpdateFgRack /> },
-    { path: `/update_taPetro_rack_price`, Component: <UpdateTaPetro /> },
-    { path: `/update_love_rack_pricing`, Component: <UpdateLoveRack /> },
-    { path: `/OwnerUpdate_rack_price`, Component: <OwnerOperator /> },
-    { path: `/esso_group_rack_price`, Component: <EssoGroup /> },
-    { path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
-    { path: `/download_bulk_excel`, Component: <DownloadBulk /> },
+   
     { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
 ];
