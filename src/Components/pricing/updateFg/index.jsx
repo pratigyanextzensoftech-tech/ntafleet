@@ -21,9 +21,11 @@ const index = () => {
             </Card>
           </Col>
         </Row>
-          <DataTableComponent     title="Rack Cent List"                tableData={dummytabledata}
-                tableColumns={tableColumns}
-              />
+        <DataTableComponent
+          title="Rack Cent List"
+          tableData={dummytabledata}
+          tableColumns={tableColumns}
+        />
       </Container>
     </Fragment>
   );
