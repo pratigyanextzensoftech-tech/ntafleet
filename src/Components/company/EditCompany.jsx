@@ -72,7 +72,6 @@ const Index = () => {
   } = useForm();
 useEffect(()=>{
 axios.get(`${company}/${company_id}`).then((res)=>{
-  console.log(res.data)
      reset(
    {
   company_name: res.data.company_name || '',
@@ -199,7 +198,6 @@ axios.get(`${company}/${company_id}`).then((res)=>{
 
  const onSubmit = async (formData) => {
     try {
-        console.log("dfgdg",formData)
 
       // Create request payload (if needed, map keys)
     //   const payload = {  
@@ -308,6 +306,7 @@ axios.get(`${company}/${company_id}`).then((res)=>{
     } catch (error) {
       console.error("❌ Error submitting form:", error);
     }
+    
   };
   return (
     <Fragment>
