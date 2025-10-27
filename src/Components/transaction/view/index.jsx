@@ -210,7 +210,7 @@ const Index = () => {
     <Row>
        <Col sm="12">
          <Card>
-           <HeaderCard title="Select Multiple and Delete Single Data" />
+           <HeaderCard title="Filter" />
            <CardBody>
              <ViewForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}  /> 
            </CardBody>
