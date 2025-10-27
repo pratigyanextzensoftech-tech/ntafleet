@@ -1,97 +1,111 @@
-import React, { Fragment, useState } from 'react'
-import { Col, Row, Form, FormGroup, InputGroup, InputGroupText,  Input } from 'reactstrap';
-import { Btn } from '../../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
-import Select from 'react-select';
-import { supplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import HeaderCard from '../../Common/Component/HeaderCard';
-import DatePicker from 'react-datepicker'
+import React, { Fragment, useState } from "react";
+import {
+  Col,
+  Row,
+  Form,
+  FormGroup,
+  InputGroup,
+  InputGroupText,
+  Input,
+} from "reactstrap";
+import { Btn } from "../../../AbstractElements";
+import { useForm, Controller } from "react-hook-form";
+import Select from "react-select";
+import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import DatePicker from "react-datepicker";
 const UploadEssoGroupRackForm = ({ title, btnTitle }) => {
-    const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors, isSubmitted, isValid },
-    } = useForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitted, isValid },
+  } = useForm();
 
-
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-    };
-    return (
-        <Fragment>
-            <div style={{ border: "1px solid #ccc", padding: "5px 5px", bprderRadius: "3px", marginBottom: "10px" }}>
-
-                <div className='bg-primary p-2 my-3'>
-                    <HeaderCard title={title} />
-
-                </div>
-                <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-                    <Row className="mt-3">
-                            <Col sm="4">
-                                                    <Row>
-                                                        <FormGroup className="m-form__group">
-                                                            <InputGroup>
-                        
-                                                                <Col sm="3">
-                                                                    <InputGroupText>
-
-                                            Pricing  Date                                                       
-                                                         </InputGroupText>
-                                                                </Col>
-                                                                <Col sm="9">
-                                                                    <Controller
-                                                                        name="pricingDate"
-                                                                        control={control}
-                                                                        rules={{ required: " Required" }}
-                                                                        render={({ field }) => (
-                                                                            <DatePicker
-                                                                                className={`form-control `}
-                                                                                selected={field.value}
-                                                                                onChange={(date) => field.onChange(date)}
-                                                                            />
-                                                                        )}
-                                                                    /></Col>
-                        
-                        
-                        
-                        
-                                                            </InputGroup>
-                        
-                                                            {errors.pricingDate && (
-                                                                <span className="text-danger">{errors.pricingDate.message}</span>
-                                                            )}
-                                                        </FormGroup>
-                                                    </Row>
-                             </Col>
- 
-                         <Col sm="4"  >
-                            <Row>
-                                <Col className='pe-0' sm="3"> <InputGroupText > CSV File</InputGroupText>
-                            </Col> 
-                                <Col className='px-0' sm="9">
-                                    <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />
-
-                                </Col>
-                            </Row>
-      
-
+  const onSubmit = (data) => {
+    console.log("Form Data:", data); // ✅ This will print your inputs
+    // alert("Form submitted successfully!");
+  };
+  return (
+    <Fragment>
+      <Row>
+        <Col>
+          <fieldset>
+            <legend>{title}</legend>
+            <Form
+              className="px-2"
+              noValidate=""
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Row className="mt-3">
+                <Col sm="4">
+                  <Row>
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <Col sm="3">
+                          <InputGroupText>Pricing Date</InputGroupText>
                         </Col>
-                    
-                       
-                        <Col sm="4">
-                            <div className='text-end'>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
-                            </div>
+                        <Col sm="9">
+                          <Controller
+                            name="pricingDate"
+                            control={control}
+                            rules={{ required: " Required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
+                          />
                         </Col>
-                    </Row>
+                      </InputGroup>
 
-                </Form>
+                      {errors.pricingDate && (
+                        <span className="text-danger">
+                          {errors.pricingDate.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                  </Row>
+                </Col>
 
-            </div>
-        </Fragment>
-    )
-}
+                <Col sm="4">
+                  <Row>
+                    <Col className="pe-0" sm="3">
+                      {" "}
+                      <InputGroupText> CSV File</InputGroupText>
+                    </Col>
+                    <Col className="px-0" sm="9">
+                      <Input
+                        style={{ border: "1px solid #ccc" }}
+                        className="form-control w-100c "
+                        type="file"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
 
-export default UploadEssoGroupRackForm
+                <Col sm="4">
+                  <div className="text-end">
+                    <Btn
+                      attrBtn={{
+                        color: "primary",
+                        className: "m-r-15",
+                        type: "submit",
+                      }}
+                    >
+                      {btnTitle}
+                    </Btn>
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          </fieldset>
+        </Col>
+      </Row>
+    </Fragment>
+  );
+};
+
+export default UploadEssoGroupRackForm;

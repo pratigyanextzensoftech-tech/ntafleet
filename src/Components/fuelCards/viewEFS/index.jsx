@@ -8,10 +8,8 @@ const index = () => {
   return (
     <Fragment>
       <Breadcrumbs parent='Fuel Cards' title=' View EFS Fual Cards'  />
-      <Container fluid={true}>
-                   <HeaderCard title="View EFS Fual Cards" />
-                         
-<DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={dummytabledata}/>    
+      <Container fluid={true}> 
+       <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={dummytabledata}/>    
       </Container>
     </Fragment>
   );

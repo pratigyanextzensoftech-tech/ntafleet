@@ -8,7 +8,8 @@ import { company } from "../../api";
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
 import { Navigate, useNavigate } from "react-router";
 import { use } from "react";
-
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 const ViewCompany = () => {
   const [companyData, setCompanyData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,7 @@ const ViewCompany = () => {
   // ✅ Build column definitions
   useEffect(() => {
     const columns = [
-      { key: "id", label: "Sr.No." },
+      { key: "company_id", label: "Sr.No." },
       { key: "companyName", label: "Company Name" },
       { key: "firstName", label: "First Name" },
       { key: "lastName", label: "Last Name" },
@@ -44,13 +45,13 @@ const ViewCompany = () => {
             <button
               className="btn btn-sm btn-primary px-2"
               onClick={() =>
-                setOpenRowId(openRowId === row.id ? null : row.id)
+                setOpenRowId(openRowId === row.company_id ? null : row.company_id)
               }
             >
               Action
             </button>
 
-            {openRowId === row.id && (
+            {openRowId === row.company_id && (
               <div
                 className="position-absolute bg-white border rounded shadow"
                 style={{
@@ -61,13 +62,11 @@ const ViewCompany = () => {
                   padding: "5px 0",
                 }}
               >
-                <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleEdit(row)}
-                >
+                
+              <Link to={`/edit_company/${btoa(row.company_id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
+>
                   <FaEdit /> Edit
-                </button>
+             </Link>
                 <button
                   className="dropdown-item d-flex align-items-center"
                   style={{ padding: "8px 12px", gap: "8px" }}
@@ -102,7 +101,7 @@ const ViewCompany = () => {
     }));
 
     setTableColumns(columns);
-  }, [openRowId]);
+  }, [openRowId,companyData]);
 
   // ✅ Fetch paginated data
   const fetchData = async (page = 1, perPage = 10) => {
@@ -119,7 +118,7 @@ const ViewCompany = () => {
         : res.data.data || [];
 
       const filteredData = responseData.map((item) => ({
-        id: item.company_id,
+        company_id: item.company_id,
         companyName: item.company_name,
         firstName: item.first_name,
         lastName: item.last_name,
@@ -161,14 +160,46 @@ const ViewCompany = () => {
   };
 
   // ✅ Action handlers
-  const handleEdit = (row) => {edit("/edit_company")};
+  const handleEdit = (row) => 
+    {edit("/edit_company",{state:row})
+
+    };
+  // ✅ Action handlers 
   const handleLogin = (row) => console.log("Login:", row);
-  const handleDelete = (row) => {
-    if (window.confirm(`Delete "${row.companyName}"?`)) {
-      setCompanyData(companyData.filter((item) => item.id !== row.id));
-      setOpenRowId(null);
+   const handleDelete = (row) => {
+    console.log(row)
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you really want to delete user "${row.name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // ✅ Call API to delete
+      axios.delete(`${company}/${row.company_id}`)
+        .then((res) => {
+          console.log(res);
+          // ✅ Remove from state
+          setCompanyData((prevData) => prevData.filter((item) => item.company_id !== row.company_id));
+
+          // ✅ Success alert
+          Swal.fire(
+            'Deleted!',
+            `User "${row.firstName} ${row.lastName}" has been deleted.`,
+            'success'
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          Swal.fire('Error!', 'Failed to delete user.', 'error');
+        });
     }
-  };
+  });
+};
 
   // ✅ Close dropdown when clicking outside
   useEffect(() => {

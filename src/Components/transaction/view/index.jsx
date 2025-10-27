@@ -7,6 +7,7 @@ import { transactions } from "../../../api";
 import ViewForm from "./ViewForm";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa"; 
 import { Container, Row, Col, Card, CardBody } from 'reactstrap'; 
+import qs from "qs"; // npm install qs
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -130,7 +131,20 @@ const Index = () => {
         ...filtersData, // include filters
       };
 
-      const response = await axios.get(transactions, { params });
+      const response = await axios.get(transactions, {
+      params: {
+        draw: page,
+        start: (page - 1) * perPage,
+        length: perPage,
+        ...filters, // this includes supplier_id: [...]
+      },
+      paramsSerializer: (params) =>
+        qs.stringify(params, {
+          arrayFormat: "repeat", // ✅ supplier_id=ESSO MOBIL&supplier_id=EXXON
+        }),
+    });
+       
+  
       const res = response.data;
 
       console.log("✅ API response:", res);
@@ -210,7 +224,7 @@ const Index = () => {
     <Row>
        <Col sm="12">
          <Card>
-           <HeaderCard title="Select Multiple and Delete Single Data" />
+           <HeaderCard title="Filter" />
            <CardBody>
              <ViewForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}  /> 
            </CardBody>

@@ -1,12 +1,12 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Breadcrumbs } from '../../../AbstractElements';
-import { Container } from 'reactstrap';
-import HeaderCard from '../../Common/Component/HeaderCard';
-import AddItems from './AddItems';
-import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
-import axios from 'axios';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-import { items } from '../../../api'; // API endpoint
+import React, { Fragment, useEffect, useState } from "react";
+import { Breadcrumbs } from "../../../AbstractElements";
+import { Container,Row,Col,Card,CardBody } from "reactstrap";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import AddItems from "./AddItems";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
+import axios from "axios";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { items } from "../../../api"; // API endpoint
 
 const Index = () => {
   const [Items, setItems] = useState([]);
@@ -36,7 +36,7 @@ const Index = () => {
 
       setItems(formatted);
       setTotalRows(res.data.recordsTotal || res.data.total || data.length);
-      setDraw(prev => prev + 1);
+      setDraw((prev) => prev + 1);
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
@@ -57,7 +57,7 @@ const Index = () => {
   const handleEdit = (row) => console.log("Edit Item:", row);
   const handleDelete = (row) => {
     if (window.confirm(`Delete Item "${row.name}"?`)) {
-      setItems(prev => prev.filter(item => item.id !== row.id));
+      setItems((prev) => prev.filter((item) => item.id !== row.id));
       // call delete API if needed
     }
   };
@@ -75,13 +75,17 @@ const Index = () => {
 
   // Table columns
   const tableColumns = [
-    { name: "Item ID", selector: row => row.id, sortable: true },
-    { name: "Item Name", selector: row => row.name, sortable: true },
-    { name: "Discount Applied", selector: row => row.discount, sortable: true },
-    { name: "Tax Applied", selector: row => row.tax, sortable: true },
+    { name: "Item ID", selector: (row) => row.id, sortable: true },
+    { name: "Item Name", selector: (row) => row.name, sortable: true },
+    {
+      name: "Discount Applied",
+      selector: (row) => row.discount,
+      sortable: true,
+    },
+    { name: "Tax Applied", selector: (row) => row.tax, sortable: true },
     {
       name: "Action",
-      cell: row => (
+      cell: (row) => (
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
@@ -93,7 +97,13 @@ const Index = () => {
           {openRowId === row.id && (
             <div
               className="position-absolute bg-white border rounded shadow"
-              style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 120, padding: "5px 0" }}
+              style={{
+                zIndex: 1000,
+                right: 0,
+                marginTop: 5,
+                minWidth: 120,
+                padding: "5px 0",
+              }}
             >
               <button
                 className="dropdown-item d-flex align-items-center"
@@ -117,21 +127,23 @@ const Index = () => {
       allowOverflow: true,
       button: true,
       width: "160px",
-    }
+    },
   ];
 
   return (
     <Fragment>
-      <Breadcrumbs parent='Items' title='Manage Item' />
+      <Breadcrumbs parent="Items" title="Manage Item" />
       <Container fluid={true}>
-        <HeaderCard title="Manage Item" />
-        <div style={{ border: "1px solid #ccc", padding: "5px 5px", borderRadius: "3px", marginBottom: "10px" }}>
-          <div className='bg-primary p-2 my-3'>
-            <HeaderCard title="Add Items" />
-          </div>      
-          <AddItems btnTitle="Add Item"/>   
-        </div>
-
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Add Item" />
+              <CardBody>
+                <AddItems btnTitle="Add Item" />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row> 
         <DataTableComponent
           title="Items List"
           tableColumns={tableColumns}

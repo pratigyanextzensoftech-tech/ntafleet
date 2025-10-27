@@ -67,9 +67,7 @@ const Index = () => {
   } = useForm();
 
  const onSubmit = async (formData) => {
-    try {
-      
-      // Create request payload (if needed, map keys)
+    try { 
       const payload = {  
         company_name: formData.company_name || '',
         email: formData.email || '',
@@ -166,11 +164,8 @@ const Index = () => {
         login_failed: formData.login_failed || '0',
         last_failed: formData.last_failed || '1970-01-01 00:00:00', 
         added_on: new Date().toISOString().slice(0, 19).replace('T', ' '), 
-      };
-    console.log("📤 Submitting data:", payload);
-      // ✅ POST request
-      const res = await axios.post(table_name, payload); 
-      console.log("✅ API Response:", res.data);
+      }; 
+      const res = await axios.post(table_name, payload);  
       toast.success("Company Add Succesfully") 
       reset(); // Reset the form on success
     } catch (error) {

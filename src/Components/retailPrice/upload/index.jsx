@@ -8,142 +8,113 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
 
-const Index = () => {
+const RetailPrice = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [tableColumns, setTableColumns] = useState([]);
+  const [openRowId, setOpenRowId] = useState(null);
+
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [draw, setDraw] = useState(1);
-  const [filters, setFilters] = useState({});
 
-  // ✅ Column mapping between UI and API
-  const columnsMap = {
-    Location: "location",
-    City: "city_town",
-    Province: "province",
-    Country: "country",
-    RetailPrice: "retail_price",
-    UploadDate: "date",
-  };
-
-  // ✅ Build column definitions for DataTable
+  // ✅ Define columns like working Company file
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
-      selector: key, // use string selector for wrapper component
+    const columns = [
+      { key: "location", label: "Location" },
+      { key: "city_town", label: "City" },
+      { key: "province", label: "Province" },
+      { key: "country", label: "Country" },
+      { key: "retail_price", label: "Retail Price" },
+      { key: "date", label: "Upload Date" },
+    
+    ].map((col) => ({
+      name: col.label,
+      selector: (row) => row[col.key],
       sortable: true,
       wrap: true,
+      cell: col.cell,
+      ignoreRowClick: col.ignoreRowClick,
+      allowOverflow: col.allowOverflow,
+      button: col.button,
     }));
 
-    // ✅ Add Actions column at the end
-    cols.push({
-      name: "Actions",
-      cell: (row) => (
-        <div className="d-flex gap-2">
-          <FaEdit
-            color="blue"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleEdit(row)}
-          />
-          <FaSignInAlt
-            color="green"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleLogin(row)}
-          />
-          <FaTrashAlt
-            color="red"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleDelete(row)}
-          />
-        </div>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    });
+    setTableColumns(columns);
+  }, [openRowId]);
 
-    setTableColumns(cols);
-  }, []);
-
-  // ✅ Fetch paginated + filtered data
-  const fetchData = async (page = 1, perPage = 10, filtersData = filters) => {
+  // ✅ Fetch data
+  const fetchData = async (page = 1, perPage = 10) => {
     setLoading(true);
     try {
       const start = (page - 1) * perPage;
       const length = perPage;
+      const params = { draw, start, length };
 
-      const params = {
-        draw,
-        start,
-        length,
-        ...filtersData,
-      };
+      const res = await axios.get(retail_price, { params });
+      const apiData = Array.isArray(res.data)
+        ? res.data
+        : res.data.data || [];
 
-      const response = await axios.get(retail_price, { params });
-      const res = response.data;
+      const formattedData = apiData.map((item, index) => ({
+        id: item.id || index + 1,
+        location: item.location,
+        city_town: item.city_town,
+        province: item.province,
+        country: item.country,
+        retail_price: item.retail_price,
+        date: item.date,
+      }));
 
-      // console.log("✅ API response:", res);
-
-      const apiData = res.data || [];
-      setTotalRows(res.recordsTotal || res.total || apiData.length);
-      setDraw(draw + 1);
-
-      // Map API fields to UI fields
-      const tableData = apiData.map((row) => {
-        const newRow = {};
-        Object.keys(columnsMap).forEach((col) => {
-          newRow[col] = row[columnsMap[col]];
-        });
-        newRow.id = row.id || Math.random();
-        return newRow;
-      });
-
-      setData(tableData);
+      setData(formattedData);
+      setTotalRows(res.data.recordsTotal || res.data.total || apiData.length);
+      setDraw((prev) => prev + 1);
     } catch (error) {
-      console.error("❌ Error fetching data", error);
+      console.error("❌ Error fetching retail data", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ Initial load
   useEffect(() => {
-    fetchData(currentPage, perPage, filters);
-  }, [perPage]);
+    fetchData(currentPage, perPage);
+  }, [perPage, currentPage]);
 
-  // ✅ Page change
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    fetchData(page, perPage, filters);
+    fetchData(page, perPage);
   };
 
-  // ✅ Rows per page change
   const handlePerRowsChange = (newPerPage, page) => {
     setPerPage(newPerPage);
     setCurrentPage(page);
-    fetchData(page, newPerPage, filters);
+    fetchData(page, newPerPage);
   };
 
-  // ✅ Action handlers
-  const handleEdit = (row) => alert("Edit " + row.id);
-  const handleLogin = (row) => alert("Login " + row.id);
-  const handleDelete = (row) => alert("Delete " + row.id);
-
-  // ✅ Handle search/filter submit from form
-  const handleSearch = (formData) => {
-    setFilters(formData);
-    setCurrentPage(1);
-    fetchData(1, perPage, formData);
+  const handleEdit = (row) => alert(`Edit: ${row.id}`);
+  const handleLogin = (row) => alert(`Login: ${row.id}`);
+  const handleDelete = (row) => {
+    if (window.confirm(`Delete "${row.location}"?`)) {
+      setData(data.filter((item) => item.id !== row.id));
+      setOpenRowId(null);
+    }
   };
 
+  // ✅ Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-action")) {
+        setOpenRowId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  console.log({data});
   return (
     <Fragment>
       <Breadcrumbs parent="Retail Prices" title="Upload Retail Prices" />
-      <Container fluid={true}>
+      <Container fluid>
         <Row>
           <Col sm="12">
             <Card>
@@ -157,9 +128,9 @@ const Index = () => {
 
         <DataTableComponent
           title="Retail Price List"
-          tableData={data}
-          columns={tableColumns}
           loading={loading}
+          tableColumns={tableColumns}
+          tableData={data}
           pagination
           paginationServer
           paginationTotalRows={totalRows}
@@ -171,4 +142,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default RetailPrice;

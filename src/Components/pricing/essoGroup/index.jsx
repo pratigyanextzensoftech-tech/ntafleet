@@ -1,24 +1,27 @@
-import React,{Fragment,useState} from 'react'
-import { Breadcrumbs } from '../../../AbstractElements'
-import HeaderCard from '../../Common/Component/HeaderCard'
-import { Container,Row,Col } from 'reactstrap'
-import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard'
-import { EssoGroupRackTab } from '../../../Data/tab/EssoGroupRackTab'
+import React, { Fragment, useState } from "react";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
+import { EssoGroupRackTab } from "../../../Data/tab/EssoGroupRackTab";
 const index = () => {
-  
   return (
     <Fragment>
-         <Breadcrumbs parent='Pricing' title='Update ESSO Group Rack Cent'/>
-         <Container fluid={true}>
-           <HeaderCard title="Update ESSO Group Rack Cent" />
-           
-                 <BasicTabCard  tabContent={EssoGroupRackTab}/>
-                             <div className='my-5'>
+      <Breadcrumbs parent="Pricing" title="Update ESSO Group Rack Cent" />
+      <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Update ESSO Group Rack Cent" />
+              <CardBody>
+                <BasicTabCard tabContent={EssoGroupRackTab} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
+  );
+};
 
-             </div>
-           </Container>
-           </Fragment>
-  )
-}
-
-export default index
+export default index;

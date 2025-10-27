@@ -5,6 +5,7 @@ export const MenuApi=`${baseurl}/api/usermenu`;
 export const discount_sheet = `${baseurl}/api/discount_sheet`;
 export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
+
 export const companyall = `${baseurl}/api/company/all`;
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;
@@ -43,6 +44,7 @@ export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_rack_cent = `${baseurl}/api/esso_rack_cent`;
 export const esso_transactions = `${baseurl}/api/esso_transactions`;
+export const unknown_transactions = `${baseurl}/api/transactions/unknown`;
 export const esso_ultramar_petro = `${baseurl}/api/esso_ultramar_petro`;
 export const fual_card = `${baseurl}/api/fual_card`;
 export const invoice = `${baseurl}/api/invoice`;
