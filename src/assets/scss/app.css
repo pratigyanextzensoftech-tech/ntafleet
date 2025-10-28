@@ -82124,7 +82124,7 @@ rect {
 .todo .notification-popup.hide {
   opacity: 0;
   visibility: hidden;
-}
+} 
 @-webkit-keyframes taskHighlighter {
   0% {
     background: rgba(68, 102, 242, 0.5);
@@ -82141,6 +82141,5 @@ rect {
     background: #fff;
   }
 }
-
 
 /*====todo css end====*/ /*# sourceMappingURL=app.css.map */
