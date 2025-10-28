@@ -1,34 +1,35 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Breadcrumbs } from "../../../AbstractElements";
-import { Container,Row,Col,Card,CardBody } from "reactstrap";
-import HeaderCard from "../../Common/Component/HeaderCard";
-import List from "./List";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { tcheck } from "../../../api";
-import { FaTrashAlt, FaEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import axios from "axios";
-import usePaginatedTable from "../../../Hooks/usePagination"; // ✅ Correct import
+import React, { Fragment, useEffect, useState } from 'react';
+import { Breadcrumbs } from '../../../AbstractElements';
+import { Container } from 'reactstrap';
+import HeaderCard from '../../Common/Component/HeaderCard';
+import List from './List';
+import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
+import { invoice, tcheck } from '../../../api';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import usePaginatedTable from '../../../Hooks/usePagination'; // ✅ Correct import
 
 const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]); // ✅ Un-commented
+
   const columnsMap = {
-    CreateId: "card_no",
-    Company: "company_name",
+    "CreateId": "card_no",
+    "Company": "company_name",
     "Create Date": "create_date",
     "Express Code": "express_code",
-    Dollar_Amt: "dollar_amt",
-    Fees: "fees",
-    Generation_Type: "generation_type",
-    Payee: "payee",
-    Driver_ID: "driver_id",
+    "Dollar_Amt": "dollar_amt",
+    "Fees": "fees",
+    "Generation_Type": "generation_type",
+    "Payee": "payee",
+    "Driver_ID": "driver_id",
     "Tractor#": "trip",
     "Trip#": "fees",
-    Driver_CDL: "driver_cdl",
+    "Driver_CDL": "driver_cdl",
     "Trailer#": "trailer",
-    Memo: "memo",
+    "Memo": "memo",
   };
 
   const {
@@ -40,6 +41,7 @@ const Index = () => {
     handleSearch, // ✅ Added
     setData,
   } = usePaginatedTable({ apiUrl: tcheck, columnsMap });
+ 
 
   useEffect(() => {
     const cols = Object.keys(columnsMap).map((key) => ({
@@ -64,7 +66,7 @@ const Index = () => {
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
-               zIndex:9,
+                zIndex: 1000,
                 right: 0,
                 marginTop: 5,
                 minWidth: 140,
@@ -107,26 +109,23 @@ const Index = () => {
 
   const handleDelete = (row) => {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: `Do you really want to delete ?`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`${tcheck}/${row.id}`)
+        axios.delete(`${tcheck}/${row.id}`)
           .then(() => {
-            setData((prevData) =>
-              prevData.filter((item) => item.id !== row.id)
-            );
-            Swal.fire("Deleted!", "Record deleted successfully.", "success");
+            setData((prevData) => prevData.filter((item) => item.id !== row.id));
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
           .catch(() => {
-            Swal.fire("Error!", "Failed to delete record.", "error");
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
           });
       }
     });
@@ -134,22 +133,16 @@ const Index = () => {
 
   return (
     <Fragment>
-      <Breadcrumbs parent="Tcheck" title="T Check List " />
+      <Breadcrumbs parent='Tcheck' title='T Check List ' />
       <Container fluid>
-        <Row>
-          <Col sm="12">
-            <Card>
-              <HeaderCard title="Filters" />
-              <CardBody>
-                <List
-                  btnTitle="Search Data"
-                  btnTitle1="Reset"
-                  onSearch={handleSearch}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <HeaderCard title="T Check List" />
+
+        <div style={{ border: "1px solid #ccc", padding: "5px", borderRadius: "3px", marginBottom: "10px" }}>
+          <div className='bg-primary p-2 mb-4'>
+            <HeaderCard title="Filters" />
+          </div>
+          <List btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch} />
+        </div>
 
         <DataTableComponent
           title="T Check List"

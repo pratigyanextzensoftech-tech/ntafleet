@@ -50,6 +50,7 @@ export const unknown_transactions = `${baseurl}/api/transactions/unknown`;
 export const esso_ultramar_petro = `${baseurl}/api/esso_ultramar_petro`;
 export const fual_card = `${baseurl}/api/fual_card`;
 export const invoice = `${baseurl}/api/invoice`;
+export const combine_invoice = `${baseurl}/api/invoicecombine`;
 export const invoice_detail = `${baseurl}/api/invoice_detail`;
 export const linamar_esso_loc = `${baseurl}/api/linamar_esso_loc`;
 export const loc_group = `${baseurl}/api/loc_group`;

@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard";
 import { Container,Row,Col,Card,CardBody } from "reactstrap";
 import BasicTabCard from "../UiKits/Tabs/BoostrapTabs/BasicTabCard"; 
-import { invoice } from "../../api";
+import { invoice,owner_invoice,customized_invoice } from "../../api";
 import BulkRetailInvoice from '../createInvoice/BulkRetailInvoice';
 import SingleRetailMulti from '../createInvoice/SingleRetailMulti';
 import OwnerOperator from '../viewInvoice/OwnerOperator';
@@ -23,21 +23,24 @@ const ViewInvoice = () => {
     const [openRowId, setOpenRowId] = useState(null);
       const [tableColumns, setTableColumns] = useState([]); 
        const columnsMap = {
-      "Invoice # #": "id",
-      "Company": "salesman_id",
-      "From To": "date_from",
-      "Due Date": "date_to",
-      "Total": "country",
-      "Retail Total": "supplier_id",
-      "Saving": "total_ltr",
-      "Tr Count": "total_gln",
-      "Country": "total_gln",
-      "Fees": "total_gln",
-      "Fees": "total_gln",
-      "Fees": "total_gln",
-      "Fees": "total_gln",
-
+      "Invoice # #": "invoice_id",
+      "Company": "company_name",
+      "From ": "from" ,
+      "To":"to",
+      "Due Date": "due_date",
+      "Total": "total",
+      "Retail Total": "retail_price",
+      "Saving": "saving",
+      "Fees":"fees",
+      "Tr Count": "tr_count",
+      "Country": "country",
+      "Supplier": "supplier_id",
+      "Mailed_By": "mailby",
+      "Mailed_On": "mail_on",
+      "Show/Hide": "total_gln",
+"Status":"status",
     };
+     
   
        const {
           data,
@@ -48,6 +51,29 @@ const ViewInvoice = () => {
           handleSearch, // ✅ Added
           setData,
         } = usePaginatedTable({ apiUrl: invoice, columnsMap });
+
+
+         const {
+            data:ownerdata,
+            totalRows:ownerTotalRow,
+            loading:ownerLoading,
+            handlePageChange:ownerHandlePerChange,
+            handlePerRowsChange:ownerHandlePerROwChange,
+            handleSearch:ownerHandleSearch, // ✅ Added
+            setData:handleSetData,
+          } = usePaginatedTable({ apiUrl: owner_invoice,columnsMap });
+
+          
+           const {
+           data: customizedData,
+  totalRows: customizedTotalRow,
+  loading: customizedLoading,
+  handlePageChange: customizedHandlePageChange,
+  handlePerRowsChange: customizedHandlePerRowsChange,
+  handleSearch: customizedHandleSearch,
+  setData: setCustomizedData,
+          } = usePaginatedTable({ apiUrl: customized_invoice,columnsMap });
+
         const View_Invoice = [
   {
     id: '1',
@@ -83,12 +109,24 @@ const View_Invoice_Table = [
   {
     id: '2',
     label: 'View Owner Operator Invoices',
-    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={ownerdata}   loading={ownerLoading}
+          pagination
+          paginationServer
+          paginationTotalRows={ownerTotalRow}
+          onChangeRowsPerPage={ownerHandlePerROwChange}
+          onChangePage={ownerHandlePerChange}/>,
   },
   {
     id: '3',
     label:'View Customised Invoices',
-    component: <DataTableComponent title="Invoices List " tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent title="Invoices List "    tableColumns={tableColumns}
+      tableData={customizedData}
+      loading={customizedLoading}
+      pagination
+      paginationServer
+      paginationTotalRows={customizedTotalRow}
+      onChangeRowsPerPage={customizedHandlePerRowsChange}
+      onChangePage={customizedHandlePageChange}/>,
   },
   
 ];
