@@ -16,6 +16,8 @@ export const login = `${baseurl}/api/admin/login`;
 export const items = `${baseurl}/api/items`;
 export const itemsAll = `${baseurl}/api/items/all`;
 export const user_tracking = `${baseurl}/api/user_tracking`;
+export const tcheck = `${baseurl}/api/tcheck`;
+export const tcheck_invoice = `${baseurl}/api/tcheck_invoice`;
 
 export const card_discount_sheet = `${baseurl}/api/card_discount_sheet`;
 export const city = `${baseurl}/api/city`;
@@ -104,8 +106,7 @@ export const ta_pricing = `${baseurl}/api/ta_pricing`;
 export const ta_pricing_actual = `${baseurl}/api/ta_pricing_actual`;
 export const ta_pricing_pdf = `${baseurl}/api/ta_pricing_pdf`;
 export const ta_rack_cent = `${baseurl}/api/ta_rack_cent`;
-export const tcheck = `${baseurl}/api/tcheck`;
-export const tcheck_invoice = `${baseurl}/api/tcheck_invoice`;
+
 export const tcheck_invoice_detail = `${baseurl}/api/tcheck_invoice_detail`;
 export const transactions_efs = `${baseurl}/api/transactions_efs`;
 export const ul_cent = `${baseurl}/api/ul_cent`;
