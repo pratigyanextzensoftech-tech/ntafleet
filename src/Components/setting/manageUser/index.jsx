@@ -153,8 +153,7 @@ console.log("Decoded ID:", Edit_id);
       )
     );
 
-    // Optional: call API to update
-    // axios.post(`${administrator}/update`, { id, [field]: value });
+   
   };
 
   // ✅ Build columns
@@ -271,6 +270,7 @@ console.log("Decoded ID:", Edit_id);
           tableData={data}
           progressPending={loading}
           pagination
+                    loading={loading}
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

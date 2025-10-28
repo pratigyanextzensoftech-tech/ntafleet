@@ -108,6 +108,7 @@ const Index = () => {
           progressPending={loading}
           pagination
           paginationServer
+                    loading={loading}
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
