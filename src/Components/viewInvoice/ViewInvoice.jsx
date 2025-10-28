@@ -25,12 +25,18 @@ const ViewInvoice = () => {
        const columnsMap = {
       "Invoice # #": "id",
       "Company": "salesman_id",
-      "Start Date": "date_from",
-      "End Date": "date_to",
-      "Country": "country",
-      "Supplier": "supplier_id",
-      "Total ltr": "total_ltr",
-      "Total Gln": "total_gln",
+      "From To": "date_from",
+      "Due Date": "date_to",
+      "Total": "country",
+      "Retail Total": "supplier_id",
+      "Saving": "total_ltr",
+      "Tr Count": "total_gln",
+      "Country": "total_gln",
+      "Fees": "total_gln",
+      "Fees": "total_gln",
+      "Fees": "total_gln",
+      "Fees": "total_gln",
+
     };
   
        const {
