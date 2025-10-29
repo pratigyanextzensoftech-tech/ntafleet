@@ -9,7 +9,7 @@ import axios from 'axios';
 import { tcheck_invoice } from '../../../api';
 import {
   FaDownload,
-  FaEye,
+  FaEye, 
   FaEnvelope,
   FaFileInvoice,
   FaTrashAlt,
