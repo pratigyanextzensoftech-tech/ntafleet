@@ -1,15 +1,31 @@
-import React,{useState,Fragment} from 'react';
-import Select from 'react-select'
-import { checkBoxData,optionscountry,optionscompany,InvoiceShow,InvoiceCategory } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
-import { Btn } from '../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
-import HeaderCard from '../Common/Component/HeaderCard';
+import React, { useState, Fragment } from "react";
+import Select from "react-select";
+import {
+  checkBoxData,
+  optionscountry,
+  optionscompany,
+  InvoiceShow,
+  InvoiceCategory,
+} from "../Forms/FormWidget/FormSelect2/OptionDatas";
+import {
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Container,
+} from "reactstrap";
+import { Btn } from "../../AbstractElements";
+import { useForm, Controller } from "react-hook-form";
+import HeaderCard from "../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
 
-const OwnerOperator = ({title}) => {
-    const [selectedValues, setSelectedValues] = useState([]);
-    const {
+const OwnerOperator = ({ title }) => {
+  const [selectedValues, setSelectedValues] = useState([]);
+  const {
     register,
     control,
     handleSubmit,
@@ -17,109 +33,98 @@ const OwnerOperator = ({title}) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);  // ✅ This will print your inputs
+    console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
-   
   };
-      
-       const handleCheckboxChange = (e) => {
+
+  const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
-    setSelectedValues(prev => {
+    setSelectedValues((prev) => {
       if (checked) {
         return [...prev, value];
       } else {
-        return prev.filter(item => item !== value);
+        return prev.filter((item) => item !== value);
       }
     });
-}
+  };
   return (
     <Fragment>
-  
-     <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-       
-          
-          
+      <Row>
+        <Col>
+          <fieldset>
+            <legend>{title}</legend>
+            <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
                 <Col sm="3">
-                <Row>
+                  <Row>
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <Col sm="3">
+                          <InputGroupText>From</InputGroupText>
+                        </Col>
+                        <Col sm="9">
+                          <Controller
+                            name="from"
+                            control={control}
+                            rules={{ required: " Required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
+                          />
+                        </Col>
+                      </InputGroup>
+
+                      {errors.from && (
+                        <span className="text-danger">
+                          {errors.from.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                  </Row>
+                </Col>
+                <Col sm="3">
+                  <Row>
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <Col sm="3">
+                          <InputGroupText>To</InputGroupText>
+                        </Col>
+                        <Col sm="9">
+                          <Controller
+                            name="to"
+                            control={control}
+                            rules={{ required: "Required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                className={`form-control digits`}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
+                          />
+                        </Col>
+                      </InputGroup>
+
+                      {errors.to && (
+                        <span className="text-danger">{errors.to.message}</span>
+                      )}
+                    </FormGroup>
+                  </Row>
+                </Col>
+
+                <Col sm="3">
                   <FormGroup className="m-form__group">
                     <InputGroup>
-                   
-                        <Col sm="3">
-                            <InputGroupText>
-                        From
-                      </InputGroupText>
-                        </Col>
-                           <Col sm="9">
-                              <Controller
-            name="from"
-            control={control}
-            rules={{ required: " Required" }}
-            render={({ field }) => (
-              <DatePicker
-                className={`form-control `}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          /></Col>
-               
-                  
-               
-         
-                    </InputGroup>
-
-                   {errors.from && (
-            <span className="text-danger">{errors.from.message}</span>
-          )}
-                  </FormGroup>
-                       </Row>
-                </Col>
-                <Col sm="3">
-                 <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
-                                    <Col sm="3">
-
-                                        <InputGroupText>
-                                            To
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="9">
-
-                                        <Controller
-                                            name="to"
-                                            control={control}
-                                            rules={{ required: "Required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    className={`form-control digits`}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        />
-                                    </Col>
-                                </InputGroup>
-
-                                {errors.to && (
-                                    <span className="text-danger">{errors.to.message}</span>
-                                )}
-                            </FormGroup>
-                        </Row>
-                </Col>
-
-
-
-                <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup >
                       <InputGroupText>Supplier</InputGroupText>
-                   <Controller name="company" 
+                      <Controller
+                        name="company"
                         rules={{ required: "company Name is required" }}
-                      
-                         control={control}
+                        control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -132,7 +137,9 @@ const OwnerOperator = ({title}) => {
                     </InputGroup>
 
                     {errors.company && (
-                      <span className="text-danger">{errors.company?.message}</span>
+                      <span className="text-danger">
+                        {errors.company?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
@@ -141,10 +148,9 @@ const OwnerOperator = ({title}) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                       <Controller
+                      <Controller
                         name="country"
-                                                rules={{ required: "country is required" }}
-
+                        rules={{ required: "country is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -158,23 +164,21 @@ const OwnerOperator = ({title}) => {
                     </InputGroup>
 
                     {errors.country && (
-                      <span className="text-danger">{errors.country?.message}</span>
+                      <span className="text-danger">
+                        {errors.country?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
-              </Row>
-                  <Row className="mt-3">
-             
+              
                 <Col sm="3">
                   <FormGroup className="m-form__group">
                     <InputGroup>
-                      <InputGroupText>
-                        Invoice Type
-                      </InputGroupText>
-                      <Controller name="company" 
+                      <InputGroupText>Invoice Type</InputGroupText>
+                      <Controller
+                        name="company"
                         rules={{ required: "company Name is required" }}
-                      
-                         control={control}
+                        control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -183,24 +187,21 @@ const OwnerOperator = ({title}) => {
                           />
                         )}
                       />
-         
-                      </InputGroup>
-                       {errors.to && (
-            <span className="text-danger">{errors.to.message}</span>
-          )}
+                    </InputGroup>
+                    {errors.to && (
+                      <span className="text-danger">{errors.to.message}</span>
+                    )}
                   </FormGroup>
                 </Col>
 
-
-
-              <Col sm="3">
+                <Col sm="3">
                   <FormGroup className="m-form__group">
-                    <InputGroup >
+                    <InputGroup>
                       <InputGroupText>Company</InputGroupText>
-                   <Controller name="company" 
+                      <Controller
+                        name="company"
                         rules={{ required: "company Name is required" }}
-                      
-                         control={control}
+                        control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -213,21 +214,21 @@ const OwnerOperator = ({title}) => {
                     </InputGroup>
 
                     {errors.company && (
-                      <span className="text-danger">{errors.company?.message}</span>
+                      <span className="text-danger">
+                        {errors.company?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
 
-        
                 <Col sm="3">
                   <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Invoice Category
-                    </InputGroupText>
-                   <Controller name="category" 
+                    <InputGroup>
+                      <InputGroupText>Invoice Category</InputGroupText>
+                      <Controller
+                        name="category"
                         rules={{ required: "company Name is required" }}
-                      
-                         control={control}
+                        control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -239,7 +240,9 @@ const OwnerOperator = ({title}) => {
                     </InputGroup>
 
                     {errors.category && (
-                      <span className="text-danger">{errors.category?.message}</span>
+                      <span className="text-danger">
+                        {errors.category?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
@@ -248,10 +251,9 @@ const OwnerOperator = ({title}) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice(Show/Hide) </InputGroupText>
-                       <Controller
+                      <Controller
                         name="show"
-                                                rules={{ required: " Required" }}
-
+                        rules={{ required: " Required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -264,20 +266,38 @@ const OwnerOperator = ({title}) => {
                     </InputGroup>
 
                     {errors.country && (
-                      <span className="text-danger">{errors.country?.message}</span>
+                      <span className="text-danger">
+                        {errors.country?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
               </Row>
-              <div className='text-end'>
-                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Reset</Btn>
-
+              <div className="text-end">
+                <Btn
+                  attrBtn={{
+                    color: "primary",
+                    className: "m-r-15",
+                    type: "submit",
+                  }}
+                >
+                  Search Data
+                </Btn>
+                <Btn
+                  attrBtn={{
+                    color: "primary",
+                    className: "m-r-15",
+                    type: "submit",
+                  }}
+                >
+                  Reset
+                </Btn>
               </div>
-
-               
-          </Form>
-          </Fragment>
-  )
-}
-export default OwnerOperator
+            </Form>
+          </fieldset>
+        </Col>
+      </Row>
+    </Fragment>
+  );
+};
+export default OwnerOperator;

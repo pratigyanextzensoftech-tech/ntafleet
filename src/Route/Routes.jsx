@@ -62,10 +62,10 @@ import RetailToRack from '../Components/transaction/retailToRack/index';
 import ViewEfs from '../Components/transaction/viewEfs/index';
 import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
 
+//Invoice
 
-import ManageUser from '../Components/setting/manageUser/index'
-import CreateInvoice from '../Components/createInvoice/CreateInvoice';
 import ViewInvoice from '../Components/viewInvoice/ViewInvoice';
+import CreateInvoice from '../Components/createInvoice/CreateInvoice';
 import CheckOldINvoice from '../Components/checkOldInvoice/CheckOldINvoice';
 import RetailInvoice from '../Components/retailInvoice/RetailInvoice';
 import CreateOldInvoice from '../Components/creatwOldInvoice/CreateOldInvoice';
@@ -77,6 +77,9 @@ import CreateUltramar from '../Components/createUltramar/CreateUltramar';
 import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
+
+
+import ManageUser from '../Components/setting/manageUser/index' 
 import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';  
 import SupplierList from '../Components/supplier/supplierList/index';
 import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
@@ -169,26 +172,28 @@ export const routes = [
 { path: `/view_efs_transaction`, Component: < ViewEfs/> },
 { path: `/update_unit`, Component: < UpdateUnit/> },
 
+//Invoice
+{ path: `/view_invoice`, Component: <ViewInvoice /> },
+{ path: `/create_invoice`, Component: <CreateInvoice /> },
+{ path: `/check_invoice`, Component: <CheckOldINvoice /> },
+{ path: `/create_retail_invoice`, Component: <RetailInvoice /> },
+{ path: `/create_old_Invoice`, Component: <CreateOldInvoice /> },
+{ path: `/create_moneycode_Invoice`, Component: <CreateMoneyCode /> },
+{ path: `/create_esso_Invoice`, Component: <CreateEssoInvoice /> },
+{ path: `/manage_Macro`, Component: <ManageMacro /> },
+{ path: `/create_customized_Invoice`, Component: <CreateCustomized /> },
+{ path: `/create_ul_invoice`, Component: <CreateUltramar /> },
+{ path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
+{ path: `/send_bulk_mail`, Component: <SendBulk /> },
+{ path: `/compare_invoice`, Component: <CompareInvoice /> },
  
 { path: `/how_to_use_efsllc.com`, Component: <Help /> },
 { path: `/how_to_add_card`, Component: <AddCard /> },
-  { path: `/manage_user`, Component: <ManageUser /> },
-  { path: `/manage_user/:id`, Component: <ManageUser /> },
+{ path: `/manage_user`, Component: <ManageUser /> },
+{ path: `/manage_user/:id`, Component: <ManageUser /> },
 
   
-  { path: `/create_invoice`, Component: <CreateInvoice /> },
-  { path: `/view_invoice`, Component: <ViewInvoice /> },
-  { path: `/check_invoice`, Component: <CheckOldINvoice /> },
-    { path: `/create_retail_invoice`, Component: <RetailInvoice /> },
-    { path: `/create_old_Invoice`, Component: <CreateOldInvoice /> },
-    { path: `/create_moneycode_Invoice`, Component: <CreateMoneyCode /> },
-    { path: `/create_esso_Invoice`, Component: <CreateEssoInvoice /> },
-    { path: `/manage_Macro`, Component: <ManageMacro /> },
-    { path: `/create_customized_Invoice`, Component: <CreateCustomized /> },
-    { path: `/create_ul_invoice`, Component: <CreateUltramar /> },
-    { path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
-    { path: `/send_bulk_mail`, Component: <SendBulk /> },
-    { path: `/compare_invoice`, Component: <CompareInvoice /> },
+
     { path: `/view_moneyCode_invoices`, Component: <ViewMoneyCode /> },
     { path: `/suppler_list`, Component: <SupplierList /> },
     { path: `/add_supplier`, Component: <SupplierList /> },

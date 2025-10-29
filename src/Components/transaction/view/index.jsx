@@ -1,12 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
-import HeaderCard from "../../Common/Component/HeaderCard"; 
+import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { transactions } from "../../../api";
 import ViewForm from "./ViewForm";
-import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa"; 
-import { Container, Row, Col, Card, CardBody } from 'reactstrap'; 
+import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import qs from "qs"; // npm install qs
 const Index = () => {
   const [data, setData] = useState([]);
@@ -18,13 +18,12 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
 
-  
   const [totals, setTotals] = useState({
     taxamt: 0,
-    amtcad: 0, 
+    amtcad: 0,
     qtyltr: 0,
     qtygln: 0,
-    amtusd: 0, 
+    amtusd: 0,
     fee: 0,
     amtreal: 0,
   });
@@ -50,19 +49,18 @@ const Index = () => {
     TaxAmt: "tax_amt",
     Currency: "currency",
   };
-  
 
-   const fetchTotals = async () => {
+  const fetchTotals = async () => {
     try {
       const response = await axios.get(
-        `https://api.ntafleetsolutions.com/api/transactions/totals` 
+        `https://api.ntafleetsolutions.com/api/transactions/totals`
       );
-       setTotals({
+      setTotals({
         taxamt: Number(response.data.taxamt || 0),
-        amtcad: Number(response.data.amtcad || 0),       
+        amtcad: Number(response.data.amtcad || 0),
         qtyltr: Number(response.data.qtyltr || 0),
         qtygln: Number(response.data.qtygln || 0),
-        amtusd: Number(response.data.amtusd || 0), 
+        amtusd: Number(response.data.amtusd || 0),
         fee: Number(response.data.fee || 0),
         amtreal: Number(response.data.amtreal || 0),
       });
@@ -79,7 +77,6 @@ const Index = () => {
       });
     }
   };
-
 
   // ✅ Build column definitions for DataTable
   useEffect(() => {
@@ -132,19 +129,18 @@ const Index = () => {
       };
 
       const response = await axios.get(transactions, {
-      params: {
-        draw: page,
-        start: (page - 1) * perPage,
-        length: perPage,
-        ...filters, // this includes supplier_id: [...]
-      },
-      paramsSerializer: (params) =>
-        qs.stringify(params, {
-          arrayFormat: "repeat", // ✅ supplier_id=ESSO MOBIL&supplier_id=EXXON
-        }),
-    });
-       
-  
+        params: {
+          draw: page,
+          start: (page - 1) * perPage,
+          length: perPage,
+          ...filters, // this includes supplier_id: [...]
+        },
+        paramsSerializer: (params) =>
+          qs.stringify(params, {
+            arrayFormat: "repeat", // ✅ supplier_id=ESSO MOBIL&supplier_id=EXXON
+          }),
+      });
+
       const res = response.data;
 
       console.log("✅ API response:", res);
@@ -203,36 +199,52 @@ const Index = () => {
     fetchData(1, perPage, formData); // fetch new data immediately
   };
 
-  
   const stickyColumns = tableColumns.map((col, index) => {
     if (index === 0) {
-      return { ...col, style: { position: "sticky", left: 0, background: "#f9f9f9", zIndex: 2 } };
+      return {
+        ...col,
+        style: {
+          position: "sticky",
+          left: 0,
+          background: "#f9f9f9",
+          zIndex: 2,
+        },
+      };
     }
     if (index === tableColumns.length - 1) {
-      return { ...col, style: { position: "sticky", right: 0, background: "#f9f9f9", zIndex: 2 } };
+      return {
+        ...col,
+        style: {
+          position: "sticky",
+          right: 0,
+          background: "#f9f9f9",
+          zIndex: 2,
+        },
+      };
     }
     return col;
   });
 
-
   return (
-   
+    <Fragment>
+      <Breadcrumbs parent="Transaction" title="View Transaction" />
+      <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Filter" />
+              <CardBody>
+                <ViewForm
+                  btnTitle="Search Data"
+                  btnTitle1="Reset"
+                  onSearch={handleSearch}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
- <Fragment>
-  <Breadcrumbs parent="Transaction" title="View Transaction" />
-   <Container fluid={true}>
-    <Row>
-       <Col sm="12">
-         <Card>
-           <HeaderCard title="Filter" />
-           <CardBody>
-             <ViewForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}  /> 
-           </CardBody>
-         </Card>
-       </Col>
-     </Row>
-
-     <DataTableComponent 
+        <DataTableComponent
           title="Transactions List"
           totalData={totals}
           tableData={data}
@@ -243,10 +255,9 @@ const Index = () => {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
-        /> 
-   </Container>
- </Fragment>
-
+        />
+      </Container>
+    </Fragment>
   );
 };
 

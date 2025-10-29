@@ -1,33 +1,44 @@
-import React, { Fragment,useState } from 'react'
-import {  Col, Row, Form, FormGroup, InputGroup, InputGroupText,Card,CardBody } from 'reactstrap';
-import { Btn } from '../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
+import React, { Fragment, useState } from "react";
+import {
+  Col,
+  Row,
+  Form,
+  FormGroup,
+  InputGroup,
+  InputGroupText,
+  Card,
+  CardBody,
+} from "reactstrap";
+import { Btn } from "../../AbstractElements";
+import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import Select from 'react-select';
-import {  optionscountry, supplier, optionscompany } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-import HeaderCard from '../Common/Component/HeaderCard';
-const SingleRetailVoice = ({title,btnTtitle,type}) => {
-     const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors, isSubmitted, isValid },
-      } = useForm();
-    
-  
+import Select from "react-select";
+import {
+  optionscountry,
+  supplier,
+  optionscompany,
+} from "../Forms/FormWidget/FormSelect2/OptionDatas";
+import HeaderCard from "../Common/Component/HeaderCard";
+const SingleRetailVoice = ({ title, btnTtitle, type }) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitted, isValid },
+  } = useForm();
+
   const onSubmit = (data) => {
-    console.log("Form Data:", data);  // ✅ This will print your inputs
+    console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
   return (
     <Fragment>
-      <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
-                              <div className='bg-primary p-2 my-3'>
-      <HeaderCard title={title}/>
-
-                              </div>
-              <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-       <Row className="mt-3">
+      <Row>
+        <Col>
+          <fieldset>
+            <legend>{title}</legend>
+            <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
+              <Row className="mt-3">
                 <Col sm="4">
                   <FormGroup className="m-form__group">
                     <InputGroup>
@@ -45,35 +56,42 @@ const SingleRetailVoice = ({title,btnTtitle,type}) => {
                           />
                         )}
                       />
-
                     </InputGroup>
 
                     {errors.company && (
-                      <span className="text-danger">{errors.company.message}</span>
+                      <span className="text-danger">
+                        {errors.company.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
                 <Col sm="4">
                   <FormGroup className="m-form__group">
-                    <InputGroup >
+                    <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
                         name="supplier"
-                                                rules={{ required: "supplier is required" }}
-                         defaultValue={type === "single_rack_actual"  || type==="bulk_rack_actual" ? [supplier[5]] : type === "single_customized"
-      ? [supplier[5]] : null}
-
+                        rules={{ required: "supplier is required" }}
+                        defaultValue={
+                          type === "single_rack_actual" ||
+                          type === "bulk_rack_actual"
+                            ? [supplier[5]]
+                            : type === "single_customized"
+                            ? [supplier[5]]
+                            : null
+                        }
                         control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
-options={
-  type === "single_rack_actual" || type === "bulk_rack_actual"
-    ? [supplier[5]]
-    : type === "single_customized"
-      ? [supplier[5]]
-      : supplier
-}
+                            options={
+                              type === "single_rack_actual" ||
+                              type === "bulk_rack_actual"
+                                ? [supplier[5]]
+                                : type === "single_customized"
+                                ? [supplier[5]]
+                                : supplier
+                            }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
                           />
@@ -82,26 +100,38 @@ options={
                     </InputGroup>
 
                     {errors.supplier && (
-                      <span className="text-danger">{errors.supplier?.message}</span>
+                      <span className="text-danger">
+                        {errors.supplier?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
 
                 <Col sm="4">
                   <FormGroup className="m-form__group">
-                    <InputGroup >
+                    <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                            <Controller
+                      <Controller
                         name="country"
-                                                rules={{ required: "country is required" }}
-                 defaultValue={type === "single_rack_actual" || type==="bulk_rack_actual" ||type === "single_customized"  ? [optionscountry[1]] : null}
-                                                
+                        rules={{ required: "country is required" }}
+                        defaultValue={
+                          type === "single_rack_actual" ||
+                          type === "bulk_rack_actual" ||
+                          type === "single_customized"
+                            ? [optionscountry[1]]
+                            : null
+                        }
                         control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
-                    options={type === "single_rack_actual" || type==="bulk_rack_actual" || type === "single_customized"  ? [optionscountry[1]] : optionscountry}
-
+                            options={
+                              type === "single_rack_actual" ||
+                              type === "bulk_rack_actual" ||
+                              type === "single_customized"
+                                ? [optionscountry[1]]
+                                : optionscountry
+                            }
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                           />
@@ -109,7 +139,9 @@ options={
                       />
                     </InputGroup>
                     {errors.country && (
-                      <span className="text-danger">{errors.country?.message}</span>
+                      <span className="text-danger">
+                        {errors.country?.message}
+                      </span>
                     )}
                   </FormGroup>
                 </Col>
@@ -119,34 +151,32 @@ options={
                   <FormGroup className="m-form__group">
                     <Row>
                       <InputGroup>
-
-                        <Col sm="4">        <InputGroupText>Start Date</InputGroupText>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>Start Date</InputGroupText>
                         </Col>
                         <Col sm="8">
- <Controller
-            name="startDate"
-            control={control}
-            rules={{ required: "Start Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select start date"
-                className={`form-control `}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-        
-        </Col>
-                      
+                          <Controller
+                            name="startDate"
+                            control={control}
+                            rules={{ required: "Start Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select start date"
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
+                          />
+                        </Col>
                       </InputGroup>
-  {errors.startDate && (
-            <span className="text-danger">{errors.startDate.message}</span>
-          )}
+                      {errors.startDate && (
+                        <span className="text-danger">
+                          {errors.startDate.message}
+                        </span>
+                      )}
                     </Row>
-
-
-                 
                   </FormGroup>
                 </Col>
 
@@ -154,42 +184,54 @@ options={
                   <FormGroup className={`m-form__group  `}>
                     <Row>
                       <InputGroup>
-                        <Col sm="4">        <InputGroupText>End Date</InputGroupText>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>End Date</InputGroupText>
                         </Col>
                         <Col sm="8">
-          <Controller
-            name="endDate"
-            control={control}
-            rules={{ required: "End Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select end date"
-                className={`form-control digits`}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-         
-        </Col>
+                          <Controller
+                            name="endDate"
+                            control={control}
+                            rules={{ required: "End Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select end date"
+                                className={`form-control digits`}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
+                          />
+                        </Col>
                       </InputGroup>
-                       {errors.endDate && (
-            <span className="text-danger">{errors.endDate.message}</span>
-          )}
+                      {errors.endDate && (
+                        <span className="text-danger">
+                          {errors.endDate.message}
+                        </span>
+                      )}
                     </Row>
                   </FormGroup>
-
                 </Col>
                 <Col sm={{ size: 2, offset: 2 }}>
-                  <div className='text-end'>
-                    <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
+                  <div className="text-end">
+                    <Btn
+                      attrBtn={{
+                        color: "primary",
+                        className: "m-r-15",
+                        type: "submit",
+                      }}
+                    >
+                      {btnTtitle}
+                    </Btn>
                   </div>
                 </Col>
               </Row>
-              </Form>
-             </div>
+            </Form>
+          </fieldset>
+        </Col>
+      </Row>
     </Fragment>
-  )
-}
+  );
+};
 
-export default SingleRetailVoice
+export default SingleRetailVoice;
