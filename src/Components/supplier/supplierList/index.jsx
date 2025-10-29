@@ -5,7 +5,7 @@ import SupplierList from './SupplierList';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import { Breadcrumbs } from '../../../AbstractElements';
-import { Container } from 'reactstrap';
+import { Container , Row, Col, Card, CardBody  } from 'reactstrap';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 const Index = () => {
@@ -142,14 +142,25 @@ const Index = () => {
     <>
       <Breadcrumbs parent='Supplier' title='Manage Supplier' />
       <Container fluid={true}>
-        <HeaderCard title="Add Supplier" />
+        {/* <HeaderCard title="Add Supplier" />
         <div style={{ border: "1px solid #ccc", padding: "5px", borderRadius: "3px", marginBottom: "10px" }}>
           <div className="bg-primary p-2 my-3">
             <HeaderCard title="Add Supplier" />
           </div>
           <SupplierList btntitle="Add Supplier" btnTitle1="Reset" />
-        </div>
+        </div>*/}
+        <Row> 
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Add Supplier" />
+              <CardBody>
 
+                <SupplierList btntitle="Add Supplier" btnTitle1="Reset" />
+
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <DataTableComponent
           title="Supplier List"
           tableData={data}

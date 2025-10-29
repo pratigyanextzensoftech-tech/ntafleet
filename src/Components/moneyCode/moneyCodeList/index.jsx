@@ -2,7 +2,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Breadcrumbs } from '../../../AbstractElements';
 import HeaderCard from '../../Common/Component/HeaderCard';
-import { Container } from 'reactstrap';
+import { Container, Row, Card, Col, CardBody } from 'reactstrap';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import MoneyCodeListForm from './MoneyCodeListForm';
 import { Btn } from '../../../AbstractElements';
@@ -209,29 +209,41 @@ const Index = () => {
   return (
     <Fragment>
       <Breadcrumbs parent="Money Code" title="MoneyCode List" />
-      <Container fluid={true}>
-        <HeaderCard title="MoneyCode List" />
-        <div className='bg-primary p-2 my-2'>
-          <HeaderCard title="Filters" />
-        </div>
-        <MoneyCodeListForm btntitle="Search Data" btnTitle1="Reset"/>
-        <div className='bg-primary p-2 mt-5 mb-3'>
-          <HeaderCard title="MoneyCode List" />
-        </div>
-        <div className='text-end mb-3'>
-          <Btn attrBtn={{ color: "danger", onClick: handleDeleteSelected }}>Delete Selected</Btn>
-          <Btn attrBtn={{ color: "secondary", className: "ms-2" }}>Download Money Code</Btn>
-        </div>
-        <DataTableComponent
-          tableColumns={tableColumns}
-          tableData={moneyCodes}
-          loading={loading}
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          onChangeRowsPerPage={handlePerRowsChange}
-          onChangePage={handlePageChange}
-        />
+      <Container fluid={true}> 
+          <Row>
+            <Col sm="12">
+              <Card>
+                <HeaderCard title="Filter" />
+                <CardBody>
+                  <MoneyCodeListForm btntitle="Search Data" btnTitle1="Reset" />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="MoneyCode List" />
+              <CardBody>
+                <div className='text-end mb-3'>
+                  <Btn attrBtn={{ color: "danger", onClick: handleDeleteSelected }}>Delete Selected</Btn>
+                  <Btn attrBtn={{ color: "secondary", className: "ms-2" }}>Download Money Code</Btn>
+                </div>
+                <DataTableComponent
+                  tableColumns={tableColumns}
+                  tableData={moneyCodes}
+                  loading={loading}
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRows}
+                  onChangeRowsPerPage={handlePerRowsChange}
+                  onChangePage={handlePageChange}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        
       </Container>
     </Fragment>
   )

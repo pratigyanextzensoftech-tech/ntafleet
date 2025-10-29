@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment,useState } from "react";
 import Select from "react-select";
 import {
   checkBoxData,
@@ -56,19 +56,12 @@ const SingleEssoForm = ({ title, btnTtitle, type }) => {
     });
   };
   return (
-    <>
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: "5px 5px",
-          bprderRadius: "3px",
-          marginBottom: "10px",
-        }}
-      >
-        <div className="bg-primary p-2 my-3">
-          <HeaderCard title={title} />
-        </div>
-        <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
+   <Fragment>
+<Row>
+<Col>
+<fieldset>
+<legend>{title}</legend>
+ <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
           <Row className="mt-3">
             <Col sm="3">
               <FormGroup className="m-form__group">
@@ -271,8 +264,12 @@ const SingleEssoForm = ({ title, btnTtitle, type }) => {
             </Col>
           </Row>
         </Form>
-      </div>
-    </>
+</fieldset>
+</Col>
+</Row>
+</Fragment>
+        
+     
   );
 };
 

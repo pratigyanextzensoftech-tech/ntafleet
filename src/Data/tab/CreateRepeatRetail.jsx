@@ -43,7 +43,7 @@ export const CreateRepeatTab = [
    {
     id: '5',
     label:"Create Repeat Ultramar Invoice",
-    component: <SingleEssoForm type="repeat_ultramar" btnTtitle="Create Repeat Ultramar Invoice" />,
+    component: <SingleEssoForm type="repeat_ultramar" btnTtitle="Create Repeat Ultramar Invoice" title="Create Repeat Ultramar Invoice" />,
   },
   
 ];

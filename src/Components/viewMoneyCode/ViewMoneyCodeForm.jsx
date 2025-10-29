@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import {  optionscompany } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { optionscompany } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
@@ -22,8 +22,8 @@ const ViewMoneyCodeForm = () => {
 
     };
     const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
+        reset(); // reset all fields back to defaultValues (or empty if none given)
+    };
 
     const handleCheckboxChange = (e) => {
         const { value, checked } = e.target;
@@ -37,114 +37,114 @@ const ViewMoneyCodeForm = () => {
         });
     }
     return (
-        
-        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >   
-                <Row className="mt-3">
-                    <Col sm="3">
-                        <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
 
-                                    <Col sm="3">
-                                        <InputGroupText>
-                                            From Date
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="9">
-                                        <Controller
-                                            name="from"
-                                            control={control}
-                                            rules={{ required: " Required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    className={`form-control `}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        /></Col>
-
-
-
-
-                                </InputGroup>
-
-                                {errors.from && (
-                                    <span className="text-danger">{errors.from.message}</span>
-                                )}
-                            </FormGroup>
-                        </Row>
-                    </Col>
-                    <Col sm="3">
-                        <Row>
-                            <FormGroup className="m-form__group">
-                                <InputGroup>
-                                    <Col sm="3">
-
-                                        <InputGroupText>
-                                            To
-                                        </InputGroupText>
-                                    </Col>
-                                    <Col sm="9">
-
-                                        <Controller
-                                            name="to"
-                                            control={control}
-                                            rules={{ required: "Required" }}
-                                            render={({ field }) => (
-                                                <DatePicker
-                                                    className={`form-control digits`}
-                                                    selected={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            )}
-                                        />
-                                    </Col>
-                                </InputGroup>
-
-                                {errors.to && (
-                                    <span className="text-danger">{errors.to.message}</span>
-                                )}
-                            </FormGroup>
-                        </Row>
-                    </Col>
-         <Col sm="3">
+        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
+            <Row className="mt-3">
+                <Col sm="3">
+                    <Row>
                         <FormGroup className="m-form__group">
-                            <InputGroup >
-                                <InputGroupText>Company</InputGroupText>
-                                <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
+                            <InputGroup>
 
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscompany}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Company Name"
-                                        />
-                                    )}
-                                />
+                                <Col sm="3">
+                                    <InputGroupText>
+                                        From Date
+                                    </InputGroupText>
+                                </Col>
+                                <Col sm="9">
+                                    <Controller
+                                        name="from"
+                                        control={control}
+                                        rules={{ required: " Required" }}
+                                        render={({ field }) => (
+                                            <DatePicker
+                                                className={`form-control `}
+                                                selected={field.value}
+                                                onChange={(date) => field.onChange(date)}
+                                            />
+                                        )}
+                                    /></Col>
+
+
+
+
                             </InputGroup>
 
-                            {errors.company && (
-                                <span className="text-danger">{errors.company?.message}</span>
+                            {errors.from && (
+                                <span className="text-danger">{errors.from.message}</span>
                             )}
                         </FormGroup>
-                    </Col>
+                    </Row>
+                </Col>
+                <Col sm="3">
+                    <Row>
+                        <FormGroup className="m-form__group">
+                            <InputGroup>
+                                <Col sm="3">
 
-      
-                   
-                                        <Col sm="3">
+                                    <InputGroupText>
+                                        To
+                                    </InputGroupText>
+                                </Col>
+                                <Col sm="9">
 
-<div className='text-end'>
-                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>
+                                    <Controller
+                                        name="to"
+                                        control={control}
+                                        rules={{ required: "Required" }}
+                                        render={({ field }) => (
+                                            <DatePicker
+                                                className={`form-control digits`}
+                                                selected={field.value}
+                                                onChange={(date) => field.onChange(date)}
+                                            />
+                                        )}
+                                    />
+                                </Col>
+                            </InputGroup>
 
-                        </div>
-                        </Col>
-            
-                </Row>
-           
+                            {errors.to && (
+                                <span className="text-danger">{errors.to.message}</span>
+                            )}
+                        </FormGroup>
+                    </Row>
+                </Col>
+                <Col sm="3">
+                    <FormGroup className="m-form__group">
+                        <InputGroup >
+                            <InputGroupText>Company</InputGroupText>
+                            <Controller name="company"
+                                rules={{ required: "company Name is required" }}
+
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        options={optionscompany}
+                                        className="form-control p-0 border-0"
+                                        placeholder="Select Company Name"
+                                    />
+                                )}
+                            />
+                        </InputGroup>
+
+                        {errors.company && (
+                            <span className="text-danger">{errors.company?.message}</span>
+                        )}
+                    </FormGroup>
+                </Col>
+
+
+
+                <Col sm="3">
+
+                    <div className='text-end'>
+                        <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>
+
+                    </div>
+                </Col>
+
+            </Row>
+
 
 
         </Form>

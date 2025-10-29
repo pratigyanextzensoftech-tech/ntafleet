@@ -5,16 +5,16 @@ import CreateReportOwner from '../../Components/reports/createReport/CreateOwner
 export const CreateReportTab = [
   {
     id: '1',
-    label:"Create Report",
-    component: <CreateReport/>,
+    label: "Create Report",
+    component: <CreateReport title="Create Report" />,
   },
   {
     id: '2',
-    label:"Create Owner Operator Report",
-    component: <CreateReportOwner/>,
+    label: "Create Owner Operator Report",
+    component: <CreateReportOwner title="Create Owner Operator Report" />,
   },
-  
- 
-  
+
+
+
 ];
 

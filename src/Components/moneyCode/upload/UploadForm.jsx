@@ -40,16 +40,12 @@ const UploadForm = ({ btntitle, btnTitle1 }) => {
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)} >
             <Row>
                 <Col sm="10">
-                    <Row>
-                        <Col className='px-0' sm="2">
+                    <FormGroup className="m-form__group">
+                        <InputGroup >
+                            <InputGroupText>Select File</InputGroupText> 
+                            <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />  </InputGroup>
+                    </FormGroup>
 
-                            <InputGroupText className='h-100'>Select File</InputGroupText>
-                        </Col>
-                        <Col className='px-0' sm="10">
-
-                            <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />
-                        </Col>
-                    </Row>
                 </Col>
                 <Col sm="2" >
                     <div className='text-end'>

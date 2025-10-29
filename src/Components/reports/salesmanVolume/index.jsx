@@ -1,12 +1,12 @@
-import React,{Fragment,useState,useEffect} from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Breadcrumbs } from '../../../AbstractElements'
 import HeaderCard from '../../Common/Component/HeaderCard'
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent'
-import { tableColumns,dummytabledata } from '../../../Data/Table/Defaultdata'
+import { tableColumns, dummytabledata } from '../../../Data/Table/Defaultdata'
 import SalesmanVol from './SalesmanVol'
 import { salesman_volume } from '../../../api';
-import usePaginatedTable from '../../../Hooks/usePagination'; 
+import usePaginatedTable from '../../../Hooks/usePagination';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -14,8 +14,8 @@ import { FaEdit, FaTrashAlt, FaFilePdf, FaFileExcel, FaEnvelope } from 'react-ic
 
 const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
-    const [tableColumns, setTableColumns] = useState([]); 
-     const columnsMap = {
+  const [tableColumns, setTableColumns] = useState([]);
+  const columnsMap = {
     "ID #": "id",
     "Salesman": "salesman_id",
     "Start Date": "date_from",
@@ -26,132 +26,135 @@ const Index = () => {
     "Total Gln": "total_gln",
   };
 
-     const {
-        data,
-        totalRows,
-        loading,
-        handlePageChange,
-        handlePerRowsChange,
-        handleSearch, // ✅ Added
-        setData,
-      } = usePaginatedTable({ apiUrl: salesman_volume, columnsMap });
-        useEffect(() => {
-          const cols = Object.keys(columnsMap).map((key) => ({
-            name: key,
-            selector: (row) => row[key],
-            sortable: true,
-            wrap: true,
-          }));
-      
-          cols.push({
-            name: "Action",
-            cell: (row) => (
-              <div className="position-relative dropdown-action">
-                <button
-                  className="btn btn-sm btn-primary px-2"
-                  onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
-                >
-                  Action
-                </button>
-      
-               {openRowId === row.id && (
-  <div
-    className="position-absolute bg-white border rounded shadow"
-    style={{
-      zIndex: 1000,
-      right: 0,
-      marginTop: 5,
-      minWidth: 160,
-      padding: "5px 0",
-    }}
-  >
-    <Link
-      to={`/download_pdf/${btoa(row.id)}`}
-      className="dropdown-item d-flex align-items-center text-danger"
-      style={{ padding: "8px 12px", gap: "8px" }}
-    >
-      <FaFilePdf /> Download PDF
-    </Link>
+  const {
+    data,
+    totalRows,
+    loading,
+    handlePageChange,
+    handlePerRowsChange,
+    handleSearch, // ✅ Added
+    setData,
+  } = usePaginatedTable({ apiUrl: salesman_volume, columnsMap });
+  useEffect(() => {
+    const cols = Object.keys(columnsMap).map((key) => ({
+      name: key,
+      selector: (row) => row[key],
+      sortable: true,
+      wrap: true,
+    }));
 
-    <Link
-      to={`/download_excel/${btoa(row.id)}`}
-      className="dropdown-item d-flex align-items-center text-success"
-      style={{ padding: "8px 12px", gap: "8px" }}
-    >
-      <FaFileExcel /> Download Excel
-    </Link>
+    cols.push({
+      name: "Action",
+      cell: (row) => (
+        <div className="position-relative dropdown-action">
+          <button
+            className="btn btn-sm btn-primary px-2"
+            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+          >
+            Action
+          </button>
 
-    <button
-      className="dropdown-item d-flex align-items-center text-primary"
-      style={{ padding: "8px 12px", gap: "8px" }}
-      
-    >
-      <FaEnvelope /> Send Email
-    </button>
+          {openRowId === row.id && (
+            <div
+              className="position-absolute bg-white border rounded shadow"
+              style={{
+                zIndex: 1000,
+                right: 0,
+                marginTop: 5,
+                minWidth: 160,
+                padding: "5px 0",
+              }}
+            >
+              <Link
+                to={`/download_pdf/${btoa(row.id)}`}
+                className="dropdown-item d-flex align-items-center text-danger"
+                style={{ padding: "8px 12px", gap: "8px" }}
+              >
+                <FaFilePdf /> Download PDF
+              </Link>
 
-    <button
-      className="dropdown-item d-flex align-items-center text-danger"
-      style={{ padding: "8px 12px", gap: "8px" }}
-      onClick={() => handleDelete(row)}
-    >
-      <FaTrashAlt /> Delete
-    </button>
-  </div>
-)}
+              <Link
+                to={`/download_excel/${btoa(row.id)}`}
+                className="dropdown-item d-flex align-items-center text-success"
+                style={{ padding: "8px 12px", gap: "8px" }}
+              >
+                <FaFileExcel /> Download Excel
+              </Link>
 
-              </div>
-            ),
+              <button
+                className="dropdown-item d-flex align-items-center text-primary"
+                style={{ padding: "8px 12px", gap: "8px" }}
+
+              >
+                <FaEnvelope /> Send Email
+              </button>
+
+              <button
+                className="dropdown-item d-flex align-items-center text-danger"
+                style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={() => handleDelete(row)}
+              >
+                <FaTrashAlt /> Delete
+              </button>
+            </div>
+          )}
+
+        </div>
+      ),
+    });
+
+    setTableColumns(cols);
+  }, [openRowId]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-action")) {
+        setOpenRowId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleDelete = (row) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${salesman_volume}/${row.id}`)
+          .then(() => {
+            setData((prevData) => prevData.filter((item) => item.id !== row.id));
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+          })
+          .catch(() => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
           });
-      
-          setTableColumns(cols);
-        }, [openRowId]);
-      
-        useEffect(() => {
-          const handleClickOutside = (event) => {
-            if (!event.target.closest(".dropdown-action")) {
-              setOpenRowId(null);
-            }
-          };
-          document.addEventListener("mousedown", handleClickOutside);
-          return () => document.removeEventListener("mousedown", handleClickOutside);
-        }, []);
-      
-        const handleDelete = (row) => {
-          Swal.fire({
-            title: 'Are you sure?',
-            text: `Do you really want to delete ?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              axios.delete(`${salesman_volume}/${row.id}`)
-                .then(() => {
-                  setData((prevData) => prevData.filter((item) => item.id !== row.id));
-                  Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
-                })
-                .catch(() => {
-                  Swal.fire('Error!', 'Failed to delete record.', 'error');
-                });
-            }
-          });
-        };
+      }
+    });
+  };
   return (
     <Fragment>
-         <Breadcrumbs parent='Reports' title='Salesman Volume Report'/>
-         <Container fluid={true}>
-           <HeaderCard title="Manage Salesman Report" />
-                                              <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+      <Breadcrumbs parent='Reports' title='Salesman Volume Report' />
+      <Container fluid={true}>
 
-           <div className="bg-primary p-2 my-3">
-                      <HeaderCard title="Create Salesman Report" />
-                      </div>
-                <SalesmanVol btnTitle="Create Volume Report"/>
-                 </div>
-  <DataTableComponent
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Create Salesman Report" />
+              <CardBody>
+                <SalesmanVol btnTitle="Create Volume Report" />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <DataTableComponent
           title="Salesman Report List"
           tableColumns={tableColumns}
           tableData={data}
@@ -162,8 +165,8 @@ const Index = () => {
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
         />
-           </Container>
-           </Fragment>
+      </Container>
+    </Fragment>
   )
 }
 
