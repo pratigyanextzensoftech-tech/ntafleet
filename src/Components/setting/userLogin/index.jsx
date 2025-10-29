@@ -1,101 +1,106 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
-import { Container } from "reactstrap";
-import axios from "axios";
+import { Container } from "reactstrap"; 
 import HeaderCard from "../../Common/Component/HeaderCard";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { user_log } from "../../../api/index";
+//Table
+import DataTableComponent from '../../Tables/DataTable/DataTableComponent';  
+import qs from 'qs'
+import axios from 'axios';
+import { user_log as APINAME } from '../../../api';
+import {
+  FaDownload,
+  FaEye,
+  FaEnvelope,
+  FaFileInvoice,
+  FaTrashAlt,
+} from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import dayjs from "dayjs"; 
+import usePaginatedTable from '../../../Hooks/usePagination';  
+//end Table
+
 
 const Index = () => {
-  const [data, setData] = useState([]);
-  const [tableColumns, setTableColumns] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // ✅ Pagination states
-  const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [draw, setDraw] = useState(1);
-
-  // ✅ Define table columns
-  useEffect(() => {
-    const columns = [
-      { key: "sno", label: "S.No" },
-      { key: "username", label: "Username" },
-      { key: "login_ip", label: "Login IP" },
-      { key: "address", label: "Address" },
-      { key: "country", label: "Country" },
-      { key: "state", label: "State" },
-      { key: "city", label: "City" },
-      { key: "login_status", label: "Login Status" },
-      { key: "login_time", label: "Login Time" },
-      { key: "logout_time", label: "Logout Time" },
-      { key: "date", label: "Date" },
-    ].map((col) => ({
-      name: col.label,
-      selector: (row) => row[col.key],
-      sortable: true,
-      wrap: true,
-    }));
-
-    setTableColumns(columns);
-  }, []);
-
-  // ✅ Fetch paginated API data
-  const fetchData = async (page = 1, perPage = 10) => {
-    setLoading(true);
-    try {
-      const start = (page - 1) * perPage;
-      const length = perPage;
-
-      const params = { draw, start, length };
-      const res = await axios.get(user_log, { params });
-
-      const responseData = Array.isArray(res.data)
-        ? res.data
-        : res.data.data || [];
-
-      const tableData = responseData.map((item, index) => ({
-        sno: item.id,
-        username: item.username || item.user_name || "Ram Gopal",
-        login_ip: item.ip || "N/A",
-        address: item.full_address || "N/A",
-        country: item.country || "N/A",
-        state: item.state || "N/A",
-        city: item.city || "N/A",
-        login_status: item.login_status || "N/A",
-        login_time: item.s_start || "N/A",
-        logout_time: item.s_end,
-        date: item.dated,
+    const [tableColumns, setTableColumns] = useState([]);
+    const [openRowId, setOpenRowId] = useState(null);
+  
+    const formatDate = (value, withTime = true) => {
+    if (!value) return "-";
+    const format = withTime ? "DD-MM-YYYY HH:MM" : "DD-MM-YYYY";
+    return dayjs(value).isValid() ? dayjs(value).format(format) : "-";
+  };
+  
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (!event.target.closest(".dropdown-action")) {
+          setOpenRowId(null);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+    const handleChange = (id, field, value) => {
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === id ? { ...item, [field]: value } : item
+        )
+      );
+  
+  
+    };
+    // ✅ Column mapping between UI and API
+    const columnsMap = {
+      "Sr.No": "id",
+      "User Name": "user_name",
+      "Login_IP":"ip",
+      "Address":"full_address",
+      "Country":"country_name",
+      "State":"state",
+      "City":"city",
+      "Login_Status":"login_status",
+      "Login_Time":"s_start",
+      "Logout_Time":"s_end",
+      "Dated":"dated"
+      
+    };
+  
+    const {
+      data,
+      totalRows,
+      loading,
+      handlePageChange,
+      handlePerRowsChange,
+      handleSearch, // ✅ Added
+      setData,
+    } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+  
+  
+  
+    // ✅ Build column definitions for DataTable
+    useEffect(() => {
+      const cols = Object.keys(columnsMap).map((key) => ({
+        name: key,
+         selector: (row) => {
+        if (key === "Login_Time" && row[key]) return formatDate(row[key]);
+        if (key === "Logout_Time" && row[key]) return formatDate(row[key]);
+        if (key === "Dated" && row[key]) return formatDate(row[key], false);
+        return row[key];
+      },
+        sortable: true,
+        wrap: true,
       }));
-
-      setData(tableData);
-      setTotalRows(res.data.recordsTotal || res.data.total || responseData.length);
-      setDraw((prev) => prev + 1);
-    } catch (error) {
-      console.error("❌ Error fetching user log data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ✅ Initial load
-  useEffect(() => {
-    fetchData(currentPage, perPage);
-  }, [perPage]);
-
-  // ✅ Pagination handlers
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    fetchData(page, perPage);
-  };
-
-  const handlePerRowsChange = (newPerPage, page) => {
-    setPerPage(newPerPage);
-    setCurrentPage(page);
-    fetchData(page, newPerPage);
-  };
-
+  
+      // Add Status column
+    
+  
+ 
+  
+      setTableColumns(cols);
+    }, [openRowId]);
+  
+    // ✅ Action handlers
+    const handleEdit = (row) => alert("Edit " + row.id); 
+    const handleDelete = (row) => alert("Delete " + row.id);   
   return (
     <Fragment>
       <Breadcrumbs parent="Setting" title="User Login Log" />
