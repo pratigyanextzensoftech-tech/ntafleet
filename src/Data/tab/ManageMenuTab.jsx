@@ -8,11 +8,11 @@ export const ManageMenuTab = [
   {
     id: '1',
     label: 'Primary Menu',
-    component: <PrimaryMenu title="Upload US Transaction" btnTtitle="Upload US Transaction"/>,
+    component: <PrimaryMenu title="Add Primary Menu" btnTtitle="Upload US Transaction"/>,
   },
   {
     id: '2',
     label: 'Secondary Menu',
-    component: <SecondaryMenu title="Upload US Transaction" btnTtitle="Upload US Transaction"/>,
+    component: <SecondaryMenu title="Add Secondary Menu" btnTtitle="Upload US Transaction" />,
   },
 ];

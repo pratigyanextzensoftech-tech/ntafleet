@@ -65,7 +65,7 @@ const Index = () => {
         city: item.city || "N/A",
         login_status: item.login_status || "N/A",
         login_time: item.s_start || "N/A",
-        logout_time: item.s_end ,
+        logout_time: item.s_end,
         date: item.dated,
       }));
 
@@ -99,8 +99,7 @@ const Index = () => {
   return (
     <Fragment>
       <Breadcrumbs parent="Setting" title="User Login Log" />
-      <Container fluid={true}>
-        <HeaderCard title="User Login Log" />
+      <Container fluid={true}> 
         <DataTableComponent
           title="User Login Log"
           tableColumns={tableColumns}
@@ -108,7 +107,7 @@ const Index = () => {
           progressPending={loading}
           pagination
           paginationServer
-                    loading={loading}
+          loading={loading}
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}

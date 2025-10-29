@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
-import { Container } from 'reactstrap';
+import { Container,Card,Col,Row,CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import LinamarForm from './LinamarForm';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
@@ -20,12 +20,12 @@ const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
 
   const columnsMap = {
-  "ID": "id",
-  "Esso Location": "esso_location",
-  "Flying J Location": "fj_location",
-  "Flying J Site ID": "site_id",
-  "Flying J Location ID": "loc_id",
-};
+    "ID": "id",
+    "Esso Location": "esso_location",
+    "Flying J Location": "fj_location",
+    "Flying J Site ID": "site_id",
+    "Flying J Location ID": "loc_id",
+  };
 
   const fetchData = async (page = 1, perPage = 10, filtersData = filters) => {
     setLoading(true);
@@ -117,7 +117,7 @@ const Index = () => {
               >
                 <FaEdit /> Edit
               </button>
-             
+
               <button
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}
@@ -142,22 +142,30 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent='Location' title='Manage Linamar Esso Location' />
       <Container fluid={true}>
-        <HeaderCard title="Manage Linamar Esso Location" />
-        <LinamarForm />
-        <div className='my-3'>
-          <DataTableComponent
-            title="Linamar Esso Location List"
-            tableColumns={tableColumns}
-            tableData={data}
-            progressPending={loading}
-            pagination
-            paginationServer
-            loading={loading}
-            paginationTotalRows={totalRows}
-            onChangeRowsPerPage={handlePerRowsChange}
-            onChangePage={handlePageChange}
-          />
-        </div>
+
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Add Linamar Esso Location " />
+              <CardBody>
+                <LinamarForm />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <DataTableComponent
+          title="Linamar Esso Location List"
+          tableColumns={tableColumns}
+          tableData={data}
+          progressPending={loading}
+          pagination
+          paginationServer
+          loading={loading}
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
+        />
+
       </Container>
     </Fragment>
   );

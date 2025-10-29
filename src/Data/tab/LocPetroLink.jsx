@@ -10,11 +10,11 @@ export const LocPetroLink = [
   {
     id: '1',
     label: 'Esso Petro Link',
-    component: <PetroLinkForm />,
+    component: <PetroLinkForm title="Esso Petro Link"/>,
   },
   {
     id: '2',
     label: 'Ultramar Petro Link',
-    component: <UltramarPetro/>,
+    component: <UltramarPetro title="Ultramar Petro Link" />,
   },
 ];

@@ -6,22 +6,22 @@ export const ManageGroupTab = [
   {
     id: '1',
     label:"Manage Esso Group",
-    component: <EssoGroupForm/>,
+    component: <EssoGroupForm title="Manage Esso Group"/>,
   },
   {
     id: '2',
     label:"Manage Esso City",
-    component: <EssoCityForm/>,
+    component: <EssoCityForm title="Manage Esso City"/>,
   },
    {
     id: '3',
     label:"Manage Ultramar Group",
-    component: <EssoGroupForm/>,
+    component: <EssoGroupForm title="Manage Ultramar Group"/>,
   },
    {
     id: '4',
     label:"Manage Ultramar City",
-    component: <EssoCityForm/>,
+    component: <EssoCityForm title="Manage Ultramar City"/>,
   },
   
  

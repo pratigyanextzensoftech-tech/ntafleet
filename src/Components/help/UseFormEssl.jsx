@@ -7,44 +7,78 @@ const UseFormEssl = ({ title }) => {
 
   const handlePlayPause = () => {
     if (videoRef) {
-      if (videoRef.paused) videoRef.play();
-      else videoRef.pause();
+      videoRef.paused ? videoRef.play() : videoRef.pause();
     }
   };
 
   const handleSize = (size) => {
     if (videoRef) {
-      if (size === "big") videoRef.style.width = "1100px";
-      else if (size === "small") videoRef.style.width = "300px";
-      else videoRef.style.width = "700px";
+      switch (size) {
+        case 'big':
+          videoRef.style.width = '1100px';
+          break;
+        case 'small':
+          videoRef.style.width = '300px';
+          break;
+        default:
+          videoRef.style.width = '700px';
+          break;
+      }
     }
   };
 
   return (
-                                       <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+    
 
-      <div className='bg-primary p-2 my-3'>
-        <HeaderCard title={title} />
-      </div>
-
-      <Row style={{maxWidth:"750px",width:"100%"}} className=' mx-auto mb-3 '>
-        <Col><button style={{width:"150px"}} className='btn  btn-secondary' onClick={handlePlayPause}>Play / Pause</button></Col>
-        <Col><button  style={{width:"150px"}} className='btn btn-secondary' onClick={() => handleSize("big")}>Big</button></Col>
-        <Col><button   style={{width:"150px"}} className='btn btn-secondary' onClick={() => handleSize("small")}>Small</button></Col>
-        <Col><button  style={{width:"150px"}} className='btn btn-secondary' onClick={() => handleSize("normal")}>Normal</button></Col>
-      </Row>
-
-      <div className="text-center d-flex align-items-cetner justify-content-center">
+      <Row style={{ maxWidth: '750px', width: '100%' }} className="mx-auto mb-3">
+        <Col className="d-flex justify-content-center mb-2">
+          <button
+            className="btn btn-secondary w-100"
+            style={{ maxWidth: '150px' }}
+            onClick={handlePlayPause}
+          >
+            Play / Pause
+          </button>
+        </Col>
+        <Col className="d-flex justify-content-center mb-2">
+          <button
+            className="btn btn-secondary w-100"
+            style={{ maxWidth: '150px' }}
+            onClick={() => handleSize('big')}
+          >
+            Big
+          </button>
+        </Col>
+        <Col className="d-flex justify-content-center mb-2">
+          <button
+            className="btn btn-secondary w-100"
+            style={{ maxWidth: '150px' }}
+            onClick={() => handleSize('small')}
+          >
+            Small
+          </button>
+        </Col>
+        <Col className="d-flex justify-content-center mb-2">
+          <button
+            className="btn btn-secondary w-100"
+            style={{ maxWidth: '150px' }}
+            onClick={() => handleSize('normal')}
+          >
+            Normal
+          </button>
+        </Col>
+        <Col sm="12">
         <video
           ref={setVideoRef}
-          src={`${process.env.PUBLIC_URL}/how_use_eflse.mp4`} // ✅ path relative to /public folder
+          src={`${process.env.PUBLIC_URL}/help/how_use_eflse.mp4`} // ✅ correct path from /public
           width="700"
           controls
         >
           Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
+        </video></Col>
+      </Row>
+
+      
   );
 };
 

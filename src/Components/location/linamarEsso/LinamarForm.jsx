@@ -14,12 +14,7 @@ const LinamarForm = () => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
     return (
-        <Fragment >
-            <div style={{ border: "1px solid #ccc", padding: "5px 5px", bprderRadius: "3px" }}>
-                <div className='bg-primary p-2 my-3'>
-                    <HeaderCard title="Add Linamar Esso Location   " />
-                </div>
-
+        <Fragment > 
                 <Form>
                     <Row>
                         <Col md="4">
@@ -77,12 +72,7 @@ const LinamarForm = () => {
                             </div>
                         </Col>
                     </Row>
-                </Form>
-
-
-
-
-            </div>
+                </Form> 
         </Fragment>
     );
 };

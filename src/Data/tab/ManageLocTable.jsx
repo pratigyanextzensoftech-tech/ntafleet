@@ -27,7 +27,7 @@ export const ManageLocTable = [
   {
     id: '5',
     label:'Add/Update Location',
-    component: <AddUpdateLocForm />,
+    component: <AddUpdateLocForm title="Add Location"/>,
   },
   
 ];

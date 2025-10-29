@@ -59,9 +59,9 @@ const Index = () => {
         ip: item.user_ip || "N/A",
         country: item.country || "",
         city: item.city || " ",
-        menu: item.menu_name ,
-        link: item.menu_link ,
-        type: item.type ,
+        menu: item.menu_name,
+        link: item.menu_link,
+        type: item.type,
         dated: item.dated,
       }));
 
@@ -96,7 +96,6 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent="Setting" title="Track Visitors" />
       <Container fluid={true}>
-        <HeaderCard title="Track Visitors" />
         <DataTableComponent
           title="Track Visitors"
           tableColumns={tableColumns}

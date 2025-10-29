@@ -102,7 +102,6 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent="Setting" title="Company Login Log" />
       <Container fluid>
-        <HeaderCard title="Company Login Log" />
         <DataTableComponent
           title="Company Login Log"
           loading={loading}

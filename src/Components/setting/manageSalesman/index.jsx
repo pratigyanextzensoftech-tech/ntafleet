@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
-import { Container } from "reactstrap";
+import { Container,Row,Col,Card,CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -119,9 +119,8 @@ const Index = () => {
         name: "Status",
         cell: (row) => (
           <select
-            className={`form-select form-select-sm ${
-              row.status === 0 ? "text-success" : "text-danger"
-            }`}
+            className={`form-select form-select-sm ${row.status === 0 ? "text-success" : "text-danger"
+              }`}
             style={{ width: "110px", fontWeight: "500" }}
             value={row.status}
             onChange={(e) => handleStatusChange(row.id, parseInt(e.target.value))}
@@ -188,21 +187,17 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent="Setting" title="Manage Sales Man" />
       <Container fluid={true}>
-        <HeaderCard title="Manage Sales Man" />
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "5px 5px",
-            borderRadius: "3px",
-            marginBottom: "10px",
-          }}
-        >
-          <div className="bg-primary p-2 my-3">
-            <HeaderCard title="Add Sales Man" />
-          </div>
-          <ManageSalesman />
-        </div>
 
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Add Sales Man" />
+              <CardBody>
+                <ManageSalesman />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <DataTableComponent
           title="Sales Man List"
           tableColumns={tableColumns}

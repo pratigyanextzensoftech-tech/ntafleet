@@ -32,7 +32,7 @@ import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
 import OwnerOperator from '../Components/pricing/ownerOperator/index';
 import EssoGroup from '../Components/pricing/essoGroup/index';
 import UltramarGroup from '../Components/pricing/ultramarGroup/index';
-import DownloadBulk from '../Components/pricing/downloadBulk/index'; 
+import DownloadBulk from '../Components/pricing/downloadBulk/index';
 
 //Items
 import AddItems from '../Components/items/addItems/index';
@@ -78,26 +78,23 @@ import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
 
+//Reports
+import ViewReports from '../Components/reports/viewReports/index';
+import SalesmanVol from '../Components/reports/salesmanVolume/index';
+import CreateReports from '../Components/reports/createReport/index';
 
-import ManageUser from '../Components/setting/manageUser/index' 
-import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';  
+//Supplier
 import SupplierList from '../Components/supplier/supplierList/index';
+
+//Money Code
 import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
 import AddMoneyCode from '../Components/moneyCode/addMoneyCode/index';
 import UploadMoney from '../Components/moneyCode/upload/index'
+import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';
 import CheckInvoicemoneyCode from '../Components/moneyCode/checkInvoic/index';
-import ViewReports from '../Components/reports/viewReports/index';
-import SalesmanVol from '../Components/reports/salesmanVolume/index';
-import CreateReports from '../Components/reports/createReport/index';  
-import UploadTcheck from '../Components/tcheck/upload/index'
-import TcheckList from '../Components/tcheck/list/index'
-import CreateTCheck from '../Components/tcheck/create/index'
-import ViewTCheck from '../Components/tcheck/view/index'
-import UserLogin from '../Components/setting/userLogin/index'
-import CompanyLogin from '../Components/setting/companyLogin/index'
-import ManageSalesman from '../Components/setting/manageSalesman/index';
-import ManageMenu from '../Components/setting/manageMenu/Index'
-import TrackVisitor from '../Components/setting/trackVisitor/index'
+
+
+//Location
 import LinamarEsso from '../Components/location/linamarEsso/index';
 import PetroLink from '../Components/location/petroLink/index';
 import ViewCountry from '../Components/location/viewCountry/index'
@@ -106,122 +103,152 @@ import ViewCity from '../Components/location/viewCity/index'
 import ManageLoc from '../Components/location/manageLoc/index'
 import ManageGroup from '../Components/location/manageGroup/index'
 
+//Setting
+import UserLogin from '../Components/setting/userLogin/index'
+import TrackVisitor from '../Components/setting/trackVisitor/index'
+import CompanyLogin from '../Components/setting/companyLogin/index'
+import ManageUser from '../Components/setting/manageUser/index'
+import ManageSalesman from '../Components/setting/manageSalesman/index';
+import ManageMenu from '../Components/setting/manageMenu/Index'
 
-import Help from '../Components/help/index';
-import AddCard from '../Components/help/addCard/index';
+//Tcheck
+import UploadTcheck from '../Components/tcheck/upload/index'
+import TcheckList from '../Components/tcheck/list/index'
+import CreateTCheck from '../Components/tcheck/create/index'
+import ViewTCheck from '../Components/tcheck/view/index'
 
+//Help
+import Help_Use_Efsllc from '../Components/help/help_use_efsllc';
+import Help_Add_Card from '../Components/help/help_add_card';
+import How_Create_Report from '../Components/help/how_create_report';
+import How_Card_Discount from '../Components/help/how_card_discount';
+ 
 
 export const routes = [
-//Dashboard
-{ path: `/dashboard`, Component: <Dashboard /> },
-{ path: `/report_dashboard`, Component: <Report_Dashboard/> },
-{ path: `/graph_dashboard`, Component: <Ggraph_Dashboard/> },
+    //Dashboard
+    { path: `/dashboard`, Component: <Dashboard /> },
+    { path: `/report_dashboard`, Component: <Report_Dashboard /> },
+    { path: `/graph_dashboard`, Component: <Ggraph_Dashboard /> },
 
-//Discount
-{ path: `/create_discount`, Component: <CreateDiscount/> },
-{ path: `/view_discount`, Component: <ViewDiscount/> },
-{ path: `/discount_Sheet`, Component: <DiscountSheet/> },
-{ path: `/create_bulk_discount`, Component: <BulkDiscount/> },
-{ path: `/zero_discount_location`, Component: <ZeroDiscount/> },
+    //Discount
+    { path: `/create_discount`, Component: <CreateDiscount /> },
+    { path: `/view_discount`, Component: <ViewDiscount /> },
+    { path: `/discount_Sheet`, Component: <DiscountSheet /> },
+    { path: `/create_bulk_discount`, Component: <BulkDiscount /> },
+    { path: `/zero_discount_location`, Component: <ZeroDiscount /> },
 
-//Pricing
-{ path: `/download_esso_cent`, Component: < DownloadEssoCent/> },
-{ path: `/update_esso_centwise`, Component: < UpdateEssoCent/> },
-{ path: `/manage_esso_cent`, Component: <ManageEssoCent /> },
-{ path: `/upload_price`, Component: <UploadFjPrice /> },
-{ path: `/price_list`, Component: <PriceList /> },
-{ path: `/single_price_pdf`, Component: <SinglePricing /> },
-{ path: `/fj_bulk_price`, Component: <BulkPrice /> },
-{ path: `/esso_bulk_price`, Component: <EssoBulk /> },
-{ path: `/love_bulk_price`, Component: <LoveBulk /> },
-{ path: `/ultramar_bulk_price`, Component: <Ultramar /> },
-{ path: `/update_fg_rack_price`, Component: <UpdateFgRack /> },
-{ path: `/update_taPetro_rack_price`, Component: <UpdateTaPetro /> },
-{ path: `/update_love_rack_pricing`, Component: <UpdateLoveRack /> },
-{ path: `/OwnerUpdate_rack_price`, Component: <OwnerOperator /> },
-{ path: `/esso_group_rack_price`, Component: <EssoGroup /> },
-{ path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
-{ path: `/download_bulk_excel`, Component: <DownloadBulk /> },
+    //Retail Price
+    { path: `/upload_retail_prices`, Component: <Upload /> },
+    { path: `/petro_retail_prices`, Component: < PetroRetail /> },
 
- //Items
-{ path: `/add_items`, Component: <AddItems /> },
-{ path: `/view_items`, Component: <AddItems /> },
+    //Pricing
+    { path: `/download_esso_cent`, Component: < DownloadEssoCent /> },
+    { path: `/update_esso_centwise`, Component: < UpdateEssoCent /> },
+    { path: `/manage_esso_cent`, Component: <ManageEssoCent /> },
+    { path: `/upload_price`, Component: <UploadFjPrice /> },
+    { path: `/price_list`, Component: <PriceList /> },
+    { path: `/single_price_pdf`, Component: <SinglePricing /> },
+    { path: `/fj_bulk_price`, Component: <BulkPrice /> },
+    { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
+    { path: `/esso_bulk_price`, Component: <EssoBulk /> },
+    { path: `/love_bulk_price`, Component: <LoveBulk /> },
+    { path: `/ultramar_bulk_price`, Component: <Ultramar /> },
+    { path: `/update_fg_rack_price`, Component: <UpdateFgRack /> },
+    { path: `/update_taPetro_rack_price`, Component: <UpdateTaPetro /> },
+    { path: `/update_love_rack_pricing`, Component: <UpdateLoveRack /> },
+    { path: `/OwnerUpdate_rack_price`, Component: <OwnerOperator /> },
+    { path: `/esso_group_rack_price`, Component: <EssoGroup /> },
+    { path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
+    { path: `/download_bulk_excel`, Component: <DownloadBulk /> },
 
-//Company
-{ path: `/add_company`, Component: <AddCompany /> },
-{ path: `/edit_company/:id`, Component: <EditCompany /> },
-{ path: `/view_company`, Component: <ViewCompany /> },  
-{ path: `/company_info`, Component: <CompanyInfo /> },
-{ path: `/sub_login`, Component: <SubLOgin /> },
+    //Items
+    { path: `/add_items`, Component: <AddItems /> },
+    { path: `/view_items`, Component: <AddItems /> },
 
-//Fuel Card
-{ path: `/add_card`, Component: < AddFuel/> },
-{ path: `/view_fuelCards`, Component: < ViewFuel/> },
-{ path: `/efs_view_card`, Component: < EFSFuel/> },
-{ path: `/card_update`, Component: < HistoryFuel/> }, 
+    //Company
+    { path: `/add_company`, Component: <AddCompany /> },
+    { path: `/edit_company/:id`, Component: <EditCompany /> },
+    { path: `/view_company`, Component: <ViewCompany /> },
+    { path: `/company_info`, Component: <CompanyInfo /> },
+    { path: `/sub_login`, Component: <SubLOgin /> },
 
-//Transaction
-{ path: `/view_transaction`, Component: < ViewTransaction/> },
-{ path: `/upload_transaction`, Component: < UploadTransaction/> },
-{ path: `/Esso_ftp_transaction`, Component: < TransactionList/> },
-{ path: `/unknown_transaction`, Component: < UnknownTransaction/> }, 
-{ path: `/Esso_ftp_liveTransaction`, Component: < EssoFtpLive/> },
-{ path: `/check_transaction`, Component: < CheckTransaction/> }, 
-{ path: `/rack_to_retail_transaction`, Component: < RackToRetail/> },
-{ path: `/to_retail_transaction`, Component: < RetailToRack/> }, 
-{ path: `/view_efs_transaction`, Component: < ViewEfs/> },
-{ path: `/update_unit`, Component: < UpdateUnit/> },
+    //Fuel Card
+    { path: `/add_card`, Component: < AddFuel /> },
+    { path: `/view_fuelCards`, Component: < ViewFuel /> },
+    { path: `/efs_view_card`, Component: < EFSFuel /> },
+    { path: `/card_update`, Component: < HistoryFuel /> },
 
-//Invoice
-{ path: `/view_invoice`, Component: <ViewInvoice /> },
-{ path: `/create_invoice`, Component: <CreateInvoice /> },
-{ path: `/check_invoice`, Component: <CheckOldINvoice /> },
-{ path: `/create_retail_invoice`, Component: <RetailInvoice /> },
-{ path: `/create_old_Invoice`, Component: <CreateOldInvoice /> },
-{ path: `/create_moneycode_Invoice`, Component: <CreateMoneyCode /> },
-{ path: `/create_esso_Invoice`, Component: <CreateEssoInvoice /> },
-{ path: `/manage_Macro`, Component: <ManageMacro /> },
-{ path: `/create_customized_Invoice`, Component: <CreateCustomized /> },
-{ path: `/create_ul_invoice`, Component: <CreateUltramar /> },
-{ path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
-{ path: `/send_bulk_mail`, Component: <SendBulk /> },
-{ path: `/compare_invoice`, Component: <CompareInvoice /> },
- 
-{ path: `/how_to_use_efsllc.com`, Component: <Help /> },
-{ path: `/how_to_add_card`, Component: <AddCard /> },
-{ path: `/manage_user`, Component: <ManageUser /> },
-{ path: `/manage_user/:id`, Component: <ManageUser /> },
+    //Transaction
+    { path: `/view_transaction`, Component: < ViewTransaction /> },
+    { path: `/upload_transaction`, Component: < UploadTransaction /> },
+    { path: `/Esso_ftp_transaction`, Component: < TransactionList /> },
+    { path: `/unknown_transaction`, Component: < UnknownTransaction /> },
+    { path: `/Esso_ftp_liveTransaction`, Component: < EssoFtpLive /> },
+    { path: `/check_transaction`, Component: < CheckTransaction /> },
+    { path: `/rack_to_retail_transaction`, Component: < RackToRetail /> },
+    { path: `/to_retail_transaction`, Component: < RetailToRack /> },
+    { path: `/view_efs_transaction`, Component: < ViewEfs /> },
+    { path: `/update_unit`, Component: < UpdateUnit /> },
 
-  
+    //Invoice
+    { path: `/view_invoice`, Component: <ViewInvoice /> },
+    { path: `/create_invoice`, Component: <CreateInvoice /> },
+    { path: `/check_invoice`, Component: <CheckOldINvoice /> },
+    { path: `/create_retail_invoice`, Component: <RetailInvoice /> },
+    { path: `/create_old_Invoice`, Component: <CreateOldInvoice /> },
+    { path: `/create_moneycode_Invoice`, Component: <CreateMoneyCode /> },
+    { path: `/create_esso_Invoice`, Component: <CreateEssoInvoice /> },
+    { path: `/manage_Macro`, Component: <ManageMacro /> },
+    { path: `/create_customized_Invoice`, Component: <CreateCustomized /> },
+    { path: `/create_ul_invoice`, Component: <CreateUltramar /> },
+    { path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
+    { path: `/send_bulk_mail`, Component: <SendBulk /> },
+    { path: `/compare_invoice`, Component: <CompareInvoice /> },
 
-    { path: `/view_moneyCode_invoices`, Component: <ViewMoneyCode /> },
+    //Report 
+    { path: `/view_Reports`, Component: <ViewReports /> },
+    { path: `/salesman_report`, Component: <SalesmanVol /> },
+    { path: `/create_Reports`, Component: <CreateReports /> },
+
+    //Supplier
     { path: `/suppler_list`, Component: <SupplierList /> },
     { path: `/add_supplier`, Component: <SupplierList /> },
+
+    //Money Code 
     { path: `/money_code_List`, Component: <MoneyCodeList /> },
     { path: `/addMoney_code_List`, Component: <AddMoneyCode /> },
     { path: `/upload_money_code`, Component: <UploadMoney /> },
+    { path: `/view_moneyCode_invoices`, Component: <ViewMoneyCode /> },
     { path: `/check_moneycode`, Component: <CheckInvoicemoneyCode /> },
-    { path: `/view_Reports`, Component: <ViewReports /> },
-    { path: `/salesman_report`, Component: <SalesmanVol /> },
-    { path: `/create_Reports`, Component: <CreateReports /> }, 
-    { path: `/upload_retail_prices`, Component: <Upload /> },
-    { path: `petro_retail_prices`, Component: < PetroRetail/> },
-   
-    { path: `/upload_tcheck`, Component: < UploadTcheck/> },
-    { path: `/tcheck_list`, Component: < TcheckList/> },
-    { path: `/create_tcheck_invoice`, Component: < CreateTCheck/> },
-    { path: `view_tcheck_invoices`, Component: < ViewTCheck/> },
-    { path: `/login_log`, Component: < UserLogin/> },
-    { path: `/company_log`, Component: < CompanyLogin/> },
-    { path: `/manage_salesMan`, Component: < ManageSalesman/> },
-    { path: `/manage_Menu`, Component: < ManageMenu/> },
-    { path: `/track_visitors`, Component: < TrackVisitor/> },
-    { path: `/Linamar_Esso_Location`, Component: < LinamarEsso/> },
-    { path: `/esso_ulramar_petroLink`, Component: < PetroLink/> },
-    { path: `/view_Countries`, Component: < ViewCountry/> },
-    { path: `/view_states`, Component: < ViewStates/> },
-    { path: `/view_cities`, Component: < ViewCity/> },
-    { path: `/manage_location`, Component: < ManageLoc/> },
-    { path: `/manage_group`, Component: < ManageGroup/> }, 
-    { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
+
+    // Location
+    { path: `/Linamar_Esso_Location`, Component: < LinamarEsso /> },
+    { path: `/esso_ulramar_petroLink`, Component: < PetroLink /> },
+    { path: `/view_Countries`, Component: < ViewCountry /> },
+    { path: `/view_states`, Component: < ViewStates /> },
+    { path: `/view_cities`, Component: < ViewCity /> },
+    { path: `/manage_location`, Component: < ManageLoc /> },
+    { path: `/manage_group`, Component: < ManageGroup /> },
+
+    //Setting
+    { path: `/login_log`, Component: < UserLogin /> },
+    { path: `/track_visitors`, Component: < TrackVisitor /> },
+    { path: `/company_log`, Component: < CompanyLogin /> },
+    { path: `/manage_user`, Component: <ManageUser /> },
+    { path: `/manage_user/:id`, Component: <ManageUser /> },
+    { path: `/manage_salesMan`, Component: < ManageSalesman /> },
+    { path: `/manage_Menu`, Component: < ManageMenu /> },
+
+    //TCheck
+    { path: `/upload_tcheck`, Component: < UploadTcheck /> },
+    { path: `/tcheck_list`, Component: < TcheckList /> },
+    { path: `/create_tcheck_invoice`, Component: < CreateTCheck /> },
+    { path: `view_tcheck_invoices`, Component: < ViewTCheck /> },
+
+    //Help
+    { path: `/help_use_efsllc`, Component: <Help_Use_Efsllc/> },
+    { path: `/help_add_card`, Component: <Help_Add_Card /> },
+    { path: `/how_create_report`, Component: <How_Create_Report /> },
+    { path: `/how_card_discount`, Component: <How_Card_Discount /> },
+
 ];

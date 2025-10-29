@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
-import { Container } from 'reactstrap';
+import { Container,Row,Col,Card,CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import List from './List';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
@@ -132,18 +132,20 @@ const Index = () => {
   };
 
   return (
+
     <Fragment>
       <Breadcrumbs parent='Tcheck' title='T Check List ' />
-      <Container fluid>
-        <HeaderCard title="T Check List" />
-
-        <div style={{ border: "1px solid #ccc", padding: "5px", borderRadius: "3px", marginBottom: "10px" }}>
-          <div className='bg-primary p-2 mb-4'>
-            <HeaderCard title="Filters" />
-          </div>
-          <List btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch} />
-        </div>
-
+      <Container fluid> 
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Filter" />
+              <CardBody>
+                 <List btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <DataTableComponent
           title="T Check List"
           tableColumns={tableColumns}
@@ -157,6 +159,8 @@ const Index = () => {
         />
       </Container>
     </Fragment>
+
+ 
   );
 };
 
