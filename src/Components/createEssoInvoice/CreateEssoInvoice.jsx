@@ -9,8 +9,18 @@ const CreateEssoInvoice = () => {
     <Fragment>
          <Breadcrumbs parent='Invoice' title='Create Esso Invoice'/>
          <Container fluid={true}>
-           <HeaderCard title="Create Retail Invoice" />
-            <BasicTabCard  tabContent={EssoInvoiceTab}/>  
+          <Row>
+<Col sm="12">
+<Card>
+<HeaderCard title="Create Retail Invoice" />
+<CardBody>
+<BasicTabCard  tabContent={EssoInvoiceTab}/> 
+</CardBody>
+</Card>
+</Col>
+</Row>
+          
+             
            </Container>
            </Fragment>
   )

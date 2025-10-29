@@ -58,12 +58,11 @@ const BulkEssoMulti = ({checkBoxData,title,btnTtitle,type}) => {
 
   return (
     <Fragment>
-      <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
-
-                    <div className='bg-primary p-2 my-3'>
-      <HeaderCard title={title}/>
-      </div>
-                <Form className='p-4' noValidate='' onSubmit={handleSubmit(onSubmit)}>  
+<Row>
+<Col>
+<fieldset>
+<legend>{title}</legend>
+   <Form className='p-4' noValidate='' onSubmit={handleSubmit(onSubmit)}>  
          <Row >
                 <Col sm="3">
                   <FormGroup className="m-form__group">
@@ -230,8 +229,12 @@ const BulkEssoMulti = ({checkBoxData,title,btnTtitle,type}) => {
                 
               </Row> */}
               </Form>
-             </div>
-    </Fragment>
+</fieldset>
+</Col>
+</Row>
+</Fragment>
+
+
   )
 }
 

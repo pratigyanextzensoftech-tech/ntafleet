@@ -1,42 +1,41 @@
-import React, { Fragment,useState } from 'react'
-import {  Col, Row, Form, FormGroup, InputGroup, InputGroupText,Card,CardBody } from 'reactstrap';
+import React, { Fragment, useState } from 'react'
+import { Col, Row, Form, FormGroup, InputGroup, InputGroupText, Card, CardBody } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
-import { useForm,Controller } from 'react-hook-form';
-import {  optionscountry,optionscompany, supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { useForm, Controller } from 'react-hook-form';
+import { optionscountry, optionscompany, supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import HeaderCard from '../Common/Component/HeaderCard';
-const OldRetailInvoice = ({title,btnTtitle,type}) => {
-     
-             const {
-                register,
-                control,
-                handleSubmit,
-                formState: { errors, isSubmitted, isValid },
-              } = useForm();
-          
-           const onSubmit = (data) => {
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-      };
+const OldRetailInvoice = ({ title, btnTtitle, type }) => {
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitted, isValid },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);  // ✅ This will print your inputs
+    // alert("Form submitted successfully!");
+  };
   return (
     <Fragment>
-         <div style={{border:"1px solid #ccc",padding:"5px 5px",bprderRadius:"3px",marginBottom:"10px"}}>
+      <Row>
+        <Col>
+          <fieldset>
+            <legend>{title}</legend>
+            <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
 
-                    <div className='bg-primary p-2 my-3'>
-      <HeaderCard title={title}/>
-      </div>
-                <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
-
-       <Row className="mt-3">
+              <Row className="mt-3">
                 <Col sm="4">
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Company</InputGroupText>
-                      <Controller name="company" 
+                      <Controller name="company"
                         rules={{ required: "company Name is required" }}
-                      
-                         control={control}
+
+                        control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -61,11 +60,11 @@ const OldRetailInvoice = ({title,btnTtitle,type}) => {
                         name="supplier"
                         rules={{ required: "supplier is required" }}
                         control={control}
-                         defaultValue={supplier[1]}
+                        defaultValue={supplier[1]}
                         render={({ field }) => (
                           <Select
                             {...field}
-                         options={supplier[1]}
+                            options={supplier[1]}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
                           />
@@ -83,16 +82,16 @@ const OldRetailInvoice = ({title,btnTtitle,type}) => {
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Country</InputGroupText>
-                       <Controller
+                      <Controller
                         name="country"
                         rules={{ required: "country is required" }}
-                         defaultValue={type === "single_rack_actual" || type==="bulk_rack_actual" ? [optionscountry[1]] : null}
+                        defaultValue={type === "single_rack_actual" || type === "bulk_rack_actual" ? [optionscountry[1]] : null}
 
                         control={control}
                         render={({ field }) => (
                           <Select
                             {...field}
-                    options={type === "single_rack_actual" || type==="bulk_rack_actual"  ? [optionscountry[1]] : optionscountry}
+                            options={type === "single_rack_actual" || type === "bulk_rack_actual" ? [optionscountry[1]] : optionscountry}
 
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
@@ -113,24 +112,24 @@ const OldRetailInvoice = ({title,btnTtitle,type}) => {
                     <InputGroup>
                       <InputGroupText>Start Date</InputGroupText>
                       <Controller
-            name="startDate"
-            control={control}
-            rules={{ required: "Start Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select start date"
-                className={`form-control `}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-         
+                        name="startDate"
+                        control={control}
+                        rules={{ required: "Start Date is required" }}
+                        render={({ field }) => (
+                          <DatePicker
+                            placeholderText="Select start date"
+                            className={`form-control `}
+                            selected={field.value}
+                            onChange={(date) => field.onChange(date)}
+                          />
+                        )}
+                      />
+
                     </InputGroup>
 
-                     {errors.startDate && (
-            <span className="text-danger">{errors.startDate.message}</span>
-          )}
+                    {errors.startDate && (
+                      <span className="text-danger">{errors.startDate.message}</span>
+                    )}
                   </FormGroup>
                 </Col>
 
@@ -138,24 +137,24 @@ const OldRetailInvoice = ({title,btnTtitle,type}) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>End Date</InputGroupText>
-                   <Controller
-            name="endDate"
-            control={control}
-            rules={{ required: "End Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select end date"
-                className={`form-control digits`}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-         
-                      </InputGroup>
-                       {errors.endDate && (
-            <span className="text-danger">{errors.endDate.message}</span>
-          )}
+                      <Controller
+                        name="endDate"
+                        control={control}
+                        rules={{ required: "End Date is required" }}
+                        render={({ field }) => (
+                          <DatePicker
+                            placeholderText="Select end date"
+                            className={`form-control digits`}
+                            selected={field.value}
+                            onChange={(date) => field.onChange(date)}
+                          />
+                        )}
+                      />
+
+                    </InputGroup>
+                    {errors.endDate && (
+                      <span className="text-danger">{errors.endDate.message}</span>
+                    )}
                   </FormGroup>
 
                 </Col>
@@ -166,9 +165,12 @@ const OldRetailInvoice = ({title,btnTtitle,type}) => {
 
                 </Col>
               </Row>
-              </Form>
-           </div>  
+            </Form>
+          </fieldset>
+        </Col>
+      </Row>
     </Fragment>
+
   )
 }
 

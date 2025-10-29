@@ -9,8 +9,16 @@ const CreateCustomized = () => {
     <Fragment>
          <Breadcrumbs parent='Invoice' title='Create Customized'/>
          <Container fluid={true}>
-           <HeaderCard title="Single Customised Invoice (US)" />
-            <BasicTabCard  tabContent={CreateCustomizedTab}/>  
+          <Row>
+<Col sm="12">
+<Card>
+<HeaderCard title="Single Customised Invoice (US)" />
+<CardBody>
+<BasicTabCard  tabContent={CreateCustomizedTab}/> 
+</CardBody>
+</Card>
+</Col>
+</Row>
            </Container>
            </Fragment>
   )

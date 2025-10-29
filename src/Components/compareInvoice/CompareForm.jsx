@@ -40,7 +40,7 @@ const CompareForm = ({title,btnTtitle,type,btnTtitle1}) => {
     }
     return (
 <>
-<HeaderCard title={title}/>
+ 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                   <Col sm="3">
