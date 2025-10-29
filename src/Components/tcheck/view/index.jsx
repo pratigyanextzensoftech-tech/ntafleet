@@ -3,8 +3,7 @@ import { Breadcrumbs } from '../../../AbstractElements';
 import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import View from './View';
-import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
-import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
+import DataTableComponent from '../../Tables/DataTable/DataTableComponent'; 
 import qs from 'qs'
 import axios from 'axios';
 import { tcheck_invoice } from '../../../api';
@@ -16,7 +15,7 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import usePaginatedTable from '../../../Hooks/usePagination'; // ✅ Correct import
+import usePaginatedTable from '../../../Hooks/usePagination';  
 
 const Index = () => {
 
