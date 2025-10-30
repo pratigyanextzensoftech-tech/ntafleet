@@ -16,12 +16,13 @@
   }
 
    .card-header {
-	background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(191, 235, 253), rgb(77, 131, 189)) repeat scroll 0% 0%;
+	background:linear-gradient(90deg,#22b5d9 0%,#af31d3 88.92%);
 	border-bottom: 1px solid #ecf3fa;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	position: relative;
 	padding: 10px 20px; 
+  color: #fff;
 
     &.card-no-border {
       border-bottom: none !important;
