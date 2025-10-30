@@ -155,12 +155,24 @@ const Index = () => {
           </div>
         ),
       });
-  
+
+
       setTableColumns(cols);
     }, [openRowId]);
-  
+
+    useEffect(() => {
+  if (data?.length) {
+    const normalized = data.map((item) => ({
+      ...item,
+      id: item["ID #"], 
+     
+    }));
+
+    setData(normalized);
+  }
+}, [data]);
     // ✅ Action handlers
-    const handleEdit = (row) => alert("Edit " + row.id); 
+    const handleEdit = (row) => console.log(row); 
     const handleDelete = (row) => alert("Delete " + row.id);  
   return (
     <Fragment>

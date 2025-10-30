@@ -142,8 +142,19 @@ console.log(data)
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  useEffect(() => {
+       if (data?.length) {
+         const normalized = data.map((item) => ({
+           ...item,
+           id: item["Invoice #"], 
+          
+         }));
+     
+         setData(normalized);
+       }
+     }, [data]);
   const handleDelete = (row) => {
+    console.log(row.id)
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,
@@ -155,9 +166,9 @@ console.log(data)
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${APINAME}/${row["Invoice #"]}`)
+        axios.delete(`${APINAME}/${row.id}`)
           .then(() => {
-            setData((prevData) => prevData.filter((item) => item["Invoice #"] !== row["Invoice #"]));
+            setData((prevData) => prevData.filter((item) => item.id !== row.id));
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
           .catch(() => {

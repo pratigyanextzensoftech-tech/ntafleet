@@ -123,12 +123,22 @@ const Index = () => {
 
   // ✅ Action handlers
   const handleEdit = (row) => alert("Edit " + row.id);
- 
+  useEffect(() => {
+     if (data?.length) {
+       const normalized = data.map((item) => ({
+         ...item,
+         id: item["State ID"], 
+        
+       }));
+   
+       setData(normalized);
+     }
+   }, [data]);
 
 const handleDelete = (row) => {
   Swal.fire({
     title: 'Are you sure?',
-    text: `Do you really want to delete state "${row["State ID"]}"?`,
+    text: `Do you really want to delete state "${row.id}"?`,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -138,10 +148,10 @@ const handleDelete = (row) => {
   }).then((result) => {
     if (result.isConfirmed) {
       axios
-        .delete(`${APINAME}/${row["State ID"]}`)
+        .delete(`${APINAME}/${row.id}`)
         .then(() => {
           setData((prevData) =>
-            prevData.filter((item) => item["State ID"] !== row["State ID"])
+            prevData.filter((item) => item.id !== row.id)
           );
           Swal.fire('Deleted!', 'State record deleted successfully.', 'success');
         })

@@ -125,7 +125,17 @@ const Index = () => {
   
       setTableColumns(cols);
     }, [openRowId]);
-  
+    useEffect(() => {
+       if (data?.length) {
+         const normalized = data.map((item) => ({
+           ...item,
+           id: item["Country ID"], 
+          
+         }));
+     
+         setData(normalized);
+       }
+     }, [data]);
     // ✅ Action handlers
     const handleEdit = (row) => alert("Edit " + row.id); 
  const handleDelete = (row) => {
@@ -140,9 +150,9 @@ const Index = () => {
          cancelButtonText: 'Cancel'
        }).then((result) => {
          if (result.isConfirmed) {
-           axios.delete(`${APINAME}/${row["Country ID"]}`)
+           axios.delete(`${APINAME}/${row.id}`)
              .then(() => {
-               setData((prevData) => prevData.filter((item) => item["Country ID"] !== row["Country ID"]));
+               setData((prevData) => prevData.filter((item) => item.id !== row.id));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
              })
              .catch(() => {
