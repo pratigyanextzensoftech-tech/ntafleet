@@ -2,7 +2,7 @@ import React, {Fragment,useEffect,useState} from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
 import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 import CountryForm from './CountryForm';
-
+import Swal from 'sweetalert2';
 //Table
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent'; 
 import HeaderCard from '../../Common/Component/HeaderCard';
@@ -128,8 +128,30 @@ const Index = () => {
   
     // ✅ Action handlers
     const handleEdit = (row) => alert("Edit " + row.id); 
-    const handleDelete = (row) => alert("Delete " + row.id);   
-  return (
+ const handleDelete = (row) => {
+       Swal.fire({
+         title: 'Are you sure?',
+         text: `Do you really want to delete ?`,
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#3085d6',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Yes, delete it!',
+         cancelButtonText: 'Cancel'
+       }).then((result) => {
+         if (result.isConfirmed) {
+           axios.delete(`${APINAME}/${row["Country ID"]}`)
+             .then(() => {
+               setData((prevData) => prevData.filter((item) => item["Country ID"] !== row["Country ID"]));
+               Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+             })
+             .catch(() => {
+               Swal.fire('Error!', 'Failed to delete record.', 'error');
+             });
+         }
+       });
+     }; 
+      return (
     <Fragment>
       <Breadcrumbs parent='Location' title='Manage Country' />
       <Container fluid={true}>

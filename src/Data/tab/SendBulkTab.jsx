@@ -1,9 +1,4 @@
-import SingleRetailVoice from '../../Components/createInvoice/SingleRetailVoice';
-import BulkRetailInvoice from '../../Components/createInvoice/BulkRetailInvoice';
-import BulkRetailMulti from '../../Components/createInvoice/BulkRetailMulti';
-import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
-import { checkBoxData } from '../../Components/Forms/FormWidget/FormSelect2/OptionDatas';
-import SingleEssoForm from '../../Components/createEssoInvoice/SingleEssoForm';
+
 export const SendBulkTab = [
   {
     id: '1',

@@ -1,6 +1,5 @@
 
-import DataTableComponent from '../../Components/Tables/DataTable/DataTableComponent';
-import { tableColumns,dummytabledata } from '../Table/Defaultdata';
+
 export const SendBulkTable = [
   {
     id: '1',

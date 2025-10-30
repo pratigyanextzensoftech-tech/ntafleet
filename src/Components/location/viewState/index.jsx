@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import usePaginatedTable from "../../../Hooks/usePagination";
+import Swal from "sweetalert2";
 //end Table
 const Index = () => {
   const [tableColumns, setTableColumns] = useState([]);
@@ -77,12 +78,12 @@ const Index = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row["State ID"] ? null : row["State ID"])}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row["State ID"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -122,7 +123,35 @@ const Index = () => {
 
   // ✅ Action handlers
   const handleEdit = (row) => alert("Edit " + row.id);
-  const handleDelete = (row) => alert("Delete " + row.id);
+ 
+
+const handleDelete = (row) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you really want to delete state "${row["State ID"]}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axios
+        .delete(`${APINAME}/${row["State ID"]}`)
+        .then(() => {
+          setData((prevData) =>
+            prevData.filter((item) => item["State ID"] !== row["State ID"])
+          );
+          Swal.fire('Deleted!', 'State record deleted successfully.', 'success');
+        })
+        .catch(() => {
+          Swal.fire('Error!', 'Failed to delete state record.', 'error');
+        });
+    }
+  });
+};
+
   return (
     <Fragment>
       <Breadcrumbs parent="Location" title="Manage State" />

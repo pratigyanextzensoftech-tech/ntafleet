@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import qs from "qs";
-import Swal from "sweetalert2";
+
 export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters = {} }) {
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
@@ -67,32 +67,6 @@ export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters =
     setCurrentPage(1);
     fetchData(1, perPage, formData);
   };
-   const handleDelete = (row) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `Do you really want to delete ?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${apiUrl}/${row.id}`)
-          .then(() => {
-            setData((prevData) =>
-              prevData.filter((item) => item.id !== row.id)
-            );
-            Swal.fire("Deleted!", "Record deleted successfully.", "success");
-          })
-          .catch(() => {
-            Swal.fire("Error!", "Failed to delete record.", "error");
-          });
-      }
-    });
-  };
 
   return {
     data,
@@ -105,6 +79,5 @@ export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters =
     handleSearch,
     fetchData,
     setData,
-    handleDelete
   };
 }
