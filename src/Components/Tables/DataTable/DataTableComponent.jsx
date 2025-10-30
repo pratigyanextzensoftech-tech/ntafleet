@@ -91,7 +91,8 @@ const DataTableComponent = ({
         <Col sm="12">
           <Card>
             {title && <HeaderCard title={title} />}
-            <CardBody>
+            <CardBody >
+              
               <DataTable
                 data={data}
                 columns={tableColumns}
