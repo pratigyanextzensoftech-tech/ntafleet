@@ -91,13 +91,8 @@ const DataTableComponent = ({
         <Col sm="12">
           <Card>
             {title && <HeaderCard title={title} />}
-<<<<<<< HEAD
-            <CardBody >
-              
-=======
             <CardBody>
                <div style={{ overflowX: "auto" }}>
->>>>>>> 932308c7898455b6a94b01a3fb03a315a7a55581
               <DataTable
                 data={data}
                 columns={tableColumns}
