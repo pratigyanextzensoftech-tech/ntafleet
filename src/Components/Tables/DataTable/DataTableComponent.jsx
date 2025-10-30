@@ -92,6 +92,7 @@ const DataTableComponent = ({
           <Card>
             {title && <HeaderCard title={title} />}
             <CardBody>
+               <div style={{ overflowX: "auto" }}>
               <DataTable
                 data={data}
                 columns={tableColumns}
@@ -110,6 +111,7 @@ const DataTableComponent = ({
                 progressPending={loading}
                 progressComponent={<Loader loading={loading} />}
               />
+              </div>
               {totalData && (
                 <Row>
                   <Col sm="12">
