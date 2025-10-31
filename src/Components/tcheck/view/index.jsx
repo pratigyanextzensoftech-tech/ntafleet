@@ -61,7 +61,17 @@ const Index = () => {
     setData,
   } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap });
 
-
+ useEffect(() => {
+       if (data?.length) {
+         const normalized = data.map((item) => ({
+           ...item,
+           id: item["Invoice #"], 
+          
+         }));
+     
+         setData(normalized);
+       }
+     }, [data]);
 
   // ✅ Build column definitions for DataTable
   useEffect(() => {

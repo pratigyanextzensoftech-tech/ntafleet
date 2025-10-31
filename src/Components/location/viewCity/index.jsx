@@ -156,7 +156,13 @@ const Index = () => {
             </Card>
           </Col>
         </Row>
-        <DataTableComponent title="City List " tableColumns={tableColumns} tableData={data} />
+        <DataTableComponent title="City List" tableColumns={tableColumns} tableData={data}   progressPending={loading}
+          pagination
+                    loading={loading}
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}/>
       </Container>
     </Fragment>
   );

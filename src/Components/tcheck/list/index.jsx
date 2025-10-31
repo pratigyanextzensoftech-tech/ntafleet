@@ -16,6 +16,7 @@ const Index = () => {
   const [tableColumns, setTableColumns] = useState([]); // ✅ Un-commented
 
   const columnsMap = {
+    "Id":"id",
     "CreateId": "card_no",
     "Company": "company_name",
     "Create Date": "create_date",
@@ -42,9 +43,19 @@ const Index = () => {
     setData,
   } = usePaginatedTable({ apiUrl: tcheck, columnsMap });
  
-
+useEffect(() => {
+       if (data?.length) {
+         const normalized = data.map((item) => ({
+           ...item,
+           id: item["Id"], 
+          
+         }));
+     
+         setData(normalized);
+       }
+     }, [data]);
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
+    const cols = Object.keys(columnsMap).filter((key) => key !== "Id").map((key) => ({
       name: key,
       selector: (row) => row[key],
       sortable: true,
