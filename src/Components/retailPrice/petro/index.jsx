@@ -1,11 +1,105 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useState,useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import PetroForm from "./PetroForm";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
-const index = () => {
+import Swal from 'sweetalert2';
+import qs from "qs";
+import axios from "axios";
+import { petro_retail as APINAME } from "../../../api";
+import {
+  FaDownload,
+  FaEye,
+  FaEnvelope,
+  FaFileInvoice,
+  FaTrashAlt,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import usePaginatedTable from '../../../Hooks/usePagination';
+const Index = () => {
+     const [openRowId, setOpenRowId] = useState(null);
+         const [tableColumns, setTableColumns] = useState([]);
+        const columnsMap = {
+        "Price_Date": "cardNumber",
+        "Location Name": "Site_Name",
+        "City": "Site_City",
+        "State": "Site_State",
+        "Country": "Site_Country",
+        "Price": "Site_Price",
+        "Added_Date": "city",
+      
+      };
+       
+         const {
+           data,
+           totalRows,
+           loading,
+           handlePageChange,
+           handlePerRowsChange,
+           handleSearch, // ✅ Added
+           setData,
+         } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+         useEffect(() => {
+           const cols = Object.keys(columnsMap).map((key) => ({
+             name: key,
+             selector: (row) => row[key],
+             sortable: true,
+             wrap: true,
+           }));
+       
+         
+       
+           setTableColumns(cols);
+         }, [openRowId]);
+         
+         useEffect(() => {
+           const handleClickOutside = (event) => {
+             if (!event.target.closest(".dropdown-action")) {
+               setOpenRowId(null);
+             }
+           };
+           document.addEventListener("mousedown", handleClickOutside);
+           return () => document.removeEventListener("mousedown", handleClickOutside);
+         }, []);
+         useEffect(() => {
+        if (data?.length) {
+          const normalized = data.map((item) => ({
+            ...item,
+            id: item["City ID"], 
+           
+          }));
+      
+          setData(normalized);
+        }
+      }, [data]);
+       const handleEdit=(row)=>{
+        console.log(row)
+       }
+         const handleDelete = (row) => {
+           Swal.fire({
+             title: 'Are you sure?',
+             text: `Do you really want to delete ?`,
+             icon: 'warning',
+             showCancelButton: true,
+             confirmButtonColor: '#3085d6',
+             cancelButtonColor: '#d33',
+             confirmButtonText: 'Yes, delete it!',
+             cancelButtonText: 'Cancel'
+           }).then((result) => {
+             if (result.isConfirmed) {
+               axios.delete(`${APINAME}/${row.id}`)
+                 .then(() => {
+                   setData((prevData) => prevData.filter((item) => item.id !== row.id));
+                   Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+                 })
+                 .catch(() => {
+                   Swal.fire('Error!', 'Failed to delete record.', 'error');
+                 });
+             }
+           });
+         };
   return (
     <Fragment>
       <Breadcrumbs parent="Retail Prices" title="Petro Retail Price" />
@@ -23,12 +117,18 @@ const index = () => {
 
         <DataTableComponent
           title="Petro Retail List "
-          tableColumns={tableColumns}
-          tableData={dummytabledata}
+        tableColumns={tableColumns} tableData={data}
+          progressPending={loading}
+          pagination
+           loading={loading}
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
         />
       </Container>
     </Fragment>
   );
 };
 
-export default index;
+export default Index;

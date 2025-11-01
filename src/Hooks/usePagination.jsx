@@ -33,7 +33,6 @@ export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters =
         Object.keys(columnsMap).forEach((key) => {
           newRow[key] = row[columnsMap[key]];
         });
-        newRow.id = row.id || row.card_no || Math.random();
         return newRow;
       });
 

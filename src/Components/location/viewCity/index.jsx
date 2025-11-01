@@ -73,7 +73,7 @@ const Index = () => {
                  <button
                    className="dropdown-item d-flex align-items-center text-primary"
                    style={{ padding: "8px 12px", gap: "8px" }}
-   
+      onClick={() => handleEdit(row)}
                  >
                    <FaEnvelope /> Edit
                  </button>
@@ -94,7 +94,7 @@ const Index = () => {
    
        setTableColumns(cols);
      }, [openRowId]);
-   
+     
      useEffect(() => {
        const handleClickOutside = (event) => {
          if (!event.target.closest(".dropdown-action")) {
@@ -104,7 +104,20 @@ const Index = () => {
        document.addEventListener("mousedown", handleClickOutside);
        return () => document.removeEventListener("mousedown", handleClickOutside);
      }, []);
-   
+     useEffect(() => {
+    if (data?.length) {
+      const normalized = data.map((item) => ({
+        ...item,
+        id: item["City ID"], 
+       
+      }));
+  
+      setData(normalized);
+    }
+  }, [data]);
+   const handleEdit=(row)=>{
+    console.log(row)
+   }
      const handleDelete = (row) => {
        Swal.fire({
          title: 'Are you sure?',
@@ -117,9 +130,9 @@ const Index = () => {
          cancelButtonText: 'Cancel'
        }).then((result) => {
          if (result.isConfirmed) {
-           axios.delete(`${APINAME}/${row["City ID"]}`)
+           axios.delete(`${APINAME}/${row.id}`)
              .then(() => {
-               setData((prevData) => prevData.filter((item) => item["City ID"] !== row["City ID"]));
+               setData((prevData) => prevData.filter((item) => item.id !== row.id));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
              })
              .catch(() => {
@@ -142,7 +155,13 @@ const Index = () => {
             </Card>
           </Col>
         </Row>
-        <DataTableComponent title="City List " tableColumns={tableColumns} tableData={data} />
+        <DataTableComponent title="City List" tableColumns={tableColumns} tableData={data}   progressPending={loading}
+          pagination
+                    loading={loading}
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}/>
       </Container>
     </Fragment>
   );
