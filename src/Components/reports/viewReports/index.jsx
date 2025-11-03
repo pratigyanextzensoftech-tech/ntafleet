@@ -75,9 +75,14 @@ reportList : {
       <DataTableComponent
         title={tab.label}
         tableColumns={createColumns(tab.map, tab.data.data,{
-      withCheckbox: false, 
-      onDelete: (row) => console.log("Delete:", row),
-      onDownload: (row) => console.log("Download:", row),
+    withCheckbox: false,         // ✅ show checkboxes
+    withActions: false,          // ✅ show action column
+    showDownload: true,         // ✅ conditionally show download
+    showDelete: true,          // ❌ hide delete
+    onDownload: (row) => console.log("Download:", row),
+    onDelete: (row) => console.log("Delete:", row),
+
+    
     })}
         tableData={tab.data.data}
         loading={tab.data.loading}

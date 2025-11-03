@@ -101,10 +101,10 @@ const pricingpdf = {
       <DataTableComponent
         title={tab.label}
         tableColumns={createColumns(tab.map, tab.data,{
-      withCheckbox: true, 
-      withActions:true,
-      onDelete: (row) => console.log("Delete:", row),
-      onDownload: (row) => console.log("Download:", row),
+      withCheckbox: true,         // ✅ show checkboxes
+    withActions: true,          // ✅ show action column
+    showDownload: false,         // ✅ conditionally show download
+    showDelete: false,          // ❌ hide delete
     })}
         tableData={tab.data.data}
         loading={tab.data.loading}

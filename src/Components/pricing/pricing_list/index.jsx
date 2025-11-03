@@ -210,7 +210,12 @@ const tabs = [
     component: (
       <DataTableComponent
         title={tab.label}
-        tableColumns={createColumns(tab.map, tab.data.data, { withCheckbox: true })}
+        tableColumns={createColumns(tab.map, tab.data.data, { withCheckbox: true ,
+    withActions: false,          // ✅ show action column
+    showDownload: false,         // ✅ conditionally show download
+    showDelete: false,          // ❌ hide delete
+
+        })}
         tableData={tab.data.data}
         loading={tab.data.loading}
         pagination
