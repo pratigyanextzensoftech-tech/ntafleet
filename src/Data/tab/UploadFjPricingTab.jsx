@@ -38,6 +38,7 @@ export const UploadFjPricingTab = [
       <TaPetro
         title="Upload Ta-Petro Pricing (Capped)"
         btnTtitle="Upload Pricing"
+        type="taPetroAtual"
       />
     ),
   },

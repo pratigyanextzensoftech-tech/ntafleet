@@ -6,9 +6,9 @@ export default function useSelectableColumns() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
 
-  const formatDate = (value, withTime = true) => {
+  const formatDate = (value, withTime = false) => {
     if (!value) return "-";
-    const format = withTime ? "DD-MM-YYYY HH:mm" : "DD-MM-YYYY";
+    const format = withTime ? "DD-MM-YYYY HH:mm" : "YYYY-MM-DD";
     return dayjs(value).isValid() ? dayjs(value).format(format) : "-";
   };
 

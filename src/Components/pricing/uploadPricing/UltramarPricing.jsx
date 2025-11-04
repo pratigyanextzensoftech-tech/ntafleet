@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import {
   Col,
   Row,
@@ -8,25 +8,123 @@ import {
   InputGroupText,
   Input,
 } from "reactstrap";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { Upload_Supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-
+import Papa from "papaparse";
+import axios from "axios";
+import { ul_pricing } from "../../../api";
+import dayjs from "dayjs";
+import { toast } from "react-toastify";
 const Ultramar = ({ title, btnTtitle }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  const [csvData, setCsvData] = useState([]);
+    const [file, setFile] = useState(null);
+    const [pricingDate, setPricingDate] = useState(new Date());
+    const { data: suppliers, loading } = useSupplier();
+  
+    const {
+      control,
+      setValue,
+      handleSubmit,
+      formState: { errors },
+    } = useForm({
+      defaultValues: {
+        supplier: null,
+        pricingDate: new Date(),
+      },
+    });
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+useEffect(() => {
+    if (suppliers.length > 0) {
+      setValue("supplier", suppliers[9]); // pick first by default
+    }
+  }, [suppliers, setValue]);
+
+  // 🧩 Handle CSV file upload
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setFile(file);
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        console.log("Parsed CSV Data:", results.data);
+        setCsvData(results.data);
+      },
+    });
   };
+
+const formatDate = (value) => {
+  if (!value) return "-";
+  return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "-";
+};
+
+  // 🧰 Key rename logic
+  const keyMap = {
+    "SITE NUMBER": "site",
+    Diesel: "Diesel",
+    "Prov": "PROV",
+    "Old Price": "Old_Price",
+    "New Price": "New_Price",
+    "Carbon Tax": "Carbon_Tax",
+    PFT: "PFT",
+    "Fed Ex": "Fed_Ex",
+    "Sub Total": "Sub Total",
+    "GST / HST": "GST_HST",
+    "PST": "PST",
+    "Total": "Total",
+  };
+
+  const renameKeys = (row, keyMap) => {
+  const newRow = {};
+  for (const key in row) {
+    const trimmedKey = key.trim(); // 🧹 remove leading/trailing spaces
+    const newKey = keyMap[trimmedKey] || trimmedKey;
+    newRow[newKey] = row[key];
+  }
+  return newRow;
+};
+
+  // 🧾 Handle form submission
+  const onSubmit = async (data) => {
+    if (!file) {
+      alert("Please upload a CSV file first.");
+      return;
+    }
+
+    // ✅ Transform the CSV data
+    const enrichedData = csvData.map((row) => {
+      const renamed = renameKeys(row, keyMap);
+      return {
+        ...renamed,
+        supplier: data.supplier?.label,
+        pricing_date: formatDate(pricingDate),
+        idby: 1,
+        dated: Date.now(),
+      };
+    });
+    
+
+    console.log("🧾 Final Data Sent:", enrichedData);
+
+    try {
+      const response = await axios.post(ul_pricing, enrichedData);
+      console.log("✅ Upload Success:", response.data);
+      toast.success(`Upload successful! ${response.data.count || ""}`)
+      // alert(`Upload successful! ${response.data.count || ""}`);
+    } catch (error) {
+      console.error("❌ Upload Error:", error);
+            toast.error(`Upload failed: ${error.response?.data?.error || error.message}`)
+
+      // alert(`Upload failed: ${error.response?.data?.error || error.message}`);
+    }
+  };
+
   return (
     <Fragment>
       <Row>
@@ -47,9 +145,11 @@ const Ultramar = ({ title, btnTtitle }) => {
                     </Col>
                     <Col className="px-0" sm="9">
                       <Input
+                          type="file"
+                        className="form-control"
                         style={{ border: "1px solid #ccc" }}
-                        className="form-control w-100c "
-                        type="file"
+                        accept=".csv"
+                        onChange={handleFileChange}
                       />
                     </Col>
                   </Row>
@@ -62,18 +162,23 @@ const Ultramar = ({ title, btnTtitle }) => {
                           <InputGroupText>Pricing Date</InputGroupText>
                         </Col>
                         <Col sm="9">
-                          <Controller
-                            name="pricingDate"
-                            control={control}
-                            rules={{ required: " Required" }}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                              />
-                            )}
-                          />
+                        <Controller
+                          name="pricingDate"
+                          control={control}
+                          rules={{ required: "Pricing Date is required" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              className="form-control"
+                              selected={pricingDate}
+                              onChange={(date) => {
+                                setPricingDate(date);
+                                field.onChange(date);
+                              }}
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="Select Pricing Date"
+                            />
+                          )}
+                        />
                         </Col>
                       </InputGroup>
 
@@ -93,7 +198,6 @@ const Ultramar = ({ title, btnTtitle }) => {
                         name="supplier"
                         control={control}
                         rules={{ required: "Supplier is required" }}
-                        defaultValue={Upload_Supplier[7]}
                         render={({ field }) => (
                           <Select
                             {...field}
