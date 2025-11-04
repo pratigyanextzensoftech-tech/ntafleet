@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -12,93 +12,131 @@ import { useSupplier } from "../../../Hooks/Dropdowns";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-import Papa from "papaparse";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import * as XLSX from "xlsx";
 import axios from "axios";
 import { ul_pricing } from "../../../api";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
-const Ultramar = ({ title, btnTtitle }) => {
-  const [csvData, setCsvData] = useState([]);
-    const [file, setFile] = useState(null);
-    const [pricingDate, setPricingDate] = useState(new Date());
-    const { data: suppliers, loading } = useSupplier();
-  
-    const {
-      control,
-      setValue,
-      handleSubmit,
-      formState: { errors },
-    } = useForm({
-      defaultValues: {
-        supplier: null,
-        pricingDate: new Date(),
-      },
-    });
 
-useEffect(() => {
+const Ultramar = ({ title, btnTtitle }) => {
+  const [excelData, setExcelData] = useState([]);
+  const [file, setFile] = useState(null);
+  const [pricingDate, setPricingDate] = useState(new Date());
+  const { data: suppliers, loading } = useSupplier();
+
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      supplier: null,
+      pricingDate: new Date(),
+    },
+  });
+
+  useEffect(() => {
     if (suppliers.length > 0) {
-      setValue("supplier", suppliers[9]); // pick first by default
+      setValue("supplier", suppliers[9]); // default supplier
     }
   }, [suppliers, setValue]);
 
-  // 🧩 Handle CSV file upload
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setFile(file);
-
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        console.log("Parsed CSV Data:", results.data);
-        setCsvData(results.data);
-      },
-    });
-  };
-
-const formatDate = (value) => {
-  if (!value) return "-";
-  return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "-";
-};
-
-  // 🧰 Key rename logic
+  // ✅ Define key mappings (uppercase)
   const keyMap = {
     "SITE NUMBER": "site",
-    Diesel: "Diesel",
-    "Prov": "PROV",
-    "Old Price": "Old_Price",
-    "New Price": "New_Price",
-    "Carbon Tax": "Carbon_Tax",
-    PFT: "PFT",
-    "Fed Ex": "Fed_Ex",
-    "Sub Total": "Sub Total",
+    "DIESEL": "Diesel",
+    "PROV": "PROV",
+    "OLD PRICE": "Old_Price",
+    "NEW PRICE": "New_Price",
+    "CARBON TAX": "Carbon_Tax",
+    "PFT": "PFT",
+    "FED EX": "Fed_Ex",
+    "SUB TOTAL": "Sub_Total",
     "GST / HST": "GST_HST",
     "PST": "PST",
-    "Total": "Total",
+    "TOTAL": "Total",
   };
 
-  const renameKeys = (row, keyMap) => {
-  const newRow = {};
-  for (const key in row) {
-    const trimmedKey = key.trim(); // 🧹 remove leading/trailing spaces
-    const newKey = keyMap[trimmedKey] || trimmedKey;
-    newRow[newKey] = row[key];
-  }
-  return newRow;
+  // ✅ Excel file handler
+ const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  setFile(file);
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const binaryStr = event.target.result;
+    const workbook = XLSX.read(binaryStr, { type: "binary" });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    // Convert entire sheet into an array of arrays
+    const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+    // 🔍 Find the header row by looking for one that contains "SITE" or "Diesel"
+    let headerRowIndex = sheetData.findIndex(
+      (row) =>
+        row.some((cell) =>
+          typeof cell === "string" &&
+          (cell.toLowerCase().includes("site") ||
+            cell.toLowerCase().includes("diesel"))
+        )
+    );
+
+    if (headerRowIndex === -1) headerRowIndex = 1; // fallback
+
+    const headers = sheetData[headerRowIndex];
+    const rows = sheetData.slice(headerRowIndex + 1);
+
+    // Map rows into objects
+    const jsonData = rows.map((row) => {
+      const obj = {};
+      headers.forEach((header, i) => {
+        if (header && header.trim() !== "") {
+          obj[header.trim()] = row[i];
+        }
+      });
+      return obj;
+    });
+
+    console.log("🧩 Detected Headers:", headers);
+    console.log("✅ Parsed Excel Rows:", jsonData);
+
+    setExcelData(jsonData);
+  };
+
+  reader.readAsBinaryString(file);
 };
 
-  // 🧾 Handle form submission
+
+  // ✅ Normalize and rename keys
+  const renameKeys = (row, keyMap) => {
+    const newRow = {};
+    for (const key in row) {
+      const normalizedKey = key.trim().toUpperCase();
+      const newKey = keyMap[normalizedKey] || key.trim();
+      newRow[newKey] = row[key];
+    }
+    return newRow;
+  };
+
+  // ✅ Format date
+  const formatDate = (value) => {
+    if (!value) return "-";
+    return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "-";
+  };
+
+  // ✅ Form submission
   const onSubmit = async (data) => {
     if (!file) {
-      alert("Please upload a CSV file first.");
+      alert("Please upload an Excel file first.");
       return;
     }
 
-    // ✅ Transform the CSV data
-    const enrichedData = csvData.map((row) => {
+    const enrichedData = excelData.map((row) => {
       const renamed = renameKeys(row, keyMap);
       return {
         ...renamed,
@@ -108,20 +146,18 @@ const formatDate = (value) => {
         dated: Date.now(),
       };
     });
-    
 
     console.log("🧾 Final Data Sent:", enrichedData);
 
     try {
       const response = await axios.post(ul_pricing, enrichedData);
       console.log("✅ Upload Success:", response.data);
-      toast.success(`Upload successful! ${response.data.count || ""}`)
-      // alert(`Upload successful! ${response.data.count || ""}`);
+      toast.success(`Upload successful! ${response.data.count || ""}`);
     } catch (error) {
       console.error("❌ Upload Error:", error);
-            toast.error(`Upload failed: ${error.response?.data?.error || error.message}`)
-
-      // alert(`Upload failed: ${error.response?.data?.error || error.message}`);
+      toast.error(
+        `Upload failed: ${error.response?.data?.error || error.message}`
+      );
     }
   };
 
@@ -131,37 +167,34 @@ const formatDate = (value) => {
         <Col>
           <fieldset>
             <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
+            <Form className="px-2" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
+                {/* 🗂 File Upload */}
                 <Col sm="3">
                   <Row>
                     <Col className="pe-0" sm="3">
-                      {" "}
                       <InputGroupText>File</InputGroupText>
                     </Col>
                     <Col className="px-0" sm="9">
                       <Input
-                          type="file"
+                        type="file"
                         className="form-control"
                         style={{ border: "1px solid #ccc" }}
-                        accept=".csv"
+                        accept=".xls, .xlsx"
                         onChange={handleFileChange}
                       />
                     </Col>
                   </Row>
                 </Col>
+
+                {/* 📅 Pricing Date */}
                 <Col sm="3">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col sm="3">
-                          <InputGroupText>Pricing Date</InputGroupText>
-                        </Col>
-                        <Col sm="9">
+                  <FormGroup>
+                    <InputGroup>
+                      <Col sm="4" className="pe-0">
+                        <InputGroupText>Pricing Date</InputGroupText>
+                      </Col>
+                      <Col sm="8">
                         <Controller
                           name="pricingDate"
                           control={control}
@@ -179,19 +212,19 @@ const formatDate = (value) => {
                             />
                           )}
                         />
-                        </Col>
-                      </InputGroup>
-
-                      {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Row>
+                      </Col>
+                    </InputGroup>
+                    {errors.pricingDate && (
+                      <span className="text-danger">
+                        {errors.pricingDate.message}
+                      </span>
+                    )}
+                  </FormGroup>
                 </Col>
+
+                {/* 🏢 Supplier Dropdown */}
                 <Col sm="3">
-                  <FormGroup className="m-form__group">
+                  <FormGroup>
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
@@ -203,15 +236,16 @@ const formatDate = (value) => {
                             {...field}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
+                            options={suppliers}
                             onChange={(selectedOption) =>
                               field.onChange(selectedOption)
                             }
                             value={field.value}
+                            isLoading={loading}
                           />
                         )}
                       />
                     </InputGroup>
-
                     {errors.supplier && (
                       <span className="text-danger">
                         {errors.supplier?.message}
@@ -220,6 +254,7 @@ const formatDate = (value) => {
                   </FormGroup>
                 </Col>
 
+                {/* 🚀 Submit */}
                 <Col sm="3">
                   <div className="text-end">
                     <Btn

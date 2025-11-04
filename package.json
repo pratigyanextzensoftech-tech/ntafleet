@@ -96,7 +96,8 @@
     "styled-components": "^5.3.10",
     "sweetalert2": "^11.15.2",
     "web-vitals": "^3.3.1",
-    "world-map-geojson": "^1.0.2"
+    "world-map-geojson": "^1.0.2",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
