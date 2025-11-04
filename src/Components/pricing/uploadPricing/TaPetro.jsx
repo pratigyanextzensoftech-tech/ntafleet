@@ -23,7 +23,7 @@ const TaPetro = ({ title, btnTtitle, type }) => {
   const [excelData, setExcelData] = useState([]);
   const [file, setFile] = useState(null);
   const [pricingDate, setPricingDate] = useState(new Date());
-  const { data: suppliers, loading } = useSupplier();
+  const {data: suppliers, loading } = useSupplier();
 
   const {
     control,

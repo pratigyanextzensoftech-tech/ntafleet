@@ -1,10 +1,34 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-import { FaDownload, FaTrash } from "react-icons/fa";
-
+import {
+  FaDownload,
+  FaTrash,
+  FaFilePdf,
+  FaEnvelope,
+  FaEnvelopeOpenText,
+} from "react-icons/fa";
 export default function useSelectableColumns() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+    const [openRowId, setOpenRowId] = useState(null); // ✅ added
+
+  // ✅ Dummy handlers (replace later with real ones)
+  const handleViewPdf = (row) => {
+    console.log("View PDF clicked for:", row);
+  };
+
+  const handleAdminPdf = (row) => {
+    console.log("View Admin PDF clicked for:", row);
+  };
+
+  const handleEmailPdf = (row) => {
+    console.log("Email PDF clicked for:", row);
+  };
+
+  const handleTestEmailPdf = (row) => {
+    console.log("Test Email PDF clicked for:", row);
+  };
+
 
   const formatDate = (value, withTime = false) => {
     if (!value) return "-";
@@ -44,7 +68,7 @@ console.log(withActions,"action")
       cols.push({
         name: (
           <div className="d-flex align-items-center">
-            <span className="me-2 fw-bold">Action</span>
+            <span className="me-2 fw-bold">Delete</span>
             <input
               type="checkbox"
               checked={selectAll}
@@ -66,48 +90,77 @@ console.log(withActions,"action")
       });
     } 
     // ✅ Actions Dropdown (if needed)
-    else if (withActions) {
-      cols.push({
-        name: "Action",
-        cell: (row) => (
-          <div className="d-flex align-items-center gap-3">
-           
-              <span
-                className="text-primary d-flex align-items-center"
-                style={{ cursor: "pointer" }}
-                onClick={() => onDownload(row)}
-              >
-                <FaDownload className="me-1" /> View Pdf
-              </span>
-          
-           
-              <button
-                className="btn btn-sm btn-danger d-flex align-items-center gap-1"
-                onClick={() => onDelete(row)}
-              >
-                <FaTrash /> View Admi  Pdf
-              </button>
-                <button
-                className="btn btn-sm btn-danger d-flex align-items-center gap-1"
-                onClick={() => onDelete(row)}
-              >
-                <FaTrash /> Email Pricing Pdf
-              </button>
-                <button
-                className="btn btn-sm btn-danger d-flex align-items-center gap-1"
-                onClick={() => onDelete(row)}
-              >
-                <FaTrash /> Testing Email  Pricing Pdf
-              </button>
-          
+   if (withActions) {
+  cols.push({
+    name: "Action",
+    cell: (row) => (
+      <div className="position-relative dropdown-action">
+        {/* Toggle Button */}
+        <button
+          className="btn btn-sm btn-primary px-2"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenRowId(openRowId === row.id ? null : row.id);
+          }}
+        >
+          Actions
+        </button>
+
+        {/* Dropdown Menu */}
+        {openRowId === row.id && (
+          <div
+            className="position-absolute bg-white border rounded shadow"
+            style={{
+              zIndex: 1000,
+              right: 0,
+              marginTop: 5,
+              minWidth: 180,
+              padding: "5px 0",
+            }}
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+          >
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => handleViewPdf(row)}
+            >
+              <FaDownload /> View PDF
+            </button>
+
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => handleAdminPdf(row)}
+            >
+              <FaFilePdf /> View Admin PDF
+            </button>
+
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => handleEmailPdf(row)}
+            >
+              <FaEnvelope /> Email Pricing PDF
+            </button>
+
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => handleTestEmailPdf(row)}
+            >
+              <FaEnvelopeOpenText /> Testing Email Pricing PDF
+            </button>
           </div>
-        ),
-        width: "220px",
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
-      });
-    } 
+        )}
+      </div>
+    ),
+    width: "220px",
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  });
+}
+
     // ✅ Separate columns for Download & Delete
     else {
       if (onDownload) {

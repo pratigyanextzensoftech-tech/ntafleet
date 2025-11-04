@@ -16,7 +16,7 @@ import DatePicker from "react-datepicker";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import * as XLSX from "xlsx";
 import axios from "axios";
-import { ul_pricing } from "../../../api";
+import { ul_pricing_upload } from "../../../api";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 
@@ -47,17 +47,17 @@ const Ultramar = ({ title, btnTtitle }) => {
   // ✅ Define key mappings (uppercase)
   const keyMap = {
     "SITE NUMBER": "site",
-    "DIESEL": "Diesel",
-    "PROV": "PROV",
-    "OLD PRICE": "Old_Price",
-    "NEW PRICE": "New_Price",
-    "CARBON TAX": "Carbon_Tax",
-    "PFT": "PFT",
-    "FED EX": "Fed_Ex",
-    "SUB TOTAL": "Sub_Total",
-    "GST / HST": "GST_HST",
-    "PST": "PST",
-    "TOTAL": "Total",
+    "DIESEL": "diesel",
+    "PROV": "prov",
+    "OLD PRICE": "old_price",
+    "NEW PRICE": "new_price",
+    "CARBON TAX": "carbon_tax",
+    "PFT": "pft",
+    "FED EX": "fed_ex",
+    "SUB TOTAL": "sub_total",
+    "GST / HST": "gst_hst",
+    "PST": "pst",
+    "TOTAL": "total",
   };
 
   // ✅ Excel file handler
@@ -150,7 +150,7 @@ const Ultramar = ({ title, btnTtitle }) => {
     console.log("🧾 Final Data Sent:", enrichedData);
 
     try {
-      const response = await axios.post(ul_pricing, enrichedData);
+      const response = await axios.post(ul_pricing_upload, enrichedData);
       console.log("✅ Upload Success:", response.data);
       toast.success(`Upload successful! ${response.data.count || ""}`);
     } catch (error) {

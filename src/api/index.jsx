@@ -48,6 +48,7 @@ export const ta_pricing_upload = `${baseurl}/api/ta_pricing/upload`;
 export const ta_pricing_actual = `${baseurl}/api/ta_pricing_actual`;
 export const ta_pricing_actual_upload = `${baseurl}/api/ta_pricing_actual/upload`;
 export const ul_pricing = `${baseurl}/api/ul_pricing`;
+export const ul_pricing_upload = `${baseurl}/api/ul_pricing/upload`;
 export const love_pricing = `${baseurl}/api/love_pricing`;
 export const love_pricing_actual = `${baseurl}/api/love_pricing_actual`;
 export const esso_pricing = `${baseurl}/api/esso_pricing`;
