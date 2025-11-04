@@ -5,7 +5,118 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import { SinglepricingTableTab } from "../../../Data/tab/SinglePricingTableTab";
 import { SinglepricingTab } from "../../../Data/tab/SinglePricingTab";
-const index = () => {
+import useSelectableColumns from "../../../Hooks/useSelectableColumns";
+import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
+import {
+  ta_pricing_pdf,pricing_pdf as pricing_pdf_Api,love_pricing_pdf,ul_pricing_pdf,esso_pricing_pdf
+} from "../../../api";
+import usePaginatedTable from "../../../Hooks/usePagination";
+const Index = () => {
+  const { createColumns } = useSelectableColumns();
+const pricingpdf = {
+  id: "id",
+  "ID#": "id",
+  "Company": "company_name",
+  "Pricing Date": "pricing_date",
+  "Supplier": "supplier",
+  "Entry_Count": "entry_count",
+  "Added_By": "idby",
+  "Added_On": "added_on",
+  "Mailed_By": "mailby",
+  "Mailed_On": "mail_on",
+}
+
+
+
+  
+      
+   const pricingPdfData= usePaginatedTable({
+         apiUrl: pricing_pdf_Api,
+         columnsMap: pricingpdf,
+       });
+       const tapetroPdf = usePaginatedTable({
+         apiUrl:ta_pricing_pdf ,
+         columnsMap: pricingpdf,
+       });
+       const tapetroPdfActual = usePaginatedTable({
+         apiUrl: ta_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
+         const essoPdfWithoutTax = usePaginatedTable({
+         apiUrl: esso_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
+        const essoPdf = usePaginatedTable({
+         apiUrl: esso_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
+         const lovePdf = usePaginatedTable({
+         apiUrl: love_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
+         const lovePdfActual = usePaginatedTable({
+         apiUrl: love_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
+         const ulPdf = usePaginatedTable({
+         apiUrl: ul_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
+        
+  const tabs = [
+    { id: "1", label: "Flying J Pdf", data: pricingPdfData, map: pricingpdf },
+    { id: "2", label:   (
+      <>
+       Ta-Petro Pdf  - <strong> [Capped]</strong>
+      </>
+    ), data:tapetroPdf, map:  pricingpdf},
+    { id: "3", label:  (
+      <>
+       Ta-Petro Pdf - <strong> [Actual]</strong>
+      </>
+    ), data: tapetroPdfActual, map: pricingpdf },
+   {
+     id: "4", label: " Esso Pdf (without Text) ", data: essoPdfWithoutTax, map: pricingpdf },
+      {
+     id: "5", label: " Esso Pdf (with Text)", data: essoPdf, map: pricingpdf },
+     {
+     id: "6", label:(
+      <>
+       Love Pdf  - <strong> [Capped]</strong>
+      </>
+    ), data: lovePdf, map: pricingpdf }, 
+     {
+     id: "7", label:(
+      <>
+      Love Pdf  - <strong> [Actual]</strong>
+      </>
+    ), data: lovePdfActual, map: pricingpdf },
+    {
+     id: "8", label: " Ultramar Pdf", data: ulPdf, map: pricingpdf },
+  ];
+   const pricingpdfTab = tabs.map((tab) => ({
+    id: tab.id,
+    label: tab.label,
+    component: (
+      <DataTableComponent
+        title={tab.label}
+        tableColumns={createColumns(tab.map, tab.data,{
+      withCheckbox: true, 
+      withActions:true,
+      onDelete: (row) => console.log("Delete:", row),
+      onDownload: (row) => console.log("Download:", row),
+    })}
+        tableData={tab.data.data}
+        loading={tab.data.loading}
+        pagination
+        paginationServer
+        paginationTotalRows={tab.data.totalRows}
+        onChangeRowsPerPage={tab.data.handlePerRowsChange}
+        onChangePage={tab.data.handlePageChange}
+      />
+    ),
+  }));
+
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Pricing List" />
@@ -25,7 +136,7 @@ const index = () => {
             <Card>
               <HeaderCard title="Pricing List" />
               <CardBody>
-                <BasicTabCard tabContent={SinglepricingTableTab} />
+                <BasicTabCard tabContent={pricingpdfTab} />
               </CardBody>
             </Card>
           </Col>
@@ -35,4 +146,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
