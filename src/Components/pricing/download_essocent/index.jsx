@@ -11,14 +11,13 @@ import { loc_group_Essogroup as APINAME, Esso_cent_Data } from "../../../api";
 const Index = () => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
 
-  // Step 1: Fetch dynamic column names from API
+  // Step 1: Fetch dynamic column names
   useEffect(() => {
     fetch(APINAME)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          const names = data.map((item) => item.name);
-          setDynamicColumns(names);
+          setDynamicColumns(data.map((item) => item.name));
         } else {
           console.error("APINAME response is not an array:", data);
         }
@@ -37,77 +36,72 @@ const Index = () => {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
-      { data: "Action", title: "Action" },
-      // Dynamic columns
+      // Action column from API
+      { data: "Action", title: "Action", orderable: false },
       ...dynamicColumns.map((col, idx) => ({
         data: `col_${idx}`,
         title: col,
       })),
-      {
-        data: null,
-        title: "Action",
-        orderable: false,
-      
-      },
+      // Second Action column from API
+      { data: "Action", title: "Action", orderable: false },
     ];
 
     $("#example").DataTable({
-      processing: true,
       serverSide: true,
+      processing: true,
       responsive: true,
-      scrollX: true,
+      paging: true,
+      searching: true,
+      ordering: true,
+      pageLength: 10,
+      columns: columns,
+
       ajax: function (data, callback) {
-        fetch(Esso_cent_Data)
+        const params = new URLSearchParams();
+        params.append("start", data.start);
+        params.append("length", data.length);
+        params.append("search", data.search.value || "");
+        params.append("orderColumn", data.columns[data.order[0].column].data);
+        params.append("orderDir", data.order[0].dir);
+
+        fetch(`${Esso_cent_Data}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            let rows = [];
-
-            // Normalize response to array
-            if (Array.isArray(json)) rows = json;
-            else if (json && Array.isArray(json.data)) rows = json.data;
-            else if (json) rows = [json];
-
-            // Map API data to table columns
-            const tableData = rows.map((row) => {
+            // Map API data directly, including Action fields
+            const tableData = json.data.map((row) => {
               const obj = {
-                company_name: row[0], // First column
+                company_name: row[0],
                 pricing_date: row[1],
-                Action:row[2] // Second column
+                Action: row[2], // use the Action field from API
               };
               dynamicColumns.forEach((col, idx) => {
-                obj[`col_${idx}`] = row[idx + 3] || ""; // remaining dynamic columns
+                obj[`col_${idx}`] = row[idx + 3] || "";
               });
-
-              console.log(row)
               return obj;
             });
 
             callback({
               draw: data.draw,
-              recordsTotal: tableData.length,
-              recordsFiltered: tableData.length,
+              recordsTotal: json.totalData,
+              recordsFiltered: json.totalFiltered,
               data: tableData,
-            });
-
-            // Attach click events for action buttons
-            $("#example .update-btn").off("click").on("click", function () {
-              const rowData = $("#example").DataTable().row($(this).closest("tr")).data();
-              alert(`Update ${rowData.company_name}`);
             });
           })
           .catch((err) => {
             console.error("Error fetching table data:", err);
-            callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
+            callback({
+              draw: data.draw,
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
+            });
           });
       },
-      columns: columns,
-      pageLength: 10,
-      ordering: true,
-      searching: true,
     });
 
     return () => {
-      if ($.fn.dataTable.isDataTable("#example")) $("#example").DataTable().destroy(true);
+      if ($.fn.dataTable.isDataTable("#example"))
+        $("#example").DataTable().destroy(true);
     };
   }, [dynamicColumns]);
 
