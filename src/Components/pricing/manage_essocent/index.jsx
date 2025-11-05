@@ -72,6 +72,16 @@ const Index = () => {
         <Row>
           <Col sm="12">
             <Card>
+              <HeaderCard title="Add Esso Cent Type" />
+              <CardBody>
+                <Manage_EssoCent btnTitle="Add Esso Cent Type" />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12">
+            <Card>
               <HeaderCard title="Esso Cent List" />
               <CardBody>
                 <table id="example" className="display table table-striped table-bordered nowrap" style={{ width: "100%" }}>
