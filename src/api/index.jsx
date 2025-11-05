@@ -67,6 +67,7 @@ export const report = `${baseurl}/api/report`;
 export const report_detail = `${baseurl}/api/report_detail`;
 export const report_new = `${baseurl}/api/report_new`;
 export const owner_report = `${baseurl}/api/owner_report`;
+export const loc_group_Essogroup = `${baseurl}/api/loc_group_new/esso_group`;
 
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;

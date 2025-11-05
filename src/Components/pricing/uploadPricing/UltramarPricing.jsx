@@ -25,6 +25,7 @@ const Ultramar = ({ title, btnTtitle }) => {
   const [file, setFile] = useState(null);
   const [pricingDate, setPricingDate] = useState(new Date());
   const { data: suppliers, loading } = useSupplier();
+const [fileKey, setFileKey] = useState(Date.now());
 
   const {
     control,
@@ -152,6 +153,9 @@ const Ultramar = ({ title, btnTtitle }) => {
     try {
       const response = await axios.post(ul_pricing_upload, enrichedData);
       console.log("✅ Upload Success:", response.data);
+        setFile(null);
+        setFileKey(Date.now())
+  setPricingDate("");
       toast.success(`Upload successful! ${response.data.count || ""}`);
     } catch (error) {
       console.error("❌ Upload Error:", error);
@@ -178,6 +182,7 @@ const Ultramar = ({ title, btnTtitle }) => {
                     <Col className="px-0" sm="9">
                       <Input
                         type="file"
+                         key={fileKey}
                         className="form-control"
                         style={{ border: "1px solid #ccc" }}
                         accept=".xls, .xlsx"

@@ -24,10 +24,11 @@ const TaPetro = ({ title, btnTtitle, type }) => {
   const [file, setFile] = useState(null);
   const [pricingDate, setPricingDate] = useState(new Date());
   const {data: suppliers, loading } = useSupplier();
-
+const [fileKey, setFileKey] = useState(Date.now());
   const {
     control,
     setValue,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -158,11 +159,17 @@ const TaPetro = ({ title, btnTtitle, type }) => {
 
 
     console.log("🧾 Final Data Sent:", enrichedData);
+    
      try {
       const apiUrl = type === "taPetroAtual" ? ta_pricing_actual_upload : ta_pricing_upload;
       const response = await axios.post(apiUrl, enrichedData);
       console.log("✅ Upload Success:", response.data);
+        setFile(null);
+  setPricingDate("");
+  setFileKey(Date.now());
       toast.success(`Upload successful! ${response.data.count || ""}`);
+  
+
     } catch (error) {
       console.error("❌ Upload Error:", error);
       toast.error(
@@ -189,6 +196,7 @@ const TaPetro = ({ title, btnTtitle, type }) => {
                     <Col sm="9" className="px-0">
                       <Input
                         type="file"
+                         key={fileKey}
                         className="form-control"
                         accept=".xls, .xlsx"
                         onChange={handleFileChange}
