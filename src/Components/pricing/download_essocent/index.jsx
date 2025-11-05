@@ -1,218 +1,120 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import DownloadEssoCentForm from "./DownloadEssoCentForm";
-import Swal from 'sweetalert2';
-import qs from "qs";
-import axios from "axios";
-import { loc_group_Essogroup as APINAME } from "../../../api";
-import {
-  FaDownload,
-  FaEye,
-  FaEnvelope,
-  FaFileInvoice,
-  FaTrashAlt,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
-import usePaginatedTable from "../../../Hooks/usePagination";
-const Index = () => {
-    const [openRowId, setOpenRowId] = useState(null);
-     const [tableColumns, setTableColumns] = useState([]);
-     useEffect(()=>{
-        axios.get(APINAME)
-        .then((res)=>{
-          console.log(res);
-           const apiData = res.data;
-            const dynamicColumns = apiData.map((item) => ({
-          name: item.name, // column name = region name
-          selector: (row) => row[item.name] || "-", // dynamic value from row data
-          sortable: true,
-        }));
-          const staticColumns = [
-          {
-            name: "Company Name",
-            selector: (row) => row.company_name,
-            sortable: true,
-          },
-          {
-            name: "Pricing Date",
-            selector: (row) => row.pricing_date,
-            sortable: true,
-          },
-          {
-            name: "Action",
-            cell: (row) => (
-              <div className="d-flex gap-2">
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => alert(`Viewing ${row.company_name}`)}
-                >
-                  View
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => alert(`Deleting ${row.company_name}`)}
-                >
-                  Delete
-                </button>
-              </div>
-            ),
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-          },
-        ];
- setTableColumns([...staticColumns, ...dynamicColumns]);
-        })
-        .catch((err)=>{
-          console.log(err);
-        })
-     },[])
-       // 🧩 Step 3: Add manual/static columns
-      
+import DownloadEssoCentForm from "../manage_essocent/Manage_EssoCent";
+import $ from "jquery";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/dataTables.dataTables.css";
+import { loc_group_Essogroup as APINAME, Esso_cent_Data } from "../../../api";
 
-  //   const columnsMap = {
-  //   "Company Name": "company_name",
-  //   "Pricing Date": "pricing_date",
-  //   "Alberta": "state_name",
-  //       "ManiToba": "abbreviation",
-  //   "NOVA SCOTIA ": "country_name",
-  //   "ONTARIO ": "country_name",
-  //   "QUEBEC ": "country_name",
-  //   "SASKATCHEWAN ": "country_name",
-  //   "VANCOUVER RACK ": "country_name",
-  //   "NANAIMO ": "country_name",
-  //   "PRINCE GEROGE RACK ": "country_name",
-  //   "KAMLOOPS RACK ": "country_name",
-  //   "BAINSVILLE  ": "country_name",
-  //   "BELMONT  ": "country_name",
-  //   "CARDINAL  ": "country_name",
-  //   "COCHRANE  ": "country_name",
-  //   "CORNWALL  ": "country_name",
-  //   "DRYDEN  ": "country_name",
-  //   "DUNVEGAN  ": "country_name",
-  //   "FORT FRANCES  ": "country_name",
-  //   "HAWKESBURY  ": "country_name",
-  
-  // };
-   
-    //  const {
-    //    data,
-    //    totalRows,
-    //    loading,
-    //    handlePageChange,
-    //    handlePerRowsChange,
-    //    handleSearch, // ✅ Added
-    //    setData,
-    //  } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
-  //    useEffect(() => {
-  //      const cols = Object.keys(columnsMap).map((key) => ({
-  //        name: key,
-  //        selector: (row) => row[key],
-  //        sortable: true,
-  //        wrap: true,
-  //      }));
-   
-  //      cols.push({
-  //        name: "Action",
-  //        cell: (row) => (
-  //          <div className="position-relative dropdown-action">
-  //            <button
-  //              className="btn btn-sm btn-primary px-2"
-  //              onClick={() => setOpenRowId(openRowId === row["City ID"] ? null : row["City ID"])}
-  //            >
-  //              Action
-  //            </button>
-   
-  //            {openRowId === row["City ID"]&& (
-  //              <div
-  //                className="position-absolute bg-white border rounded shadow"
-  //                style={{
-  //                  zIndex: 1000,
-  //                  right: 0,
-  //                  marginTop: 5,
-  //                  minWidth: 160,
-  //                  padding: "5px 0",
-  //                }}
-  //              >
-               
-  //                <button
-  //                  className="dropdown-item d-flex align-items-center text-primary"
-  //                  style={{ padding: "8px 12px", gap: "8px" }}
-  //     onClick={() => handleEdit(row)}
-  //                >
-  //                  <FaEnvelope /> Edit
-  //                </button>
-   
-  //                <button
-  //                  className="dropdown-item d-flex align-items-center text-danger"
-  //                  style={{ padding: "8px 12px", gap: "8px" }}
-  //                  onClick={() => handleDelete(row)}
-  //                >
-  //                  <FaTrashAlt /> Delete
-  //                </button>
-  //              </div>
-  //            )}
-   
-  //          </div>
-  //        ),
-  //      });
-   
-  //      setTableColumns(cols);
-  //    }, [openRowId]);
-     
-  //    useEffect(() => {
-  //      const handleClickOutside = (event) => {
-  //        if (!event.target.closest(".dropdown-action")) {
-  //          setOpenRowId(null);
-  //        }
-  //      };
-  //      document.addEventListener("mousedown", handleClickOutside);
-  //      return () => document.removeEventListener("mousedown", handleClickOutside);
-  //    }, []);
-  //    useEffect(() => {
-  //   if (data?.length) {
-  //     const normalized = data.map((item) => ({
-  //       ...item,
-  //       id: item["City ID"], 
-       
-  //     }));
-  
-  //     setData(normalized);
-  //   }
-  // }, [data]);
-  //  const handleEdit=(row)=>{
-  //   console.log(row)
-  //  }
-  //    const handleDelete = (row) => {
-  //      Swal.fire({
-  //        title: 'Are you sure?',
-  //        text: `Do you really want to delete ?`,
-  //        icon: 'warning',
-  //        showCancelButton: true,
-  //        confirmButtonColor: '#3085d6',
-  //        cancelButtonColor: '#d33',
-  //        confirmButtonText: 'Yes, delete it!',
-  //        cancelButtonText: 'Cancel'
-  //      }).then((result) => {
-  //        if (result.isConfirmed) {
-  //          axios.delete(`${APINAME}/${row.id}`)
-  //            .then(() => {
-  //              setData((prevData) => prevData.filter((item) => item.id !== row.id));
-  //              Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
-  //            })
-  //            .catch(() => {
-  //              Swal.fire('Error!', 'Failed to delete record.', 'error');
-  //            });
-  //        }
-  //      });
-  //    };
+const Index = () => {
+  const [dynamicColumns, setDynamicColumns] = useState([]);
+
+  // Step 1: Fetch dynamic column names from API
+  useEffect(() => {
+    fetch(APINAME)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const names = data.map((item) => item.name);
+          setDynamicColumns(names);
+        } else {
+          console.error("APINAME response is not an array:", data);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // Step 2: Initialize DataTable
+  useEffect(() => {
+    if (dynamicColumns.length === 0) return;
+
+    if ($.fn.dataTable.isDataTable("#example")) {
+      $("#example").DataTable().destroy();
+    }
+
+    const columns = [
+      { data: "company_name", title: "Company Name" },
+      { data: "pricing_date", title: "Pricing Date" },
+      { data: "Action", title: "Action" },
+      // Dynamic columns
+      ...dynamicColumns.map((col, idx) => ({
+        data: `col_${idx}`,
+        title: col,
+      })),
+      {
+        data: null,
+        title: "Action",
+        orderable: false,
+      
+      },
+    ];
+
+    $("#example").DataTable({
+      processing: true,
+      serverSide: true,
+      responsive: true,
+      scrollX: true,
+      ajax: function (data, callback) {
+        fetch(Esso_cent_Data)
+          .then((res) => res.json())
+          .then((json) => {
+            let rows = [];
+
+            // Normalize response to array
+            if (Array.isArray(json)) rows = json;
+            else if (json && Array.isArray(json.data)) rows = json.data;
+            else if (json) rows = [json];
+
+            // Map API data to table columns
+            const tableData = rows.map((row) => {
+              const obj = {
+                company_name: row[0], // First column
+                pricing_date: row[1],
+                Action:row[2] // Second column
+              };
+              dynamicColumns.forEach((col, idx) => {
+                obj[`col_${idx}`] = row[idx + 3] || ""; // remaining dynamic columns
+              });
+
+              console.log(row)
+              return obj;
+            });
+
+            callback({
+              draw: data.draw,
+              recordsTotal: tableData.length,
+              recordsFiltered: tableData.length,
+              data: tableData,
+            });
+
+            // Attach click events for action buttons
+            $("#example .update-btn").off("click").on("click", function () {
+              const rowData = $("#example").DataTable().row($(this).closest("tr")).data();
+              alert(`Update ${rowData.company_name}`);
+            });
+          })
+          .catch((err) => {
+            console.error("Error fetching table data:", err);
+            callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
+          });
+      },
+      columns: columns,
+      pageLength: 10,
+      ordering: true,
+      searching: true,
+    });
+
+    return () => {
+      if ($.fn.dataTable.isDataTable("#example")) $("#example").DataTable().destroy(true);
+    };
+  }, [dynamicColumns]);
+
   return (
     <Fragment>
-      <Breadcrumbs parent="Pricing" title="Download ESSO Cent" />
-      <Container fluid={true}>
+      <Breadcrumbs parent="Pricing" title="ESSO Cent Headings Table" />
+      <Container fluid>
         <Row>
           <Col sm="12">
             <Card>
@@ -221,26 +123,41 @@ const Index = () => {
                 <DownloadEssoCentForm btnTitle="Search" />
               </CardBody>
             </Card>
-          </Col> 
-        </Row> 
-        <DataTableComponent
-          title="ESSO Cent List  "
-          tableColumns={tableColumns}
-          tableData={[]}
-          // progressPending={loading}
-          pagination
-          //           loading={loading}
-          // paginationServer
-          // paginationTotalRows={totalRows}
-          // onChangeRowsPerPage={handlePerRowsChange}
-          // onChangePage={handlePageChange}
-          
-          />
-      
+          </Col>
+        </Row>
+
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="ESSO Cent Headings" />
+              <CardBody>
+                <div className="table-responsive">
+                  <table
+                    id="example"
+                    className="display table table-striped table-bordered nowrap"
+                    style={{ width: "100%" }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>Company Name</th>
+                        <th>Pricing Date</th>
+                        <th>Action</th>
+                        {dynamicColumns.map((col, idx) => (
+                          <th key={idx}>{col}</th>
+                        ))}
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </Fragment>
   );
-  
 };
 
 export default Index;
