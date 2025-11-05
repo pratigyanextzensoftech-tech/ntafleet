@@ -23,7 +23,7 @@ const EssoPricing = ({ title, btnTtitle }) => {
   const [file, setFile] = useState(null);
   const [pricingDate, setPricingDate] = useState(new Date());
   const { data: suppliers, loading } = useSupplier();
-
+const [fileKey, setFileKey] = useState(Date.now());
   const {
     control,
     setValue,
@@ -113,11 +113,15 @@ const formatDate = (value) => {
     
 
     console.log("🧾 Final Data Sent:", enrichedData);
-
+ 
     try {
       const response = await axios.post(upload_esso_pricing, enrichedData);
       console.log("✅ Upload Success:", response.data);
+      
       toast.success(`Upload successful! ${response.data.count || ""}`)
+       setFile(null);
+   setFileKey(Date.now()); 
+  setPricingDate("");
       // alert(`Upload successful! ${response.data.count || ""}`);
     } catch (error) {
       console.error("❌ Upload Error:", error);
@@ -147,6 +151,7 @@ const formatDate = (value) => {
                         className="form-control"
                         style={{ border: "1px solid #ccc" }}
                         accept=".csv"
+                          key={fileKey}
                         onChange={handleFileChange}
                       />
                     </Col>

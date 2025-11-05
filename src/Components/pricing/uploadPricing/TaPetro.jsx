@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -12,119 +12,141 @@ import { useSupplier } from "../../../Hooks/Dropdowns";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import axios from "axios";
-import { ta_pricing,ta_pricing_actual } from "../../../api";
+import { ta_pricing_upload, ta_pricing_actual_upload } from "../../../api";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
-const TaPetro = ({ title, btnTtitle,type }) => {
-   const [csvData, setCsvData] = useState([]);
-      const [file, setFile] = useState(null);
-      const [pricingDate, setPricingDate] = useState(new Date());
-      const { data: suppliers, loading } = useSupplier();
-    
-      const {
-        control,
-        setValue,
-        handleSubmit,
-        formState: { errors },
-      } = useForm({
-        defaultValues: {
-          supplier: null,
-          pricingDate: new Date(),
-        },
-      });
-  
-  useEffect(() => {
-      if (suppliers.length > 0) {
-        setValue("supplier", suppliers[1]); // pick first by default
-      }
-    }, [suppliers, setValue]);
-  
-  const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  setFile(file);
 
-  Papa.parse(file, {
-    header: false, // first parse raw lines
-    skipEmptyLines: true,
-    complete: (results) => {
-      console.log("📄 Raw parsed rows:", results.data.slice(0, 5));
-
-      // Find the real header row (look for "Type" or "#")
-      const headerIndex = results.data.findIndex(
-        (row) => row.includes("Type") || row.includes("#")
-      );
-
-      if (headerIndex === -1) {
-        console.error("❌ Could not find a valid header row in CSV!");
-        return;
-      }
-
-      const headers = results.data[headerIndex];
-      const dataRows = results.data.slice(headerIndex + 1);
-
-      // ✅ Re-parse from correct header row
-      const parsed = Papa.parse(Papa.unparse([headers, ...dataRows]), {
-        header: true,
-        skipEmptyLines: true,
-      });
-
-      console.log("✅ Fixed Headers:", headers);
-      console.log("✅ First Row:", parsed.data[0]);
-
-      setCsvData(parsed.data);
+const TaPetro = ({ title, btnTtitle, type }) => {
+  const [excelData, setExcelData] = useState([]);
+  const [file, setFile] = useState(null);
+  const [pricingDate, setPricingDate] = useState(new Date());
+  const {data: suppliers, loading } = useSupplier();
+const [fileKey, setFileKey] = useState(Date.now());
+  const {
+    control,
+    setValue,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      supplier: null,
+      pricingDate: new Date(),
     },
   });
-};
 
-  
+  // 🧾 Default supplier on load
+  useEffect(() => {
+    if (suppliers.length > 0) {
+      setValue("supplier", suppliers[1]); // default supplier like TA Petro
+    }
+  }, [suppliers, setValue]);
+
+  // 📅 Date formatting helper
   const formatDate = (value) => {
     if (!value) return "-";
     return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "-";
   };
-  
-    // 🧰 Key rename logic
-    const keyMap = {
-      "Type": "loc_type",
-      "#": "loc_id",
-      "Travel Center": "travel_center",
-      "ST": "st",
-      "Merchant ID": "merchant_id",
-      "(City/State)": "city_state",
-      "Rack ID": "rack_id",
-      "Dispensed": "product_dispensed",
-      "Index": "index",
-      "Freight": "freight",
-      "Adjustment": "Adjustment",
-      "Fuel Price": "fuel_price",
-      "Savings": "saving_total",
-      "Price": "bulk_def_price",
-    };
-  
-    const renameKeys = (row, keyMap) => {
-    const newRow = {};
-    for (const key in row) {
-      const trimmedKey = key.trim(); // 🧹 remove leading/trailing spaces
-      const newKey = keyMap[trimmedKey] || trimmedKey;
-      newRow[newKey] = row[key];
-    }
-    return newRow;
-  };
-  
 
-      const onSubmit = async (data) => {
+  const keyMap = {
+  "1": "loc_type",
+  "2": "loc_id",
+  "3": "travel_center",
+  "4": "st",
+  "5": "merchant_id",
+  "6": "city_state",
+ // "7": "city",
+  "7": "rack_id",
+  "8": "product_dispensed",
+  "10": "deal_eff_date",
+  "11": "index",
+  "12": "freight",
+  "13": "fed_tax",
+  "14": "state_tax",
+  "15": "sales_tax",
+  "16": "state_ust",
+  "17": "other_tax",
+  "18": "additive_car_fee",
+  "19": "ibp_adjustment",
+  "20": "ibp_fuel_price",
+  "21": "retail_price",
+  "22": "retail_factor",
+  "23": "retail_fuel_price",
+  "24": "fuel_price",
+  //"26": "saving_total",
+  "26": "bulk_def_price"
+}; 
+						 
+  const renameKeys = (row, keyMap) => {
+  const newRow = {};
+  for (const key in row) {
+    const trimmedKey = key.trim(); // 🧹 remove leading/trailing spaces
+    const newKey = keyMap[trimmedKey] || trimmedKey;
+    newRow[newKey] = row[key];
+  }
+  return newRow;
+};
+
+
+  // 📘 Handle Excel file upload
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setFile(file);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const binaryStr = event.target.result;
+      const workbook = XLSX.read(binaryStr, { type: "binary" });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      // ✅ Convert rows to objects, skip first 7 rows
+      const jsonData = sheetData
+        .map((row, index) => {
+          if (index < 7 || row.length === 0) return null;
+          const obj = {};
+          row.forEach((cell, colIndex) => {
+            const value = typeof cell === "string" ? cell.trim() : cell;
+            obj[`${colIndex + 1}`] = value;
+            if(colIndex==5){
+              const [city, state] = value.trim().split(',').map(s => s.trim());
+              obj[`city`] = city; 
+              obj[`saving_total`] = 0; 
+              
+            }
+          });
+          obj["rowNumber"] = index + 1;
+          return obj;
+        })
+        .filter(Boolean); 
+
+        console.log("🧾 Excel Data:", jsonData);
+
+      setExcelData(jsonData);
+    };
+
+    reader.readAsBinaryString(file);
+  };
+
+  // 🚀 Handle form submit
+  const onSubmit = async (data) => {
     if (!file) {
-      alert("Please upload a CSV file first.");
+      toast.error("Please upload an Excel file first.");
       return;
     }
 
-    // ✅ Transform the CSV data
-    const enrichedData = csvData.map((row) => {
+    if (excelData.length === 0) {
+      toast.error("No valid Excel data found!");
+      return;
+    }
+ 
+
+     const enrichedData = excelData.map((row) => {
       const renamed = renameKeys(row, keyMap);
       return {
         ...renamed,
@@ -134,75 +156,64 @@ const TaPetro = ({ title, btnTtitle,type }) => {
         dated: Date.now(),
       };
     });
-    
+
 
     console.log("🧾 Final Data Sent:", enrichedData);
-if(type==="taPetroAtual"){
- try {
-      const response = await axios.post(ta_pricing_actual, enrichedData);
-      console.log("✅ Upload Success:", response.data);
-      toast.success(`Upload successful! ${response.data.count || ""}`)
-      // alert(`Upload successful! ${response.data.count || ""}`);
-    } catch (error) {
-      console.error("❌ Upload Error:", error);
-            toast.error(`Upload failed: ${error.response?.data?.error || error.message}`)
-
-      // alert(`Upload failed: ${error.response?.data?.error || error.message}`);
-    }
-}
-   else{
+    
      try {
-      const response = await axios.post(ta_pricing, enrichedData);
+      const apiUrl = type === "taPetroAtual" ? ta_pricing_actual_upload : ta_pricing_upload;
+      const response = await axios.post(apiUrl, enrichedData);
       console.log("✅ Upload Success:", response.data);
-      toast.success(`Upload successful! ${response.data.count || ""}`)
-      // alert(`Upload successful! ${response.data.count || ""}`);
+        setFile(null);
+  setPricingDate("");
+  setFileKey(Date.now());
+      toast.success(`Upload successful! ${response.data.count || ""}`);
+  
+
     } catch (error) {
       console.error("❌ Upload Error:", error);
-            toast.error(`Upload failed: ${error.response?.data?.error || error.message}`)
-
-      // alert(`Upload failed: ${error.response?.data?.error || error.message}`);
+      toast.error(
+        `Upload failed: ${error.response?.data?.error || error.message}`
+      );
     }
-   }
+     
   };
- 
+
   return (
     <Fragment>
       <Row>
         <Col>
           <fieldset>
             <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
+            <Form className="px-2" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
+                {/* 📂 File Upload */}
                 <Col sm="3">
                   <Row>
-                    <Col className="pe-0" sm="3">
-                      {" "}
+                    <Col sm="3" className="pe-0">
                       <InputGroupText>File</InputGroupText>
                     </Col>
-                    <Col className="px-0" sm="9">
+                    <Col sm="9" className="px-0">
                       <Input
                         type="file"
+                         key={fileKey}
                         className="form-control"
-                        style={{ border: "1px solid #ccc" }}
-                        accept=".csv"
+                        accept=".xls, .xlsx"
                         onChange={handleFileChange}
                       />
                     </Col>
                   </Row>
                 </Col>
+
+                {/* 📅 Pricing Date */}
                 <Col sm="3">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col sm="3">
-                          <InputGroupText>Pricing Date</InputGroupText>
-                        </Col>
-                        <Col sm="9">
-                           <Controller
+                  <FormGroup>
+                    <InputGroup>
+                      <Col sm="4" className="pe-0">
+                        <InputGroupText>Pricing Date</InputGroupText>
+                      </Col>
+                      <Col sm="8">
+                        <Controller
                           name="pricingDate"
                           control={control}
                           rules={{ required: "Pricing Date is required" }}
@@ -215,23 +226,22 @@ if(type==="taPetroAtual"){
                                 field.onChange(date);
                               }}
                               dateFormat="yyyy-MM-dd"
-                              placeholderText="Select Pricing Date"
                             />
                           )}
                         />
-                        </Col>
-                      </InputGroup>
-
-                      {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Row>
+                      </Col>
+                    </InputGroup>
+                    {errors.pricingDate && (
+                      <span className="text-danger">
+                        {errors.pricingDate.message}
+                      </span>
+                    )}
+                  </FormGroup>
                 </Col>
+
+                {/* 🏭 Supplier Dropdown */}
                 <Col sm="3">
-                  <FormGroup className="m-form__group">
+                  <FormGroup>
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
@@ -243,6 +253,8 @@ if(type==="taPetroAtual"){
                             {...field}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
+                            options={suppliers}
+                            isLoading={loading}
                             onChange={(selectedOption) =>
                               field.onChange(selectedOption)
                             }
@@ -251,7 +263,6 @@ if(type==="taPetroAtual"){
                         )}
                       />
                     </InputGroup>
-
                     {errors.supplier && (
                       <span className="text-danger">
                         {errors.supplier?.message}
@@ -260,6 +271,7 @@ if(type==="taPetroAtual"){
                   </FormGroup>
                 </Col>
 
+                {/* 🚀 Submit */}
                 <Col sm="3">
                   <div className="text-end">
                     <Btn

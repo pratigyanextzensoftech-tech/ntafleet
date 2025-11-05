@@ -140,7 +140,7 @@ const Index = () => {
                   style={{ padding: "8px 12px", gap: "8px" }}
                   onClick={() => handleEdit(row)}
                 >
-                  <FaEdit /> Edit
+                  <FaEdit /> Edit  
                 </button> 
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"

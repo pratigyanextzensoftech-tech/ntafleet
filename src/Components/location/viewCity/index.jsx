@@ -25,8 +25,7 @@ const Index = () => {
     "City ID": "city_id",
     "City Name": "city_name",
     "State": "state_name",
-        "Abbreviation": "abbreviation",
-
+    "Abbreviation": "abbreviation", 
     "Country": "country_name",
   
   };
