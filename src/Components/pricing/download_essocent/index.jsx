@@ -43,18 +43,18 @@ const Index = () => {
         data: `col_${idx}`,
         title: col,
       })),
-      {
-        data: null,
-        title: "Action",
-        orderable: false,
-      
-      },
+      { data: "Action", title: "Action" },
     ];
 
     $("#example").DataTable({
-      processing: true,
+     processing: true,
       serverSide: true,
       responsive: true,
+      paging: true,
+      searching: true,
+      ordering: true,
+      pageLength: 10,
+
       scrollX: true,
       ajax: function (data, callback) {
         fetch(Esso_cent_Data)
@@ -72,13 +72,13 @@ const Index = () => {
               const obj = {
                 company_name: row[0], // First column
                 pricing_date: row[1],
-                Action:row[2] // Second column
+                Action: row[2], // Second column
               };
               dynamicColumns.forEach((col, idx) => {
                 obj[`col_${idx}`] = row[idx + 3] || ""; // remaining dynamic columns
               });
 
-              console.log(row)
+              console.log(row);
               return obj;
             });
 
@@ -90,14 +90,24 @@ const Index = () => {
             });
 
             // Attach click events for action buttons
-            $("#example .update-btn").off("click").on("click", function () {
-              const rowData = $("#example").DataTable().row($(this).closest("tr")).data();
-              alert(`Update ${rowData.company_name}`);
-            });
+            $("#example .update-btn")
+              .off("click")
+              .on("click", function () {
+                const rowData = $("#example")
+                  .DataTable()
+                  .row($(this).closest("tr"))
+                  .data();
+                alert(`Update ${rowData.company_name}`);
+              });
           })
           .catch((err) => {
             console.error("Error fetching table data:", err);
-            callback({ draw: data.draw, recordsTotal: 0, recordsFiltered: 0, data: [] });
+            callback({
+              draw: data.draw,
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
+            });
           });
       },
       columns: columns,
@@ -107,7 +117,8 @@ const Index = () => {
     });
 
     return () => {
-      if ($.fn.dataTable.isDataTable("#example")) $("#example").DataTable().destroy(true);
+      if ($.fn.dataTable.isDataTable("#example"))
+        $("#example").DataTable().destroy(true);
     };
   }, [dynamicColumns]);
 
