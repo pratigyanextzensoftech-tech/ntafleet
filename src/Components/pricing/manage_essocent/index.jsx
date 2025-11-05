@@ -10,11 +10,12 @@ import "datatables.net-dt/css/dataTables.dataTables.css";
 
 const Index = () => {
   useEffect(() => {
+  const initTable = () => {
     if ($.fn.dataTable.isDataTable("#example")) {
       $("#example").DataTable().destroy();
     }
 
-    const table = $("#example").DataTable({
+    $("#example").DataTable({
       processing: true,
       serverSide: true,
       responsive: true,
@@ -53,11 +54,16 @@ const Index = () => {
         { data: "dated", title: "Dated" },
       ],
     });
+  };
 
-    return () => {
-      if ($.fn.dataTable.isDataTable("#example")) table.destroy(true);
-    };
-  }, []);
+  // Delay to ensure DOM is ready
+  const timeout = setTimeout(initTable, 300);
+
+  return () => {
+    clearTimeout(timeout);
+    if ($.fn.dataTable.isDataTable("#example")) $("#example").DataTable().destroy(true);
+  };
+}, []); 
 
   return (
     <Fragment>
