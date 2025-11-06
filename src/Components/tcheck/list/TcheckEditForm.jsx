@@ -12,9 +12,10 @@ import InputText from '../../Forms/FormControl/formInput/InputText';
 import axios from 'axios';
 import { tcheck } from '../../../api';
 import { useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 const TcheckEditForm = ({  }) => {
     const [selectedValues, setSelectedValues] = useState([]);
-    const[data,setData]=useState([])
+    const[Data,setData]=useState([])
     const { companies: companyOptions, loading: companyLoading } = useCompany();
 const {id}=useParams()
 const decodedId = atob(id);
@@ -35,16 +36,51 @@ const handleFileChange=()=>{
         .then((res) => {
             console.log(res.data)
             setData(res.data)
+            
         })
         .catch((err) => console.error("Failed to fetch record:", err));
     }
   }, [decodedId]);
 
-    const onSubmit = (data) => {
+    const onSubmit = async(data) => {
+              console.log("Form Data:", data);  // ✅ This will print your inputs
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+ try {
+      // Create request payload (if needed, map keys)
+const payload = {
+  company_name: data.company.value,  // from your form field
+  create_date: "2025-10-03 10:03:23", // static example
+  create_id: data.createdId ,     // from form
+  dollar_amt: data.dollarAmt ,
+  driver_cdl: data.driverCdl ,
+  driver_id: data.driverId ,
+  express_code: data.expressCode ,
+  fees: data.fees ,
+  generation_type: data.genType ,
+  id: 2075, // static or data.id
+  idby: 22, // static or data.idby
+  mail_attachment: data.mail_attachment ,
+  memo: data.memo ,
+  payee: data.payee ,
+  reason: data.reason ,
+  tractor: data.tractor ,
+  trailer: data.trailer ,
+  trip: data.trip ,
+  user1_label: data.user1_label ,
+  user2_label: data.user2_label ,
+};
+setData(payload)
+      console.log("📤 Submitting data:", payload);
+      const res = await axios.put(`${tcheck}/${Data.company_id}`, payload);
+      console.log("✅ API Response:", res.data);
+      toast.success(" Updated Succesfully");
+      //reset(); // Reset the form on success
+    } catch (error) {
+      console.error("❌ Error submitting form:", error);
+    }
+    
 
+      
     };
     const handleReset = () => {
         reset(); // reset all fields back to defaultValues (or empty if none given)
@@ -81,7 +117,7 @@ const handleFileChange=()=>{
                         label="Company"
                         control={control}
                         errors={errors}
-                        value={data.company_name}
+                        defaultValueId={Data.company_id}
                         placeholder="Select Company"
                         // loading={companyLoading}
                         options={companyOptions}
@@ -94,18 +130,18 @@ const handleFileChange=()=>{
                             name=" createDate"
                             control={control}              // ✅ make sure this is passed
                             label="Create Date"
-                         
+                            value={Data.create_date}
                         />
 
                     </Row>
                 </Col>
                 <Col sm="4">
                       <InputText
-              name="name"
+              name="expressCode"
               label="Express Code"
               type="text"
               register={register}
-          
+            value={Data.express_code}
             />
                 </Col>
               
@@ -118,12 +154,14 @@ const handleFileChange=()=>{
               label="Dollar Amt"
               type="text"
               register={register}
+              value={Data.dollar_amt}
         
             />
                 </Col>
                  <Col sm="4">
                       <InputText
               name="fees"
+              value={Data.fees}
               label="Fees"
               type="text"
               register={register}
@@ -154,6 +192,7 @@ const handleFileChange=()=>{
                       <InputText
               name="reason"
               label="Reason"
+              value={Data.reason}
               type="text"
               register={register}
            
@@ -231,6 +270,7 @@ const handleFileChange=()=>{
                       <InputText
               name="memo"
               label="Memo"
+              value={Data.memo}
               type="text"
               register={register}
             />
