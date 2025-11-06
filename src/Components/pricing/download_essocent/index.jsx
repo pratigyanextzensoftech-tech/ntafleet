@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Breadcrumbs, H5 } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, CardHeader, Row, Col, Card, CardBody } from "reactstrap";
-import DownloadEssoCentForm from "../manage_essocent/Manage_EssoCent";
+import DownloadEssoCentForm from "./DownloadEssoCentForm";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
@@ -18,6 +18,11 @@ const Index = () => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
+
+  const handleChildChange = (company_id,start_date,end_date) => {
+ 
+  };
+
 
   // Step 1: Fetch dynamic column names
   useEffect(() => {
@@ -137,20 +142,32 @@ const Index = () => {
         });
     });
 
-    
-
     return () => {
       if ($.fn.dataTable.isDataTable("#example"))
         $("#example").DataTable().destroy(true);
     };
-  }, [dynamicColumns]);
-  const downloadExcel = (TYPE) => {
-      if (TYPE == "EXCEL") {
-        window.open(`${esso_cent_auto}/auto_esso_excel`, "_self");
-      } else {
-        window.open(`${esso_cent_auto}/auto_esso_csv`, "_self");
-      }
-    };
+  }, [dynamicColumns]); 
+  $(document).ready(function () {
+
+    // ✅ Excel Download
+    $("#downloadExcel").on("click", function (e) {
+        e.preventDefault();
+        const company_id = $("#company_id option:selected").val();
+        const start_date = $("#start_date").val();
+        const end_date = $("#end_date").val(); 
+        window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${company_id}&start_date=${start_date}&end_date=${end_date}`, "_self"); 
+    });
+
+    // ✅ CSV Download
+    $("#downloadCSV").on("click", function (e) {
+        e.preventDefault(); 
+        const company_id = $("#company_id option:selected").val();
+        const start_date = $("#start_date").val();
+        const end_date = $("#end_date").val();
+        window.open(`${esso_cent_auto}/auto_esso_csv?company_id=${company_id}&start_date=${start_date}&end_date=${end_date}`, "_self"); 
+    });
+
+});
 
   return (
     <Fragment>
@@ -161,7 +178,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="ESSO Cent Filter" />
               <CardBody>
-                <DownloadEssoCentForm btnTitle="Search" />
+                <DownloadEssoCentForm btnTitle="Search" onChange={handleChildChange}  />
               </CardBody>
             </Card>
           </Col>
@@ -187,15 +204,16 @@ const Index = () => {
                       </a>
                       {open && (
                         <ul className="dropdown-menu pull-right show">
-                          <li className="p-1">
-                            <a onClick={() => downloadExcel("EXCEL")}>
-                              <i className="fa fa-file-excel-o text-info"></i>{" "}
+                          <li>
+                            <a href="#" id="downloadExcel">
+                              <i class="fa fa-file-excel-o text-info"></i>{" "}
                               Download Excel
                             </a>
                           </li>
-                          <li className="p-1">
-                            <a onClick={() => downloadExcel("CSV")}>
-                              <i className="fa fa-file-excel-o text-success"></i>{" "}
+
+                          <li>
+                            <a href="#" id="downloadCSV">
+                              <i class="fa fa-file-excel-o text-success"></i>{" "}
                               Download CSV
                             </a>
                           </li>

@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import useCompany from '../../../Hooks/useCompany';
-const DownloadEssoCentForm = ({ btnTitle, Data }) => {
+const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     // const [showMessage, setShowMessage] = useState(true);
     const { companies: companyOptions, loading: companyLoading } = useCompany();
@@ -19,11 +19,17 @@ const DownloadEssoCentForm = ({ btnTitle, Data }) => {
     } = useForm();
 
     const onSubmit = (data) => {
+
+        
+
+
         const payload = {
             company_id: data.company?.label,   // ✅ only id
             from_date: new Date(data.fromDate).toISOString().split("T")[0], // ✅ YYYY-MM-DD
             upto_date: new Date(data.uptoDate).toISOString().split("T")[0]
         };
+         onChange(payload.company_id, payload.from_date,payload.upto_date);
+
         console.log(payload)
 
     };
@@ -52,6 +58,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data }) => {
                             label="Company"
                             control={control}
                             errors={errors}
+                            id="company_id"
                             rules={{ required: "Company is required" }}
                             placeholder="All Company"
                             // loading={companyLoading}
@@ -62,6 +69,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data }) => {
                     <Col sm="4">
                         <Row>
                             <DatePickerInput
+                            id="start_date"
                                 name="fromDate"
                                 control={control}
                                 label="Pricing Form Date"
@@ -75,6 +83,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data }) => {
                     <Col sm="4">
                         <Row>
                             <DatePickerInput
+                             id="end_date"
                                 name="uptoDate"
                                 control={control}
                                 label="Pricing Upto Date"
