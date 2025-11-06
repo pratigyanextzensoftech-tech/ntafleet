@@ -6,10 +6,17 @@ import DownloadEssoCentForm from "../manage_essocent/Manage_EssoCent";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
-import { loc_group_Essogroup as APINAME, Esso_cent_Data } from "../../../api";
+import { toast } from "react-toastify";
+import {
+  loc_group_Essogroup as APINAME,
+  Esso_cent_Data,
+  esso_cent_auto,
+} from "../../../api";
+import axios from "axios";
 
 const Index = () => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
+  const [dynamicGroupIds, setGroupIds] = useState([]);
 
   // Step 1: Fetch dynamic column names
   useEffect(() => {
@@ -18,6 +25,7 @@ const Index = () => {
       .then((data) => {
         if (Array.isArray(data)) {
           setDynamicColumns(data.map((item) => item.name));
+          setGroupIds(data.map((item) => item.id));
         } else {
           console.error("APINAME response is not an array:", data);
         }
@@ -55,6 +63,16 @@ const Index = () => {
       ordering: true,
       pageLength: 10,
       columns: columns,
+      columnDefs: [
+        {
+          targets: "_all",
+          orderable: false,
+        },
+        {
+          targets: [0, 1], // allow ordering only here
+          orderable: true,
+        },
+      ],
 
       ajax: function (data, callback) {
         const params = new URLSearchParams();
@@ -99,6 +117,26 @@ const Index = () => {
       },
     });
 
+    $(document).on("click", ".update-btn", function () {
+      const id = $(this).data("id");
+      const updateData = {};
+      dynamicGroupIds.forEach((groupid) => {
+        const inputId = `#c${id}g${groupid}`;
+        const value = $(inputId).val();
+        updateData[`group_${groupid}`] = value;
+      });
+
+      axios
+        .put(`${esso_cent_auto}/${id}`, updateData)
+        .then((response) => {
+          toast.success("Data updated");
+          
+        })
+        .catch((error) => {
+          toast.error("Error In Data update");   
+        });
+    });
+
     return () => {
       if ($.fn.dataTable.isDataTable("#example"))
         $("#example").DataTable().destroy(true);
@@ -137,7 +175,9 @@ const Index = () => {
                         <th>Pricing Date</th>
                         <th>Action</th>
                         {dynamicColumns.map((col, idx) => (
-                          <th key={idx}>{col}</th>
+                          <th key={idx}>
+                            {idx} {}
+                          </th>
                         ))}
                         <th>Action</th>
                       </tr>
