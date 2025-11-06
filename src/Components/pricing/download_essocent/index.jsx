@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Breadcrumbs } from "../../../AbstractElements";
+import { Breadcrumbs, H5 } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import DownloadEssoCentForm from "./DownloadEssoCentForm";
+import { Container, CardHeader, Row, Col, Card, CardBody } from "reactstrap";
+import DownloadEssoCentForm from "../manage_essocent/Manage_EssoCent";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
@@ -17,7 +17,8 @@ import axios from "axios";
 const Index = () => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
-  const [Data,setData]=useState([])
+  const [open, setOpen] = useState(false);
+
   // Step 1: Fetch dynamic column names
   useEffect(() => {
     fetch(APINAME)
@@ -97,7 +98,7 @@ const Index = () => {
               });
               return obj;
             });
-setData(tableData)
+
             callback({
               draw: data.draw,
               recordsTotal: json.totalData,
@@ -130,31 +131,27 @@ setData(tableData)
         .put(`${esso_cent_auto}/${id}`, updateData)
         .then((response) => {
           toast.success("Data updated");
-          
         })
         .catch((error) => {
-          toast.error("Error In Data update");   
+          toast.error("Error In Data update");
         });
     });
 
-    const downloadExcel = (TYPE) => {
-      const companyId='';
-      const startDate=$(startDate).val();
-      const endDate=$(endDate).val();
-  window.open(
-    `${esso_cent_auto}/download_auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`,
-    "_blank"
-  );
-};
+    
 
     return () => {
       if ($.fn.dataTable.isDataTable("#example"))
         $("#example").DataTable().destroy(true);
     };
   }, [dynamicColumns]);
+  const downloadExcel = (TYPE) => {
+      if (TYPE == "EXCEL") {
+        window.open(`${esso_cent_auto}/auto_esso_excel`, "_self");
+      } else {
+        window.open(`${esso_cent_auto}/auto_esso_csv`, "_self");
+      }
+    };
 
-  
-  
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="ESSO Cent Headings Table" />
@@ -162,9 +159,9 @@ setData(tableData)
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Download ESSO Cent" />
+              <HeaderCard title="ESSO Cent Filter" />
               <CardBody>
-                <DownloadEssoCentForm btnTitle="Search"  data={Data} />
+                <DownloadEssoCentForm btnTitle="Search" />
               </CardBody>
             </Card>
           </Col>
@@ -173,15 +170,41 @@ setData(tableData)
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="ESSO Cent Headings" />
-              <ul class="header-dropdown">
-                  <li class="dropdown"> <a href="javascript:void(0);"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Download <i class="fa fa-download"></i> </a>
-                    <ul class="dropdown-menu pull-right">
-                      <li><a href="javascript:void(0);" onclick="Download('Excel');"><i class="fa fa-file-excel-o text-info"></i> Download Excel</a></li>
-                      <li><a href="javascript:void(0);" onclick="Download('CSV');"><i class="fa fa-file-excel-o text-success"></i> Download CSV</a></li>
-                    </ul>
-                  </li>
-                </ul>
+              <CardHeader>
+                <H5>
+                  ESSO Cent List
+                  <ul className="header-dropdown float-end">
+                    <li className={`dropdown ${open ? "open" : ""}`}>
+                      <a
+                        href="#"
+                        className="dropdown-toggle"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setOpen(!open);
+                        }}
+                      >
+                        Download <i className="fa fa-download"></i>
+                      </a>
+                      {open && (
+                        <ul className="dropdown-menu pull-right show">
+                          <li className="p-1">
+                            <a onClick={() => downloadExcel("EXCEL")}>
+                              <i className="fa fa-file-excel-o text-info"></i>{" "}
+                              Download Excel
+                            </a>
+                          </li>
+                          <li className="p-1">
+                            <a onClick={() => downloadExcel("CSV")}>
+                              <i className="fa fa-file-excel-o text-success"></i>{" "}
+                              Download CSV
+                            </a>
+                          </li>
+                        </ul>
+                      )}
+                    </li>
+                  </ul>
+                </H5>
+              </CardHeader>
               <CardBody>
                 <div className="table-responsive">
                   <table
