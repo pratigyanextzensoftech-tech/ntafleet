@@ -17,7 +17,7 @@ import axios from "axios";
 const Index = () => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
-
+  const [Data,setData]=useState([])
   // Step 1: Fetch dynamic column names
   useEffect(() => {
     fetch(APINAME)
@@ -97,7 +97,7 @@ const Index = () => {
               });
               return obj;
             });
-
+setData(tableData)
             callback({
               draw: data.draw,
               recordsTotal: json.totalData,
@@ -137,16 +137,23 @@ const Index = () => {
         });
     });
 
+    const downloadExcel = (TYPE) => {
+      const companyId='';
+      const startDate=$(startDate).val();
+      const endDate=$(endDate).val();
+  window.open(
+    `${esso_cent_auto}/download_auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`,
+    "_blank"
+  );
+};
+
     return () => {
       if ($.fn.dataTable.isDataTable("#example"))
         $("#example").DataTable().destroy(true);
     };
   }, [dynamicColumns]);
-function Update(CID)
-{
 
-  console.log(CID);
-}
+  
   
   return (
     <Fragment>
@@ -157,7 +164,7 @@ function Update(CID)
             <Card>
               <HeaderCard title="Download ESSO Cent" />
               <CardBody>
-                <DownloadEssoCentForm btnTitle="Search" />
+                <DownloadEssoCentForm btnTitle="Search"  data={Data} />
               </CardBody>
             </Card>
           </Col>
@@ -167,6 +174,14 @@ function Update(CID)
           <Col sm="12">
             <Card>
               <HeaderCard title="ESSO Cent Headings" />
+              <ul class="header-dropdown">
+                  <li class="dropdown"> <a href="javascript:void(0);"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Download <i class="fa fa-download"></i> </a>
+                    <ul class="dropdown-menu pull-right">
+                      <li><a href="javascript:void(0);" onclick="Download('Excel');"><i class="fa fa-file-excel-o text-info"></i> Download Excel</a></li>
+                      <li><a href="javascript:void(0);" onclick="Download('CSV');"><i class="fa fa-file-excel-o text-success"></i> Download CSV</a></li>
+                    </ul>
+                  </li>
+                </ul>
               <CardBody>
                 <div className="table-responsive">
                   <table
