@@ -114,6 +114,7 @@ import ManageMenu from '../Components/setting/manageMenu/Index'
 //Tcheck
 import UploadTcheck from '../Components/tcheck/upload/index'
 import TcheckList from '../Components/tcheck/list/index'
+import TcheckEditForm from '../Components/tcheck/list/TcheckEditForm'
 import CreateTCheck from '../Components/tcheck/create/index'
 import ViewTCheck from '../Components/tcheck/view/index'
 
@@ -242,6 +243,7 @@ export const routes = [
     //TCheck
     { path: `/upload_tcheck`, Component: < UploadTcheck /> },
     { path: `/tcheck_list`, Component: < TcheckList /> },
+ { path: `/tcheck_list/:id`, Component: <TcheckEditForm /> },
     { path: `/create_tcheck_invoice`, Component: < CreateTCheck /> },
     { path: `view_tcheck_invoices`, Component: < ViewTCheck /> },
 

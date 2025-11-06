@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import DownloadEssoCentForm from "../manage_essocent/Manage_EssoCent";
+import DownloadEssoCentForm from "./DownloadEssoCentForm";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
@@ -104,7 +104,12 @@ const Index = () => {
         $("#example").DataTable().destroy(true);
     };
   }, [dynamicColumns]);
+function Update(CID)
+{
 
+  console.log(CID);
+}
+  
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="ESSO Cent Headings Table" />
