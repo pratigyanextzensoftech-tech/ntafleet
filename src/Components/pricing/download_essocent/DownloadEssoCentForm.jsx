@@ -24,7 +24,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
 
 
         const payload = {
-            company_id: data.company?.label,   // ✅ only id
+            company_id: data.company?.value,   // ✅ only id
             from_date: new Date(data.fromDate).toISOString().split("T")[0], // ✅ YYYY-MM-DD
             upto_date: new Date(data.uptoDate).toISOString().split("T")[0]
         };

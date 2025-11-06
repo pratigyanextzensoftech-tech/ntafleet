@@ -15,13 +15,21 @@ import {
 import axios from "axios";
 
 const Index = () => {
+  const[companyId,setCompnyId]=useState('');
+  const[startDate,setStatrtDate]=useState('');
+  const[endDate,setEndDate]=useState('');
+
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
-
-  const handleChildChange = (company_id,start_date,end_date) => {
- 
+const handleChildChange = (company_id,start_date,end_date) => {
+ console.log(company_id)
+ setCompnyId(company_id)
+ setStatrtDate(start_date)
+ setEndDate(end_date)
   };
+
+  
 
 
   // Step 1: Fetch dynamic column names
@@ -155,7 +163,7 @@ const Index = () => {
         const company_id = $("#company_id option:selected").val();
         const start_date = $("#start_date").val();
         const end_date = $("#end_date").val(); 
-        window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${company_id}&start_date=${start_date}&end_date=${end_date}`, "_self"); 
+        window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self"); 
     });
 
     // ✅ CSV Download
@@ -164,7 +172,7 @@ const Index = () => {
         const company_id = $("#company_id option:selected").val();
         const start_date = $("#start_date").val();
         const end_date = $("#end_date").val();
-        window.open(`${esso_cent_auto}/auto_esso_csv?company_id=${company_id}&start_date=${start_date}&end_date=${end_date}`, "_self"); 
+        window.open(`${esso_cent_auto}/auto_esso_csv?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self"); 
     });
 
 });
@@ -190,37 +198,57 @@ const Index = () => {
               <CardHeader>
                 <H5>
                   ESSO Cent List
-                  <ul className="header-dropdown float-end">
-                    <li className={`dropdown ${open ? "open" : ""}`}>
-                      <a
-                        href="#"
-                        className="dropdown-toggle"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setOpen(!open);
-                        }}
-                      >
-                        Download <i className="fa fa-download"></i>
-                      </a>
-                      {open && (
-                        <ul className="dropdown-menu pull-right show">
-                          <li>
-                            <a href="#" id="downloadExcel">
-                              <i class="fa fa-file-excel-o text-info"></i>{" "}
-                              Download Excel
-                            </a>
-                          </li>
+                <ul className="header-dropdown float-end">
+      <li className="dropdown position-relative">
+        <button
+          className="btn btn-primary dropdown-toggle d-flex align-items-center gap-2"
+          onClick={() => setOpen(!open)}
+          style={{
+            fontWeight: 500,
+            transition: "all 0.2s ease-in-out",
+          }}
+        >
+          <i className="fa fa-download"></i>
+          Download
+        </button>
 
-                          <li>
-                            <a href="#" id="downloadCSV">
-                              <i class="fa fa-file-excel-o text-success"></i>{" "}
-                              Download CSV
-                            </a>
-                          </li>
-                        </ul>
-                      )}
-                    </li>
-                  </ul>
+        {open && (
+          <ul
+            className="dropdown-menu show"
+            style={{
+              position: "absolute",
+              top: "110%",
+              right: 0,
+              padding: "8px 0",
+              minWidth: "200px",
+              animation: "fadeIn 0.2s ease-in-out",
+            }}
+          >
+            <li>
+              <a
+                href="#"
+                id="downloadExcel"
+                className="dropdown-item d-flex align-items-center gap-2"
+              >
+                <i className="fa fa-file-excel-o text-success fs-5"></i>
+                <span>Download Excel</span>
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                id="downloadCSV"
+                className="dropdown-item d-flex align-items-center gap-2"
+              >
+                <i className="fa fa-file-excel-o text-info fs-5"></i>
+                <span>Download CSV</span>
+              </a>
+            </li>
+          </ul>
+        )}
+      </li>
+    </ul>
                 </H5>
               </CardHeader>
               <CardBody>
