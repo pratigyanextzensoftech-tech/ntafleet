@@ -18,6 +18,12 @@ const Index = () => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [Data,setData]=useState([])
+    const [open, setOpen] = useState(false);
+
+  const handleDownload = (type) => {
+    console.log(`Download type: ${type}`);
+    setOpen(false); // close dropdown after click
+  };
   // Step 1: Fetch dynamic column names
   useEffect(() => {
     fetch(APINAME)
@@ -174,14 +180,34 @@ setData(tableData)
           <Col sm="12">
             <Card>
               <HeaderCard title="ESSO Cent Headings" />
-              <ul class="header-dropdown">
-                  <li class="dropdown"> <a href="javascript:void(0);"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Download <i class="fa fa-download"></i> </a>
-                    <ul class="dropdown-menu pull-right">
-                      <li><a href="javascript:void(0);" onclick="Download('Excel');"><i class="fa fa-file-excel-o text-info"></i> Download Excel</a></li>
-                      <li><a href="javascript:void(0);" onclick="Download('CSV');"><i class="fa fa-file-excel-o text-success"></i> Download CSV</a></li>
-                    </ul>
-                  </li>
-                </ul>
+              <ul className="header-dropdown ">
+      <li className={`dropdown ${open ? "open" : ""}`}>
+        <a
+          href="#"
+          className="dropdown-toggle"
+          onClick={(e) => {
+            e.preventDefault();
+            setOpen(!open);
+          }}
+        >
+          Download <i className="fa fa-download"></i>
+        </a>
+        {open && (
+          <ul className="dropdown-menu pull-right show">
+            <li>
+              <a href="#" >
+                <i className="fa fa-file-excel-o text-info"></i> Download Excel
+              </a>
+            </li>
+            <li>
+              <a href="#" >
+                <i className="fa fa-file-excel-o text-success"></i> Download CSV
+              </a>
+            </li>
+          </ul>
+        )}
+      </li>
+    </ul>
               <CardBody>
                 <div className="table-responsive">
                   <table
