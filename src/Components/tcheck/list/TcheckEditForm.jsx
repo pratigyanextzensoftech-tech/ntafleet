@@ -73,44 +73,49 @@ setFile(e.target.files[0])
     // }
   }, [reset]);
 
-  const onSubmit = async (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
+const onSubmit = async (data) => {
+  try {
+    const formData = new FormData();
 
-    try {
-      // Create request payload (if needed, map keys)
-      const payload = {
-        company_name: data.company.value, // from your form field
-        create_date: data.createDate, // static example
-        create_id: data.createdId, // from form
-        dollar_amt: data.dollarAmt,
-        driver_cdl: data.driverCdl,
-        driver_id: data.driverId,
-        express_code: data.expressCode,
-        fees: data.fees,
-        generation_type: data.genType,
-        id: 2075, // static or data.id
-        idby: 22, // static or data.idby
-        mail_attachment: data.mail_attachment,
-        memo: data.memo,
-        payee: data.payee,
-        reason: data.reason,
-        tractor: data.tractor,
-        trailer: data.trailor,
-        trip: data.trip,
-        user1_label: data.user1,
-        user2_label: data.user2,
-      };
-      // setData(payload);
-      console.log("📤 Submitting data:", payload);
-      const res = await axios.put(`${tcheck}/${Data.company_id}`, payload);
-      console.log(`${tcheck}/${Data.company_id}`)
-      console.log("✅ API Response:", res.data);
-      toast.success(" Updated Succesfully");
-      //reset(); // Reset the form on success
-    } catch (error) {
-      console.error("❌ Error submitting form:", error);
+    formData.append("company_name", data.company.value);
+    formData.append("create_date", data.createDate);
+    formData.append("create_id", data.createdId);
+    formData.append("dollar_amt", data.dollarAmt);
+    formData.append("driver_cdl", data.driverCdl);
+    formData.append("driver_id", data.driverId);
+    formData.append("express_code", data.expressCode);
+    formData.append("fees", data.fees);
+    formData.append("generation_type", data.genType);
+    formData.append("id", Data.id || 2075);
+    formData.append("idby", 22);
+    formData.append("memo", data.memo);
+    formData.append("payee", data.payee || "");
+    formData.append("reason", data.reason);
+    formData.append("tractor", data.tractor);
+    formData.append("trailer", data.trailor);
+    formData.append("trip", data.trip);
+    formData.append("user1_label", data.user1);
+    formData.append("user2_label", data.user2);
+
+    // ✅ Append file only if selected
+    if (file) {
+      formData.append("mail_attachment", file);
     }
-  };
+
+    const res = await axios.put(`${tcheck}/${Data.company_id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    console.log("✅ API Response:", res.data);
+    toast.success("Updated successfully!");
+  } catch (error) {
+    console.error("❌ Error submitting form:", error);
+    toast.error("Failed to update Tcheck!");
+  }
+};
+
   const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };

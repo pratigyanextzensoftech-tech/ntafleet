@@ -70,27 +70,76 @@ const Index = () => {
               //return parseFloat(1.1000).toString(); // removes extra zeros
             },
           },
+{
+  data: null,
+  title: "Action",
+  width: "120px",
+  orderable: false,
+  searchable: false,
+  render: function (data) {
+    return `
+      <div class="position-relative action-dropdown" style="display:inline-block;">
+        <button
+          class="btn btn-sm btn-primary px-2 toggle-dropdown"
+          data-id="${data.id}"
+          style="padding: 2px 8px; font-size: 13px;"
+        >
+          Action
+        </button>
+        <div
+          class="dropdown-menu-custom bg-white border rounded shadow-sm"
+          style="
+            display:none;
+            position:absolute;
+            right:0;
+            margin-top:5px;
+            min-width:140px;
+            padding:5px 0;
+            z-index:1000;
+          "
+        >
+          <a href="#" class="dropdown-item-custom text-success edit-btn d-flex align-items-center" data-id="${data.id}" style="padding:8px 12px; gap:8px; text-decoration:none;">
+            <i class="fa fa-edit"></i> Edit
+          </a>
+          <a href="#" class="dropdown-item-custom text-danger delete-btn d-flex align-items-center" data-id="${data.id}" style="padding:8px 12px; gap:8px; text-decoration:none;">
+            <i class="fa fa-trash"></i> Delete
+          </a>
+        </div>
+      </div>
+    `;
+  },
+}
 
-          {
-            data: null,
-            title: "Action",
-             width: "120px",    
-            orderable: false,
-            searchable: false,
-            render: function (data) {
-              return `
-                <button class="btn btn-primary btn-sm edit-btn" data-id="${data.id}">
-                  Edit
-                </button>
-                <button class="btn btn-danger btn-sm delete-btn" data-id="${data.id}">
-                  Delete
-                </button>
-              `;
-            },
-          },
+
+,
         ],
       });
     };
+// Handle Action dropdown toggle
+$(document).on("click", ".toggle-dropdown", function (e) {
+  e.stopPropagation();
+  const $btn = $(this);
+  const $menu = $btn.siblings(".dropdown-menu-custom");
+
+  // Close other open dropdowns first
+  $(".dropdown-menu-custom").not($menu).hide();
+
+  // Toggle only this one
+  $menu.toggle();
+});
+
+// Close dropdown when clicking outside
+$(document).on("click", function (e) {
+  if (!$(e.target).closest(".action-dropdown").length) {
+    $(".dropdown-menu-custom").hide();
+  }
+});
+
+
+// Close dropdown if clicked outside
+$(document).on("click", function () {
+  $(".dropdown-menu-custom").hide();
+});
 
     const timeout = setTimeout(initTable, 300);
 
@@ -124,7 +173,16 @@ const Index = () => {
       }
     };
   }, []);
+   const refreshTable = () => {
+    if ($.fn.dataTable.isDataTable("#example")) {
+      $("#example").DataTable().ajax.reload(null, false); // reload table
+    }
+  };
+const handleAdd=(data)=>{
+console.log(data,"data")
+ refreshTable();
 
+}
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Manage Esso Cent Type" />
@@ -134,7 +192,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add Esso Cent Type" />
               <CardBody>
-                <Manage_EssoCent btnTitle="Add Esso Cent Type" />
+                <Manage_EssoCent btnTitle="Add Esso Cent Type" handleAdd={handleAdd}/>
               </CardBody>
             </Card>
           </Col>

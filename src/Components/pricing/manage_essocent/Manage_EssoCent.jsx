@@ -1,20 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import {
-  groupBy,
-  optionscountry,
-  displayFeatureCheckBox,
-  chooseSupplierCheckBox,
-  optionscompany,
-  invoiceType,
-  orderBy,
-  fuelType,
-  currency,
-  InvoiceCategory,
-  InvoiceShow,
-  exportType,
-  VolUnit,
-} from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+
 import {
   Row,
   Col,
@@ -27,11 +13,15 @@ import {
   Card,
   CardBody,
 } from "reactstrap";
+import { esso_rack } from "../../../api";
+
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import InputText from "../../Forms/FormControl/formInput/InputText";
-const DownloadEssoCentForm = ({ btnTitle }) => {
+import { toast } from "react-toastify";
+import axios from "axios";
+const DownloadEssoCentForm = ({ btnTitle,handleAdd }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
 
@@ -44,14 +34,32 @@ const DownloadEssoCentForm = ({ btnTitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-    if (isValid) {
-      setShowMessage(false); // hide only when form is completely valid
+const onSubmit = async (formData) => {
+  console.log(formData)
+  const payload={
+    name:formData.name,
+    val:formData.value,
+    rack:formData.ord,
+    ord:formData.rack
+  }
+   try {
+     
+        const res = await axios.post(esso_rack, payload);
+        console.log("✅ User Added:", res.data);
+        toast.success("User added successfully!");
+  
+       
+      }
+  
+    
+    catch (error) {
+      console.error("❌ Error submitting form:", error);
+      toast.error("Something went wrong!");
     }
-  };
+    handleAdd(formData)
 
+
+};
   return (
     <fieldset className="inputField">
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
