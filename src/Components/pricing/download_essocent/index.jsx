@@ -189,7 +189,9 @@ console.log(tableData)
         const company_id = $("#company_id option:selected").val();
         const start_date = $("#start_date").val();
         const end_date = $("#end_date").val(); 
-        window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self"); 
+        const URL=`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`;
+        console.log(URL);
+        //window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self"); 
     });
 
     // ✅ CSV Download
@@ -198,7 +200,9 @@ console.log(tableData)
         const company_id = $("#company_id option:selected").val();
         const start_date = $("#start_date").val();
         const end_date = $("#end_date").val();
-        window.open(`${esso_cent_auto}/auto_esso_csv?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self"); 
+         const URL=`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`;
+         console.log(URL);
+       // window.open(`${esso_cent_auto}/auto_esso_csv?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self"); 
     });
 
 });
