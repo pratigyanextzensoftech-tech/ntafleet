@@ -7,7 +7,7 @@ import { esso_rack } from "../../../api";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
-
+import Swal from "sweetalert2";
 const Index = () => {
   useEffect(() => {
     const initTable = () => {
@@ -150,21 +150,36 @@ $(document).on("click", function () {
     });
 
     // ✅ DELETE ACTION
-    $("#example").on("click", ".delete-btn", function () {
-      const id = $(this).data("id");
+   $("#example").on("click", ".delete-btn", function () {
+  const id = $(this).data("id");
 
-      if (window.confirm("Are you sure you want to delete this record?")) {
-        fetch(`${esso_rack}/${id}`, {
-          method: "DELETE",
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Perform delete only if confirmed
+      fetch(`${esso_rack}/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          Swal.fire("Deleted!", json.message || "Record has been deleted.", "success");
+          $("#example").DataTable().ajax.reload(null, false);
         })
-          .then((res) => res.json())
-          .then((json) => {
-            alert(json.message || "Deleted Successfully");
-            $("#example").DataTable().ajax.reload(null, false);
-          })
-          .catch(() => alert("Delete failed"));
-      }
-    });
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+    }
+  });
+});
+
 
     return () => {
       clearTimeout(timeout);
