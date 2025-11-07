@@ -49,28 +49,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
   return (
     <fieldset className="inputField">
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <Row className="mt-3">
-          <Col sm="3">
-            <DropDown
-              name="company_id"
-              label="Company"
-              control={control}
-              id="company_id"
-              placeholder="All Company"
-              options={companyOptions}
-            />
-          </Col>
-
-          <Col sm="4">
-            <Row>
-              <DatePickerInput
-                id="start_date"
-                name="start_date"
-                control={control}
-                label="Pricing Form Date"
-              />
-            </Row>
-          </Col>
+        
 
                 <Row className="mt-3">
                     <Col sm="3">
@@ -118,7 +97,6 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
                         </div>
                     </Col>
                 </Row>
- </Row>
             </Form>
         </fieldset>
     )

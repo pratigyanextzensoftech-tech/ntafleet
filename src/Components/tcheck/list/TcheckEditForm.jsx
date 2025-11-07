@@ -26,6 +26,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 const TcheckEditForm = ({}) => {
   const [selectedValues, setSelectedValues] = useState([]);
+  const[file,setFile]=useState('')
     const [createDate, setCreateDate] = useState(new Date());
   
   const [Data, setData] = useState([]);
@@ -39,7 +40,9 @@ const TcheckEditForm = ({}) => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-  const handleFileChange = () => {};
+  const handleFileChange = (e) => {
+setFile(e.target.files[0])
+  };
   useEffect(() => {
     // if (decodedId) {
       axios
@@ -59,9 +62,9 @@ const TcheckEditForm = ({}) => {
           tractor: res.data.tractor,
           trip: res.data.trip,
           driverCdl: res.data.driver_cdl,
-          trailor: res.data.trailer,
-          user1: res.data.user1_label,
-          user2: res.data.user2_label,
+          trailor: res.data.trailor,
+          user1: res.data.user1,
+          user2: res.data.user2,
           memo: res.data.memo,
           createDate: res.data.create_date
         });
@@ -92,14 +95,15 @@ const TcheckEditForm = ({}) => {
         payee: data.payee,
         reason: data.reason,
         tractor: data.tractor,
-        trailer: data.trailer,
+        trailer: data.trailor,
         trip: data.trip,
-        user1_label: data.user1_label,
-        user2_label: data.user2_label,
+        user1_label: data.user1,
+        user2_label: data.user2,
       };
       // setData(payload);
       console.log("📤 Submitting data:", payload);
       const res = await axios.put(`${tcheck}/${Data.company_id}`, payload);
+      console.log(`${tcheck}/${Data.company_id}`)
       console.log("✅ API Response:", res.data);
       toast.success(" Updated Succesfully");
       //reset(); // Reset the form on success
