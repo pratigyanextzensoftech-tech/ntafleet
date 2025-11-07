@@ -27,6 +27,24 @@ const handleChildChange = (company_id,start_date,end_date) => {
  setCompnyId(company_id)
  setStatrtDate(start_date)
  setEndDate(end_date)
+ if ($.fn.dataTable.isDataTable("#example")) {
+    const table = $("#example").DataTable();
+    const params = new URLSearchParams({
+      start: table.page.info().start,
+      length: table.page.len(),
+      search: table.search(),
+      orderColumn: table.order()[0][0],
+      orderDir: table.order()[0][1],
+      company_id: company_id,
+      from_date: start_date,
+      upto_date: end_date,
+    });
+
+    const url = `${Esso_cent_Data}?${params.toString()}`;
+    console.log("Reloading with:", url);
+
+    table.ajax.url(url).load();
+  }
   };
 
   
@@ -88,47 +106,55 @@ const handleChildChange = (company_id,start_date,end_date) => {
         },
       ],
 
-      ajax: function (data, callback) {
-        const params = new URLSearchParams();
-        params.append("start", data.start);
-        params.append("length", data.length);
-        params.append("search", data.search.value || "");
-        params.append("orderColumn", data.columns[data.order[0].column].data);
-        params.append("orderDir", data.order[0].dir);
+     ajax: function (data, callback) {
+  const params = new URLSearchParams();
+  params.append("start", data.start);
+  params.append("length", data.length);
+  params.append("search", data.search.value || "");
+  params.append("orderColumn", data.columns[data.order[0].column].data);
+  params.append("orderDir", data.order[0].dir);
 
-        fetch(`${Esso_cent_Data}?${params.toString()}`)
-          .then((res) => res.json())
-          .then((json) => {
-            // Map API data directly, including Action fields
-            const tableData = json.data.map((row) => {
-              const obj = {
-                company_name: row[0],
-                pricing_date: row[1],
-                Action: row[2], // use the Action field from API
-              };
-              dynamicColumns.forEach((col, idx) => {
-                obj[`col_${idx}`] = row[idx + 3] || "";
-              });
-              return obj;
-            });
+  // 👇 Include filters
+   params.append("company_id", companyId);
+   params.append("from_date", startDate);
+   params.append("upto_date", endDate);
+console.log("companyId",companyId)
+  fetch(`${Esso_cent_Data}?${params.toString()}`)
+    .then((res) => res.json())
+    .then((json) => {
 
-            callback({
-              draw: data.draw,
-              recordsTotal: json.totalData,
-              recordsFiltered: json.totalFiltered,
-              data: tableData,
-            });
-          })
-          .catch((err) => {
-            console.error("Error fetching table data:", err);
-            callback({
-              draw: data.draw,
-              recordsTotal: 0,
-              recordsFiltered: 0,
-              data: [],
-            });
-          });
-      },
+const url = `${Esso_cent_Data}?${params.toString()}`;
+console.log("🔗 API URL:", url);
+      const tableData = json.data.map((row) => {
+        const obj = {
+          company_name: row[0],
+          pricing_date: row[1],
+          Action: row[2],
+        };
+        dynamicColumns.forEach((col, idx) => {
+          obj[`col_${idx}`] = row[idx + 3] || "";
+        });
+        return obj;
+      });
+console.log(tableData)
+      callback({
+        draw: data.draw,
+        recordsTotal: json.recordsTotal,
+        recordsFiltered: json.recordsFiltered,
+        data: tableData,
+      });
+    })
+    .catch((err) => {
+      console.error("Error fetching table data:", err);
+      callback({
+        draw: data.draw,
+        recordsTotal: 0,
+        recordsFiltered: 0,
+        data: [],
+      });
+    });
+},
+
     });
 
     $(document).on("click", ".update-btn", function () {
@@ -154,9 +180,9 @@ const handleChildChange = (company_id,start_date,end_date) => {
       if ($.fn.dataTable.isDataTable("#example"))
         $("#example").DataTable().destroy(true);
     };
-  }, [dynamicColumns]); 
-  $(document).ready(function () {
+  }, [dynamicColumns,companyId]); 
 
+  $(document).ready(function () {
     // ✅ Excel Download
     $("#downloadExcel").on("click", function (e) {
         e.preventDefault();

@@ -1,15 +1,15 @@
 import React from "react";
-import { FormGroup, InputGroup, InputGroupText } from "reactstrap";
+import { FormGroup, InputGroup, InputGroupText, Input } from "reactstrap";
 
 const InputText = ({
   name,
-  value,
   label,
   type = "text",
   placeholder = "",
   register,
   errors,
   rules = {},
+  defaultValue = "", // 👈 new prop for prefilled data
 }) => {
   return (
     <FormGroup className="m-form__group">
@@ -17,8 +17,8 @@ const InputText = ({
         {label && <InputGroupText>{label}</InputGroupText>}
         <input
           type={type}
-          value={value}
           placeholder={placeholder}
+          defaultValue={defaultValue} // 👈 show API data here
           className={`form-control ${errors?.[name] ? "is-invalid" : ""}`}
           style={{ border: "1px solid #ccc" }}
           {...register(name, rules)}

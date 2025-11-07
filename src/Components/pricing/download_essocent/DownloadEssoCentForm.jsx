@@ -6,6 +6,8 @@ import DatePicker from "react-datepicker";
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import useCompany from '../../../Hooks/useCompany';
+import { Esso_cent_Data } from '../../../api';
+import axios from 'axios';
 const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     // const [showMessage, setShowMessage] = useState(true);
@@ -19,21 +21,16 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
     } = useForm();
 
     const onSubmit = (data) => {
-
-        
-
-
         const payload = {
-            company_id: data.company?.value,   // ✅ only id
-            from_date: new Date(data.fromDate).toISOString().split("T")[0], // ✅ YYYY-MM-DD
-            upto_date: new Date(data.uptoDate).toISOString().split("T")[0]
+            company_id: data.company?.value?data.company?.value:"",   // ✅ only id
+            from_date: data.fromDate?new Date(data.fromDate).toISOString().split("T")[0]:"", // ✅ YYYY-MM-DD
+            upto_date:data.uptoDate? new Date(data.uptoDate).toISOString().split("T")[0]:""
         };
          onChange(payload.company_id, payload.from_date,payload.upto_date);
 
         console.log(payload)
 
     };
-
 
     const handleCheckboxChange = (e) => {
         const { value, checked } = e.target;
@@ -57,9 +54,8 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
                             name="company"
                             label="Company"
                             control={control}
-                            errors={errors}
+                          
                             id="company_id"
-                            rules={{ required: "Company is required" }}
                             placeholder="All Company"
                             // loading={companyLoading}
                             options={companyOptions}
@@ -73,8 +69,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
                                 name="fromDate"
                                 control={control}
                                 label="Pricing Form Date"
-                                errors={errors}
-                                required="Required"
+                               
                             />
 
                         </Row>
@@ -87,8 +82,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data,onChange }) => {
                                 name="uptoDate"
                                 control={control}
                                 label="Pricing Upto Date"
-                                errors={errors}
-                                required="Required"
+                            
                             />
 
 
