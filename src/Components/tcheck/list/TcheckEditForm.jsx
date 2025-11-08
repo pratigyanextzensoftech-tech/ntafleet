@@ -102,7 +102,7 @@ setFile(e.target.files[0])
       };
       // setData(payload);
       console.log("📤 Submitting data:", payload);
-      const res = await axios.put(`${tcheck}/${Data.company_id}`, payload);
+      const res = await axios.put(`${tcheck}/${decodedId}`, payload);
       console.log(`${tcheck}/${Data.company_id}`)
       console.log("✅ API Response:", res.data);
       toast.success(" Updated Succesfully");

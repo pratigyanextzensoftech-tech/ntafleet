@@ -6,7 +6,7 @@ import { Container } from "reactstrap";
 import axios from "axios";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { fual_card } from "../../../api"; // your fuel card API endpoint
-
+import Swal from "sweetalert2";
 const ViewFuelCards = () => {
   const [fuelCards, setFuelCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -151,12 +151,37 @@ const ViewFuelCards = () => {
 
   // Action handlers
   const handleEdit = (row) => console.log("Edit:", row);
-  const handleDelete = (row) => {
+  
+    const handleDelete = (row) => {
     if (window.confirm(`Delete "${row.card}"?`)) {
       setFuelCards(fuelCards.filter((item) => item.id !== row.id));
       setOpenRowId(null);
     }
   };
+  //  const handleDelete = (row) => {
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: `Do you really want to delete ?`,
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!',
+  //     cancelButtonText: 'Cancel'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       axios.delete(`${fual_card}/${row.id}`)
+  //         .then(() => {
+  //                 setFuelCards(fuelCards.filter((item) => item.id !== row.id));
+
+  //           Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+  //         })
+  //         .catch(() => {
+  //           Swal.fire('Error!', 'Failed to delete record.', 'error');
+  //         });
+  //     }
+  //   });
+  // };
 
   // Close dropdown when clicking outside
   useEffect(() => {

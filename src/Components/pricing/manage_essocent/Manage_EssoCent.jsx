@@ -5,13 +5,7 @@ import {
   Row,
   Col,
   Form,
-  FormGroup,
-  Label,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Card,
-  CardBody,
+ 
 } from "reactstrap";
 import { esso_rack } from "../../../api";
 
