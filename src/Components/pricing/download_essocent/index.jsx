@@ -18,7 +18,6 @@ const Index = () => {
   const[companyId,setCompnyId]=useState('');
   const[startDate,setStatrtDate]=useState('');
   const[endDate,setEndDate]=useState('');
-const [loading, setLoading] = useState(true);
 
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);

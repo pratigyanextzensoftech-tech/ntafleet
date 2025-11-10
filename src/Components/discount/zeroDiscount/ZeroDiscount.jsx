@@ -1,6 +1,7 @@
 import React from "react";
 import Select from "react-select";
 import { InVoiceSupplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+
 import {
   Row,
   Col,
@@ -15,21 +16,22 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import useSupplier from "../../../Hooks/useSupplier";
-const ZeroDiscount = ({ title, btnTitle }) => {
-  const { supplier, loading, error } = useSupplier();
 
-  const {
+const ZeroDiscount = ({ title, btnTitle }) => {
+  const { supplier } = useSupplier();
+ 
+ const {
     register,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+ 
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
-
+ 
   return (
     <> 
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>

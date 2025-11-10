@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router';
 const CheckLayout = () => {
   const { addSidebarLayouts } = useContext(CustomizerContext);
   const history = useNavigate();
-  const sidebarSettings = ConfigDB.data.sidebar_setting || localStorage.getItem('sidebar_Settings');
+  const sidebarSettings = ConfigDB.data.sidebar_setting || sessionStorage.getItem('sidebar_Settings');
 
   useEffect(() => {
     ConfigDB.data.settings.sidebar_setting = sidebarSettings;
@@ -33,7 +33,7 @@ const CheckLayout = () => {
     const url = window.location.pathname.slice(0, window.location.pathname.lastIndexOf('/'));
     const modifyURL = url + '/' + Object.keys(type);
     addSidebarLayouts(val);
-    localStorage.setItem('layout', key);
+    sessionStorage.setItem('layout', key);
     history(modifyURL);
   };
 

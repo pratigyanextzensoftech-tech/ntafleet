@@ -22,6 +22,8 @@ const Index = () => {
   const [editId, setEditId] = useState(null);
 
  const { id } = useParams();
+
+ 
   useEffect(()=>{
 let Edit_id = null;
 

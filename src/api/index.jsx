@@ -72,7 +72,8 @@ export const Esso_cent_Data = `${baseurl}/api/loc_group_new/esso_group_input`;
 export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;
-
+export const tcheck_upload = `${baseurl}/api/tcheck/upload`;
+export const smenu = `${baseurl}/api/smenu`;
 
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;
