@@ -21,7 +21,7 @@ import DatePicker from "react-datepicker";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import { toast } from "react-toastify";
 import axios from "axios";
-const DownloadEssoCentForm = ({ btnTitle,handleAdd }) => {
+const DownloadEssoCentForm = ({ btnTitle, handleAdd }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
 
@@ -33,32 +33,24 @@ const DownloadEssoCentForm = ({ btnTitle,handleAdd }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-const onSubmit = async (formData) => {
-  console.log(formData)
-  const payload={
-    name:formData.name,
-    val:formData.value,
-    rack:formData.ord,
-    ord:formData.rack
-  }
-   try {
-     
-        const res = await axios.post(esso_rack, payload);
-        console.log("✅ User Added:", res.data);
-        toast.success("User added successfully!");
-  
-       
-      }
-  
-    
-    catch (error) {
+  const onSubmit = async (formData) => {
+    console.log(formData);
+    const payload = {
+      name: formData.name,
+      val: formData.value,
+      rack: formData.ord,
+      ord: formData.rack,
+    };
+    try {
+      const res = await axios.post(esso_rack, payload);
+      console.log("✅ User Added:", res.data);
+      toast.success("User added successfully!");
+    } catch (error) {
       console.error("❌ Error submitting form:", error);
       toast.error("Something went wrong!");
     }
-    handleAdd(formData)
-
-
-};
+    handleAdd(formData);
+  };
   return (
     <fieldset className="inputField">
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
@@ -73,7 +65,6 @@ const onSubmit = async (formData) => {
               rules={{ required: "Name is required" }}
             />
           </Col>
-
           <Col sm="2">
             <InputText
               name="value"
@@ -84,7 +75,6 @@ const onSubmit = async (formData) => {
               rules={{ required: "Required" }}
             />
           </Col>
-
           <Col sm="2">
             <InputText
               name="ord"
@@ -95,7 +85,6 @@ const onSubmit = async (formData) => {
               rules={{ required: "Required" }}
             />
           </Col>
-         
           <Col sm="2">
             <InputText
               name="rack"

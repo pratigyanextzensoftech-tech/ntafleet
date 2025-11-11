@@ -102,8 +102,8 @@ setFile(e.target.files[0])
       };
       // setData(payload);
       console.log("📤 Submitting data:", payload);
-      const res = await axios.put(`${tcheck}/${Data.company_id}`, payload);
-      console.log(`${tcheck}/${Data.company_id}`)
+      const res = await axios.put(`${tcheck}/${decodedId}`, payload);
+      console.log(`${tcheck}/${Data.decodedId}`)
       console.log("✅ API Response:", res.data);
       toast.success(" Updated Succesfully");
       //reset(); // Reset the form on success
