@@ -8,7 +8,9 @@ import { type } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import usePmenu from '../../../Hooks/usePmenu';
-
+import { menu } from '../../../api';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 const SecondaryMenu = ({ title }) => {
     const { pmenu, loading, error } = usePmenu();
     const {
@@ -18,6 +20,34 @@ const SecondaryMenu = ({ title }) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+         const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = { 
+    "name":formData.menuName,
+    "link":formData.menuLink?formData.menuLink:'',
+    "idmenu":formData.primaryMenu.value?formData.primaryMenu.value:"",
+    "dated":new Date(),
+    "ord":0,
+    "icon":"",
+    "del":0,
+    "idby":sessionStorage.getItem('userId'),
+    "sw":0 
+     }
+    axios.post(menu,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+            // if (onDataAdded) onDataAdded();
+
+    reset();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
     return (
 
         <Fragment>
@@ -25,7 +55,7 @@ const SecondaryMenu = ({ title }) => {
                 <Col>
                     <fieldset>
                         <legend>{title}</legend>
-                        <Form>
+                        <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                             <Row>
                                 <Col sm="4">
                                     <DropDown

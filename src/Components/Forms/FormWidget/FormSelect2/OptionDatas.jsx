@@ -115,8 +115,8 @@ export const displayFeatureCheckBoxOwner=[
  export const type=[
     { label: '' , isDisabled: true },
 
-  { value: 'visible', label: 'visible' },
-    { value: 'hidden', label: 'hidden' }
+  { value: '0', label: 'visible' },
+    { value: '1', label: 'hidden' }
 ]
  export const Customized_Supplier=[
 { label: 'Select Supplier' , isDisabled: true },

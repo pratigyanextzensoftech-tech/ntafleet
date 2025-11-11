@@ -2,9 +2,12 @@ import React from 'react'
 import { Form, Row, Col, Card, CardBody, FormGroup, Input, InputGroupText ,InputGroup} from 'reactstrap'
 import { Btn } from '../../../AbstractElements';
 import { useForm } from 'react-hook-form';
-
+import axios from 'axios';
 import InputText from '../../Forms/FormControl/formInput/InputText';
-const SupplierList = ({btntitle,btnTitle1}) => {
+import { supplier } from '../../../api';
+import { toast } from 'react-toastify';
+const SupplierList = ({btntitle,btnTitle1,onDataAdded}) => {
+
      const {
             register,
             control,
@@ -13,11 +16,26 @@ const SupplierList = ({btntitle,btnTitle1}) => {
             formState: { errors, isSubmitted, isValid },
         } = useForm();
     
-        const onSubmit = (data) => {
-    
-            console.log("Form Data:", data);  // ✅ This will print your inputs
-            // alert("Form submitted successfully!");
-    
+        const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+    supplier_name: formData.supplier,
+    st:0,
+     }
+    axios.post(supplier,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+            if (onDataAdded) onDataAdded();
+
+    reset();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
         };
     return (
         <div>

@@ -4,16 +4,50 @@ import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 're
 import { Btn } from "../../../AbstractElements";
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
-const ManageSalesman = () => {
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { salesman as APINAME } from '../../../api';
+
+const ManageSalesman = ({onDataAdded}) => {
         const {
             register,
             control,
+            reset,
             handleSubmit,
             formState: { errors },
         } = useForm();
+            const onSubmit = (formData) => {
+                                console.log("Form Data:", formData);  // ✅ This will print your inputs
+        
+             const payload = {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+                pic:"",
+                created:new Date(),
+                status:0,
+                admin_del:0,
+                added_by:0
+             }
+          axios.post(APINAME, payload)
+  .then((res) => {
+    console.log(res.data);
+    toast.success("Added successfully!");
+    reset();
+
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data); 
+  })
+  .catch((err) => {
+    console.log(err);
+    toast.error(err.message);
+  });
+
+                };
     return (
         <Fragment >
-                    <Form>
+                    <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
                         <Row>
                             <Col md="4">
                                   <InputText
@@ -54,7 +88,7 @@ const ManageSalesman = () => {
                                   <InputText
             name="address"
             label="Address"
-            type="number"
+            type="text"
             register={register}
             errors={errors}
             rules={{ required: "Required" }}

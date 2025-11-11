@@ -1,37 +1,70 @@
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
 import Select from 'react-select'
 import { Controller, useForm } from 'react-hook-form';
 import { optionscountry } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-const ViewCityForm = () => {
-  const {
+import { city as APINAME } from "../../../api";
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useCountry,useStates } from '../../../Hooks/Dropdowns';
+
+const ViewCityForm = ({onDataAdded}) => {
+   const{data}=useCountry()
+const { data: stateData } = useStates();
+   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);  // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+const onSubmit = (formData) => {
+                            console.log("Form Data:", formData.city);  // ✅ This will print your inputs
+    
+         const payload = {
+        city_name:formData.city,
+        country_id: formData.country.value,
+        state_id: formData.state.value,
+      
 
-  };
+         }
+        axios.post(APINAME,payload)
+        .then((res)=>{
+            console.log(res);
+           
+              toast.success("Add successfully!");
+    
+       reset();
+    
+            if (onDataAdded) onDataAdded();
+        })
+        .catch((err)=>{
+            console.log(err);
+              toast.error(err.message);
+        })
+            };
   return (
     <Fragment >
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md="3">
-            <FormGroup className=" m-form__group">
-              <InputGroup>
-                <InputGroupText>City Name</InputGroupText>
-                <Input className="form-control" type="text" />
-              </InputGroup>
-            </FormGroup>
+            <InputText
+                            name="city"
+                            label="City Name"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                            rules={{ required: "Required" }}
+                        />
+      
           </Col>
           <Col md="3">
+           
             <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>Country</InputGroupText>
@@ -43,7 +76,7 @@ const ViewCityForm = () => {
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={optionscountry}
+                      options={data}
                       className="form-control p-0 border-0"
                       placeholder="Select Country"
                     />
@@ -59,16 +92,16 @@ const ViewCityForm = () => {
           <Col md="3">
             <FormGroup className="m-form__group">
               <InputGroup>
-                <InputGroupText>City</InputGroupText>
+                <InputGroupText>State</InputGroupText>
                 <Controller
-                  name="city"
-                  rules={{ required: "city is required" }}
+                  name="state"
+                  rules={{ required: "state is required" }}
 
                   control={control}
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={optionscountry}
+                      options={stateData}
                       className="form-control p-0 border-0"
                       placeholder="Select City"
                     />

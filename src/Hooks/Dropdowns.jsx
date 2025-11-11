@@ -7,6 +7,7 @@ import {
   salesmanAll,
   esso_rack_all,
   country_all,
+  state_all
 } from "../api/index";
 
 /**
@@ -81,8 +82,14 @@ export const useSalesman = () =>
     value: s.id,
     label: s.name,
   }));
- 
 
+
+   export const useStates = () =>
+    useDropdown(state_all, (s) => ({
+    value: s.state_id,
+    label: s.province_name,
+  }));
+   
   export const useCountry = () => {
   const { data, loading, error } = useDropdown(country_all, (s) => ({
     value: s.country_id,

@@ -6,44 +6,87 @@ import HeaderCard from '../../Common/Component/HeaderCard';
 import Select from 'react-select'
 import { Controller, useForm } from 'react-hook-form';
 import { optionscountry } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-const StateForm = () => {
+import { state as APINAME } from '../../../api';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useCountry } from '../../../Hooks/Dropdowns';
+const StateForm = ({onDataAdded}) => {
+  const{data}=useCountry()
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);  // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+ const onSubmit = (formData) => {
+                            console.log("Form Data:", formData);  // ✅ This will print your inputs
+    
+         const payload = {
+        province_name: formData.state,
+        province_abbreviation: formData.abbr,
+        tax_cent: formData.tax,
+        country_id: formData.country.value,
+          qst:"",
+          gst:"",
+          hst:"",
+
+         }
+        axios.post(APINAME,payload)
+        .then((res)=>{
+            console.log(res);
+           
+              toast.success("Add successfully!");
+    
+       reset();
+    
+            if (onDataAdded) onDataAdded();
+        })
+        .catch((err)=>{
+            console.log(err);
+              toast.error(err.message);
+        })
+            };
   return (
     <Fragment >
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md="4">
-            <FormGroup className=" m-form__group">
-              <InputGroup>
-                <InputGroupText>State</InputGroupText>
-                <Input className="form-control" type="text" />
-              </InputGroup>
-            </FormGroup>
+        
+               <InputText
+                            name="state"
+                            label="State"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                            rules={{ required: "Required" }}
+                        />
           </Col>
           <Col md="4">
-            <FormGroup className=" m-form__group">
-              <InputGroup>
-                <InputGroupText>Abbreviation</InputGroupText>
-                <Input className="form-control" type="text" />
-              </InputGroup>
-            </FormGroup>
+                <InputText
+                            name="abbr"
+                            label="Abbreviation"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                            rules={{ required: "Required" }}
+                        />
+           
           </Col>
           <Col md={4}>
-            <InputGroup className="mb-3">
-              <InputGroupText>Tax Cent</InputGroupText>
-              <Input className="form-control" type="text" />
-            </InputGroup>
+          
+            <InputText
+                            name="tax"
+                            label="Tax Cent"
+                            type="text"
+                            register={register}
+                            errors={errors}
+                            rules={{ required: "Required" }}
+                        />
+           
           </Col>
 
         </Row>
@@ -63,7 +106,7 @@ const StateForm = () => {
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={optionscountry}
+                      options={data}
                       className="form-control p-0 border-0"
                       placeholder="Select Country"
                     />

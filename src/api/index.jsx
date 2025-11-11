@@ -8,6 +8,7 @@ export const company = `${baseurl}/api/company`;
 export const companyall = `${baseurl}/api/company/all`;
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;
+
 export const pmenu = `${baseurl}/api/pmenu`;
 export const pmenuAll = `${baseurl}/api/pmenu/all`; 
 export const login = `${baseurl}/api/admin/login`;
@@ -18,6 +19,7 @@ export const user_tracking = `${baseurl}/api/user_tracking`;
 export const tcheck = `${baseurl}/api/tcheck`;
 export const tcheck_invoice = `${baseurl}/api/tcheck_invoice`;
 export const state = `${baseurl}/api/state`;
+export const state_all = `${baseurl}/api/state/all`;
 export const city = `${baseurl}/api/city`;
 export const country = `${baseurl}/api/country`;
 export const combine_invoice = `${baseurl}/api/invoicecombine`;

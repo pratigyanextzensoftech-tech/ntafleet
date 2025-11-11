@@ -36,6 +36,7 @@ const Index = () => {
        handlePerRowsChange,
        handleSearch, // ✅ Added
        setData,
+        fetchData,
      } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
      useEffect(() => {
        const cols = Object.keys(columnsMap).map((key) => ({
@@ -127,7 +128,9 @@ const Index = () => {
        });
      };
  
-
+  const refreshTable = () => {
+    fetchData(); // fetch latest data
+  };
  
 
   return (
@@ -140,7 +143,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add Linamar Esso Location " />
               <CardBody>
-                <LinamarForm />
+                <LinamarForm onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

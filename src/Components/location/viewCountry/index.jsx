@@ -9,6 +9,7 @@ import HeaderCard from '../../Common/Component/HeaderCard';
 import qs from 'qs'
 import axios from 'axios';
 import { country as APINAME } from '../../../api';
+
 import {
   FaDownload,
   FaEye,
@@ -20,8 +21,8 @@ import { Link } from 'react-router-dom';
 import usePaginatedTable from '../../../Hooks/usePagination';  
 //end Table
 
-
 const Index = () => {
+    
     const [tableColumns, setTableColumns] = useState([]);
     const [openRowId, setOpenRowId] = useState(null);
   
@@ -58,6 +59,7 @@ const Index = () => {
       handlePerRowsChange,
       handleSearch, // ✅ Added
       setData,
+      fetchData,
     } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
   
   
@@ -81,12 +83,12 @@ const Index = () => {
           <div className="position-relative dropdown-action">
             <button
               className="btn btn-sm btn-primary px-2"
-              onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+              onClick={() => setOpenRowId(openRowId === row["Country ID"] ? null : row["Country ID"])}
             >
               Action
             </button>
   
-            {openRowId === row.id && (
+            {openRowId === row[["Country ID"]] && (
               <div
                 className="position-absolute bg-white border rounded shadow"
                 style={{
@@ -125,18 +127,10 @@ const Index = () => {
   
       setTableColumns(cols);
     }, [openRowId]);
-    useEffect(() => {
-       if (data?.length) {
-         const normalized = data.map((item) => ({
-           ...item,
-           id: item["Country ID"], 
-          
-         }));
-     
-         setData(normalized);
-       }
-     }, [data]);
-    // ✅ Action handlers
+     const refreshTable = () => {
+    fetchData(); // fetch latest data
+  };
+ 
     const handleEdit = (row) => alert("Edit " + row.id); 
  const handleDelete = (row) => {
        Swal.fire({
@@ -150,9 +144,9 @@ const Index = () => {
          cancelButtonText: 'Cancel'
        }).then((result) => {
          if (result.isConfirmed) {
-           axios.delete(`${APINAME}/${row.id}`)
+           axios.delete(`${APINAME}/${row["Country ID"]}`)
              .then(() => {
-               setData((prevData) => prevData.filter((item) => item.id !== row.id));
+               setData((prevData) => prevData.filter((item) => item[["Country ID"]] !== row[["Country ID"]]));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
              })
              .catch(() => {
@@ -171,7 +165,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add Country" />
               <CardBody>
-                <CountryForm />
+                <CountryForm  onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

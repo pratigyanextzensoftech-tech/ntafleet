@@ -5,7 +5,10 @@ import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
-const CountryForm = () => {
+import { country as APINAME } from '../../../api';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+const CountryForm = ({onDataAdded}) => {
     const {
         register,
         control,
@@ -13,9 +16,31 @@ const CountryForm = () => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+     const onSubmit = (formData) => {
+                            console.log("Form Data:", formData);  // ✅ This will print your inputs
+    
+         const payload = {
+        country_name: formData.country,
+     
+         }
+        axios.post(APINAME,payload)
+        .then((res)=>{
+            console.log(res);
+           
+              toast.success("Add successfully!");
+    
+       reset();
+    
+            if (onDataAdded) onDataAdded();
+        })
+        .catch((err)=>{
+            console.log(err);
+              toast.error(err.message);
+        })
+            };
     return (
         <Fragment >
-            <Form>
+            <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                 <Row>
                     <Col md="8">
                         <InputText

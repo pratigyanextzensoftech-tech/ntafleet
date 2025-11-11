@@ -5,7 +5,11 @@ import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
-const LinamarForm = () => {
+import { toast } from 'react-toastify';
+import { linamar_esso_loc as APINAME } from '../../../api';
+
+import axios from 'axios'
+const LinamarForm = ({onDataAdded}) => {
     const {
         register,
         control,
@@ -13,9 +17,34 @@ const LinamarForm = () => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+       const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+    esso_location: formData.essoLoc,
+    fj_location:formData.flyingLoc,
+    site_id:formData.flyingJSite,
+    fj_location:formData.flyingJLOc,
+loc_id:0
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+
+   reset();
+
+        if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
     return (
         <Fragment > 
-                <Form>
+                <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                     <Row>
                         <Col md="4">
                             <InputText
