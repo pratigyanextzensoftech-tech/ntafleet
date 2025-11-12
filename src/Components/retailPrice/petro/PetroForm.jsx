@@ -5,6 +5,8 @@ import { Btn } from '../../../AbstractElements';
 import { useForm } from 'react-hook-form';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import InputText from '../../Forms/FormControl/formInput/InputText';
+import { petro_retail as APINAME } from "../../../api";
+
 const PetroForm = ({btnTitle,btnTitle1}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
@@ -16,12 +18,9 @@ const PetroForm = ({btnTitle,btnTitle1}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
-    const onSubmit = (data) => {
-
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-
-    };
+const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+        };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
@@ -42,24 +41,23 @@ const PetroForm = ({btnTitle,btnTitle1}) => {
         <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                <Col sm='4'>
-                                         <Row>
-                                                                       
- <InputText
-            name="file"
-            label="File"
-            type="file"
-            register={register}
-            errors={errors}
-            rules={{ required: " Required" }}
-          />
-                                                                                               </Row>
+                                          <Row>
+                             <DatePickerInput
+        name="from"
+        control={control}              // ✅ make sure this is passed
+        label=" From "
+        errors={errors}
+        required=" Date is required"
+      />     
+                      
+                        </Row>
                                       </Col>
          <Col sm="4">
                         <Row>
                              <DatePickerInput
-        name="endDate"
+        name="to"
         control={control}              // ✅ make sure this is passed
-        label="Date"
+        label="To "
         errors={errors}
         required=" Date is required"
       />     

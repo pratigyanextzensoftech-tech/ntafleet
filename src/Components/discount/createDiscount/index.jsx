@@ -142,7 +142,9 @@ const Index = () => {
 
     { name: "Action", cell: (row) => <ActionDropdown row={row} />, ignoreRowClick: true, allowOverflow: true, button: true, width: "100px" },
   ];
-
+const refreshTable=()=>{
+  fetchDiscounts()
+}
   return (
     <Fragment>
       <Breadcrumbs parent="Discount" title="Create Single Discount" /> 
@@ -152,7 +154,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Create Single Discount" />
               <CardBody>
-                 <Create btnTitle="Create" onCreateSuccess={() => fetchDiscounts(currentPage, perPage)} />
+                 <Create btnTitle="Create" onCreateSuccess={() => fetchDiscounts(currentPage, perPage)} onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

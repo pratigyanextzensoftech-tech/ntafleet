@@ -20,8 +20,13 @@ import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Select from "react-select";
+import { useCompany } from "../../../Hooks/Dropdowns";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { sub_company as APINAME } from "../../../api";
 
-const SubLoginForm = ({ btnTtitle }) => {
+const SubLoginForm = ({ btnTtitle,onDataAdded }) => {
+  const{data}=useCompany()
   const {
     register,
     control,
@@ -30,10 +35,38 @@ const SubLoginForm = ({ btnTtitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+  const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+    name: formData.Name,
+    email:formData.email,
+    otp_email:formData.otpEmail,
+    card_discount:formData.card.value,
+company_id:formData.company.value,
+username:formData.userName,
+password:formData.password,
+added_by:sessionStorage.getItem("userId"),
+added_on: new Date()
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+ reset();
+
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data);
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
   return (
     <div>
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
@@ -143,7 +176,7 @@ const SubLoginForm = ({ btnTtitle }) => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={optionscompany}
+                        options={data}
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
                       />

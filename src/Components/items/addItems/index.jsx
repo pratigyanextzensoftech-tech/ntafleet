@@ -6,8 +6,8 @@ import AddItems from "./AddItems";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { items } from "../../../api"; // API endpoint
-
+import { items as  APINAME } from "../../../api"; // API endpoint
+import Swal from "sweetalert2";
 const Index = () => {
   const [Items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ const Index = () => {
       const start = (page - 1) * limit;
       const params = { draw, start, length: limit };
 
-      const res = await axios.get(items, { params });
+      const res = await axios.get(APINAME, { params });
       const data = Array.isArray(res.data.data) ? res.data.data : res.data;
 
       const formatted = data.map((item, index) => ({
@@ -56,11 +56,35 @@ const Index = () => {
 
   const handleEdit = (row) => console.log("Edit Item:", row);
   const handleDelete = (row) => {
-    if (window.confirm(`Delete Item "${row.name}"?`)) {
-      setItems((prev) => prev.filter((item) => item.id !== row.id));
-      // call delete API if needed
-    }
+    console.log(row)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${APINAME}/${row.id}`)
+          .then(() => {
+            setItems((prevData) => prevData.filter((item) => item.id !== row.id));
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+          })
+          .catch(() => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+          });
+      }
+    });
   };
+  // const handleDelete = (row) => {
+  //   if (window.confirm(`Delete Item "${row.name}"?`)) {
+  //     setItems((prev) => prev.filter((item) => item.id !== row.id));
+  //     // call delete API if needed
+  //   }
+  // };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -129,7 +153,9 @@ const Index = () => {
       width: "160px",
     },
   ];
-
+const refreshTable=()=>{
+  fetchItems()
+}
   return (
     <Fragment>
       <Breadcrumbs parent="Items" title="Manage Item" />
@@ -139,7 +165,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add Item" />
               <CardBody>
-                <AddItems btnTitle="Add Item" />
+                <AddItems btnTitle="Add Item" onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

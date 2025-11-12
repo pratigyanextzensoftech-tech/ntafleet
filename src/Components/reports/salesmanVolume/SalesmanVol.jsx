@@ -5,6 +5,9 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Co
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import { salesman_volume as APINAME } from '../../../api';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 const SalesmanVol = ({btnTitle}) => {
     const {
         register,
@@ -14,12 +17,38 @@ const SalesmanVol = ({btnTitle}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
-    const onSubmit = (data) => {
+     const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+     const payload = {
+    salesman_id: formData.salesman.value,
+    date_from:formData.startDate.value,
+    date_to:formData.endDate.value,
+    country:formData.country.value,
+supplier_id:0,
+us_total:"",
+ca_total:"",
+total_gln:"",
+total_ltr:"",
+dated:new Date(),
+idby:sessionStorage.getItem("userId"),
+del:""
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
 
-    };
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };

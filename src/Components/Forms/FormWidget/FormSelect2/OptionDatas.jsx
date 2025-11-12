@@ -219,8 +219,8 @@ export const optionsSearch = [
 ];
 export const companyLoginAccess=[
     { label: 'select Option.',isDisabled: true },
-    { value: 'Yes', label: 'Yes' },
-    { value: 'No', label: 'No' },
+    { value: '0', label: 'Yes' },
+    { value: '1', label: 'No' },
 
 ]
 export const YesNo=[
@@ -301,6 +301,13 @@ export const companyStatus=[
         { value: 'Active', label: 'Active' },
         { value: 'InActive', label: 'InActive' },
         { value: 'Hold', label: 'Hold' },
+]
+export const cardStatus=[
+        { label: 'Select Status', isDisabled: true },
+        { value: '0', label: 'Active' },
+        { value: '1', label: 'InActive' },
+        { value: '2', label: 'Hold' },
+        { value: '3', label: 'Lost' },
 ]
 export const MoneyCodeStatus=[
         { label: 'Select Status', isDisabled: true },

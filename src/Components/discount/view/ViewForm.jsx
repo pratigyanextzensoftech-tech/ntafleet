@@ -28,7 +28,11 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import useCompany from "../../../Hooks/useCompany";
 import useSupplier from "../../../Hooks/useSupplier";
-const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
+import axios from "axios";
+import { toast } from "react-toastify";
+import { discount_list as APINAME } from "../../../api"; // ✅ Your API endpoint
+
+const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
   const { supplier, loading, error } = useSupplier();
   const {
@@ -39,10 +43,51 @@ const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+ const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+      company_id:formData.company.value,
+      company_name:formData.company.label,
+   end_date: formData.endDate,
+    start_date:formData.startDate,
+    country:formData.country.label,
+supplier_id:formData.supplier.value,
+supplier_name:formData.supplier.label,
+discount_amt_us:formData.discount,
+// discount_amt_us:0,
+discount_ca:0,
+total_ca:0,
+retail_total_ca:0,
+fuel_unit_ca:0,
+fuel_unit_ca_disc_free:0,
+discount_amt_ca:0,
+discount_us:0,
+total_us:0,
+retail_total_us:0,
+fuel_unit_us:0,
+fuel_unit_us_disc_free:0,
+added_by:sessionStorage.getItem("userId"),
+added_on:new Date()
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+ reset();
+
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data);
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
 
   return (
     <> 

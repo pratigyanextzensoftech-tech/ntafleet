@@ -5,7 +5,11 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Co
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-const AddItems = ({btnTitle}) => {
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { items as APINAME} from "../../../api"; // API endpoint
+
+const AddItems = ({btnTitle,onDataAdded}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
@@ -15,12 +19,33 @@ const AddItems = ({btnTitle}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
-    const onSubmit = (data) => {
+   const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+     const payload = {
+    item_name: formData.Name,
+    discount_applied:formData.discount.value,
+    tax_applied:formData.tax.value,
+  fee:"",
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+ reset();
 
-    };
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data);
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
@@ -64,7 +89,7 @@ const AddItems = ({btnTitle}) => {
                                             {...field}
                                             options={companyLoginAccess}
                                             className="form-control p-0 border-0"
-                                            placeholder="Select d"
+                                            placeholder="Select Discount Applied"
                                         />
                                     )}
                                 />

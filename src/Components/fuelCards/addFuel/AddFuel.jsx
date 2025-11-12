@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import { optionscompany,InVoiceSupplier } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { optionscompany,cardStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
+import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
+import axios from 'axios';
+import { useCompany,useSupplier } from '../../../Hooks/Dropdowns';
+import { toast } from 'react-toastify';
 const AddFuel = ({btnTitle}) => {
+  const {data}=useCompany()
+  const{data:supplierOption}=useSupplier()
     const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
@@ -14,16 +20,44 @@ const AddFuel = ({btnTitle}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
-    const onSubmit = (data) => {
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+  
+    const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
 
-    };
-    const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
+     const payload = {
+    card_no: formData.cardNo,
+    policy:formData.policyNo,
+    unit_number:formData.unitNo,
+    pin_number:formData.pinNo,
+company_id:formData.company.value,
+supplier_id:formData.supplier.value,
+driver_name:formData.driverName,
+d_mobile1:formData.driverMobile,
+d_mobile2:formData.driverMobile2,
+status:formData.cardStatus.label,
+supplier_name:formData.supplier.label,
+cardno:"",
+company_name:formData.company.label,
+update_otp:""
 
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        
+  }
     const handleCheckboxChange = (e) => {
         const { value, checked } = e.target;
 
@@ -98,7 +132,7 @@ const AddFuel = ({btnTitle}) => {
                                     render={({ field }) => (
                                         <Select
                                             {...field}
-                                            options={optionscompany}
+                                            options={data}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Company Name"
                                         />
@@ -125,7 +159,7 @@ const AddFuel = ({btnTitle}) => {
                           <Select
                             {...field}
                                  options={
-               InVoiceSupplier // your normal supplier array
+               supplierOption // your normal supplier array
             }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
@@ -166,8 +200,8 @@ const AddFuel = ({btnTitle}) => {
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">
                             <InputGroup>
-                              <InputGroupText>   Driver Mobile 1 </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverMobile', { required: true })} />
+                              <InputGroupText>   Driver Mobile 2 </InputGroupText>
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverMobile2', { required: true })} />
                             </InputGroup>
                             {errors.driverMobile && (
                               <span className="text-danger"> Required</span>
@@ -189,7 +223,7 @@ const AddFuel = ({btnTitle}) => {
                           <Select
                             {...field}
                                  options={
-               InVoiceSupplier // your normal supplier array
+               cardStatus // your normal supplier array
             }
                             className="form-control p-0 border-0"
                             placeholder="Select Card Status"

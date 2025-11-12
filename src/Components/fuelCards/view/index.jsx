@@ -153,7 +153,7 @@ const ViewFuelCards = () => {
   const handleEdit = (row) => console.log("Edit:", row);
   
     const handleDelete = (row) => {
-    if (window.confirm(`Delete "${row.card}"?`)) {
+    if (window.confirm(`Delete "${row.id}"?`)) {
       setFuelCards(fuelCards.filter((item) => item.id !== row.id));
       setOpenRowId(null);
     }
