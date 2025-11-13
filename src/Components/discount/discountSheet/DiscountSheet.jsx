@@ -21,21 +21,115 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import useCompany from "../../../Hooks/useCompany";
 import InputText from "../../Forms/FormControl/formInput/InputText";
-const DiscountSheet = ({ title, btnTitle }) => {
+import axios from 'axios';
+import { toast } from "react-toastify";
+import { discount_sheet as APINAME } from '../../../api';
+const DiscountSheet = ({ title, btnTitle, onDataAdded}) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const { companies: companyOptions, loading: companyLoading } = useCompany();
 
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+   const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+      company_id:formData.company.value,
+      company_name:formData.company.label,
+      start_date:formData.startDate,
+      end_date:formData.endDate,
+      es_disc_ca_usd:formData.discountCanada,
+      f_disc_ca_usd:formData.discountUSA,
+   f_disc_ca_cad: formData.Flyingdiscount,
+   p_disc_ca_usd: formData.Petrodiscount,
+   ta_disc_us_usd: formData.TaPetrodiscount,
+   f_usa_cent:0,
+   f_canada_cent:0,
+   p_canada_cent:0,
+   ta_usa_cent:0,
+   ta_usa_cent:0,
+   es_canada_cent:0,
+   ta_petro:0,
+   esso:0,
+   retail_total_usd:0,
+   retail_total_cad:0,
+   total_usd:0,
+  total_cad:0,
+  litres:0,
+  gallons:0,
+  discount_usd:0,
+  discount_cad:0,
+  tr_count_ca:0,
+  tr_count_usa:0,
+  f_retail_us_usd:0,
+  f_total_us_usd:0,
+  f_retail_us_cad:0,
+  f_total_us_cad:0,
+  f_disc_us_usd:0,
+  f_disc_us_cad:0,
+  f_us_litres:0,
+  f_us_gallons:0,
+  f_us_tr_count:0,
+  f_retail_ca_usd:0,
+  f_total_ca_usd:0,
+  f_retail_ca_cad:0,
+  f_total_ca_cad:0,
+  f_ca_litres:0,
+  f_ca_gallons:0,
+  f_ca_tr_count:0,
+  p_retail_ca_usd:0,
+  p_retail_ca_usd:0,
+  p_total_ca_usd:0,
+  p_retail_ca_cad:0,
+  p_total_ca_cad:0,
+  p_disc_ca_cad:0,
+  p_ca_litres:0,
+  p_ca_gallons:0,
+  p_ca_tr_count:0,
+  ta_retail_us_usd:0,
+  ta_total_us_usd:0,
+  ta_retail_us_cad:0,
+  ta_total_us_cad:0,
+  ta_disc_us_cad:0,
+  ta_us_litres:0,
+  ta_us_gallons:0,
+  ta_us_tr_count:0,
+  es_retail_ca_usd:0,
+  es_total_ca_usd:0,
+  es_retail_ca_cad:0,
+  es_retail_ca_cad:0,
+  es_total_ca_cad:0,
+  es_disc_ca_cad:0,
+  es_ca_litres:0,
+  es_ca_gallons:0,
+  es_ca_tr_count:0,
+
+
+    id:0,
+    dated:new Date(),
+// added_on:new Date(),
+idby:sessionStorage.getItem("userId")
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+          toast.success("Add successfully!");
+ 
+   reset();
+
+        if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -145,20 +239,16 @@ const DiscountSheet = ({ title, btnTitle }) => {
         </Row>
         <Row>
           {discountSheetCheckBox.map((item, index) => (
-            <Col sm="2">
-              <div className="checkbox checkbox-dark">
-                <input
-                  id={`checkbox-${index}`}
-                  type="checkbox"
-                  value={item.value}
-                  checked={selectedValues.includes(item.value)}
-                  onChange={handleCheckboxChange}
-                />
-                <Label for={`checkbox-${index}`} className="ms-2">
-                  {item.label}
-                </Label>
-              </div>
-            </Col>
+            <Col sm="2" key={index}>
+    <div className="checkbox checkbox-dark">
+      <input
+        type="checkbox"
+        value={item.value}
+        {...register("selectedValues")} // ✅ register with form
+      />
+      <Label className="ms-2">{item.label}</Label>
+    </div>
+  </Col>
           ))}
 
           <Col sm="4">

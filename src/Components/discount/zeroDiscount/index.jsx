@@ -14,13 +14,13 @@ const Index = () => {
    const [tableColumns, setTableColumns] = useState([]);
   
     const columnsMap = {
-      "Id #": "Id#",
-      "	Location #": "location",
+      "Id #": "id",
+      "	Location #": "loc_id",
       "	State": "state",
       "	City": "city",
-      "	Supplier": "supplier",
-      "	Added_On": "addedon",
-      "Added_By": "addedBy",
+      "	Supplier": "supplier_id",
+      "	Added_On": "dated",
+      "Added_By": "idby",
     };
      const {
         data,
@@ -30,6 +30,7 @@ const Index = () => {
         handlePerRowsChange,
         handleSearch, // ✅ Added
         setData,
+        fetchData
       } = usePaginatedTable({ apiUrl: zero_discount, columnsMap });
        const [openRowId, setOpenRowId] = useState(null);
       
@@ -69,12 +70,12 @@ const Index = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row["Id #"] ? null : row[ "Id #"])}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row[ "Id #"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -128,11 +129,11 @@ const Index = () => {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${zero_discount}/${row.id}`)
+        axios.delete(`${zero_discount}/${row[ "Id #"]}`)
           .then((res) => {
             setData((prevData) => {
   prevData.forEach((item) => console.log("Existing item id:", item.id)); // ✅ print each item id
-  return  prevData.filter((item) => item.id !== row.id);
+  return  prevData.filter((item) => item[ "Id #"] !== row[ "Id #"]);
 });
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
               console.log(res.data)
@@ -145,6 +146,9 @@ const Index = () => {
       }
     });
   };  
+  const refreshTable=()=>{
+    fetchData()
+  }
   return (
     <Fragment>
       <Breadcrumbs parent="Discount" title="TA-Petro Zero Discount Location" />
@@ -154,7 +158,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add TA-Petro Zero Discount Location" />
               <CardBody>
-                <ZeroDiscount btnTitle="Save Location" />
+                <ZeroDiscount btnTitle="Save Location" onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>
@@ -162,7 +166,14 @@ const Index = () => {
         <DataTableComponent
           title="TA-Petro Location List  "
           tableColumns={tableColumns}
-          tableData={dummytabledata}
+          tableData={data}
+          progressPending={loading}
+          pagination
+          paginationServer
+          loading={loading}
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
         />
       </Container>
     </Fragment>

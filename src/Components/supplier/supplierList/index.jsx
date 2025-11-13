@@ -18,7 +18,8 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
   const [openRowId, setOpenRowId] = useState(null);
-
+  const [selectedRow, setSelectedRow] = useState(null);
+const[Edit,setEdit]=useState(false)
   // Column mapping: display name => API field
   const columnsMap = {
     "Supplier ID": "id",
@@ -67,7 +68,12 @@ const handleDataAdded = () => {
   fetchData(currentPage, perPage, filters);
 };
   // Actions
-  const handleEdit = (row) => console.log("Edit", row);
+  const handleEdit =(row)=>{
+    setEdit(true)
+    setSelectedRow(row); 
+  }
+
+
    const handleDelete = (e,row) => {
     console.log(row.id)
     console.log(data)
@@ -163,7 +169,6 @@ const handleDataAdded = () => {
 
     setTableColumns(cols);
   }, [openRowId]);
-
   return (
     <>
       <Breadcrumbs parent='Supplier' title='Manage Supplier' />
@@ -181,7 +186,9 @@ const handleDataAdded = () => {
               <HeaderCard title="Add Supplier" />
               <CardBody>
 
-                <SupplierList btntitle="Add Supplier" btnTitle1="Reset"  onDataAdded={handleDataAdded}/>
+                <SupplierList  Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit} btntitle="Add Supplier" btnTitle1="Reset"  onDataAdded={handleDataAdded}/>
 
               </CardBody>
             </Card>

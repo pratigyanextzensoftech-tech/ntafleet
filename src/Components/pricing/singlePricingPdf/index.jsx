@@ -24,12 +24,7 @@ const pricingpdf = {
   "Added_On": "added_on",
   "Mailed_By": "mailby",
   "Mailed_On": "mail_on",
-}
-
-
-
-  
-      
+}   
    const pricingPdfData= usePaginatedTable({
          apiUrl: pricing_pdf_Api,
          columnsMap: pricingpdf,
@@ -116,7 +111,16 @@ const pricingpdf = {
       />
     ),
   }));
-
+const fetchers = {
+  pricingPdfData: pricingPdfData.fetchData,
+  tapetroPdf: tapetroPdf.fetchData,
+  tapetroPdfActual: tapetroPdfActual.fetchData,
+  essoPdfWithoutTax: essoPdfWithoutTax.fetchData,
+  essoPdf: essoPdf.fetchData,
+  lovePdf: lovePdf.fetchData,
+  lovePdfActual: lovePdfActual.fetchData,
+  ulPdf: ulPdf.fetchData,
+};
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Pricing List" />
@@ -126,7 +130,7 @@ const pricingpdf = {
             <Card>
               <HeaderCard title="Create Pricing PDF" />
               <CardBody>
-                <BasicTabCard tabContent={SinglepricingTab} />
+                <BasicTabCard  tabContent={SinglepricingTab(fetchers)}  />
               </CardBody>
             </Card>
           </Col>
@@ -136,6 +140,7 @@ const pricingpdf = {
             <Card>
               <HeaderCard title="Pricing List" />
               <CardBody>
+
                 <BasicTabCard tabContent={pricingpdfTab} />
               </CardBody>
             </Card>

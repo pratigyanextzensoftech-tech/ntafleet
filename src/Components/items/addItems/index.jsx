@@ -16,7 +16,8 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
-
+  const [selectedRow, setSelectedRow] = useState(null);
+  const[Edit,setEdit]=useState(false)
   // Fetch Items API with server-side pagination
   const fetchItems = async (page = 1, limit = 10) => {
     setLoading(true);
@@ -26,7 +27,6 @@ const Index = () => {
 
       const res = await axios.get(APINAME, { params });
       const data = Array.isArray(res.data.data) ? res.data.data : res.data;
-
       const formatted = data.map((item, index) => ({
         id: item.id || start + index + 1,
         name: item.item_name,
@@ -54,7 +54,11 @@ const Index = () => {
     setCurrentPage(page);
   };
 
-  const handleEdit = (row) => console.log("Edit Item:", row);
+  const handleEdit =(row)=>{
+    console.log(row)
+    setEdit(true)
+    setSelectedRow(row); 
+  }
   const handleDelete = (row) => {
     console.log(row)
     Swal.fire({
@@ -165,7 +169,9 @@ const refreshTable=()=>{
             <Card>
               <HeaderCard title="Add Item" />
               <CardBody>
-                <AddItems btnTitle="Add Item" onDataAdded={refreshTable}/>
+                <AddItems Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit} btnTitle="Add Item" onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import Select from 'react-select'
 import {  optionscompany,companyLoginAccess } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
@@ -9,7 +9,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { items as APINAME} from "../../../api"; // API endpoint
 
-const AddItems = ({btnTitle,onDataAdded}) => {
+const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
@@ -18,7 +18,16 @@ const AddItems = ({btnTitle,onDataAdded}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
-
+  useEffect(() => {
+    if (Edit && selectedRow) {
+        console.log(selectedRow)
+      reset({
+        Name: selectedRow.name,
+        discount: selectedRow.discount , // prefill dropdown
+      tax: selectedRow.tax, 
+      });
+    }
+  }, [Edit, selectedRow, reset]);
    const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -28,10 +37,23 @@ const AddItems = ({btnTitle,onDataAdded}) => {
     tax_applied:formData.tax.value,
   fee:"",
      }
-    axios.post(APINAME,payload)
+      if (Edit && selectedRow) {
+          axios.put(`${APINAME}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success("Supplier updated successfully!");
+          if (onDataAdded) onDataAdded();
+          setEdit(false);
+          reset();
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
+  axios.post(APINAME,payload)
     .then((res)=>{
         console.log(res);
-       
           toast.success("Add successfully!");
  reset();
 
@@ -45,6 +67,8 @@ const AddItems = ({btnTitle,onDataAdded}) => {
         console.log(err);
           toast.error(err.message);
     })
+    }
+  
         };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
@@ -90,6 +114,11 @@ const AddItems = ({btnTitle,onDataAdded}) => {
                                             options={companyLoginAccess}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Discount Applied"
+                                             value={
+        field.value
+          ? { value: field.value, label: `${field.value}%` }
+          : null
+      }
                                         />
                                     )}
                                 />
@@ -115,6 +144,11 @@ const AddItems = ({btnTitle,onDataAdded}) => {
                                             options={companyLoginAccess}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Tax Applied"
+                                              value={
+        field.value
+          ? { value: field.value, label: `${field.value}%` }
+          : null
+      }
                                         />
                                     )}
                                 />

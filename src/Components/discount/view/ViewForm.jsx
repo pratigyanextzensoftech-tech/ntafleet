@@ -162,6 +162,7 @@ added_on:new Date()
                 }}
               >
                 {btnTitle}
+                
               </Btn>
               <button className="btn btn-secondary">{btnTitle1}</button>
             </div>
