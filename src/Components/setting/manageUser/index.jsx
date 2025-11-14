@@ -20,7 +20,8 @@ const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [editUser, setEditUser] = useState(null);
   const [editId, setEditId] = useState(null);
-
+ const [selectedRow, setSelectedRow] = useState(null);
+    const[Edit,setEdit]=useState(false)
  const { id } = useParams();
 
  
@@ -90,15 +91,14 @@ console.log("Decoded ID:", Edit_id);
   };
 
   // ✅ Edit / Delete / Send Details
-  const handleEdit = (row) => {
-    setEditUser(row)
-    axios.put(administrator,row.id)
-    .then((res)=>{
-      console.log(res,"edit api");
-    })
-    .catch((err)=>{
-      console.log(err)
-    });
+  const handleEdit = async(row) => {
+    try {
+    const response = await axios.get(`${administrator}/${row.id}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
   };
   const handleDelete = (row) => {
   Swal.fire({
@@ -220,10 +220,14 @@ console.log("Decoded ID:", Edit_id);
                   padding: "5px 0",
                 }}
               >
-                <Link to={`/manage_user/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
+                {/* <Link to={`/manage_user/${btoa(row.id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
                 >
                                   <FaEdit /> Edit
-             </Link>
+             </Link> */}
+               <button onClick={()=>handleEdit(row)}  className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
+                >
+                                  <FaEdit /> Edit
+             </button>
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"
                   style={{ padding: "8px 12px", gap: "8px" }}
@@ -260,7 +264,9 @@ console.log("Decoded ID:", Edit_id);
             <Card>
               <HeaderCard title="Add User" />
               <CardBody>
-                <FormComponent Edit_id={editId}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
+                <FormComponent Edit_id={editId} Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
               </CardBody>
             </Card>
           </Col>

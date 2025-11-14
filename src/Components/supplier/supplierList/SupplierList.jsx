@@ -14,7 +14,11 @@ const SupplierList = ({btntitle,btnTitle1,onDataAdded,Edit,selectedRow,setEdit})
             reset,
             handleSubmit,
             formState: { errors, isSubmitted, isValid },
-        } = useForm();
+        } = useForm({
+          defaultValues:{
+            supplier:""
+          }
+        });
      useEffect(() => {
     if (Edit && selectedRow) {
       reset({
@@ -35,7 +39,9 @@ const SupplierList = ({btntitle,btnTitle1,onDataAdded,Edit,selectedRow,setEdit})
           toast.success("Supplier updated successfully!");
           if (onDataAdded) onDataAdded();
           setEdit(false);
-          reset();
+          reset({
+            supplier:""
+          });
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -70,6 +76,7 @@ const SupplierList = ({btntitle,btnTitle1,onDataAdded,Edit,selectedRow,setEdit})
             register={register}
             errors={errors}
             rules={{ required: "Required" }}
+            
           />
                    
                   </Col>

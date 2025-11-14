@@ -21,7 +21,9 @@ import Swal from "sweetalert2";
 const Index = () => {
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
-
+ const [selectedRow, setSelectedRow] = useState(null);
+         const[Edit,setEdit]=useState(false)
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".dropdown-action")) {
@@ -123,9 +125,12 @@ const Index = () => {
   }, [openRowId]);
 
   // ✅ Action handlers
-  const handleEdit = (row) => alert("Edit " + row["State ID"]);
 
-
+    const handleEdit = (row) => {
+console.log(row)
+    setEdit(true)
+    setSelectedRow(row); 
+    }; 
 const handleDelete = (row) => {
   Swal.fire({
     title: 'Are you sure?',
@@ -164,7 +169,9 @@ const handleDelete = (row) => {
             <Card>
               <HeaderCard title="Add State" />
               <CardBody>
-                <StateForm onDataAdded={refreshTable}/>
+                <StateForm onDataAdded={refreshTable}  Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit}/>
               </CardBody>
             </Card>
           </Col>

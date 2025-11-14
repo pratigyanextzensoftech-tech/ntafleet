@@ -70,40 +70,12 @@ const Index = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row["Id #"] ? null : row[ "Id #"])}
-          >
-            Action
+ onClick={(e) => handleDelete(e,row)}
+>
+             <FaTrashAlt /> Delete
           </button>
 
-          {openRowId === row[ "Id #"] && (
-            <div
-              className="position-absolute bg-white border rounded shadow"
-              style={{
-                zIndex: 1000,
-                right: 0,
-                marginTop: 5,
-                minWidth: 180,
-                padding: "5px 0",
-              }}
-            >
-                      
-  <button
-                className="dropdown-item d-flex align-items-center text-success"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={(e) => handleDelete(e,row)}
-              >
-                <FaEdit /> Edit
-              </button>
-              {/* Delete */}
-              <button
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={(e) => handleDelete(e,row)}
-              >
-                <FaTrashAlt /> Delete
-              </button>
-            </div>
-          )}
+         
 
         </div>
       ),

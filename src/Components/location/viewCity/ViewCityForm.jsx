@@ -1,5 +1,5 @@
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState,useEffect } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
@@ -12,7 +12,7 @@ import axios from 'axios';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useCountry,useStates } from '../../../Hooks/Dropdowns';
 
-const ViewCityForm = ({onDataAdded}) => {
+const ViewCityForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
    const{data}=useCountry()
 const { data: stateData } = useStates();
    const {
@@ -21,7 +21,33 @@ const { data: stateData } = useStates();
     reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  } = useForm({
+    defaultValues:{
+      city:"",
+       country:"",
+       state:""
+      
+    }
+  });
+useEffect(() => {
+  if (Edit && selectedRow) {
+
+    const selectedCountry = data?.find(
+      (item) => item.value === selectedRow.country_id
+    );
+
+    const selectedState = stateData?.find(
+      (item) => item.value === selectedRow.state_id
+    );
+
+    reset({
+      city: selectedRow.city_name,
+      country: selectedCountry || null,
+      state: selectedState || null,
+    });
+  }
+}, [Edit, selectedRow]);   
+
 
 const onSubmit = (formData) => {
                             console.log("Form Data:", formData.city);  // ✅ This will print your inputs
@@ -33,7 +59,27 @@ const onSubmit = (formData) => {
       
 
          }
-        axios.post(APINAME,payload)
+           if (Edit && selectedRow) {
+            console.log(selectedRow)
+          axios.put(`${APINAME}/${selectedRow.city_id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+          if (onDataAdded) onDataAdded();
+          setEdit(false);
+          reset({
+       city:"",
+      country:"",
+      state:"",
+     
+          });
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
+  axios.post(APINAME,payload)
         .then((res)=>{
             console.log(res);
            
@@ -47,6 +93,8 @@ const onSubmit = (formData) => {
             console.log(err);
               toast.error(err.message);
         })
+    }
+      
             };
   return (
     <Fragment >
@@ -79,7 +127,11 @@ const onSubmit = (formData) => {
                       options={data}
                       className="form-control p-0 border-0"
                       placeholder="Select Country"
-                    />
+                       value={field.value}   // ✅ FIXED
+      onChange={(val) => field.onChange(val)}
+                      />
+                  
+                  
                   )}
                 />
               </InputGroup>
@@ -104,6 +156,10 @@ const onSubmit = (formData) => {
                       options={stateData}
                       className="form-control p-0 border-0"
                       placeholder="Select City"
+                        onChange={(val) => field.onChange(val)}
+                        value={field.value}   // ✅ FIXED
+
+                  
                     />
                   )}
                 />
@@ -116,7 +172,7 @@ const onSubmit = (formData) => {
           </Col>
           <Col md={3}>
             <div className='text-end'>
-              <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >Add City</Btn>
+              <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Updte":"Add City"}</Btn>
             </div>
           </Col>
 

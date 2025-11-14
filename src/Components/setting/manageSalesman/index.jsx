@@ -14,7 +14,8 @@ import dayjs from "dayjs";
 const Index = () => {
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
-
+const [selectedRow, setSelectedRow] = useState(null);
+    const[Edit,setEdit]=useState(false)
   // Format date for table display
   const formatDate = (value, withTime = true) => {
     if (!value) return "-";
@@ -155,8 +156,15 @@ const Index = () => {
   // }, [data]);
 
   // ✅ Action Handlers
-  const handleEdit = (row) => console.log("Edit clicked:", row);
-
+ const handleEdit = async(row) => {
+    try {
+    const response = await axios.get(`${APINAME}/${row["ID #"]}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+  };
   const handleDelete = (e, row) => {
     e.preventDefault();
     Swal.fire({
@@ -193,7 +201,13 @@ const Index = () => {
               <HeaderCard title="Add Sales Man" />
               <CardBody>
                 {/* ✅ Call refreshTable on successful add */}
-                <ManageSalesman onDataAdded={refreshTable} />
+                <ManageSalesman
+    onDataAdded={refreshTable}
+    Edit={Edit}
+    selectedRow={selectedRow}
+    setEdit={setEdit}
+/>
+
               </CardBody>
             </Card>
           </Col>

@@ -33,6 +33,7 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
 
      const payload = {
     item_name: formData.Name,
+     
     discount_applied:formData.discount.value,
     tax_applied:formData.tax.value,
   fee:"",
@@ -40,7 +41,7 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
       if (Edit && selectedRow) {
           axios.put(`${APINAME}/${selectedRow.id}`, payload)
         .then((res) => {
-          toast.success("Supplier updated successfully!");
+          toast.success(" updated successfully!");
           if (onDataAdded) onDataAdded();
           setEdit(false);
           reset();

@@ -59,6 +59,7 @@ const Index = () => {
     setEdit(true)
     setSelectedRow(row); 
   }
+  
   const handleDelete = (row) => {
     console.log(row)
     Swal.fire({

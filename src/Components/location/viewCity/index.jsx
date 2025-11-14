@@ -21,6 +21,9 @@ import usePaginatedTable from "../../../Hooks/usePagination";
 const Index = () => {
     const [openRowId, setOpenRowId] = useState(null);
      const [tableColumns, setTableColumns] = useState([]);
+     const [selectedRow, setSelectedRow] = useState(null);
+      const[Edit,setEdit]=useState(false)
+       
     const columnsMap = {
     "City ID": "city_id",
     "City Name": "city_name",
@@ -106,9 +109,15 @@ const Index = () => {
        return () => document.removeEventListener("mousedown", handleClickOutside);
      }, []);
     
-   const handleEdit=(row)=>{
-    console.log(row)
-   }
+      const handleEdit = async(row) => {
+ try {
+    const response = await axios.get(`${APINAME}/${row["City ID"]}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+    }; 
      const handleDelete = (row) => {
        Swal.fire({
          title: 'Are you sure?',
@@ -121,7 +130,7 @@ const Index = () => {
          cancelButtonText: 'Cancel'
        }).then((result) => {
          if (result.isConfirmed) {
-           axios.delete(`${APINAME}/${row[["City ID"]]}`)
+           axios.delete(`${APINAME}/${row["City ID"]}`)
              .then(() => {
                setData((prevData) => prevData.filter((item) => item[["City ID"]] !== row["City ID"]));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
@@ -144,7 +153,9 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add City" />
               <CardBody>
-                <ViewCityForm onDataAdded={refreshTable}/>
+                <ViewCityForm onDataAdded={refreshTable} Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit}/>
               </CardBody>
             </Card>
           </Col>

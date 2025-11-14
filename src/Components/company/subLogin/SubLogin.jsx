@@ -14,9 +14,12 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import usePaginatedTable from '../../../Hooks/usePagination';
+
 const SubLOgin = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+    const[Edit,setEdit]=useState(false)
   const columnsMap = {
     "Id #": "id",
     "Company": "company_id",
@@ -26,7 +29,6 @@ const SubLOgin = () => {
     "Discount_Sheet_Menu": "card_discount",
     "Added_By": "added_by",
     "Added_On": "added_on",
-
   };
 
   const {
@@ -53,12 +55,12 @@ const SubLOgin = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row[["Id #"]]? null : row["Id #"])}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row["Id #"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -75,7 +77,8 @@ const SubLOgin = () => {
 
               <button
                 className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
+                style={{ padding: "8px 12px", gap: "8px" }} 
+                onClick={()=>handleEdit(row)}
               >
                 <FaEdit /> Edit
               </button>
@@ -115,19 +118,26 @@ const SubLOgin = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  useEffect(() => {
-    if (data?.length) {
-      const normalized = data.map((item) => ({
-        ...item,
-        id: item["Id #"],
+  // useEffect(() => {
+  //   if (data?.length) {
+  //     const normalized = data.map((item) => ({
+  //       ...item,
+  //       id: item["Id #"],
 
-      }));
+  //     }));
 
-      setData(normalized);
-    }
-  }, [data]);
-  const handleEdit = (row) => {
-    console.log(row)
+  //     setData(normalized);
+  //   }
+  // }, [data]);
+  const handleEdit =async (row)=>{
+     try {
+    const response = await axios.get(`${APINAME}/${row["Id #"]}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+    
   }
   const handleDelete = (row) => {
     console.log(row)
@@ -142,9 +152,9 @@ const SubLOgin = () => {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${APINAME}/${row.id}`)
+        axios.delete(`${APINAME}/${row[["Id #"]]}`)
           .then(() => {
-            setData((prevData) => prevData.filter((item) => item.id !== row.id));
+            setData((prevData) => prevData.filter((item) => item["Id #"] !== row["Id #"]));
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
           .catch(() => {
@@ -165,12 +175,14 @@ const SubLOgin = () => {
             <Card>
               <HeaderCard title="Add Sub-Login" />
               <CardBody>
-                <SubLoginForm btnTtitle="Add Sub Login " onDataAdded={refreshTable}/>
+                <SubLoginForm btnTtitle="Add Sub Login" onDataAdded={refreshTable}  Edit={Edit}
+  selectedRow={selectedRow}
+  setSelectedRow={setSelectedRow}
+  setEdit={setEdit}/>
               </CardBody>
             </Card>
           </Col>
         </Row>
-
         <DataTableComponent
           title="Sub-Login List  "
           tableColumns={tableColumns} tableData={data}

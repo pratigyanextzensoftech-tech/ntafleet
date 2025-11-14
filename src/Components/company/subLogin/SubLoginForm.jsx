@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Form,
   Row,
@@ -25,7 +25,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { sub_company as APINAME } from "../../../api";
 
-const SubLoginForm = ({ btnTtitle,onDataAdded }) => {
+const SubLoginForm = ({ btnTtitle,onDataAdded,selectedRow,Edit,setEdit,setSelectedRow }) => {
   const{data}=useCompany()
   const {
     register,
@@ -33,8 +33,38 @@ const SubLoginForm = ({ btnTtitle,onDataAdded }) => {
     reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
-
+  } = useForm({
+      defaultValues: {
+    Name: "",
+    email: "",
+    otpEmail: "",
+    card: null,
+    company: null,
+    userName: "",
+    password: "",
+  }
+  });
+useEffect(() => {
+  console.log(selectedRow)
+    if (Edit && selectedRow) {
+      reset({
+        Name: selectedRow.name,
+        email: selectedRow.email , // prefill dropdown
+      otpEmail: selectedRow.otp_email, 
+      card: selectedRow.card_discount, 
+      // tax: selectedRow.company.value,
+           company: {
+        value: selectedRow["company_id"],
+        label: selectedRow["company_id"]
+      } ,
+      // company: selectedRow.company_id, 
+      userName: selectedRow.username, 
+      password: selectedRow.password, 
+      added_by: selectedRow.Added_By,
+      added_on:selectedRow.Added_On
+      });
+    }
+  }, [Edit, selectedRow, reset]);
   const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -49,23 +79,49 @@ password:formData.password,
 added_by:sessionStorage.getItem("userId"),
 added_on: new Date()
      }
-    axios.post(APINAME,payload)
+
+      if (Edit && selectedRow) {
+          axios.put(`${APINAME}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success("Supplier updated successfully!");
+          setSelectedRow(null);
+          setEdit(false);
+ reset({
+        Name: "",
+        email: "",
+        otpEmail: "",
+        card: null,
+        company: null,
+        userName: "",
+        password: "",
+      });
+
+          if (onDataAdded) onDataAdded(res.data);
+
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
+ axios.post(APINAME,payload)
     .then((res)=>{
         console.log(res);
        
           toast.success("Add successfully!");
- reset();
+   reset();
 
     // ✅ Immediately update UI
     if (onDataAdded) onDataAdded(res.data);
-   reset();
 
-        // if (onDataAdded) onDataAdded();
     })
     .catch((err)=>{
         console.log(err);
           toast.error(err.message);
     })
+    }
+   
         };
   return (
     <div>
@@ -153,6 +209,8 @@ added_on: new Date()
                         options={companyLoginAccess}
                         className="form-control p-0 border-0"
                         placeholder="Select  "
+                        value={field.value}   // ✅ FIXED
+      onChange={(val) => field.onChange(val)}
                       />
                     )}
                   />
@@ -179,6 +237,8 @@ added_on: new Date()
                         options={data}
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
+                        value={field.value}   // ✅ FIXED
+      onChange={(val) => field.onChange(val)}
                       />
                     )}
                   />
@@ -251,7 +311,7 @@ added_on: new Date()
                     type: "submit",
                   }}
                 >
-                  {btnTtitle}
+                  {Edit?"Update":btnTtitle}
                 </Btn>
               </div>
             </Col>

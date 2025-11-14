@@ -1,17 +1,18 @@
 import React, { Fragment,useEffect } from 'react';
-import { Row, Col, Form } from 'reactstrap';
+import { Row, Col, Form,FormGroup,InputGroup,InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import { add_user } from '../../../Constant';
 import HeaderCard from '../../Common/Component/HeaderCard';
-import { useForm } from 'react-hook-form';
+import { useForm,Controller } from 'react-hook-form';
 import axios from 'axios';
+import Select from 'react-select'
 import { toast } from 'react-toastify';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
 
-const FormComponent = ({ onUserAdded,editUser,Edit_id }) => {
+const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit }) => {
   console.log(Edit_id)
   const {
     register,
@@ -20,27 +21,34 @@ const FormComponent = ({ onUserAdded,editUser,Edit_id }) => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
- useEffect(() => {
-  console.log(editUser)
-    if (editUser) {
-      setValue("name", editUser.name);
-      setValue("email", editUser.email);
-      setValue("phone", editUser.phone);
-      setValue("company", editUser.company);
-     // setValue("password", editUser.password ); // optional
-      setValue("status", {
-        value: editUser.status,
-        label: editUser.status == "0" ? "Active" : "Blocked",
-      });
-      setValue("company_login", {
-        value: editUser.company_login,
-        label: editUser.company_login,
-      });
-    } else {
-      reset();
+  } = useForm({
+    defaultValues:{
+      name:"",
+      email:"",
+      phone:"",
+      company:"",
+      password:"",
+      status:"",
+      company_login:""
     }
-  }, [editUser, setValue, reset]);
+  });
+useEffect(() => {
+  if (Edit && selectedRow) {
+    console.log(selectedRow)
+   
+
+    reset({
+      name: selectedRow.name,
+      email: selectedRow.email,
+      phone: selectedRow.phone,
+      company: selectedRow.company,
+      password: selectedRow.password,
+     status: manageuserStatus.find(opt => opt.value === selectedRow.status) || null,
+      company_login: companyLoginAccess.find(opt => opt.value === selectedRow.company_login) || null,
+    });
+  }
+}, [Edit, selectedRow]);
+
   // ✅ Handle form submission
 const onSubmit = async (formData) => {
   console.log(formData)
@@ -60,7 +68,7 @@ const onSubmit = async (formData) => {
   };
 
   try {
-    if (Edit_id) {
+     if (Edit && selectedRow) {
       // 🟢 UPDATE (Edit mode)
       const res = await axios.put(`${administrator}/${Edit_id}`, payload);
       console.log("✅ User Updated:", res.data);
@@ -162,19 +170,47 @@ const onSubmit = async (formData) => {
               placeholder="Select Status"
               options={manageuserStatus}
               autoSelectFirst={true}
+              
             />
           </Col>
         </Row>
 
         <Row>
           <Col md={4}>
-            <DropDown
+           <FormGroup className="m-form__group">
+              <InputGroup>
+                <InputGroupText>Company Login Access</InputGroupText>
+                <Controller
+                  name="company_login"
+                  rules={{ required: "Access is required" }}
+
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={companyLoginAccess}
+                      className="form-control p-0 border-0"
+                      placeholder="Access is required"
+                       value={companyLoginAccess.find(opt => opt.value === field.value?.value)}
+      onChange={(selected) => field.onChange(selected)}
+                      />
+                  
+                  
+                  )}
+                />
+              </InputGroup>
+
+              {errors.company_login && (
+                <span className="text-danger">{errors.company_login?.message}</span>
+              )}
+            </FormGroup>
+            {/* <DropDown
               name="company_login"
               label="Company Login Access"
               control={control}
               rules={{ required: "Access is required" }}
               options={companyLoginAccess}
-            />
+            /> */}
           </Col>
 
           <Col md={8} className="text-end">

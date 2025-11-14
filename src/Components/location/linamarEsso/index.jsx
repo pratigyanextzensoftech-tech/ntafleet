@@ -20,6 +20,8 @@ import Swal from 'sweetalert2';
 const Index = () => {
      const [openRowId, setOpenRowId] = useState(null);
      const [tableColumns, setTableColumns] = useState([]);
+     const [selectedRow, setSelectedRow] = useState(null);
+       const[Edit,setEdit]=useState(false)
     const columnsMap = {
     "ID": "id",
     "Esso Location": "esso_location",
@@ -72,7 +74,7 @@ const Index = () => {
                  <button
                    className="dropdown-item d-flex align-items-center text-primary"
                    style={{ padding: "8px 12px", gap: "8px" }}
-   
+                   onClick={() => handleEdit(row)}
                  >
                    <FaEnvelope /> Edit
                  </button>
@@ -103,7 +105,11 @@ const Index = () => {
        document.addEventListener("mousedown", handleClickOutside);
        return () => document.removeEventListener("mousedown", handleClickOutside);
      }, []);
-   
+    const handleEdit=(row)=>{
+      console.log(row)
+    setEdit(true)
+    setSelectedRow(row); 
+    }
      const handleDelete = (row) => {
        Swal.fire({
          title: 'Are you sure?',
@@ -143,7 +149,9 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add Linamar Esso Location " />
               <CardBody>
-                <LinamarForm onDataAdded={refreshTable}/>
+                <LinamarForm onDataAdded={refreshTable} Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit}/>
               </CardBody>
             </Card>
           </Col>
