@@ -3,9 +3,10 @@ import { FaEdit, FaSignInAlt, FaTrashAlt } from "react-icons/fa";
 import DataTableComponent from "../../Components/Tables/DataTable/DataTableComponent";
 import { pmenu as pmenuApi, smenu } from "../../api";
 import usePaginatedTable from "../../Hooks/usePagination";
-
+import axios from "axios";
+import {pmenu as APINAME} from '../../api/index'
 // 🔹 Action Dropdown with your original design
-const ActionDropdown = ({ row, onEdit, onLogin }) => {
+const ActionDropdown = ({ row, onEdit, onDelete }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -63,7 +64,7 @@ const ActionDropdown = ({ row, onEdit, onLogin }) => {
               className="text-danger dropdown-item d-flex align-items-center"
               onClick={() => {
                 setOpen(false);
-                onLogin(row);
+                onDelete(row);
               }}
             >
               <FaTrashAlt className="me-2" /> Delete
@@ -76,6 +77,8 @@ const ActionDropdown = ({ row, onEdit, onLogin }) => {
 };
 
 const ManageMenuTable = () => {
+   const [selectedRow, setSelectedRow] = useState(null);
+  const[Edit,setEdit]=useState(false)
   // 🔹 API column mapping for your custom hook
   const columnSets = {
     primaryMenu: {
@@ -107,10 +110,19 @@ const ManageMenuTable = () => {
     apiUrl: smenu,
     columnsMap: columnSets.secondaryMenu,
   });
+const handleDelete=()=>{
 
+}
   // 🔹 Actions
-  const handleEdit = (row) => console.log("Edit:", row);
-  const handleLogin = (row) => console.log("Login:", row);
+const handleEdit = async(row) => {
+    try {
+    const response = await axios.get(`${APINAME}/${row["ID"]}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+  };
 
   // 🔹 Generate reusable columns with Action
   const getTableColumns = (includePrimary = false) => {
@@ -124,7 +136,7 @@ const ManageMenuTable = () => {
       {
         name: "Action",
         cell: (row) => (
-          <ActionDropdown row={row} onEdit={handleEdit} onLogin={handleLogin} />
+          <ActionDropdown row={row} onEdit={handleEdit} onDelete={handleDelete} />
         ),
         ignoreRowClick: true,
         allowOverflow: true,

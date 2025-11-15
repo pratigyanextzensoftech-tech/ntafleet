@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
 import {   optionscompany, Upload_Supplier,  currency } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';

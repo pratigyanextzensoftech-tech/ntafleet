@@ -153,6 +153,8 @@ const ViewMoneyCode = () => {
        }
      }, [data]);
   const handleDelete = (row) => {
+    console.log(row.id)
+    console.log(data)
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,

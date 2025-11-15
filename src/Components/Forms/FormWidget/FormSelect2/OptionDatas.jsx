@@ -317,8 +317,8 @@ export const MoneyCodeStatus=[
 ]
 export const InvoiceStatus=[    
         { label: 'Select Status', isDisabled: true },
-        { value: 'Invoiced', label: 'Invoiced' },
-        { value: ' Not Invoiced', label: 'Not Invoiced' },    
+        { value: '0', label: 'Invoiced' },
+        { value: ' 1', label: 'Not Invoiced' },    
 ]
 export const invoiceType=[
         { label: 'All Type',label: 'All Type' },

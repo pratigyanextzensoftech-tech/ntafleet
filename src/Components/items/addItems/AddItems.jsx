@@ -117,7 +117,7 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
                                             placeholder="Select Discount Applied"
                                              value={
         field.value
-          ? { value: field.value, label: `${field.value}%` }
+          ? { value: field.value, label: `${field.value}` }
           : null
       }
                                         />

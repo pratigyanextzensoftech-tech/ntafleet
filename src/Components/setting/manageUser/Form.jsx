@@ -35,8 +35,6 @@ const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit }
 useEffect(() => {
   if (Edit && selectedRow) {
     console.log(selectedRow)
-   
-
     reset({
       name: selectedRow.name,
       email: selectedRow.email,
@@ -44,7 +42,7 @@ useEffect(() => {
       company: selectedRow.company,
       password: selectedRow.password,
      status: manageuserStatus.find(opt => opt.value === selectedRow.status) || null,
-      company_login: companyLoginAccess.find(opt => opt.value === selectedRow.company_login) || null,
+      company_login: companyLoginAccess.find(opt => opt.label === selectedRow.company_login) || null,
     });
   }
 }, [Edit, selectedRow]);
@@ -162,16 +160,44 @@ const onSubmit = async (formData) => {
           </Col>
 
           <Col md={4}>
-            <DropDown
+           <FormGroup className="m-form__group">
+              <InputGroup>
+                <InputGroupText>User Status</InputGroupText>
+                <Controller
+                  name="status"
+                  rules={{ required: "Status is required" }}
+
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={companyLoginAccess}
+                      className="form-control p-0 border-0"
+                      placeholder="Status is required"
+                       value={manageuserStatus.find(opt => opt.value === field.value?.value)}
+      onChange={(selected) => field.onChange(selected)}
+                      />
+                  
+                  
+                  )}
+                />
+              </InputGroup>
+
+              {errors.status && (
+                <span className="text-danger">{errors.status?.message}</span>
+              )}
+            </FormGroup>
+            {/* <DropDown
               name="status"
               label="User Status"
               control={control}
               rules={{ required: "Status is required" }}
               placeholder="Select Status"
               options={manageuserStatus}
-              autoSelectFirst={true}
-              
-            />
+              autoSelectFirst={true} */}
+             {/* value={manageuserStatus.find(opt => opt.value === field.value?.value)}
+     onChange={(selected) => field.onChange(selected)}
+            /> */}
           </Col>
         </Row>
 
@@ -204,13 +230,7 @@ const onSubmit = async (formData) => {
                 <span className="text-danger">{errors.company_login?.message}</span>
               )}
             </FormGroup>
-            {/* <DropDown
-              name="company_login"
-              label="Company Login Access"
-              control={control}
-              rules={{ required: "Access is required" }}
-              options={companyLoginAccess}
-            /> */}
+         
           </Col>
 
           <Col md={8} className="text-end">

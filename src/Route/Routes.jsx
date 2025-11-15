@@ -123,6 +123,7 @@ import Help_Use_Efsllc from '../Components/help/help_use_efsllc';
 import Help_Add_Card from '../Components/help/help_add_card';
 import How_Create_Report from '../Components/help/how_create_report';
 import How_Card_Discount from '../Components/help/how_card_discount';
+import EditUnknownTransaction from '../Components/transaction/unKnownTransaction/EditUnknownTransaction';
  
 
 export const routes = [
@@ -190,6 +191,7 @@ export const routes = [
     { path: `/to_retail_transaction`, Component: < RetailToRack /> },
     { path: `/view_efs_transaction`, Component: < ViewEfs /> },
     { path: `/update_unit`, Component: < UpdateUnit /> },
+    { path: `/edit-unknown/:id`, Component: < EditUnknownTransaction /> },
 
     //Invoice
     { path: `/view_invoice`, Component: <ViewInvoice /> },

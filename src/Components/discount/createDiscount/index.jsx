@@ -7,7 +7,7 @@ import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import axios from 'axios';
 import { FaTrashAlt, FaFilePdf } from 'react-icons/fa';
 import { discount_list } from '../../../api';
-
+import Swal from 'sweetalert2';
 const Index = () => {
   const [discounts, setDiscounts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,11 +61,36 @@ const Index = () => {
 
   // Dropdown actions
   const handleDownload = (row) => console.log('Download PDF:', row);
-  const handleDelete = (row) => {
-    if (window.confirm(`Delete discount entry ID ${row.id}?`)) {
-      setDiscounts(prev => prev.filter(item => item.id !== row.id));
-    }
-  };
+
+   const handleDelete = (e,row) => {
+    console.log(row.id)
+    e.preventDefault()
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you really want to delete ?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete(`${discount_list}/${row.id}`)
+            .then((res) => {
+        setDiscounts((prevData) => prevData.filter((item) => item.id !== row.id));
+
+              Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+                console.log(res.data)
+  
+            })
+            .catch((error) => {
+              Swal.fire('Error!', 'Failed to delete record.', 'error');
+              console.log(error)
+            });
+        }
+      });
+    }; 
 
   const ActionDropdown = ({ row }) => (
     <div className="position-relative dropdown-action">
@@ -98,7 +123,7 @@ const Index = () => {
           <button
             className="dropdown-item d-flex align-items-center text-danger"
             style={{ padding: '8px 12px', gap: '8px' }}
-            onClick={() => handleDelete(row)}
+            onClick={(e) => handleDelete(e,row)}
           >
             <FaTrashAlt /> Delete
           </button>
