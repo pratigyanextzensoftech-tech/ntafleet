@@ -115,8 +115,8 @@ export const displayFeatureCheckBoxOwner=[
  export const type=[
     { label: '' , isDisabled: true },
 
-  { value: 'visible', label: 'visible' },
-    { value: 'hidden', label: 'hidden' }
+  { value: '0', label: 'visible' },
+    { value: '1', label: 'hidden' }
 ]
  export const Customized_Supplier=[
 { label: 'Select Supplier' , isDisabled: true },
@@ -219,8 +219,8 @@ export const optionsSearch = [
 ];
 export const companyLoginAccess=[
     { label: 'select Option.',isDisabled: true },
-    { value: 'Yes', label: 'Yes' },
-    { value: 'No', label: 'No' },
+    { value: '0', label: 'Yes' },
+    { value: '1', label: 'No' },
 
 ]
 export const YesNo=[
@@ -302,6 +302,13 @@ export const companyStatus=[
         { value: 'InActive', label: 'InActive' },
         { value: 'Hold', label: 'Hold' },
 ]
+export const cardStatus=[
+        { label: 'Select Status', isDisabled: true },
+        { value: '0', label: 'Active' },
+        { value: '1', label: 'InActive' },
+        { value: '2', label: 'Hold' },
+        { value: '3', label: 'Lost' },
+]
 export const MoneyCodeStatus=[
         { label: 'Select Status', isDisabled: true },
         { value: 'Billed', label: 'Billed' },
@@ -310,8 +317,8 @@ export const MoneyCodeStatus=[
 ]
 export const InvoiceStatus=[    
         { label: 'Select Status', isDisabled: true },
-        { value: 'Invoiced', label: 'Invoiced' },
-        { value: ' Not Invoiced', label: 'Not Invoiced' },    
+        { value: '0', label: 'Invoiced' },
+        { value: ' 1', label: 'Not Invoiced' },    
 ]
 export const invoiceType=[
         { label: 'All Type',label: 'All Type' },

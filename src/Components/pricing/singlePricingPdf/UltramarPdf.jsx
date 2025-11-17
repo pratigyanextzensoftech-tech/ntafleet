@@ -18,19 +18,51 @@ import {
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-
-const UltramarPdf = ({ title, btnTtitle }) => {
+import axios from 'axios';
+import { toast } from "react-toastify";
+import { ul_pricing_pdf as APINAME } from '../../../api';
+import useCompany from "../../../Hooks/useCompany";
+import InputText from "../../Forms/FormControl/formInput/InputText";
+const UltramarPdf = ({ title, btnTtitle ,onDataAdded}) => {
+  const {companies}=useCompany()
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+
+ const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+      company_id:formData.company.value,
+      company_name:formData.company.label,
+      pricing_date:formData.pricingDate,
+      testing_email:formData.email,
+    supplier:formData.supplier.label,
+    entry_count:0,
+  mail_on:new Date(),
+  mailby:0,
+    added_on:new Date(),
+// added_on:new Date(),
+idby:sessionStorage.getItem("userId")
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+          toast.success("Add successfully!");
+   reset();
+
+        if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
   return (
     <Fragment>
       <Row>
@@ -54,7 +86,7 @@ const UltramarPdf = ({ title, btnTtitle }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={companies}
                             className="form-control p-0 border-0"
                             placeholder="Select a country"
                           />
@@ -163,12 +195,13 @@ const UltramarPdf = ({ title, btnTtitle }) => {
                   </FormGroup>
                 </Col>
                 <Col sm="4">
-                  <FormGroup className=" m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Testing Email </InputGroupText>
-                      <Input className="form-control" type="text" />
-                    </InputGroup>
-                  </FormGroup>
+                   <InputText
+                              name="email"
+                              label="Testing Email"
+                              type="text"
+                              register={register}
+                             
+                            />
                 </Col>
                 <Col sm="4">
                   <div className="text-end">

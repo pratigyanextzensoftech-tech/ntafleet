@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { supplierAll } from '../../../api/index';
+import { supplier } from '../../../api/index';
 import SupplierList from './SupplierList';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import HeaderCard from '../../Common/Component/HeaderCard';
@@ -18,7 +18,8 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
   const [openRowId, setOpenRowId] = useState(null);
-
+  const [selectedRow, setSelectedRow] = useState(null);
+const[Edit,setEdit]=useState(false)
   // Column mapping: display name => API field
   const columnsMap = {
     "Supplier ID": "id",
@@ -32,7 +33,7 @@ const Index = () => {
       const start = (page - 1) * perPage;
       const params = { draw, start, length: perPage, ...filtersData };
 
-      const response = await axios.get(supplierAll, { params });
+      const response = await axios.get(supplier, { params });
       const apiData = Array.isArray(response.data.data) ? response.data.data : response.data;
 
       const tableData = apiData.map(row => {
@@ -63,10 +64,19 @@ const Index = () => {
     setPerPage(newPerPage);
     setCurrentPage(page);
   };
-
+const handleDataAdded = () => {
+  fetchData(currentPage, perPage, filters);
+};
   // Actions
-  const handleEdit = (row) => console.log("Edit", row);
+  const handleEdit =(row)=>{
+    setEdit(true)
+    setSelectedRow(row); 
+  }
+
+
    const handleDelete = (e,row) => {
+    console.log(row.id)
+    console.log(data)
     e.preventDefault()
       Swal.fire({
         title: 'Are you sure?',
@@ -79,12 +89,10 @@ const Index = () => {
         cancelButtonText: 'Cancel'
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(`${supplierAll}/${row.id}`)
+          axios.delete(`${supplier}/${row.id}`)
             .then((res) => {
-          setData((prevData) => {
-      prevData.forEach((item) => console.log("Existing item id:", item.id));
-return prevData.filter((item) => item.id !== row.id);
-    });  
+        setData((prevData) => prevData.filter((item) => item.id !== row.id));
+
               Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
                 console.log(res.data)
   
@@ -161,7 +169,6 @@ return prevData.filter((item) => item.id !== row.id);
 
     setTableColumns(cols);
   }, [openRowId]);
-
   return (
     <>
       <Breadcrumbs parent='Supplier' title='Manage Supplier' />
@@ -179,7 +186,9 @@ return prevData.filter((item) => item.id !== row.id);
               <HeaderCard title="Add Supplier" />
               <CardBody>
 
-                <SupplierList btntitle="Add Supplier" btnTitle1="Reset" />
+                <SupplierList  Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit} btntitle="Add Supplier" btnTitle1="Reset"  onDataAdded={handleDataAdded}/>
 
               </CardBody>
             </Card>

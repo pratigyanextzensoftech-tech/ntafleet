@@ -4,8 +4,14 @@ import { optionscompany,MoneyCodeStatus } from '../../Forms/FormWidget/FormSelec
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
+import {money_code} from '../../../api/index'
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useCompany } from '../../../Hooks/Dropdowns';
 const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
     const [selectedValues, setSelectedValues] = useState([]);
+    const{data}=useCompany()
     const {
         register,
         control,
@@ -14,12 +20,75 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = (formData) => {
+    
+         const payload = {
+   
+  company: formData.company?.value || formData.company,
+  status: formData.status?.value || formData.status,
+  Ref:formData.ref||"",
+  Voided:formData.voided||"",
+  IssueType:formData.issueType||"",
+IssuedBy:formData.issueType||"",
+IssuedTo:formData.issueTo||"",
+IssuedDate:formData.issueDate||"",
+Fee:formData.Fee||"",
+OriginalAmt:formData.originalAmt||"",
+BillDate:formData.billdate||"",
+CheckNum:formData.checkNum||"",
+DateUsed:formData.dateUsed||"",
+AmountUsed:formData.amountUsed||"",
+Currency:formData.currency||"",
+OneTime:formData.oneTime||"",
+ExactAmt:formData.exactAmount||"",
+ExpireDate:formData.expireDate||"",
+Notes:formData.notes||"",
+Name:formData.name||"",
+City:formData.city||"",
+State:formData.state||"",
+Phone:formData.phone||"",
+DriverLicense:formData.license||"",
+DriverState:formData.driverState||"",
+DriverId:formData.driverId||"",
+Hubometer:formData.hubometer||"",
+ReeferHours:formData.refeerHours||"",
+LicenseState:formData.licenseState||"",
+LicenseNumber:formData.LicenseNo||"",
+Odometer:formData.Odometer||"",
+PONumber:formData.PONo|| "",
+    TripNumber: formData.TripNo||"",
+    TrailerNumber: formData.trailNo||"",
+    UnitNumber:formData.unitNo|| "",
+    ControlNumber:formData.ControlNo|| "",
+    Birthday: formData.Birthday||"",
+    ReeferTempatur:formData.ReeferTempatur|| "",
+    PINNumber:formData.pinNo|| "",
+    Subfleet: formData.Subfleet||"",
+    BillingId:formData.Billing_Id|| "",
+    FirstInital:formData.firstInitial|| "",
+    LastName: formData.LastName||"",
+    DriverName:formData.driverName|| "",
+    SSN: formData.SSN||"",
+    mail_attachment: "",
+    c: null,
+    dated: new Date().toISOString().slice(0, 19).replace("T", " "),
+         }
+        axios.post(money_code,payload)
+        .then((res)=>{
+            console.log(res);
+           
+              toast.success("Add successfully!");
+    
+       reset();
+    
+            // if (onDataAdded) onDataAdded();
+        })
+        .catch((err)=>{
+            console.log(err);
+              toast.error(err.message);
+        })
+            };
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-
-    };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
@@ -39,7 +108,6 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
 
-           
              
                 <Row className="mt-3">
                        <Col sm="3">
@@ -53,7 +121,7 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
                                     render={({ field }) => (
                                         <Select
                                             {...field}
-                                            options={optionscompany}
+                                            options={data}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Company Name"
                                         />
@@ -92,515 +160,442 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
                         </FormGroup>
                     </Col>
          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Ref# </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control " type="text"  {...register('ref', { required: true })} />
-                            </InputGroup>
-                            {errors.ref && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+             <InputText
+                            name="ref"
+                            label="Ref#"
+                            type="text"
+                            register={register}
+                        />
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Voided </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('voided', { required: true })} />
-                            </InputGroup>
-                            {errors.voided && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                         <InputText
+                            name="voided"
+                            label="Voided"
+                            type="text"
+                            register={register}
+                        />
+                      
                         </Col>
            <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Issue Type </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('issueType', { required: true })} />
-                            </InputGroup>
-                            {errors.issueType && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+               <InputText
+                            name="issueType"
+                            label="Issue Type"
+                            type="text"
+                            register={register}
+                        />
+                 
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Issued By </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('issueBy', { required: true })} />
-                            </InputGroup>
-                            {errors.issueBy && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                              <InputText
+                            name="issueBy"
+                            label="Issued By"
+                            type="text"
+                            register={register}
+                        />
+                 
+                        
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Issued To </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('issueTo', { required: true })} />
-                            </InputGroup>
-                            {errors.issueTo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                            <InputText
+                            name="issueTo"
+                            label=" Issued To "
+                            type="text"
+                            register={register}
+                        />
+                      
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Issued Date </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('issueDate', { required: true })} />
-                            </InputGroup>
-                            {errors.issueDate && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="issueDate"
+                            label="Issued Date "
+                            type="text"
+                            register={register}
+                        />
+                      
+                    
                         </Col>
             </Row> 
                 <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Fee </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('Fee', { required: true })} />
-                            </InputGroup>
-                            {errors.Fee && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                <InputText
+                            name="Fee"
+                            label="Fee "
+                            type="text"
+                            register={register}
+                        />
+                      
+                       
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Original Amt </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('originalAmt', { required: true })} />
-                            </InputGroup>
-                            {errors.originalAmt && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                              <InputText
+                            name="originalAmt"
+                            label="Original Amt "
+                            type="text"
+                            register={register}
+                        />
+                   
+                        </Col>
+                             <Col sm='3'>
+                              <InputText
+                            name="billdate"
+                            label=" Bill Date "
+                            type="text"
+                            register={register}
+                        />
+                      
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Bill Date </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('billdate', { required: true })} />
-                            </InputGroup>
-                            {errors.billdate && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
-                        </Col>
-                         <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Check Num </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('checkNum', { required: true })} />
-                            </InputGroup>
-                            {errors.checkNum && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="checkNum"
+                            label=" Check Num "
+                            type="text"
+                            register={register}
+                        />
+                      
                         </Col>
             </Row> 
               <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Date Used </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('dateUsed', { required: true })} />
-                            </InputGroup>
-                            {errors.dateUsed && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                 <InputText
+                            name="dateUsed"
+                            label=" Date Used "
+                            type="text"
+                            register={register}
+                        />
+                     
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Amount Used </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('amountUsed', { required: true })} />
-                            </InputGroup>
-                            {errors.amountUsed && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                          <InputText
+                            name="amountUsed"
+                            label=" Amount Used "
+                            type="text"
+                            register={register}
+                        />
+                  
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Currency </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('currency', { required: true })} />
-                            </InputGroup>
-                            {errors.currency && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="currency"
+                            label="Currency "
+                            type="text"
+                            register={register}
+                        />
+                    
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  One Time </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('oneTime', { required: true })} />
-                            </InputGroup>
-                            {errors.oneTime && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                             <InputText
+                            name="oneTime"
+                            label="One Time "
+                            type="text"
+                            register={register}
+                        />
+                    
+                  
                         </Col>
             </Row>   
               <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Exact Amt </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('exactAmount', { required: true })} />
-                            </InputGroup>
-                            {errors.exactAmount && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+               <InputText
+                            name="exactAmount"
+                            label=" Exact Amt "
+                            type="text"
+                            register={register}
+                        />
+                        
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Expire Date </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('expireDate', { required: true })} />
-                            </InputGroup>
-                            {errors.expireDate && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                          <InputText
+                            name="expireDate"
+                            label="Expire Date "
+                            type="text"
+                            register={register}
+                        />
+                       
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Name </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('name', { required: true })} />
-                            </InputGroup>
-                            {errors.name && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                            <InputText
+                            name="name"
+                            label="Name "
+                            type="text"
+                            register={register}
+                        />
+                    
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  City </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('city', { required: true })} />
-                            </InputGroup>
-                            {errors.city && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                              <InputText
+                            name="city"
+                            label="City "
+                            type="text"
+                            register={register}
+                        />
+                       
                         </Col>
             </Row>  
                 <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> State </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('state', { required: true })} />
-                            </InputGroup>
-                            {errors.state && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+               <InputText
+                            name="state"
+                            label="State "
+                            type="text"
+                            register={register}
+                        />
+                     
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Phone </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('phone', { required: true })} />
-                            </InputGroup>
-                            {errors.phone && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="phone"
+                            label="Phone "
+                            type="text"
+                            register={register}
+                        />
+                    
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Driver License </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('license', { required: true })} />
-                            </InputGroup>
-                            {errors.license && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                          <InputText
+                            name="license"
+                            label=" Driver License  "
+                            type="text"
+                            register={register}
+                        />
+                        
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>  Driver State </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverState', { required: true })} />
-                            </InputGroup>
-                            {errors.driverState && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                            <InputText
+                            name="driverState"
+                            label="Driver State  "
+                            type="text"
+                            register={register}
+                        />
+                  
                         </Col>
             </Row> 
               <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Driver Id </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverId', { required: true })} />
-                            </InputGroup>
-                            {errors.driverId && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                 <InputText
+                            name="driverId"
+                            label=" Driver Id  "
+                            type="text"
+                            register={register}
+                        />
+                       
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Hubometer </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('phone', { required: true })} />
-                            </InputGroup>
-                            {errors.Hubometer && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="hubometer"
+                            label=" Hubometer  "
+                            type="text"
+                            register={register}
+                        />
+                         
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Reefer Hours</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('refeerHours', { required: true })} />
-                            </InputGroup>
-                            {errors.refeerHours && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                              <InputText
+                            name="refeerHours"
+                            label=" Reefer Hours  "
+                            type="text"
+                            register={register}
+                        />
+                  
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> License State </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('licenseState', { required: true })} />
-                            </InputGroup>
-                            {errors.licenseState && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                                 <InputText
+                            name="licenseState"
+                            label=" License State  "
+                            type="text"
+                            register={register}
+                        />
+              
                         </Col>
             </Row>  
                  <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> License Number</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('LicenseNo', { required: true })} />
-                            </InputGroup>
-                            {errors.LicenseNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+               <InputText
+                            name="LicenseNo"
+                            label="License Number  "
+                            type="text"
+                            register={register}
+                        />
+                     
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Odometer </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('Odometer', { required: true })} />
-                            </InputGroup>
-                            {errors.Odometer && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="Odometer"
+                            label="Odometer  "
+                            type="text"
+                            register={register}
+                        />
+                     
+               
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>PO Number</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('PONo', { required: true })} />
-                            </InputGroup>
-                            {errors.PONo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                            <InputText
+                            name="PONo"
+                            label="PO Number  "
+                            type="text"
+                            register={register}
+                        />
+                     
+                  
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>Trip Number </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('TripNo', { required: true })} />
-                            </InputGroup>
-                            {errors.TripNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                            <InputText
+                            name="TripNo"
+                            label="Trip Number  "
+                            type="text"
+                            register={register}
+                        />
+                  
                         </Col>
             </Row>   
                 <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Trailer Number</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('trailNo', { required: true })} />
-                            </InputGroup>
-                            {errors.trailNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+              <InputText
+                            name="trailNo"
+                            label=" Trailer Number  "
+                            type="text"
+                            register={register}
+                        />
+                      
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Unit Number </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('unitNo', { required: true })} />
-                            </InputGroup>
-                            {errors.unitNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                          <InputText
+                            name="unitNo"
+                            label="Unit Number  "
+                            type="text"
+                            register={register}
+                        />
+                
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>Control Number</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('ControlNo', { required: true })} />
-                            </InputGroup>
-                            {errors.ControlNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="ControlNo"
+                            label="Control Number  "
+                            type="text"
+                            register={register}
+                        />
+                
+                
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>Birthday </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('Birthday', { required: true })} />
-                            </InputGroup>
-                            {errors.Birthday && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                                   <InputText
+                            name="Birthday"
+                            label="Birthday  "
+                            type="text"
+                            register={register}
+                        />
+                    
                         </Col>
             </Row>  
              <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Reefer Tempatur</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('ReeferTempatur', { required: true })} />
-                            </InputGroup>
-                            {errors.ReeferTempatur && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                <InputText
+                            name="ReeferTempatur"
+                            label=" Reefer Tempatur  "
+                            type="text"
+                            register={register}
+                        />
+                   
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> PIN Number </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('pinNo', { required: true })} />
-                            </InputGroup>
-                            {errors.pinNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                          <InputText
+                            name="pinNo"
+                            label=" PIN Number  "
+                            type="text"
+                            register={register}
+                        />
+                   
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>Subfleet </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('Subfleet', { required: true })} />
-                            </InputGroup>
-                            {errors.Subfleet && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                               <InputText
+                            name="Subfleet"
+                            label="Subfleet  "
+                            type="text"
+                            register={register}
+                        />
+                        
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>Billing Id</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('Billing_Id', { required: true })} />
-                            </InputGroup>
-                            {errors.Billing_Id && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                               <InputText
+                            name="Billing_Id"
+                            label="Billing Id  "
+                            type="text"
+                            register={register}
+                        />
+                          
                         </Col>
                         
             </Row> 
                  <Row>
              <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> First Inital</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('firstInitial', { required: true })} />
-                            </InputGroup>
-                            {errors.firstInitial && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                  <InputText
+                            name="firstInitial"
+                            label=" First Inital  "
+                            type="text"
+                            register={register}
+                        />
+                          
+               
                         </Col>
                        
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> LastName </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('LastName', { required: true })} />
-                            </InputGroup>
-                            {errors.LastName && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="LastName"
+                            label="LastName  "
+                            type="text"
+                            register={register}
+                        />
+                    
                         </Col>
                           <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>Driver Name </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverName', { required: true })} />
-                            </InputGroup>
-                            {errors.driverName && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                           <InputText
+                            name="driverName"
+                            label="Driver Name  "
+                            type="text"
+                            register={register}
+                        />
+                   
                         </Col>
                          <Col sm='3'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText>SSN</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('SSN', { required: true })} />
-                            </InputGroup>
-                            {errors.SSN && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                             <InputText
+                            name="SSN"
+                            label="SSN  "
+                            type="text"
+                            register={register}
+                        />
+                         
                         </Col>
                         
             </Row>  
                 <Row>
              <Col sm='12'>
-                          <FormGroup className=" m-form__group">
-                            <InputGroup>
-                              <InputGroupText> Notes</InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('notes', { required: true })} />
-                            </InputGroup>
-                            {errors.notes && (
-                              <span className="text-danger"> Required</span>
-                            )}
-                          </FormGroup>
+                <InputText
+                            name="notes"
+                            label="Notes  "
+                            type="text"
+                            register={register}
+                        />
+                       
                         </Col>
                        
                         
             </Row>  
              <Row>
             <Col sm="10">
-            <Row>
+               <InputText
+                            name="mail_attachment"
+                            label="Mail Attachment  "
+                            type="file"
+                            register={register}
+                        />
+            {/* <Row>
                                         <Col className='px-0' sm="2">
             
                                             <InputGroupText className='h-100'> Mail Attachment</InputGroupText>
@@ -609,7 +604,7 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
             
                                             <Input style={{border:"1px solid #ccc"}} className="form-control w-100c " type="file" />
                                         </Col>
-                                                        </Row>
+                                                        </Row> */}
 
                 </Col>
 <Col sm="2" >

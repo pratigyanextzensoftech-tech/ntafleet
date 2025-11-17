@@ -1,28 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect ,Fragment} from 'react';
 import Select from 'react-select'
-import { optionscompany,cardStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
+import {   optionscompany, Upload_Supplier,  currency,YesNo,InvoiceStatus,cardStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText, Container,Card,CardBody } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
-import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
+import DatePicker from "react-datepicker";
+import { Breadcrumbs } from "../../../AbstractElements";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useCountry } from '../../../Hooks/Dropdowns';
+import { useLocation } from "react-router-dom";
 import axios from 'axios';
-import { useCompany,useSupplier } from '../../../Hooks/Dropdowns';
 import { toast } from 'react-toastify';
-const AddFuel = ({btnTitle}) => {
-  const {data}=useCompany()
-  const{data:supplierOption}=useSupplier()
-    const [selectedValues, setSelectedValues] = useState([]);
+import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
+import { useCompany,useSupplier } from '../../../Hooks/Dropdowns';
+const Index = () => {
+   
+      const{data:supplierOption}=useSupplier()
+     const { state } = useLocation();
+     
+  const rowData = state?.data;
+    console.log("Received Edit Data:", rowData);
+  const {data} =useCompany()
     const {
         register,
+
         control,
         reset,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+ useEffect(() => {
+  if (rowData) {
+    console.log(rowData);
 
+    reset({
+      cardNo: rowData.card_no,
+      policyNo: rowData.policy,
+      unitNo: rowData.unit_number,
+      pinNo: rowData.pin_number,
+      driverName: rowData.driver_name,
+      driverMobile: rowData.d_mobile1,
+      driverMobile2: rowData.d_mobile2,
+     
+  company: {
+    value: rowData.company_id,
+    label: rowData.company_name
+  },
+  supplier: {
+    value: rowData.supplier_id,
+    label: rowData.supplier_name
+  },
+  cardStatus: {
+    value: rowData.status,
+    label: rowData.status
+  },
 
-  
-    const onSubmit = (formData) => {
+// SELECT needs full object
+    });
+  }
+}, [rowData, reset]);
+
+   const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
@@ -39,16 +78,41 @@ status:formData.cardStatus.label,
 supplier_name:formData.supplier.label,
 cardno:"",
 company_name:formData.company.label,
-update_otp:""
+update_otp:"",
 
      }
     axios.post(APINAME,payload)
     .then((res)=>{
         console.log(res);
        
-          toast.success("Add successfully!");
+          toast.success("Update successfully!");
 
-   reset();
+   reset({
+    
+      cardNo: "",
+      policyNo:"",
+      unitNo: "",
+      pinNo: "",
+      driverName: "",
+      driverMobile: "",
+      driverMobile2: "",
+     
+  company: {
+    value: "",
+    label: ""
+  },
+  supplier: {
+    value: "",
+    label: ""
+  },
+  cardStatus: {
+    value:"",
+    label: ""
+  },
+
+// SELECT needs full object
+    
+   });
 
         // if (onDataAdded) onDataAdded();
     })
@@ -58,52 +122,42 @@ update_otp:""
     })
         
   }
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
     return (
-
-        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
+          <Fragment>
+      <Breadcrumbs parent="Transaction" title="Edit Unknown Transaction " /> 
+      <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Filter" />
+              <CardBody>
+         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Card Number </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('cardNo', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('cardNo')} />
                             </InputGroup>
-                            {errors.cardNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                           
                           </FormGroup>
                         </Col>
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Policy Number </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('policyNo', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('policyNo')} />
                             </InputGroup>
-                            {errors.policyNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                           
                           </FormGroup>
                         </Col>
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Unit Number  </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('unitNo', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('unitNo')} />
                             </InputGroup>
-                            {errors.unitNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                           
                           </FormGroup>
                         </Col>
                    </Row>
@@ -112,11 +166,9 @@ update_otp:""
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Pin Number </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('pinNo', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('pinNo')} />
                             </InputGroup>
-                            {errors.pinNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                     
                           </FormGroup>
                         </Col>
                   
@@ -126,7 +178,6 @@ update_otp:""
                             <InputGroup >
                                 <InputGroupText>Company</InputGroupText>
                                 <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
 
                                     control={control}
                                     render={({ field }) => (
@@ -135,6 +186,9 @@ update_otp:""
                                             options={data}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Company Name"
+                                          
+     value={field.value}
+      onChange={(val) => field.onChange(val)}
                                         />
                                     )}
                                 />
@@ -152,7 +206,6 @@ update_otp:""
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
                         name="supplier"
-                      rules={{ required: "supplier is required" }}
                         
                         control={control}
                         render={({ field }) => (
@@ -163,14 +216,14 @@ update_otp:""
             }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
+                           value={field.value}
+      onChange={(val) => field.onChange(val)}
                           />
                         )}
                       />
                     </InputGroup>
 
-                    {errors.supplier && (
-                      <span className="text-danger">{errors.supplier?.message}</span>
-                    )}
+                   
                   </FormGroup>
                 </Col>
        </Row>  
@@ -179,33 +232,27 @@ update_otp:""
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Driver Name </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverName', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverName')} />
                             </InputGroup>
-                            {errors.driverName && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                       
                           </FormGroup>
                         </Col>
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Driver Mobile 1  </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverMobile', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverMobile')} />
                             </InputGroup>
-                            {errors.driverMobile && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                           
                           </FormGroup>
                         </Col>
                      <Col sm='4'>
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>   Driver Mobile 2 </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverMobile2', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverMobile2')} />
                             </InputGroup>
-                            {errors.driverMobile && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                           
                           </FormGroup>
                         </Col>
                    </Row>           
@@ -216,7 +263,6 @@ update_otp:""
                       <InputGroupText>Card Status</InputGroupText>
                       <Controller
                         name="cardStatus"
-                      rules={{ required: " Required" }}
                         
                         control={control}
                         render={({ field }) => (
@@ -227,20 +273,20 @@ update_otp:""
             }
                             className="form-control p-0 border-0"
                             placeholder="Select Card Status"
+                                value={field.value}
+      onChange={(val) => field.onChange(val)}
                           />
                         )}
                       />
                     </InputGroup>
 
-                    {errors.cardStatus && (
-                      <span className="text-danger">{errors.cardStatus?.message}</span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
                        <Col sm="8">
 
 <div className='text-end'>
-                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
+                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Update</Btn>
 
                         </div>
                         </Col>
@@ -250,8 +296,14 @@ update_otp:""
 
 
         </Form>
+        </CardBody>
+          </Card>
+          </Col>
+          </Row>
+          </Container>
+          </Fragment>
     )
 }
 
 
-export default AddFuel
+export default Index

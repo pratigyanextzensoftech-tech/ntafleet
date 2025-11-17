@@ -27,7 +27,7 @@ const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
   const columnsMap = {
-    "Invoice # #": "invoice_id",
+    "Invoice  #": "invoice_id",
     Company: "company_name",
     "From ": "from",
     To: "to",
@@ -159,12 +159,12 @@ const ViewInvoice = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row["Invoice  #"] ? null : row["Invoice  #"])}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row["Invoice  #"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -225,6 +225,7 @@ const ViewInvoice = () => {
   }, []);
 
   const handleDelete = (row) => {
+    console.log(data)
     Swal.fire({
       title: "Are you sure?",
       text: `Do you really want to delete ?`,
@@ -237,10 +238,10 @@ const ViewInvoice = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${combine_invoice}/${row.id}`)
+          .delete(`${combine_invoice}/${row["Invoice  #"]}`)
           .then(() => {
             setData((prevData) =>
-              prevData.filter((item) => item.id !== row.id)
+              prevData.filter((item) => item["Invoice  #"] !== row["Invoice  #"])
             );
             Swal.fire("Deleted!", "Record deleted successfully.", "success");
           })

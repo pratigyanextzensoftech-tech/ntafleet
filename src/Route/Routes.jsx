@@ -123,7 +123,8 @@ import Help_Use_Efsllc from '../Components/help/help_use_efsllc';
 import Help_Add_Card from '../Components/help/help_add_card';
 import How_Create_Report from '../Components/help/how_create_report';
 import How_Card_Discount from '../Components/help/how_card_discount';
- 
+import EditUnknownTransaction from '../Components/transaction/unKnownTransaction/EditUnknownTransaction';
+ import EditFuel from '../Components/fuelCards/editFuel/index'
 
 export const routes = [
     //Dashboard
@@ -178,6 +179,8 @@ export const routes = [
     { path: `/view_fuelCards`, Component: < ViewFuel /> },
     { path: `/efs_view_card`, Component: < EFSFuel /> },
     { path: `/card_update`, Component: < HistoryFuel /> },
+        { path: `/edit-fuelCards/:id`, Component: < EditFuel /> },
+
 
     //Transaction
     { path: `/view_transaction`, Component: < ViewTransaction /> },
@@ -190,6 +193,7 @@ export const routes = [
     { path: `/to_retail_transaction`, Component: < RetailToRack /> },
     { path: `/view_efs_transaction`, Component: < ViewEfs /> },
     { path: `/update_unit`, Component: < UpdateUnit /> },
+    { path: `/edit-unknown/:id`, Component: < EditUnknownTransaction /> },
 
     //Invoice
     { path: `/view_invoice`, Component: <ViewInvoice /> },

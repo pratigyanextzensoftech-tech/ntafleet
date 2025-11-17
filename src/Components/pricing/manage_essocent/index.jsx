@@ -1,14 +1,17 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect,useState } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import Manage_EssoCent from "./Manage_EssoCent";
+import axios from "axios";
 import { esso_rack } from "../../../api";
 import $ from "jquery";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import Swal from "sweetalert2";
 const Index = () => {
+   const [selectedRow, setSelectedRow] = useState(null);
+    const[Edit,setEdit]=useState(false)
   useEffect(() => {
     const initTable = () => {
       if ($.fn.dataTable.isDataTable("#example")) {
@@ -144,9 +147,15 @@ $(document).on("click", function () {
     const timeout = setTimeout(initTable, 300);
 
     // ✅ EDIT ACTION
-    $("#example").on("click", ".edit-btn", function () {
+    $("#example").on("click", ".edit-btn",async  function () {
       const id = $(this).data("id");
-      alert("Edit ID: " + id);
+        try {
+    const response = await axios.get(`${esso_rack}/${id}}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
     });
 
     // ✅ DELETE ACTION
@@ -207,7 +216,9 @@ console.log(data,"data")
             <Card>
               <HeaderCard title="Add Esso Cent Type" />
               <CardBody>
-                <Manage_EssoCent btnTitle="Add Esso Cent Type" handleAdd={handleAdd}/>
+                <Manage_EssoCent btnTitle="Add Esso Cent Type" onDataAdded={refreshTable} handleAdd={handleAdd} Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit}/>
               </CardBody>
             </Card>
           </Col>

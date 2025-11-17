@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import { FaEdit, FaSignInAlt } from "react-icons/fa";
+import React, { useState, useRef, useEffect } from "react";
+import { FaEdit, FaSignInAlt, FaTrashAlt } from "react-icons/fa";
 import DataTableComponent from "../../Components/Tables/DataTable/DataTableComponent";
 import { pmenu as pmenuApi, smenu } from "../../api";
 import usePaginatedTable from "../../Hooks/usePagination";
-
-const ActionDropdown = ({ row, onEdit, onLogin }) => {
+import axios from "axios";
+import {pmenu as APINAME} from '../../api/index'
+// 🔹 Action Dropdown with your original design
+const ActionDropdown = ({ row, onEdit, onDelete }) => {
   const [open, setOpen] = useState(false);
-  const dropdownRef = React.useRef(null);
+  const dropdownRef = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setOpen(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -18,79 +22,147 @@ const ActionDropdown = ({ row, onEdit, onLogin }) => {
 
   return (
     <div ref={dropdownRef} className="position-relative dropdown-action">
-      <button className="btn btn-sm btn-primary px-2" onClick={() => setOpen(!open)}>
+      {/* 🔸 Action Button */}
+      <button
+        type="button"
+        className="btn btn-sm btn-primary show_hide"
+        style={{ padding: "2px 4px" }}
+        onClick={() => setOpen((prev) => !prev)}
+      >
         Action
       </button>
 
+      {/* 🔸 Dropdown Menu */}
       {open && (
-        <div
-          className="position-absolute bg-white border rounded shadow"
-          style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 150 }}
+        <ul
+          className="dropdown-menu show"
+          style={{
+            display: "block",
+            position: "absolute",
+            right: 0,
+            marginTop: 4,
+            zIndex: 9999,
+            minWidth: 120,
+            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+          }}
         >
-          <button
-            className="dropdown-item d-flex align-items-center"
-            onClick={() => onEdit(row)}
-          >
-            <FaEdit /> Edit
-          </button>
-          <button
-            className="dropdown-item d-flex align-items-center"
-            onClick={() => onLogin(row)}
-          >
-            <FaSignInAlt /> Login
-          </button>
-        </div>
+          <li>
+            <button
+              type="button"
+              className="text-success dropdown-item d-flex align-items-center"
+              onClick={() => {
+                setOpen(false);
+                onEdit(row);
+              }}
+            >
+              <FaEdit className="me-2" /> Edit
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              className="text-danger dropdown-item d-flex align-items-center"
+              onClick={() => {
+                setOpen(false);
+                onDelete(row);
+              }}
+            >
+              <FaTrashAlt className="me-2" /> Delete
+            </button>
+          </li>
+        </ul>
       )}
     </div>
   );
 };
 
 const ManageMenuTable = () => {
+   const [selectedRow, setSelectedRow] = useState(null);
+  const[Edit,setEdit]=useState(false)
+  // 🔹 API column mapping for your custom hook
   const columnSets = {
-    Id: "id",
-    "Menu Name": "name",
-    "Menu Link": "link",
-    "Added By": "idby",
-    "Added On": "dated",
-    "Menu Order": "ord",
+    primaryMenu: {
+      Id: "id",
+      "Menu Name": "name",
+      "Menu Link": "link",
+      "Added By": "added_by",
+      "Added On": "dated",
+      "Menu Order": "ord",
+    },
+    secondaryMenu: {
+      Id: "id",
+      "Menu Name": "name",
+      "Primary Menu": "primary_menu",
+      "Menu Link": "link",
+      "Added By": "added_by",
+      "Added On": "dated",
+      "Menu Order": "ord",
+    },
   };
 
+  // 🔹 Fetch data via usePaginatedTable custom hook
   const pmenu = usePaginatedTable({
     apiUrl: pmenuApi,
-    columnsMap: columnSets,
+    columnsMap: columnSets.primaryMenu,
   });
 
   const sMenu = usePaginatedTable({
     apiUrl: smenu,
-    columnsMap: columnSets,
+    columnsMap: columnSets.secondaryMenu,
   });
+const handleDelete=()=>{
 
-  const handleEdit = (row) => console.log("Edit:", row);
-  const handleLogin = (row) => console.log("Login:", row);
+}
+  // 🔹 Actions
+const handleEdit = async(row) => {
+    try {
+    const response = await axios.get(`${APINAME}/${row["ID"]}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+  };
 
-  const tableColumns = [
-    { name: "ID", selector: (row) => row.Id, sortable: true },
-    { name: "Menu Name", selector: (row) => row["Menu Name"], sortable: true },
-    { name: "Menu Link", selector: (row) => row["Menu Link"], sortable: true },
-    { name: "Added By", selector: (row) => row["Added By"], sortable: true },
-    { name: "Added On", selector: (row) => row["Added On"], sortable: true },
-    { name: "Menu Order", selector: (row) => row["Menu Order"], sortable: true },
-    {
-      name: "Action",
-      cell: (row) => <ActionDropdown row={row} onEdit={handleEdit} onLogin={handleLogin} />,
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
-  ];
+  // 🔹 Generate reusable columns with Action
+  const getTableColumns = (includePrimary = false) => {
+    const baseCols = [
+      { name: "ID", selector: (row) => row.Id, sortable: true },
+      { name: "Menu Name", selector: (row) => row["Menu Name"], sortable: true },
+      { name: "Menu Link", selector: (row) => row["Menu Link"], sortable: true },
+      { name: "Added By", selector: (row) => row["Added By"], sortable: true },
+      { name: "Added On", selector: (row) => row["Added On"], sortable: true },
+      { name: "Menu Order", selector: (row) => row["Menu Order"], sortable: true },
+      {
+        name: "Action",
+        cell: (row) => (
+          <ActionDropdown row={row} onEdit={handleEdit} onDelete={handleDelete} />
+        ),
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+      },
+    ];
 
+    if (includePrimary) {
+      baseCols.splice(2, 0, {
+        name: "Primary Menu",
+        selector: (row) => row["Primary Menu"],
+        sortable: true,
+      });
+    }
+
+    return baseCols;
+  };
+
+  // 🔹 Tab content for both tables
   const tabContent = [
     {
       id: "1",
       label: "Primary Menu",
       component: (
         <DataTableComponent
-          tableColumns={tableColumns}
+          tableColumns={getTableColumns(false)}
           tableData={pmenu.data}
           loading={pmenu.loading}
           pagination
@@ -106,7 +178,7 @@ const ManageMenuTable = () => {
       label: "Secondary Menu",
       component: (
         <DataTableComponent
-          tableColumns={tableColumns}
+          tableColumns={getTableColumns(true)}
           tableData={sMenu.data}
           loading={sMenu.loading}
           pagination

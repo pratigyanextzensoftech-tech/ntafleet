@@ -98,7 +98,7 @@ const ViewMoneyCode = () => {
       {
         label: "Delete",
         icon: <FaTrashAlt />,
-        onClick: () => handleDelete(row),
+        onClick: (e) => handleDelete(e, row),
         color: "text-danger",
       },
     ].map((action, index) =>
@@ -152,7 +152,10 @@ const ViewMoneyCode = () => {
          setData(normalized);
        }
      }, [data]);
-  const handleDelete = (row) => {
+  const handleDelete = (e,row) => {
+    e.preventDefault();
+    console.log(row);
+    console.log(data);
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,
@@ -166,11 +169,12 @@ const ViewMoneyCode = () => {
       if (result.isConfirmed) {
         axios.delete(`${APINAME}/${row.id}`)
           .then(() => {
-            setData((prevData) => prevData.filter((item) => item.id !== row.id));
+            setData((prevData) => prevData.filter((item) => item["Invoice #"] !== row["Invoice #"]));
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
-          .catch(() => {
+          .catch((err) => {
             Swal.fire('Error!', 'Failed to delete record.', 'error');
+            console.log(err)
           });
       }
     });

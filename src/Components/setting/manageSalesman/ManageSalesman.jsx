@@ -1,19 +1,93 @@
 
-import React, { Fragment } from 'react';
+import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
-const ManageSalesman = () => {
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { salesman as APINAME } from '../../../api';
+
+const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         const {
             register,
             control,
+            reset,
             handleSubmit,
             formState: { errors },
-        } = useForm();
+        } = useForm({
+          defaultValues:{
+            name:"",
+            email:"",
+            phone:"",
+            address:""
+          }
+        });
+         useEffect(() => {
+            if (Edit && selectedRow) {
+              console.log(selectedRow)
+              reset({
+                name: selectedRow.name, // 👈 key from columnsMap in Index.jsx
+                email: selectedRow.email, // 👈 key from columnsMap in Index.jsx
+                phone: selectedRow.phone, // 👈 key from columnsMap in Index.jsx
+                address: selectedRow.address, // 👈 key from columnsMap in Index.jsx
+              });
+            }
+          }, [Edit, selectedRow, reset]);
+            const onSubmit = (formData) => {
+                                console.log("Form Data:", formData);  // ✅ This will print your inputs
+        
+             const payload = {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+                pic:"",
+                created:new Date(),
+                status:0,
+                admin_del:0,
+                added_by:0
+             }
+             if (Edit && selectedRow) {
+      // ✅ Update existing supplier
+      axios.put(`${APINAME}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+          if (onDataAdded) onDataAdded();
+          setEdit(false);
+          reset({
+             name:"",
+            email:"",
+            phone:"",
+            address:""
+          });
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+      }
+      else{
+    axios.post(APINAME, payload)
+  .then((res) => {
+    console.log(res.data);
+    toast.success("Added successfully!");
+    reset();
+
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data); 
+  })
+  .catch((err) => {
+    console.log(err);
+    toast.error(err.message);
+  });
+      }
+      
+
+    }       
     return (
         <Fragment >
-                    <Form>
+                    <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
                         <Row>
                             <Col md="4">
                                   <InputText
@@ -22,7 +96,7 @@ const ManageSalesman = () => {
             type="text"
             register={register}
             errors={errors}
-            rules={{ required: "Required" }}
+            // rules={{ required: "Required" }}
           />
                                
                             </Col>
@@ -33,7 +107,7 @@ const ManageSalesman = () => {
             type="email"
             register={register}
             errors={errors}
-            rules={{ required: "Required" }}
+            // rules={{ required: "Required" }}
           />
                               
                             </Col>
@@ -44,7 +118,7 @@ const ManageSalesman = () => {
             type="number"
             register={register}
             errors={errors}
-            rules={{ required: "Required" }}
+            // rules={{ required: "Required" }}
           />
                               
                             </Col>
@@ -54,10 +128,10 @@ const ManageSalesman = () => {
                                   <InputText
             name="address"
             label="Address"
-            type="number"
+            type="text"
             register={register}
             errors={errors}
-            rules={{ required: "Required" }}
+            // rules={{ required: "Required" }}
           />
                             
                             </Col>
@@ -69,7 +143,7 @@ const ManageSalesman = () => {
                         
                         <Col md={4}>
                          <div className='text-end'>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >Add Sales Man</Btn>
+                                <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Sales Man"}</Btn>
                 </div>
                         </Col>
                  </Row>

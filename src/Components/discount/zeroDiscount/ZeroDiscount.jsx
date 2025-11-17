@@ -16,21 +16,46 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import useSupplier from "../../../Hooks/useSupplier";
-
-const ZeroDiscount = ({ title, btnTitle }) => {
+import axios from 'axios';
+import { toast } from "react-toastify";
+import { zero_discount as APINAME } from '../../../api';
+const ZeroDiscount = ({ title, btnTitle,onDataAdded }) => {
   const { supplier } = useSupplier();
  
  const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
  
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+ const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+      state:formData.state,
+      city:formData.city,
+   loc_id: formData.location,
+    supplier_id:formData.supplier.value,
+    id:0,
+    dated:new Date(),
+// added_on:new Date(),
+idby:sessionStorage.getItem("userId")
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+          toast.success("Add successfully!");
+   reset();
+
+        if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
  
   return (
     <> 
