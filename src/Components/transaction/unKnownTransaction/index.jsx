@@ -70,8 +70,8 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
-const [selectedRow, setSelectedRow] = useState(null);
 const navigate = useNavigate();
+const [selectedRow, setSelectedRow] = useState(null);
 
     const[Edit,setEdit]=useState(false)
   const columnsMap = {
@@ -177,8 +177,9 @@ const navigate = useNavigate();
   };
 
   const handleEdit = async (e, row) => {
+    console.log(row)
   try {
-    const response = await axios.get(`${unknown_transactions}?${row.id}`);
+    const response = await axios.get(`${unknown_transactions}/${row.id}`);
 
     setSelectedRow(response.data);
     setEdit(true);

@@ -23,28 +23,39 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
         console.log(selectedRow)
       reset({
         Name: selectedRow.name,
-        discount: selectedRow.discount , // prefill dropdown
-      tax: selectedRow.tax, 
+       discount: selectedRow.discount == 0 
+        ? { value: "0", label: "Yes" }
+        : { value: "1", label: "No" },
+
+      tax: selectedRow.tax == 0 
+        ? { value: "0", label: "Yes" }
+        : { value: "1", label: "No" },
       });
     }
   }, [Edit, selectedRow, reset]);
    const onSubmit = (formData) => {
-                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+                        // console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
-    item_name: formData.Name,
-     
+    item_name: formData.Name,   
     discount_applied:formData.discount.value,
     tax_applied:formData.tax.value,
   fee:"",
      }
+
       if (Edit && selectedRow) {
+                                     console.log("Form Data:", payload);  // ✅ This will print your inputs
+
           axios.put(`${APINAME}/${selectedRow.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
           if (onDataAdded) onDataAdded();
           setEdit(false);
-          reset();
+          reset({
+            Name:"",
+            discount:"",
+            tax:""
+          });
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -115,11 +126,9 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
                                             options={companyLoginAccess}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Discount Applied"
-                                             value={
-        field.value
-          ? { value: field.value, label: `${field.value}` }
-          : null
-      }
+                                           value={field.value}
+  onChange={(val) => field.onChange(val)}
+      
                                         />
                                     )}
                                 />
@@ -145,11 +154,8 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
                                             options={companyLoginAccess}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Tax Applied"
-                                              value={
-        field.value
-          ? { value: field.value, label: `${field.value}%` }
-          : null
-      }
+                                          value={field.value}
+  onChange={(val) => field.onChange(val)}
                                         />
                                     )}
                                 />
@@ -164,7 +170,7 @@ const AddItems = ({btnTitle,onDataAdded,Edit,selectedRow,setEdit}) => {
                                         <Col sm="3">
 
 <div className='text-end'>
-                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
+                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{Edit?"Update":btnTitle}</Btn>
 
                         </div>
                         </Col>

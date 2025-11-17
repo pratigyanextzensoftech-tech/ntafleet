@@ -7,18 +7,20 @@ import axios from "axios";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { fual_card } from "../../../api"; // your fuel card API endpoint
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 const ViewFuelCards = () => {
   const [fuelCards, setFuelCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
-
+  const [selectedRow, setSelectedRow] = useState(null);
+  const[Edit,setEdit]=useState(false)
   // Pagination states
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
-
+const navigate=useNavigate()
   // Build column definitions
   useEffect(() => {
     const columns = [
@@ -61,7 +63,7 @@ const ViewFuelCards = () => {
                 <button
                   className="dropdown-item d-flex align-items-center"
                   style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleEdit(row)}
+                  onClick={(e) => handleEdit(e,row)}
                 >
                   <FaEdit /> Edit
                 </button>
@@ -150,7 +152,26 @@ const ViewFuelCards = () => {
   };
 
   // Action handlers
-  const handleEdit = (row) => console.log("Edit:", row);
+   const handleEdit = async (e, row) => {
+    console.log(row)
+  try {
+        const response = await axios.get(`${fual_card}/${row.id}`);
+    
+    console.log(response.data)
+
+    setSelectedRow(response.data);
+    setEdit(true);
+
+    const encodedId = btoa(row.id); // encode ID
+
+    navigate(`/edit-fuelCards/${encodedId}`, {
+      state: { data: response.data }
+    });
+
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+};
   
     const handleDelete = (row) => {
     if (window.confirm(`Delete "${row.id}"?`)) {

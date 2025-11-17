@@ -92,6 +92,7 @@ console.log("Decoded ID:", Edit_id);
 
   // ✅ Edit / Delete / Send Details
   const handleEdit = async(row) => {
+    console.log(row.id)
     try {
     const response = await axios.get(`${administrator}/${row.id}`);
     setSelectedRow(response.data);     // ✅ full API object
@@ -133,7 +134,10 @@ console.log("Decoded ID:", Edit_id);
     }
   });
 };
+const refreshTable=()=>{
+      fetchUsers(currentPage, perPage);
 
+}
   const handleSendDetails = (row) => alert(`📤 Send details for: ${row.email}`);
 
   // ✅ Close dropdown when clicking outside
@@ -265,7 +269,7 @@ console.log("Decoded ID:", Edit_id);
               <HeaderCard title="Add User" />
               <CardBody>
                 <FormComponent Edit_id={editId} Edit={Edit}
-  selectedRow={selectedRow}
+  selectedRow={selectedRow} onDataAdded={refreshTable}
   setEdit={setEdit}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
               </CardBody>
             </Card>

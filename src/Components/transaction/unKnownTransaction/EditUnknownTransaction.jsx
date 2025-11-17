@@ -426,18 +426,18 @@ const EditUnknownTransaction = () => {
                                 )}
                             </FormGroup>
                         </Col>
-                       
-                    </Row>
-
-<Row>
-      
-                       
-                          <Col sm="9">
+                           <Col sm="9">
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Update Transactions</Btn>
 
                     </div>
                 </Col>
+                    </Row>
+
+<Row>
+      
+                       
+                      
 </Row> 
         </Form>
         </CardBody>

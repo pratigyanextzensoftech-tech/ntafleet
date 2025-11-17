@@ -12,7 +12,7 @@ import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
 
-const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit }) => {
+const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded }) => {
   console.log(Edit_id)
   const {
     register,
@@ -41,8 +41,14 @@ useEffect(() => {
       phone: selectedRow.phone,
       company: selectedRow.company,
       password: selectedRow.password,
-     status: manageuserStatus.find(opt => opt.value === selectedRow.status) || null,
-      company_login: companyLoginAccess.find(opt => opt.label === selectedRow.company_login) || null,
+       status: {
+          value: selectedRow.status,
+          label: selectedRow.status==0?"Active":"Blocked"
+        },
+        company_login:{
+           value: selectedRow.company_login,
+          label: selectedRow.company_login==0?"Yes":"No"
+        }
     });
   }
 }, [Edit, selectedRow]);
@@ -57,7 +63,7 @@ const onSubmit = async (formData) => {
     company: formData.company,
     password: formData.password,
     status: formData.status?.value, // dropdown gives {label, value}
-    company_login: formData.company_login?.value,
+    company_login: formData.company_login?.label,
     gender: "",
     pic: "",
     created: new Date().toISOString().slice(0, 19).replace("T", " "),
@@ -68,15 +74,16 @@ const onSubmit = async (formData) => {
   try {
      if (Edit && selectedRow) {
       // 🟢 UPDATE (Edit mode)
-      const res = await axios.put(`${administrator}/${Edit_id}`, payload);
+      const res = await axios.put(`${administrator}/${selectedRow.id}`, payload);
       console.log("✅ User Updated:", res.data);
+        if (onDataAdded) onDataAdded();
+
       toast.success("User updated successfully!");
     } else {
       // 🟢 ADD (Create mode)
       const res = await axios.post(administrator, payload);
       console.log("✅ User Added:", res.data);
       toast.success("User added successfully!");
-
       if (onUserAdded) {
         onUserAdded({
           ...payload,
@@ -85,7 +92,15 @@ const onSubmit = async (formData) => {
       }
     }
 
-    reset(); // reset form after submit
+    reset({
+       name:"",
+      email:"",
+      phone:"",
+      company:"",
+      password:"",
+      status:"",
+      company_login:""
+    }); // reset form after submit
   } catch (error) {
     console.error("❌ Error submitting form:", error);
     toast.error("Something went wrong!");
@@ -171,11 +186,11 @@ const onSubmit = async (formData) => {
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={companyLoginAccess}
+                      options={manageuserStatus}
                       className="form-control p-0 border-0"
                       placeholder="Status is required"
-                       value={manageuserStatus.find(opt => opt.value === field.value?.value)}
-      onChange={(selected) => field.onChange(selected)}
+                     value={field.value}
+      onChange={(val) => field.onChange(val)}
                       />
                   
                   
@@ -217,8 +232,8 @@ const onSubmit = async (formData) => {
                       options={companyLoginAccess}
                       className="form-control p-0 border-0"
                       placeholder="Access is required"
-                       value={companyLoginAccess.find(opt => opt.value === field.value?.value)}
-      onChange={(selected) => field.onChange(selected)}
+                      value={field.value}
+      onChange={(val) => field.onChange(val)}
                       />
                   
                   
@@ -235,7 +250,7 @@ const onSubmit = async (formData) => {
 
           <Col md={8} className="text-end">
             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }}>
-              {Edit_id?"Update User":'Add User'}
+              {Edit?"Update User":'Add User'}
             </Btn>
           </Col>
         </Row>

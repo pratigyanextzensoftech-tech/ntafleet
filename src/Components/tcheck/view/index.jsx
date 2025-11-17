@@ -192,7 +192,8 @@ const Index = () => {
 
  const handleDelete = (e,row) => {
   e.preventDefault()
-            
+            console.log(row)
+            console.log(data)
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,

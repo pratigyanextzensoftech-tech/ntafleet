@@ -108,10 +108,10 @@ const Index = () => {
     { name: "Item Name", selector: (row) => row.name, sortable: true },
     {
       name: "Discount Applied",
-      selector: (row) => row.discount,
+      selector: (row) => row.discount==0?"yes":"No",
       sortable: true,
     },
-    { name: "Tax Applied", selector: (row) => row.tax, sortable: true },
+    { name: "Tax Applied", selector: (row) => row.tax==0?"yes":"No", sortable: true },
     {
       name: "Action",
       cell: (row) => (
