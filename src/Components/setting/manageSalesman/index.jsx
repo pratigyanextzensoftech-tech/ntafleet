@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import { Container,Row,Col,Card,CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard"; 
 import ManageSalesman from "./ManageSalesman";
-
+import Swal from "sweetalert2";
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent'; 
 import qs from 'qs'
 import axios from 'axios';
@@ -145,7 +145,7 @@ const Index = () => {
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"
                   style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={() => handleDelete(row)}
+                  onClick={(e) => handleDelete(e,row)}
                 >
                   <FaTrashAlt /> Delete
                 </button>
@@ -173,8 +173,39 @@ const Index = () => {
 }, [data]);
     // ✅ Action handlers
     const handleEdit = (row) => console.log(row); 
-    const handleDelete = (row) => alert("Delete " + row.id);  
-  return (
+
+ const handleDelete = (e,row) => {
+  e.preventDefault()
+            
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${APINAME}/${row.id}`)
+          .then((res) => {
+            setData((prevData) => {
+  prevData.forEach((item) => console.log("Existing item id:", item.id)); // ✅ print each item id
+  return  prevData.filter((item) => item.id !== row.id);
+});
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+              console.log(res.data)
+
+          })
+          .catch((error) => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+            console.log(error)
+          });
+      }
+    });
+  };  
+      return (
     <Fragment>
       <Breadcrumbs parent="Setting" title="Manage Sales Man" />
       <Container fluid={true}>

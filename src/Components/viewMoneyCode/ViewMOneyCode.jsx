@@ -47,7 +47,6 @@ const ViewMoneyCode = () => {
       sortable: true,
       wrap: true,
     }));
-console.log(data)
     cols.push({
       name: "Action",
       cell: (row) => (
@@ -154,7 +153,6 @@ console.log(data)
        }
      }, [data]);
   const handleDelete = (row) => {
-    console.log(row.id)
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,

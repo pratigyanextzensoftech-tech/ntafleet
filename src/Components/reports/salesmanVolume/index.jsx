@@ -3,7 +3,6 @@ import { Breadcrumbs } from '../../../AbstractElements'
 import HeaderCard from '../../Common/Component/HeaderCard'
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent'
-import { tableColumns, dummytabledata } from '../../../Data/Table/Defaultdata'
 import SalesmanVol from './SalesmanVol'
 import { salesman_volume } from '../../../api';
 import usePaginatedTable from '../../../Hooks/usePagination';
@@ -14,6 +13,7 @@ import { FaEdit, FaTrashAlt, FaFilePdf, FaFileExcel, FaEnvelope } from 'react-ic
 
 const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
+  
   const [tableColumns, setTableColumns] = useState([]);
   const columnsMap = {
     "ID #": "id",
@@ -49,12 +49,12 @@ const Index = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row["ID #"] ? null : row["ID #"])}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row["ID #"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -128,9 +128,9 @@ const Index = () => {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${salesman_volume}/${row.id}`)
+        axios.delete(`${salesman_volume}/${row["ID #"]}`)
           .then(() => {
-            setData((prevData) => prevData.filter((item) => item.id !== row.id));
+            setData((prevData) => prevData.filter((item) => item["ID #"] !== row["ID #"]));
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
           .catch(() => {
