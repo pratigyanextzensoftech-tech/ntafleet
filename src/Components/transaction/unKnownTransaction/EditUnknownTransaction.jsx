@@ -8,13 +8,18 @@ import DatePicker from "react-datepicker";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import InputText from '../../Forms/FormControl/formInput/InputText';
-import { useCountry } from '../../../Hooks/Dropdowns';
+import { useCountry,useSupplier,useCompany } from '../../../Hooks/Dropdowns';
 import { useLocation } from "react-router-dom";
+import { transactions } from '../../../api';
+import axios from 'axios';
+import { toast } from 'react-toastify'; 
 const EditUnknownTransaction = () => {
      const { state } = useLocation();
   const rowData = state?.data;
     console.log("Received Edit Data:", rowData);
   const {data} =useCountry()
+  const {data:supplierData}=useSupplier()
+  const {data:CompanyData}=useCompany()
     const {
         register,
 
@@ -23,13 +28,163 @@ const EditUnknownTransaction = () => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+useEffect(() => {
+  if ( rowData) {
+    console.log(rowData)
+    const selectedCountry = data?.find(
+          (item) => item.label === rowData.country
+        );
+       const selectedCurrency = currency?.find(
+          (item) => 
+            item.label === rowData.currency
 
-    const onSubmit = (data) => {
+        ); 
+const selectedSupplier = supplierData?.find(
+          (item) => item.label === rowData.supplier_name
+        );
+        const selectedCompany = CompanyData?.find(
+          (item) => item.label === rowData.company_name
+        );
+          const selectedRackInvoice = YesNo?.find(
+          (item) => item.label === rowData.retail_invoice
+        );
+        const invoiceStatus=InvoiceStatus?.find(
+          (item) => item.value == rowData.inv == 0 ? "Invoiced" : "Not Invoiced"
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+        );
+                    console.log(selectedSupplier)
+
+    reset({
+      card1: rowData.card_no,
+      card2: rowData.cardNumber,
+      transDate: rowData.tran_date,
+      transTime: rowData.tran_time,
+      invoice: rowData.invoice,
+      unit: rowData.unit,
+      drierName: rowData.driver_name,
+      odometer: rowData.odometer,
+      loc: rowData.location_name,
+      city: rowData.city,
+      stateProv: rowData.state_prov,
+      country: selectedCountry,
+      fee: rowData.fees,
+      item: rowData.item,
+      efs: rowData.efs_unit_price,
+      tax: rowData.tax_unit_price,
+      unitPrice: rowData.unit_price,
+      rackPrice: rowData.retail_price,
+      qty: rowData.qty,
+      discountCent: rowData.discount_cent,
+      amount: rowData.amt,
+      taxAmt: rowData.tax_amt,
+      db : rowData.db,
+      currency: selectedCurrency,
+      supplier: selectedSupplier,
+      company: selectedCompany,
+      rackInvoice: selectedRackInvoice,
+      conversationRate: rowData.rate,
+      status: invoiceStatus,
+
+      //  status: {
+      //     value: slectedStatus.value,
+      //     label: slectedStatus.label
+      //   },
+        // company_login:{
+        //    value: companylogin.value,
+        //   label: companylogin.label
+        // }
+    });
+  }
+}, [ rowData]);
+   
+const onSubmit = (formData) => {
+                            console.log("Form Data:", formData.city);  // ✅ This will print your inputs
+    
+     const payload = {
+  card_no: formData.card1,
+  cardNumber: formData.card2,
+
+  tran_date: formData.tranDate,
+   tran_time: formData.tranTime,
+
+  invoice: formData.invoice,
+  unit: formData.unit,
+  driver_name: formData.driverName,
+  odometer: formData.odometer,
+
+  location_name : formData.locationName,
+  city: formData.city,
+  state_prov : formData.stateProv,
+  country: formData.label,
+
+  fees: formData.fees,
+  item: formData.item,
+
+  efs_unit_price : formData.efsUnitPrice,
+   tax_unit_price : formData.taxUnitPrice,
+  unit_price : formData.unitPrice,
+  retail_price : formData.retailPrice,
+
+  qty: formData.qty,
+ discount_cent  : formData.discountCent,
+
+  amount: formData.amt,        // reversed
+  tax_amt : formData.taxAmount,
+
+  db: formData.db,
+  currency: formData.currency?.label,
+  supplier: formData.supplier?.label,
+  company: formData.company?.label,
+  rackInvoice: formData.rackInvoice.label,
+
+  rate: formData.rate,
+  status: formData.status,
+};
+
+        
+          axios.put(`${transactions}/${rowData.id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+        reset( {
+  card1: "",
+  card2: "",
+  transDate: "",
+  transTime: "",
+  invoice: "",
+  unit: "",
+  drierName: "",
+  odometer: "",
+  loc: "",
+  city: "",
+  stateProv: "",
+  country: "",
+  fee: "",
+  item: "",
+  efs: "",
+  tax: "",
+  unitPrice: "",
+  rackPrice: "",
+  qty: "",
+  discountCent: "",
+  amount: "",
+  taxAmt: "",
+  db: "",
+  currency: "",
+  supplier: "",
+  company: "",
+  rackInvoice: "",
+  conversationRate: "",
+  status: "",
+})
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+ 
       
-    };
+            
     return (
           <Fragment>
       <Breadcrumbs parent="Transaction" title="Edit Unknown Transaction " /> 
@@ -43,7 +198,7 @@ const EditUnknownTransaction = () => {
             <Row>
  <Col sm="3">
   <InputText
-              name="card"
+              name="card1"
               label="Card No."
               type="text"
               register={register}
@@ -52,7 +207,7 @@ const EditUnknownTransaction = () => {
                         </Col>
                          <Col sm="3">
   <InputText
-              name="card"
+              name="card2"
               label="Card No."
               type="text"
               register={register}
@@ -160,7 +315,8 @@ const EditUnknownTransaction = () => {
                                         render={({ field }) => (
                                             <Select
                                                 {...field}
-                                                options={data}
+                                                options={data.filter((_,i)=>i!==0)}
+
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Currency"
                                             />
@@ -348,7 +504,7 @@ const EditUnknownTransaction = () => {
                                         render={({ field }) => (
                                             <Select
                                                 {...field}
-                                                options={optionscompany}
+                                                options={CompanyData}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select company"
                                             />
@@ -406,7 +562,7 @@ const EditUnknownTransaction = () => {
                             <FormGroup className="m-form__group">
                                 <InputGroup >
                                     <InputGroupText>Invoiced Status</InputGroupText>
-                                    <Controller name="currency"
+                                    <Controller name="status"
                                         rules={{ required: "currency is required" }}
 
                                         control={control}

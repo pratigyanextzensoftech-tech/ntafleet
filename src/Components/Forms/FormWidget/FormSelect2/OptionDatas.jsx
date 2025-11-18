@@ -104,8 +104,8 @@ export const displayFeatureCheckBoxOwner=[
 ]
  export const currency=[
     { label: 'Select Currency' , isDisabled: true },
-        { value: 'USD', label: 'USD' },
-  { value: 'CAD', label: 'CAD' }
+        { value: '0', label: 'USD/Gallons' },
+  { value: '1', label: 'CAD/Gallons' }
 
 ]
  export const VolUnit=[
@@ -318,7 +318,7 @@ export const MoneyCodeStatus=[
 export const InvoiceStatus=[    
         { label: 'Select Status', isDisabled: true },
         { value: '0', label: 'Invoiced' },
-        { value: ' 1', label: 'Not Invoiced' },    
+        { value:'1', label: 'Not Invoiced' },    
 ]
 export const invoiceType=[
         { label: 'All Type',label: 'All Type' },
