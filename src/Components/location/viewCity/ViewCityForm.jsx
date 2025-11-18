@@ -31,10 +31,11 @@ const { data: stateData } = useStates();
   });
 useEffect(() => {
   if (Edit && selectedRow) {
-
+console.log(selectedRow)
     const selectedCountry = data?.find(
       (item) => item.value === selectedRow.country_id
     );
+  console.log(selectedCountry)
 
     const selectedState = stateData?.find(
       (item) => item.value === selectedRow.state_id
@@ -42,8 +43,8 @@ useEffect(() => {
 
     reset({
       city: selectedRow.city_name,
-      country: selectedCountry || null,
-      state: selectedState || null,
+      country: selectedCountry ,
+      state: selectedState ,
     });
   }
 }, [Edit, selectedRow]);   

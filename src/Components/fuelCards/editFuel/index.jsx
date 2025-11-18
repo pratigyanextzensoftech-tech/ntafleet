@@ -24,14 +24,13 @@ const Index = () => {
   const {data} =useCompany()
     const {
         register,
-
         control,
         reset,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
  useEffect(() => {
-  if (rowData) {
+  if (rowData ) {
     console.log(rowData);
 
     reset({

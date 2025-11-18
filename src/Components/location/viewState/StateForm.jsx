@@ -29,14 +29,17 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
   });
   useEffect(() => {
             if (Edit && selectedRow) {
-                console.log(selectedRow)
+               const selectedCountry = data?.find(
+                        (item) => item.label === selectedRow["Country"] 
+                      );
+               
               reset({
                 state: selectedRow["State Name"],
                 abbr: selectedRow["Abbreviation"],
                 tax: selectedRow["Tax Cent"],
                  country: {
-            value: selectedRow["Country ID"],
-            label: selectedRow["Country"]
+            value: selectedCountry.value,
+            label: selectedCountry.label
       }
               });
             }
@@ -148,7 +151,7 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={data}
+options={data.filter((_, index) => index !== 0)} 
                       className="form-control p-0 border-0"
                       placeholder="Select Country"
                         value={field.value}   // ✅ FIXED

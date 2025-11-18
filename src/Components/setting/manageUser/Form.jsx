@@ -35,6 +35,14 @@ const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit,o
 useEffect(() => {
   if (Edit && selectedRow) {
     console.log(selectedRow)
+    const companylogin = companyLoginAccess?.find(
+          (item) => item.value === selectedRow.company_login == '0' ? "Yes" : "No"
+        );
+        const slectedStatus=manageuserStatus?.find(
+          (item) => item.value === selectedRow.status == 0 ? "Active" : "Blocked"
+        );
+
+
     reset({
       name: selectedRow.name,
       email: selectedRow.email,
@@ -42,12 +50,12 @@ useEffect(() => {
       company: selectedRow.company,
       password: selectedRow.password,
        status: {
-          value: selectedRow.status,
-          label: selectedRow.status==0?"Active":"Blocked"
+          value: slectedStatus.value,
+          label: slectedStatus.label
         },
         company_login:{
-           value: selectedRow.company_login,
-          label: selectedRow.company_login==0?"Yes":"No"
+           value: companylogin.value,
+          label: companylogin.label
         }
     });
   }

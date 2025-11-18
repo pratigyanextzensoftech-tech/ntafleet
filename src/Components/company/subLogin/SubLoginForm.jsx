@@ -33,38 +33,55 @@ const SubLoginForm = ({ btnTtitle,onDataAdded,selectedRow,Edit,setEdit,setSelect
     reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm({
-      defaultValues: {
-    Name: "",
-    email: "",
-    otpEmail: "",
-    card: null,
-    company: null,
-    userName: "",
-    password: "",
-  }
-  });
+  } = useForm(
+  //   {
+  //     defaultValues: {
+  //   Name: "",
+  //   email: "",
+  //   otpEmail: "",
+  //   card: null,
+  //   company: null,
+  //   userName: "",
+  //   password: "",
+  // }
+  // }
+);
 useEffect(() => {
-  console.log(selectedRow)
-    if (Edit && selectedRow) {
-      reset({
-        Name: selectedRow.name,
-        email: selectedRow.email , // prefill dropdown
-      otpEmail: selectedRow.otp_email, 
-      card: selectedRow.card_discount, 
-      // tax: selectedRow.company.value,
-           company: {
-        value: selectedRow["company_id"],
-        label: selectedRow["company_id"]
-      } ,
-      // company: selectedRow.company_id, 
-      userName: selectedRow.username, 
-      password: selectedRow.password, 
+  if (Edit && selectedRow) {
+console.log(selectedRow)
+  const selectedCompany = data?.find(
+      (item) => item.value === selectedRow.company_id
+    );
+    const cardDiscount = companyLoginAccess?.find(
+      (item) => item.value === selectedRow.card_discount == '0' ? "Yes" : "No"
+    );
+  
+console.log(data)
+    reset({
+      Name: selectedRow.name,
+      email: selectedRow.email,
+      otpEmail: selectedRow.otp_email,
+
+    company: 
+         {
+            value:selectedCompany.value ,
+            label: selectedCompany.label,
+          }
+        ,
+
+      card: {
+        value: cardDiscount.value,
+        label: cardDiscount.label
+      },
+
+      userName: selectedRow.username,
+      password: selectedRow.password,
       added_by: selectedRow.Added_By,
-      added_on:selectedRow.Added_On
-      });
-    }
-  }, [Edit, selectedRow, reset]);
+      added_on: selectedRow.Added_On
+    });
+  }
+}, [Edit, selectedRow, reset]);
+
   const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -72,7 +89,8 @@ useEffect(() => {
     name: formData.Name,
     email:formData.email,
     otp_email:formData.otpEmail,
-    card_discount:formData.card.value,
+    card_discount:formData.card.label,   
+    company_name:formData.company.label,
 company_id:formData.company.value,
 username:formData.userName,
 password:formData.password,
@@ -90,8 +108,14 @@ added_on: new Date()
         Name: "",
         email: "",
         otpEmail: "",
-        card: null,
-        company: null,
+        card: {
+          value:"",
+          label:""
+        },
+  company: {
+    value: "",
+    label: ""
+  },
         userName: "",
         password: "",
       });
@@ -209,8 +233,9 @@ added_on: new Date()
                         options={companyLoginAccess}
                         className="form-control p-0 border-0"
                         placeholder="Select  "
-                        value={field.value}   // ✅ FIXED
+         value={field.value}
       onChange={(val) => field.onChange(val)}
+           
                       />
                     )}
                   />
@@ -237,7 +262,7 @@ added_on: new Date()
                         options={data}
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
-                        value={field.value}   // ✅ FIXED
+                       value={field.value}
       onChange={(val) => field.onChange(val)}
                       />
                     )}
