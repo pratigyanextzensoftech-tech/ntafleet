@@ -105,7 +105,7 @@ export const displayFeatureCheckBoxOwner=[
  export const currency=[
     { label: 'Select Currency' , isDisabled: true },
         { value: '0', label: 'USD/Gallons' },
-  { value: '1', label: 'CAD/Gallons' }
+  { value: '1', label: 'CAD/Liters' }
 
 ]
  export const VolUnit=[
@@ -113,10 +113,8 @@ export const displayFeatureCheckBoxOwner=[
     { value: 'liter', label: 'liter' }
 ]
  export const type=[
-    { label: '' , isDisabled: true },
-
   { value: '0', label: 'visible' },
-    { value: '1', label: 'hidden' }
+{ value: '1', label: 'hidden' }
 ]
  export const Customized_Supplier=[
 { label: 'Select Supplier' , isDisabled: true },

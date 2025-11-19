@@ -154,8 +154,9 @@ const ViewMoneyCode = () => {
      }, [data]);
   const handleDelete = (e,row) => {
     e.preventDefault();
-    console.log(row);
-    console.log(data);
+    console.log(row.id);
+
+    console.log(data.find((item)=>item.id==row.id));
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,
@@ -169,7 +170,8 @@ const ViewMoneyCode = () => {
       if (result.isConfirmed) {
         axios.delete(`${APINAME}/${row.id}`)
           .then(() => {
-            setData((prevData) => prevData.filter((item) => item["Invoice #"] !== row["Invoice #"]));
+                setData(prev => prev.filter(item => item.id !== row.id));
+
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
           .catch((err) => {

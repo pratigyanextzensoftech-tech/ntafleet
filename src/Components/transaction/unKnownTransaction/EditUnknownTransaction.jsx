@@ -12,6 +12,7 @@ import { useCountry,useSupplier,useCompany } from '../../../Hooks/Dropdowns';
 import { useLocation } from "react-router-dom";
 import { transactions } from '../../../api';
 import axios from 'axios';
+
 import { toast } from 'react-toastify'; 
 const EditUnknownTransaction = () => {
      const { state } = useLocation();
@@ -42,6 +43,7 @@ useEffect(() => {
 const selectedSupplier = supplierData?.find(
           (item) => item.label === rowData.supplier_name
         );
+        
         const selectedCompany = CompanyData?.find(
           (item) => item.label === rowData.company_name
         );
@@ -50,10 +52,7 @@ const selectedSupplier = supplierData?.find(
         );
         const invoiceStatus=InvoiceStatus?.find(
           (item) => item.value == rowData.inv == 0 ? "Invoiced" : "Not Invoiced"
-
         );
-                    console.log(selectedSupplier)
-
     reset({
       card1: rowData.card_no,
       card2: rowData.cardNumber,
@@ -66,7 +65,6 @@ const selectedSupplier = supplierData?.find(
       loc: rowData.location_name,
       city: rowData.city,
       stateProv: rowData.state_prov,
-      country: selectedCountry,
       fee: rowData.fees,
       item: rowData.item,
       efs: rowData.efs_unit_price,
@@ -78,17 +76,26 @@ const selectedSupplier = supplierData?.find(
       amount: rowData.amt,
       taxAmt: rowData.tax_amt,
       db : rowData.db,
-      currency: selectedCurrency,
-      supplier: selectedSupplier,
-      company: selectedCompany,
       rackInvoice: selectedRackInvoice,
       conversationRate: rowData.rate,
       status: invoiceStatus,
+      
+      supplier: 
+    { value: rowData.supplier_id ,label: rowData.supplier_name }
+  ,
 
-      //  status: {
-      //     value: slectedStatus.value,
-      //     label: slectedStatus.label
-      //   },
+         company: {
+          value:rowData.company_id ,
+          label: rowData.company_name
+         },
+         currency:{
+          value:selectedCurrency ?selectedCurrency.value:null,
+          label:rowData.currency
+         },
+         country:{
+            value:selectedCountry ?selectedCountry.value:null,
+          label:rowData.country
+         }
         // company_login:{
         //    value: companylogin.value,
         //   label: companylogin.label
@@ -98,7 +105,6 @@ const selectedSupplier = supplierData?.find(
 }, [ rowData]);
    
 const onSubmit = (formData) => {
-                            console.log("Form Data:", formData.city);  // ✅ This will print your inputs
     
      const payload = {
   card_no: formData.card1,
@@ -115,11 +121,10 @@ const onSubmit = (formData) => {
   location_name : formData.locationName,
   city: formData.city,
   state_prov : formData.stateProv,
-  country: formData.label,
+  country: formData.country.label,
 
   fees: formData.fees,
   item: formData.item,
-
   efs_unit_price : formData.efsUnitPrice,
    tax_unit_price : formData.taxUnitPrice,
   unit_price : formData.unitPrice,
@@ -133,14 +138,16 @@ const onSubmit = (formData) => {
 
   db: formData.db,
   currency: formData.currency?.label,
-  supplier: formData.supplier?.label,
-  company: formData.company?.label,
+  supplier_name: formData.supplier.label,
+  supplier_id: formData.supplier.value,
+  company_id: formData.company?.value,
+  company_name: formData.company?.label,
   rackInvoice: formData.rackInvoice.label,
 
   rate: formData.rate,
   status: formData.status,
 };
-
+console.log(payload)
         
           axios.put(`${transactions}/${rowData.id}`, payload)
         .then((res) => {
@@ -474,15 +481,14 @@ const onSubmit = (formData) => {
   name="supplier"
   control={control}
   rules={{ required: "Supplier is required" }}
-
   render={({ field }) => (
     <Select
       {...field}
       className="form-control p-0 border-0"
       placeholder="Select supplier"
-      options={Upload_Supplier}
-      onChange={(selectedOption) => field.onChange(selectedOption)}
-      value={field.value}
+      options={supplierData}
+      value={field.value}   // ✅ FIXED
+      onChange={(val) => field.onChange(val)}
     />
   )}
 />
@@ -507,13 +513,15 @@ const onSubmit = (formData) => {
                                                 options={CompanyData}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select company"
+                                                  value={field.value}   // ✅ FIXED
+                                             onChange={(val) => field.onChange(val)}
                                             />
                                         )}
                                     />
                                 </InputGroup>
 
                                 {errors.status && (
-                                    <span className="text-danger">{errors.status?.message}</span>
+                                    <span className="text-danger">{errors.company?.message}</span>
                                 )}
                             </FormGroup>
                         </Col>
@@ -571,14 +579,16 @@ const onSubmit = (formData) => {
                                                 {...field}
                                                 options={InvoiceStatus}
                                                 className="form-control p-0 border-0"
-                                                placeholder="Select Currency"
+                                                placeholder="Select currency"
+                                                  value={field.value}   // ✅ FIXED
+                                                  onChange={(val) => field.onChange(val)}
                                             />
                                         )}
                                     />
                                 </InputGroup>
 
-                                {errors.currency && (
-                                    <span className="text-danger">{errors.currency?.message}</span>
+                                {errors.status && (
+                                    <span className="text-danger">{errors.status?.message}</span>
                                 )}
                             </FormGroup>
                         </Col>
