@@ -19,7 +19,9 @@ import {
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import HeaderCard from "../../Common/Component/HeaderCard";
+import { useCompany } from "../../../Hooks/Dropdowns";
 const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
+  const {data:companyData}=useCompany()
   const {
     register,
     control,
@@ -46,7 +48,7 @@ const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={optionscompany}
+                      options={companyData}
                       className="form-control p-0 border-0"
                       placeholder="Select Company Name"
                     />

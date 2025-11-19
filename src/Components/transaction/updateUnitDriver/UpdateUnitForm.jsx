@@ -23,7 +23,7 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
+const UpdateUnitForm = ({ btnTitle }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
 
@@ -43,7 +43,6 @@ const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
       setShowMessage(false); // hide only when form is completely valid
     }
   };
-
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
@@ -200,7 +199,6 @@ const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
             >
               {btnTitle}
             </Btn>
-            <button className="btn btn-secondary">{btnTitle1}</button>
           </div>
         </Col>
       </Row>

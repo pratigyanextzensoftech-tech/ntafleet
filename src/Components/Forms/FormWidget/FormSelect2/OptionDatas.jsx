@@ -218,7 +218,7 @@ export const optionsSearch = [
     { value: 'Greater than', label: 'Greater than' }
 ];
 export const companyLoginAccess=[
-    { label: 'select Option.',isDisabled: true },
+    // { label: 'select Option.',isDisabled: true },
     { value: '0', label: 'Yes' },
     { value: '1', label: 'No' },
 
@@ -348,8 +348,8 @@ export  const userStatus=[
         { value: 'Active', label: 'Active' },
 ]
 export  const manageuserStatus=[
-        { value: '1', label: 'Blocked' },
-        { value: '0', label: 'Active' },
+        { value: 0, label: 'Active' },
+            { value: 1, label: 'Blocked' },
 
 ]
 export const options2 = [
