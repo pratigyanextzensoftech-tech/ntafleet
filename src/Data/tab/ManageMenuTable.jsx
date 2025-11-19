@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaEdit, FaSignInAlt, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import DataTableComponent from "../../Components/Tables/DataTable/DataTableComponent";
-import { pmenu as pmenuApi, smenu } from "../../api";
+import { pmenu as pmenuApi, smenu as smenuApi } from "../../api";
 import usePaginatedTable from "../../Hooks/usePagination";
 import axios from "axios";
-import {pmenu as APINAME} from '../../api/index'
-// 🔹 Action Dropdown with your original design
-const ActionDropdown = ({ row, onEdit, onDelete }) => {
+import Swal from "sweetalert2";
+import { menu } from "../../api";
+// 🔹 Action Dropdown
+const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -22,7 +23,6 @@ const ActionDropdown = ({ row, onEdit, onDelete }) => {
 
   return (
     <div ref={dropdownRef} className="position-relative dropdown-action">
-      {/* 🔸 Action Button */}
       <button
         type="button"
         className="btn btn-sm btn-primary show_hide"
@@ -32,7 +32,6 @@ const ActionDropdown = ({ row, onEdit, onDelete }) => {
         Action
       </button>
 
-      {/* 🔸 Dropdown Menu */}
       {open && (
         <ul
           className="dropdown-menu show"
@@ -43,7 +42,6 @@ const ActionDropdown = ({ row, onEdit, onDelete }) => {
             marginTop: 4,
             zIndex: 9999,
             minWidth: 120,
-            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
         >
           <li>
@@ -52,12 +50,13 @@ const ActionDropdown = ({ row, onEdit, onDelete }) => {
               className="text-success dropdown-item d-flex align-items-center"
               onClick={() => {
                 setOpen(false);
-                onEdit(row);
+                onEdit(row, apiUrl);
               }}
             >
               <FaEdit className="me-2" /> Edit
             </button>
           </li>
+
           <li>
             <button
               type="button"
@@ -77,9 +76,10 @@ const ActionDropdown = ({ row, onEdit, onDelete }) => {
 };
 
 const ManageMenuTable = () => {
-   const [selectedRow, setSelectedRow] = useState(null);
-  const[Edit,setEdit]=useState(false)
-  // 🔹 API column mapping for your custom hook
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [Edit, setEdit] = useState(false);
+
+  // 🔹 Columns mapping for your custom hook
   const columnSets = {
     primaryMenu: {
       Id: "id",
@@ -100,43 +100,70 @@ const ManageMenuTable = () => {
     },
   };
 
-  // 🔹 Fetch data via usePaginatedTable custom hook
+  // 🔹 Fetch data via custom hook
   const pmenu = usePaginatedTable({
     apiUrl: pmenuApi,
     columnsMap: columnSets.primaryMenu,
   });
 
   const sMenu = usePaginatedTable({
-    apiUrl: smenu,
+    apiUrl: smenuApi,
     columnsMap: columnSets.secondaryMenu,
   });
-const handleDelete=()=>{
 
-}
-  // 🔹 Actions
-const handleEdit = async(row) => {
-    try {
-    const response = await axios.get(`${APINAME}/${row["ID"]}`);
-    setSelectedRow(response.data);     // ✅ full API object
-    setEdit(true);
-  } catch (error) {
-    console.error("Error fetching full row data", error);
-  }
+  // 🔹 DELETE
+  const handleDelete = (row) => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${menu}/${row["Id"]}`)
+          .then(() => {
+            Swal.fire("Deleted!", "Record deleted successfully.", "success");
+            pmenu.fetchData();
+            sMenu.fetchData();
+          })
+          .catch(() => Swal.fire("Error!", "Failed to delete.", "error"));
+      }
+    });
   };
 
-  // 🔹 Generate reusable columns with Action
-  const getTableColumns = (includePrimary = false) => {
-    const baseCols = [
+  // 🔹 EDIT
+  const handleEdit = async (row) => {
+    console.log(row,"row")
+    try {
+      const response = await axios.put(`${menu}/${row.Id}`);
+      setSelectedRow(response.data);
+      setEdit(true);
+    } catch (error) {
+      console.error("Error fetching full row data", error);
+    }
+  };
+
+  // 🔹 Generate columns
+  const getTableColumns = (apiUrl, includePrimary = false) => {
+    const cols = [
       { name: "ID", selector: (row) => row.Id, sortable: true },
       { name: "Menu Name", selector: (row) => row["Menu Name"], sortable: true },
       { name: "Menu Link", selector: (row) => row["Menu Link"], sortable: true },
       { name: "Added By", selector: (row) => row["Added By"], sortable: true },
       { name: "Added On", selector: (row) => row["Added On"], sortable: true },
-      { name: "Menu Order", selector: (row) => row["Menu Order"], sortable: true },
+      {
+        name: "Menu Order",
+        selector: (row) => row["Menu Order"],
+        sortable: true,
+      },
       {
         name: "Action",
         cell: (row) => (
-          <ActionDropdown row={row} onEdit={handleEdit} onDelete={handleDelete} />
+          <ActionDropdown
+            row={row}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            apiUrl={apiUrl}
+          />
         ),
         ignoreRowClick: true,
         allowOverflow: true,
@@ -145,24 +172,24 @@ const handleEdit = async(row) => {
     ];
 
     if (includePrimary) {
-      baseCols.splice(2, 0, {
+      cols.splice(2, 0, {
         name: "Primary Menu",
         selector: (row) => row["Primary Menu"],
         sortable: true,
       });
     }
 
-    return baseCols;
+    return cols;
   };
 
-  // 🔹 Tab content for both tables
+  // 🔹 Tabs
   const tabContent = [
     {
       id: "1",
       label: "Primary Menu",
       component: (
         <DataTableComponent
-          tableColumns={getTableColumns(false)}
+          tableColumns={getTableColumns(pmenuApi)}
           tableData={pmenu.data}
           loading={pmenu.loading}
           pagination
@@ -178,7 +205,7 @@ const handleEdit = async(row) => {
       label: "Secondary Menu",
       component: (
         <DataTableComponent
-          tableColumns={getTableColumns(true)}
+          tableColumns={getTableColumns(smenuApi, true)}
           tableData={sMenu.data}
           loading={sMenu.loading}
           pagination
@@ -191,7 +218,11 @@ const handleEdit = async(row) => {
     },
   ];
 
-  return tabContent;
-};
+return {
+  tabs: tabContent,
+  selectedRow,
+  Edit,
+  setEdit
+};};
 
 export default ManageMenuTable;

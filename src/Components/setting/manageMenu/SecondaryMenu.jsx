@@ -1,5 +1,5 @@
 
-import React, { Fragment } from 'react';
+import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
@@ -8,10 +8,10 @@ import { type } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import usePmenu from '../../../Hooks/usePmenu';
-import { menu } from '../../../api';
+import { menu,smenu } from '../../../api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const SecondaryMenu = ({ title }) => {
+const SecondaryMenu = ({ title,Edit,selectedRow }) => {
     const { pmenu, loading, error } = usePmenu();
     const {
         register,
@@ -20,6 +20,23 @@ const SecondaryMenu = ({ title }) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+     useEffect(() => {
+      if (Edit && selectedRow) {
+        console.log(selectedRow)
+        reset({
+            menuName: selectedRow.link,
+          primaryMenu:{
+          value:  selectedRow.idmenu,
+          label:smenu.find((item)=>item.primary_menu ==selectedRow.idmenu)
+          },
+          menuLink: selectedRow.name,
+           type:{
+            value:selectedRow.sw,
+            label:selectedRow.sw==0?"visible":"hidden"
+           }
+        });
+      }
+    }, [Edit, selectedRow]);
          const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -112,7 +129,7 @@ const SecondaryMenu = ({ title }) => {
                                 </Col>
                                 <Col md={8}>
                                     <div className='text-end'>
-                                        <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >Add Menu</Btn>
+                                        <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Menu"}</Btn>
                                     </div>
                                 </Col>
                             </Row>

@@ -4,7 +4,7 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { unknown_transactions } from "../../../api";
+import { transactions, unknown_transactions } from "../../../api";
 import axios from "axios";
 import qs from "qs";
 import UnknownTransaction from "./UnknownTransaction";
@@ -179,7 +179,7 @@ const [selectedRow, setSelectedRow] = useState(null);
   const handleEdit = async (e, row) => {
     console.log(row)
   try {
-    const response = await axios.get(`${unknown_transactions}/${row.id}`);
+    const response = await axios.get(`${transactions}/${row.id}`);
 
     setSelectedRow(response.data);
     setEdit(true);
