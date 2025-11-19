@@ -10,7 +10,7 @@ import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { menu } from '../../../api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const PrimaryMenu = ({title,Edit,selectedRow}) => {
+const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
     const {
         register,
         control,
@@ -18,6 +18,8 @@ const PrimaryMenu = ({title,Edit,selectedRow}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+
+
     useEffect(() => {
   if (Edit && selectedRow) {
     reset({
@@ -45,12 +47,32 @@ const PrimaryMenu = ({title,Edit,selectedRow}) => {
     "idby":sessionStorage.getItem('userId'),
   
      }
+      if (Edit && selectedRow) {
+            console.log(selectedRow)
+          axios.put(`${menu}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+          if (fetchPmenuData)  fetchPmenuData.fetchData()();
+          setEdit(false);
+          reset({
+       city:"",
+      country:"",
+      state:"",
+     
+          });
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
     axios.post(menu,payload)
     .then((res)=>{
         console.log(res);
        
           toast.success("Add successfully!");
-            // if (onDataAdded) onDataAdded();
+            if (fetchPmenuData) fetchPmenuData.fetchData();
 
     reset();
     })
@@ -58,6 +80,7 @@ const PrimaryMenu = ({title,Edit,selectedRow}) => {
         console.log(err);
           toast.error(err.message);
     })
+}
         };
     return (
 
