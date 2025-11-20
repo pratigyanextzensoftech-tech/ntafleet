@@ -32,11 +32,13 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import SupplierDropDown from "../../Forms/FormControl/formInput/SupplierDropDown";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import axios from 'axios';
+import { useCountry } from "../../../Hooks/Dropdowns";
 import { toast } from "react-toastify";
 import { discount_list as APINAME } from '../../../api';
 const Create = ({ title, btnTitle,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
   const { supplier, loading, error } = useSupplier();
+  const {data:country}=useCountry()
 
   const {
     register,
@@ -140,7 +142,7 @@ added_on:new Date()
               placeholder="Select Country"
               // loading={companyLoading}
               autoSelectFirst={false}
-              options={optionscountry}
+              options={country.filter((_,i)=>i!==0)}
             />
           </Col>
           <Col sm="4">

@@ -1,22 +1,42 @@
-import React, { Fragment,useState } from 'react';
+import React, { Fragment,useState,useEffect } from 'react';
 import Select from 'react-select'
 import { checkBoxData, optionscountry, optionscompany, customizedTypeType, invoiceType1, InvoiceCategory, InvoiceShow, Customized_Supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-import HeaderCard from '../Common/Component/HeaderCard';
+import { useCompany,useCountry } from '../../Hooks/Dropdowns';
+import { supplierById } from '../../api';
+import axios from 'axios';
 const BulkCustomized_ca = ({ title, btnTtitle, type }) => {
+   const[supplierData,setSupplierData]=useState([])
+    
+    const {data:country}=useCountry()
+    const [selectedValues, setSelectedValues] = useState([]);
+    const { control, handleSubmit, formState: { errors }, setValue,reset } = useForm();
+   
+  useEffect(() => {
+    if (!country || country.length === 0) return;
+      // Clear value if normal dropdown
+   setValue("country", country[1]);   
+  }, [type, country]);
+  useEffect(() => {
+  
+    axios
+      .get(`${supplierById}/6,10`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
+  
+        setSupplierData(formatted);
+          setValue("supplier", null); // no default for no-type
+      })
+      .catch((err) => console.log(err));
+  }, [type, setValue]);
   console.log(type, '++++++++++++++')
-  const [selectedValues, setSelectedValues] = useState([]);
-  const {
-    register,
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
-
+ 
   const onSubmit = (data) => {
 
     console.log("Form Data:", data);  // ✅ This will print your inputs
@@ -142,22 +162,23 @@ const BulkCustomized_ca = ({ title, btnTtitle, type }) => {
               <FormGroup className="m-form__group">
                 <InputGroup >
                   <InputGroupText>Supplier</InputGroupText>
-                  <Controller
-                    name="supplier"
-                    rules={{ required: "supplier is required" }}
+                 <Controller
+                        name="supplier"
+                        rules={{ required: "supplier is required" }}
 
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={
-                          Customized_Supplier
-                        }
-                        className="form-control p-0 border-0"
-                        placeholder="Select supplier"
-                      />
-                    )}
-                  />
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={
+                              supplierData
+                            }
+                            className="form-control p-0 border-0"
+                            placeholder="Select supplier"
+                          />
+                        )}
+
+                        />
                 </InputGroup>
 
                 {errors.supplier && (
@@ -170,19 +191,20 @@ const BulkCustomized_ca = ({ title, btnTtitle, type }) => {
                 <InputGroup>
                   <InputGroupText>Country</InputGroupText>
                   <Controller
-                    name="country"
-                    rules={{ required: "country is required" }}
-                    defaultValue={[optionscountry[2]]}
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={[optionscountry[2]]}
-                        className="form-control p-0 border-0"
-                        placeholder="Select Country"
+                        name="country"
+                        rules={{ required: "country is required" }}
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={[country[1]]}
+                            className="form-control p-0 border-0"
+                            placeholder="Select Country"
+                             value={field.value}
+        onChange={(val) => field.onChange(val)}
+                          />
+                        )}
                       />
-                    )}
-                  />
                 </InputGroup>
 
                 {errors.country && (

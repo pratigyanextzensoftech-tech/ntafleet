@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import {
   Col,
   Row,
@@ -18,18 +18,62 @@ import {
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import HeaderCard from "../Common/Component/HeaderCard";
+import { useCountry } from "../../Hooks/Dropdowns";
+import {supplierById} from '../../api/index'
+import axios from "axios";
 const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
+   const[supplierData,setSupplierData]=useState([])
+        const{ data:country}=useCountry()
+  
+   const { control, handleSubmit, formState: { errors }, setValue } = useForm();
 
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
+  const getParamsByType = () => {
+    switch (type) {
+      case "bulk_customized":
+        return "3";
+      default:
+        return "1,3,5,4,7";
+    }
+  };
+  useEffect(() => {
+    const params = getParamsByType();
+  
+    axios
+      .get(`${supplierById}/${params}`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
+  
+        setSupplierData(formatted);
+  
+        // ⭐ Automatically set default supplier based on type
+        if (type === "bulk_customized") {
+          setValue("supplier", formatted[0]); // pick first data
+        } else {
+          setValue("supplier", null); // no default for no-type
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [type, setValue]);
+  useEffect(() => {
+    if (!country || country.length === 0) return;
+  
+    if (
+      type === "bulk_customized"  
+    ) {
+      // Auto select the single allowed country
+      setValue("country", country[2]);   // Set default value here
+    } else {
+      // Clear value if normal dropdown
+      setValue("country", null);
+    }
+  }, [type, country]);
   return (
     <Fragment>
       <Row>
@@ -38,55 +82,69 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
-                <Col sm="3">
+               <Col sm="3">
                   <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Start Date</InputGroupText>
-                      <Controller
-                        name="startDate"
-                        control={control}
-                        rules={{ required: "Start Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            placeholderText="Select start date"
-                            className={`form-control `}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
+                    <Row>
+                      <InputGroup>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>Start Date</InputGroupText>
+                        </Col>
+                        <Col sm="8">
+                          <Controller
+                            name="startDate"
+                            control={control}
+                            rules={{ required: "Start Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select start date"
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                    </InputGroup>
-
-                    {errors.startDate && (
-                      <span className="text-danger">
-                        {errors.startDate.message}
-                      </span>
-                    )}
+                        </Col>
+                      </InputGroup>
+                      {errors.startDate && (
+                        <span className="text-danger">
+                          {errors.startDate.message}
+                        </span>
+                      )}
+                    </Row>
                   </FormGroup>
                 </Col>
+
                 <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>End Date</InputGroupText>
-                      <Controller
-                        name="endDate"
-                        control={control}
-                        rules={{ required: "End Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            placeholderText="Select end date"
-                            className={`form-control digits`}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
+                  <FormGroup className={`m-form__group  `}>
+                    <Row>
+                      <InputGroup>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>End Date</InputGroupText>
+                        </Col>
+                        <Col sm="8">
+                          <Controller
+                            name="endDate"
+                            control={control}
+                            rules={{ required: "End Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select end date"
+                                className={`form-control digits`}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                    </InputGroup>
-                    {errors.endDate && (
-                      <span className="text-danger">
-                        {errors.endDate.message}
-                      </span>
-                    )}
+                        </Col>
+                      </InputGroup>
+                      {errors.endDate && (
+                        <span className="text-danger">
+                          {errors.endDate.message}
+                        </span>
+                      )}
+                    </Row>
                   </FormGroup>
                 </Col>
 
@@ -94,26 +152,22 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                        rules={{ required: "supplier is required" }}
-                        defaultValue={
-                          type === "bulk_customized" ? [supplier[5]] : supplier
-                        }
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={
-                              type === "bulk_customized"
-                                ? [supplier[5]]
-                                : supplier
-                            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select supplier"
-                          />
-                        )}
-                      />
+                       <Controller
+  name="supplier"
+  control={control}
+  rules={{ required: "supplier is required" }}
+  defaultValue={null}
+  render={({ field }) => (
+    <Select
+      {...field}
+      options={supplierData}
+      className="form-control p-0 border-0"
+      placeholder="Select supplier"
+      value={field.value}
+      onChange={(val) => field.onChange(val)}
+    />
+  )}
+/>
                     </InputGroup>
 
                     {errors.supplier && (
@@ -128,28 +182,30 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                      <Controller
-                        name="country"
-                        rules={{ required: "country is required" }}
-                        defaultValue={
-                          type === "bulk_customized"
-                            ? [optionscountry[1]]
-                            : optionscountry
-                        }
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={
-                              type === "bulk_customized"
-                                ? [optionscountry[1]]
-                                : optionscountry
-                            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select Country"
-                          />
-                        )}
-                      />
+                    <Controller
+                     name="country"
+                     rules={{ required: "country is required" }}
+                     control={control}
+                     render={({ field }) => {
+                       const isFixedType =
+                         type === "bulk_customized" ;
+                   
+                       const countryOptions = isFixedType
+                         ? [country[2]]
+                         : country.filter((_, i) => i !== 0);
+                   
+                       return (
+                         <Select
+                           {...field}
+                           options={countryOptions}
+                           className="form-control p-0 border-0"
+                           placeholder="Select Country"
+                           value={field.value}
+                           onChange={(val) => field.onChange(val)}
+                         />
+                       );
+                     }}
+                   />
                     </InputGroup>
 
                     {errors.country && (

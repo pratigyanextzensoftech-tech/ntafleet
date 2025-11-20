@@ -8,7 +8,7 @@ import {
   InputGroupText,
   Input,
 } from "reactstrap";
-import { useSupplier } from "../../../Hooks/Dropdowns";
+import { supplierById } from "../../../api";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
@@ -23,8 +23,8 @@ import { toast } from "react-toastify";
 const Ultramar = ({ title, btnTtitle }) => {
   const [excelData, setExcelData] = useState([]);
   const [file, setFile] = useState(null);
+      const [supplierData,setSupplierData]=useState([])
   const [pricingDate, setPricingDate] = useState(new Date());
-  const { data: suppliers, loading } = useSupplier();
 const [fileKey, setFileKey] = useState(Date.now());
 
   const {
@@ -39,11 +39,25 @@ const [fileKey, setFileKey] = useState(Date.now());
     },
   });
 
-  useEffect(() => {
-    if (suppliers.length > 0) {
-      setValue("supplier", suppliers[9]); // default supplier
-    }
-  }, [suppliers, setValue]);
+ useEffect(() => {
+    
+     axios
+    .get(`${supplierById}/10`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
+
+      setSupplierData(formatted);
+      setValue("supplier", supplierData);
+
+      // ⭐ Automatically set default supplier based on type
+      
+    })
+    .catch((err) => console.log(err));
+   
+  }, [supplierData, setValue]);
 
   // ✅ Define key mappings (uppercase)
   const keyMap = {
@@ -236,17 +250,16 @@ const [fileKey, setFileKey] = useState(Date.now());
                         name="supplier"
                         control={control}
                         rules={{ required: "Supplier is required" }}
+                        defaultValue={supplierData}
                         render={({ field }) => (
                           <Select
                             {...field}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
-                            options={suppliers}
                             onChange={(selectedOption) =>
                               field.onChange(selectedOption)
                             }
                             value={field.value}
-                            isLoading={loading}
                           />
                         )}
                       />

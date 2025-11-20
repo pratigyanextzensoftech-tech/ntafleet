@@ -13,11 +13,12 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import Papa from "papaparse";
-import {pricing} from '../../../api/index'
+import {pricing, supplierById} from '../../../api/index'
 import axios from "axios";
 const FjPricing = ({ title, btnTtitle }) => {
   const [csvData, setCsvData] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [supplierData,setSupplierData]=useState([])
    const [File, setFile] = useState(null);
   const { data: suppliers, loading } = useSupplier();
 
@@ -33,11 +34,24 @@ const FjPricing = ({ title, btnTtitle }) => {
   });
 
   useEffect(() => {
-    // Set default supplier automatically when data loads
-    if (suppliers.length > 0) {
-      setValue("supplier", suppliers[0]);
-    }
-  }, [suppliers, setValue]);
+    
+     axios
+    .get(`${supplierById}/1`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
+
+      setSupplierData(formatted);
+      setValue("supplier", supplierData);
+
+      // ⭐ Automatically set default supplier based on type
+      
+    })
+    .catch((err) => console.log(err));
+   
+  }, [supplierData, setValue]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -111,7 +125,7 @@ axios.post(pricing,formData,{
                       <Controller
                         name="supplier"
                         control={control}
-                          defaultValue={suppliers[0] || null}
+                          defaultValue={supplierData}
                         rules={{ required: "Supplier is required" }}
                         render={({ field }) => (
                           <Select

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import {
   checkBoxData,
@@ -31,10 +31,14 @@ import useSupplier from "../../../Hooks/useSupplier";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { discount_list as APINAME } from "../../../api"; // ✅ Your API endpoint
-
+import { useCountry } from "../../../Hooks/Dropdowns";
+import { supplierById } from "../../../api";
 const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
-  const { supplier, loading, error } = useSupplier();
+  const { supplier, loading, error,setValue } = useSupplier();
+  const {data:country}=useCountry()
+    const[supplierData,setSupplierData]=useState([])
+  
   const {
     register,
     control,
@@ -42,7 +46,21 @@ const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-
+ useEffect(() => {
+  
+    axios
+      .get(`${supplierById}/1,5,4`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
+  
+        setSupplierData(formatted);
+          setValue("supplier", null); // no default for no-type
+      })
+      .catch((err) => console.log(err));
+  }, [ setValue]);
  const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -136,8 +154,9 @@ added_on:new Date()
               rules={{ required: "Country is required" }}
               placeholder="Select Country"
               // loading={companyLoading}
-              options={optionscountry}
-            />
+              options={country.filter((_,i)=>i!==0)}
+
+/>
           </Col>
           <Col sm="4">
             <DropDown
@@ -148,7 +167,7 @@ added_on:new Date()
               rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
               // loading={companyLoading}
-              options={viewDiscountsupplier}
+              options={supplierData}
             />
           </Col>
 

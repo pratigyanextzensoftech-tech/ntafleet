@@ -97,6 +97,7 @@ idby:sessionStorage.getItem("userId")
               label="Supplier"
               errors={errors}
               control={control}
+              defaultValueId={3}
               rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
               // loading={companyLoading}

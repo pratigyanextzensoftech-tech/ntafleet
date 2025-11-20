@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Col,
   Row,
@@ -14,18 +14,80 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import {
-  optionscountry,
   supplier,
-  optionscompany,
 } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../Common/Component/HeaderCard";
+import { useCompany,useCountry } from "../../Hooks/Dropdowns";
+import {supplierById} from '../../api/index'
+import axios from "axios";
 const SingleRetailVoice = ({ title, btnTtitle, type }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  const[supplierData,setSupplierData]=useState([])
+      const{ data:companies}=useCompany()
+      const{ data:country}=useCountry()
+
+ const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+
+
+
+
+const getParamsByType = () => {
+  switch (type) {
+    case "single_rack_actual":
+      return "3";
+
+    case "bulk_rack_actual":
+      return "3";
+
+    case "single_customized":
+      return "3";
+
+    default:
+      return "1,3,5,4,7"; // no type → hit default API
+  }
+};
+useEffect(() => {
+  const params = getParamsByType();
+
+  axios
+    .get(`${supplierById}/${params}`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
+
+      setSupplierData(formatted);
+
+      // ⭐ Automatically set default supplier based on type
+      if (type === "single_rack_actual") {
+        setValue("supplier", formatted[0]); // pick first data
+      } else if (type === "bulk_rack_actual") {
+        setValue("supplier", formatted[1] || formatted[0]);
+      } else if (type === "single_customized") {
+        setValue("supplier", formatted[2] || formatted[0]);
+      } else {
+        setValue("supplier", null); // no default for no-type
+      }
+    })
+    .catch((err) => console.log(err));
+}, [type, setValue]);
+
+useEffect(() => {
+  if (!country || country.length === 0) return;
+
+  if (
+    type === "single_rack_actual" ||
+    type === "bulk_rack_actual" ||
+    type === "single_customized"
+  ) {
+    // Auto select the single allowed country
+    setValue("country", country[2]);   // Set default value here
+  } else {
+    // Clear value if normal dropdown
+    setValue("country", null);
+  }
+}, [type, country]);
+
 
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
@@ -50,7 +112,7 @@ const SingleRetailVoice = ({ title, btnTtitle, type }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={companies}
                             className="form-control p-0 border-0"
                             placeholder="Select a country"
                           />
@@ -69,34 +131,23 @@ const SingleRetailVoice = ({ title, btnTtitle, type }) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                        rules={{ required: "supplier is required" }}
-                        defaultValue={
-                          type === "single_rack_actual" ||
-                          type === "bulk_rack_actual"
-                            ? [supplier[5]]
-                            : type === "single_customized"
-                            ? [supplier[5]]
-                            : null
-                        }
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={
-                              type === "single_rack_actual" ||
-                              type === "bulk_rack_actual"
-                                ? [supplier[5]]
-                                : type === "single_customized"
-                                ? [supplier[5]]
-                                : supplier
-                            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select supplier"
-                          />
-                        )}
-                      />
+                     <Controller
+  name="supplier"
+  control={control}
+  rules={{ required: "supplier is required" }}
+  defaultValue={null}
+  render={({ field }) => (
+    <Select
+      {...field}
+      options={supplierData}
+      className="form-control p-0 border-0"
+      placeholder="Select supplier"
+      value={field.value}
+      onChange={(val) => field.onChange(val)}
+    />
+  )}
+/>
+
                     </InputGroup>
 
                     {errors.supplier && (
@@ -111,32 +162,35 @@ const SingleRetailVoice = ({ title, btnTtitle, type }) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                      <Controller
-                        name="country"
-                        rules={{ required: "country is required" }}
-                        defaultValue={
-                          type === "single_rack_actual" ||
-                          type === "bulk_rack_actual" ||
-                          type === "single_customized"
-                            ? [optionscountry[1]]
-                            : null
-                        }
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={
-                              type === "single_rack_actual" ||
-                              type === "bulk_rack_actual" ||
-                              type === "single_customized"
-                                ? [optionscountry[1]]
-                                : optionscountry
-                            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select Country"
-                          />
-                        )}
-                      />
+                 <Controller
+  name="country"
+  rules={{ required: "country is required" }}
+  control={control}
+  render={({ field }) => {
+    const isFixedType =
+      type === "single_rack_actual" ||
+      type === "bulk_rack_actual" ||
+      type === "single_customized";
+
+    const countryOptions = isFixedType
+      ? [country[2]]
+      : country.filter((_, i) => i !== 0);
+
+    return (
+      <Select
+        {...field}
+        options={countryOptions}
+        className="form-control p-0 border-0"
+        placeholder="Select Country"
+        value={field.value}
+        onChange={(val) => field.onChange(val)}
+      />
+    );
+  }}
+/>
+
+
+                      
                     </InputGroup>
                     {errors.country && (
                       <span className="text-danger">
