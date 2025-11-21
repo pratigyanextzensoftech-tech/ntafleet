@@ -37,7 +37,6 @@ const Index = () => {
   const { state } = useLocation();
 
   const rowData = state?.data;
-<<<<<<< HEAD
   console.log("Received Edit Data:", rowData);
   const { data } = useCompany();
   const {
@@ -51,20 +50,6 @@ const Index = () => {
   useEffect(() => {
     if (rowData) {
       console.log(rowData);
-=======
-    console.log("Received Edit Data:", rowData);
-  const {data} =useCompany()
-    const {
-        register,
-        control,
-        reset,
-        handleSubmit,
-        formState: { errors, isSubmitted, isValid },
-    } = useForm();
- useEffect(() => {
-  if (rowData ) {
-    console.log(rowData);
->>>>>>> b2b494e023e3196b8f2ed4fbf992bd873efc4a39
 
       reset({
         cardNo: rowData.card_no,
