@@ -1,27 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
-import { optionscompany,cardStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { cardStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
 import axios from 'axios';
-import { useCompany,useSupplier } from '../../../Hooks/Dropdowns';
+import { useCompany } from '../../../Hooks/Dropdowns';
 import { toast } from 'react-toastify';
+import { supplierById } from '../../../api';
 const AddFuel = ({btnTitle}) => {
-  const {data}=useCompany()
-  const{data:supplierOption}=useSupplier()
-    const [selectedValues, setSelectedValues] = useState([]);
-    const {
-        register,
+    const [supplierData,setSupplierData]=useState([])
+        const [selectedValues, setSelectedValues] = useState([]);
+   const {
         control,
+        register,
         reset,
         handleSubmit,
-        formState: { errors, isSubmitted, isValid },
-    } = useForm();
+        setValue,
 
-
-  
+        formState: { errors },
+      } = useForm({
+        defaultValues: {
+          supplier: null,
+        },
+      });
+    
+      useEffect(() => {
+        
+         axios
+        .get(`${supplierById}/6,9,8,1,5,7,4,3,10`)
+        .then((res) => {
+          const formatted = res.data.map((s) => ({
+            value: s.id,
+            label: s.supplier_name,
+          }));
+    
+          setSupplierData(formatted);
+          // setValue("supplier", supplierData);
+    
+          // ⭐ Automatically set default supplier based on type
+          
+        })
+        .catch((err) => console.log(err));
+       
+      }, [supplierData, setValue]);
+  const {data}=useCompany()
     const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -159,7 +183,7 @@ update_otp:""
                           <Select
                             {...field}
                                  options={
-               supplierOption // your normal supplier array
+               supplierData // your normal supplier array
             }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"

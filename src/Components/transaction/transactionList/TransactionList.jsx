@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import {
   optionscompany,
   Upload_Supplier,
+  InvoiceStatus,
   currency,
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import {
@@ -17,16 +18,40 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
+import { useCompany,useItems } from "../../../Hooks/Dropdowns";
+import { supplierById } from "../../../api";
+import axios from "axios";
 const TransactionList = ({ btnTitle, btnTitle1 }) => {
+  const[supplierData,setSupplierData]=useState()
+  const {data:company}=useCompany()
+  const{data:items}=useItems() 
+
   const {
     register,
 
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
+// useEffect(() => {
 
+//   axios
+//     .get(`${supplierById}/6`)
+//     .then((res) => {
+//       const formatted = res.data.map((s) => ({
+//         value: s.id,
+//         label: s.supplier_name,
+//       }));
+
+//       setSupplierData(formatted);
+
+//      else {
+//         setValue("supplier", null); // no default for no-type
+//       }
+//     })
+// }, [type, setValue]);
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
@@ -130,7 +155,7 @@ const TransactionList = ({ btnTitle, btnTitle1 }) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={optionscompany}
+                    options={company}
                     className="form-control p-0 border-0"
                     placeholder="Select Company Name"
                   />
@@ -172,7 +197,7 @@ const TransactionList = ({ btnTitle, btnTitle1 }) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={optionscompany}
+                    options={items}
                     className="form-control p-0 border-0"
                     placeholder="Select Items"
                   />
@@ -194,7 +219,7 @@ const TransactionList = ({ btnTitle, btnTitle1 }) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={optionscompany}
+                    options={InvoiceStatus}
                     className="form-control p-0 border-0"
                     placeholder="Select status"
                   />

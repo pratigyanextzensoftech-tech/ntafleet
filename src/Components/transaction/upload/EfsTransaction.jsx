@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import {
   Col,
   Row,
@@ -11,20 +11,29 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { optionscountry } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import HeaderCard from "../../Common/Component/HeaderCard";
+import {useCountry} from '../../../Hooks/Dropdowns'
+import { supplierById } from "../../../api";
+
 const EfsTransaction = ({ title, btnTitle, type }) => {
+  const {data:country }=useCountry()
   const {
     register,
     control,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-
+ useEffect(() => {
+    if (!country || country.length === 0) return;
+      // Clear value if normal dropdown
+   setValue("country", country[2]);   
+  }, [type, country]);
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
+
+
   return (
     <Fragment>
       <Row>
@@ -44,7 +53,7 @@ const EfsTransaction = ({ title, btnTitle, type }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscountry}
+                            options={country}
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                           />

@@ -99,7 +99,7 @@ export const useSalesman = () =>
 
   // Add static first entry (e.g., "Select Country")
   const countries = [
-    { value: "0", label: "Both Country" }, // 👈 static option
+    { isDisabled: true, label: "Select Country" }, // 👈 static option
     ...data,
   ];
 
