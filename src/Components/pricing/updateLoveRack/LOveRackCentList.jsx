@@ -6,6 +6,9 @@ import {
   FormGroup,
   InputGroup,
   InputGroupText,
+  Container,
+  Card,
+  CardBody,
   Input,
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
@@ -13,12 +16,14 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import {
   DiscountType,
-  optionscompany,
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-
+import { useCompany } from "../../../Hooks/Dropdowns";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
+import { dummytabledata,tableColumns } from "../../../Data/Table/checkInvoiceTableData";
 const LoveRackCentList = ({ title, btnTitle }) => {
+  const {data:company}=useCompany()
   const {
     register,
     control,
@@ -37,14 +42,7 @@ const LoveRackCentList = ({ title, btnTitle }) => {
     <fieldset>
       <legend>{title}</legend>
        <Form className="px-2" noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "5px 5px",
-            bprderRadius: "3px",
-            marginBottom: "10px",
-          }}
-        >
+      
           <Row className="mt-3">
             <Col sm="4">
               <FormGroup className="m-form__group">
@@ -57,9 +55,9 @@ const LoveRackCentList = ({ title, btnTitle }) => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={optionscompany}
+                        options={company}
                         className="form-control p-0 border-0"
-                        placeholder="Select a country"
+                        placeholder="Select a company"
                       />
                     )}
                   />
@@ -173,11 +171,23 @@ const LoveRackCentList = ({ title, btnTitle }) => {
               </div>
             </Col>
           </Row>
-        </div>
       </Form>
     </fieldset>
     </Col>
   </Row>
+  <Container fluid>
+          <Row>
+            <Col sm="12">
+              <Card>
+                <CardBody>
+   <DataTableComponent
+            title="Pricing PDF List "
+            tableData={dummytabledata}
+            tableColumns={tableColumns}
+          />
+                </CardBody>
+                </Card></Col>
+                </Row ></Container>
 </Fragment> 
   );
 };

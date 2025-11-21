@@ -11,7 +11,7 @@ import usePmenu from '../../../Hooks/usePmenu';
 import { menu,smenu } from '../../../api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const SecondaryMenu = ({ title,Edit,selectedRow }) => {
+const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
     const { pmenu, loading, error } = usePmenu();
     const {
         register,
@@ -24,12 +24,11 @@ const SecondaryMenu = ({ title,Edit,selectedRow }) => {
       if (Edit && selectedRow) {
         console.log(selectedRow)
         reset({
-            menuName: selectedRow.link,
+            menuName: selectedRow.name,
           primaryMenu:{
           value:  selectedRow.idmenu,
-          label:smenu.find((item)=>item.primary_menu ==selectedRow.idmenu)
           },
-          menuLink: selectedRow.name,
+          menuLink: selectedRow.link,
            type:{
             value:selectedRow.sw,
             label:selectedRow.sw==0?"visible":"hidden"
@@ -51,12 +50,32 @@ const SecondaryMenu = ({ title,Edit,selectedRow }) => {
     "idby":sessionStorage.getItem('userId'),
     "sw":0 
      }
+      if (Edit && selectedRow) {
+            console.log(selectedRow)
+          axios.put(`${menu}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+          if (fetchSmenuData)  fetchSmenuData.fetchData();
+          setEdit(false);
+          reset({
+       city:"",
+      country:"",
+      state:"",
+     
+          });
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
     axios.post(menu,payload)
     .then((res)=>{
         console.log(res);
        
           toast.success("Add successfully!");
-            // if (onDataAdded) onDataAdded();
+          if (fetchSmenuData)  fetchSmenuData.fetchData();
 
     reset();
     })
@@ -64,6 +83,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow }) => {
         console.log(err);
           toast.error(err.message);
     })
+}
         };
     return (
 

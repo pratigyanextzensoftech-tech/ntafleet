@@ -28,6 +28,7 @@ export const customized_invoice = `${baseurl}/api/customized_invoice`;
 export const salesman_volume = `${baseurl}/api/salesman_volume`;
 export const supplier = `${baseurl}/api/supplier`;
 export const supplierAll = `${baseurl}/api/supplier/all`;
+export const supplierById = `${baseurl}/api/supplier/byid`;
 export const administrator = `${baseurl}/api/administrator`;
 export const country_all = `${baseurl}/api/country/all`;
 export const moneycode_invoice = `${baseurl}/api/moneycode_invoice`;

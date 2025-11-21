@@ -19,8 +19,9 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
-
+import { useCompany } from "../../../Hooks/Dropdowns";
 const EssoGroupForm = ({ title, btnTitle, tabletitle }) => {
+  const {data:company}=useCompany()
   const {
     register,
     control,
@@ -55,7 +56,7 @@ const EssoGroupForm = ({ title, btnTitle, tabletitle }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select a country"
                           />

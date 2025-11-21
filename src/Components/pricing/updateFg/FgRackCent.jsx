@@ -16,9 +16,10 @@ import {
   optionscompany,
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas"; 
 import DatePicker from "react-datepicker";
-
+import { useCompany } from "../../../Hooks/Dropdowns";
 
 const FgRackCent = ({ title, btnTitle }) => {
+  const {data:company}=useCompany()
   const {
     register,
     control,
@@ -61,7 +62,7 @@ const FgRackCent = ({ title, btnTitle }) => {
                           render={({ field }) => (
                             <Select
                               {...field}
-                              options={optionscompany}
+                              options={company}
                               className="form-control p-0 border-0"
                               placeholder="Select a country"
                             />

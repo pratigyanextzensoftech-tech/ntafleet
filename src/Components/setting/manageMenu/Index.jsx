@@ -20,6 +20,8 @@ const menuTabs = ManageMenuTable(); // returns array of tabs
   tabContent={ManageMenuTab({
     selectedRow: menuTabs.selectedRow,
     Edit: menuTabs.Edit,
+    fetchPmenuData:menuTabs.pmenu,
+    fetchSmenuData:menuTabs.sMenu,
     setEdit: menuTabs.setEdit
   })}
 />

@@ -9,10 +9,11 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import useCompany from "../../../Hooks/useCompany";
 import useSupplier from "../../../Hooks/useSupplier";
+import { useCountry } from "../../../Hooks/Dropdowns";
 
 const BulkDiscount = ({ title, btnTitle }) => {
-  const { companies: companyOptions, loading: companyLoading } = useCompany();
   const { supplier, loading, error } = useSupplier();
+  const {data:country}=useCountry()
   const {
     control,
     handleSubmit,
@@ -58,7 +59,7 @@ const BulkDiscount = ({ title, btnTitle }) => {
               rules={{ required: "Country is required" }}
               placeholder="Select Country"
               // loading={companyLoading}
-              options={optionscountry}
+              options={country.filter((_,i)=>i!==0)}
             />
           </Col>
 

@@ -221,6 +221,8 @@ const ManageMenuTable = () => {
 return {
   tabs: tabContent,
   selectedRow,
+  pmenu,
+  sMenu,
   Edit,
   setEdit
 };};
