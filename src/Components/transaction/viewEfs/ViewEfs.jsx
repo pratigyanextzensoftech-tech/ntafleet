@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
 import {  chooseSupplierCheckBox, optionscompany, invoiceType,  currency } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Card, CardBody } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import { supplierById } from '../../../api';
+import { toast } from "react-toastify";
+import { useCompany,useItems } from '../../../Hooks/Dropdowns';
+import axios from 'axios';
 const ViewEfs = ({btnTitle,btnTitle1}) => {
+    const[supplierData,setSupplierData]=useState([])
+    const {data:company}=useCompany()
+    const {data:items}=useItems()
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
 
@@ -14,10 +21,29 @@ const ViewEfs = ({btnTitle,btnTitle1}) => {
 
         control,
         reset,
+        setValue,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+useEffect(() => {
 
+  axios
+    .get(`${supplierById}/1`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
+
+      setSupplierData(formatted);
+
+      // ⭐ Automatically set default supplier based on type
+   
+        setValue("supplier", formatted); // no default for no-type
+      
+    })
+    .catch((err) => console.log(err));
+}, [setValue]);
     const onSubmit = (data) => {
 
         console.log("Form Data:", data);  // ✅ This will print your inputs
@@ -150,7 +176,7 @@ const ViewEfs = ({btnTitle,btnTitle1}) => {
                                         render={({ field }) => (
                                             <Select
                                                 {...field}
-                                                options={optionscompany}
+                                                options={company}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Company Name"
                                             />
@@ -198,7 +224,7 @@ const ViewEfs = ({btnTitle,btnTitle1}) => {
                                         render={({ field }) => (
                                             <Select
                                                 {...field}
-                                                options={optionscompany}
+                                                options={items}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Items"
                                             />
@@ -213,30 +239,7 @@ const ViewEfs = ({btnTitle,btnTitle1}) => {
                         </Col>
 </Row>
 <Row>
-      <Col sm="3">
-                            <FormGroup className="m-form__group">
-                                <InputGroup >
-                                    <InputGroupText>Invoice Status</InputGroupText>
-                                    <Controller name="status"
-                                        rules={{ required: "status is required" }}
-
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Select
-                                                {...field}
-                                                options={optionscompany}
-                                                className="form-control p-0 border-0"
-                                                placeholder="Select status"
-                                            />
-                                        )}
-                                    />
-                                </InputGroup>
-
-                                {errors.status && (
-                                    <span className="text-danger">{errors.status?.message}</span>
-                                )}
-                            </FormGroup>
-                        </Col>
+    
                          <Col sm="3">
                             <FormGroup className="m-form__group">
                                 <InputGroup >
@@ -261,6 +264,36 @@ const ViewEfs = ({btnTitle,btnTitle1}) => {
                                 )}
                             </FormGroup>
                         </Col>
+                              <Col sm="3">
+                                          <FormGroup className="m-form__group">
+                                            <InputGroup>
+                                              <InputGroupText>Supplier</InputGroupText>
+                                             
+                                             <Controller
+                          name="supplier"
+                          control={control}
+                          rules={{ required: "supplier is required" }}
+                          defaultValue={null}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              options={supplierData}
+                              className="form-control p-0 border-0"
+                              placeholder="Select supplier"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                            />
+                          )}
+                        />
+                                            </InputGroup>
+                        
+                                            {errors.supplier && (
+                                              <span className="text-danger">
+                                                {errors.supplier?.message}
+                                              </span>
+                                            )}
+                                          </FormGroup>
+                                        </Col>
                           <Col sm="6">
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>

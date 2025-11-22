@@ -22,7 +22,8 @@ import HeaderCard from "../Common/Component/HeaderCard";
 import axios from "axios";
 import { useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
-
+import { toast } from "react-toastify";
+import { Create_retail_invoice } from "../../api/index";
 const BulkRetailMulti = ({ checkBoxData, title, btnTtitle, type }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const {data:country}=useCountry()
@@ -79,9 +80,28 @@ useEffect(() => {
     setValue("country", null);
   }
 }, [type, country]);
+
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+    console.log(data)
+  const  payload={
+  supplier_id:data.supplier.value,
+  country_id: data.country.value,
+  from:data.startDate,
+  to: data.endDate,
+  invoice_creation:"many_times"
+
+    }
+    console.log(payload)
+    // axios.post(Create_retail_invoice,payload)
+    // .then((res)=>{
+    //   console.log(res)  
+    //    toast.success(res.message);
+    //    reset();
+    // })
+    // .catch((err)=>{
+    //   console.log(err);
+    //    toast.error(err);
+    // })
   };
   const handleCheckboxChange = (value, field) => {
     const allValues = checkBoxData.map((c) => c.value); // all possible

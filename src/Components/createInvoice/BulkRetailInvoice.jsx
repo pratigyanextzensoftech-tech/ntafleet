@@ -30,7 +30,9 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
   supplier_id:data.supplier.value,
   country_id: data.country.value,
   from:data.startDate,
-  to: data.endDate
+  to: data.endDate,
+  invoice_creation:"weekly"
+
     }
     console.log(payload)
     // axios.post(Create_retail_invoice,payload)

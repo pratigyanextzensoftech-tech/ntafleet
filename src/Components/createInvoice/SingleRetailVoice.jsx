@@ -94,23 +94,27 @@ useEffect(() => {
   const onSubmit = (data) => {
     console.log(data)
   const  payload={
-company_id:data.company.value,
+company_id:data.company.value.toString(),
   supplier_id:data.supplier.value,
   country_id: data.country.value,
-  from:data.startDate,
-  to: data.endDate
+  from:data.startDate? new Date(data.startDate).toISOString().split("T")[0]: "",  
+  to: data.endDate? new Date(data.endDate).toISOString().split("T")[0]: "",  
+  invoice_creation:"weekly"
+
     }
     console.log(payload)
-    // axios.post(Create_retail_invoice,payload)
-    // .then((res)=>{
-    //   console.log(res)  
-    //    toast.success(res.message);
-    //    reset();
-    // })
-    // .catch((err)=>{
-    //   console.log(err);
-    //    toast.error(err);
-    // })
+    axios.post(Create_retail_invoice, payload, {
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res)=>{
+      console.log(res)  
+       toast.success(res.message);
+       reset();
+    })
+    .catch((err)=>{
+      console.log(err);
+       toast.error(err);
+    })
   };
   return (
     <Fragment>
@@ -238,7 +242,9 @@ company_id:data.company.value,
                                 placeholderText="Select start date"
                                 className={`form-control `}
                                 selected={field.value}
-                                onChange={(date) => field.onChange(date)}
+                                
+                                 onChange={(date) => field.onChange(date)}
+
                               />
                             )}
                           />

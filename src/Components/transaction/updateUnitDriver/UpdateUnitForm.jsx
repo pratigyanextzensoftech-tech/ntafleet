@@ -23,7 +23,9 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
+import { useCountry } from "../../../Hooks/Dropdowns";
 const UpdateUnitForm = ({ btnTitle }) => {
+  const{data:country}=useCountry()
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
 
@@ -152,7 +154,7 @@ const UpdateUnitForm = ({ btnTitle }) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={optionscountry}
+                    options={country}
                     className="form-control p-0 border-0"
                     placeholder="Select Country"
                   />
