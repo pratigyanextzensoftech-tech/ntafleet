@@ -1,6 +1,6 @@
 import React, { Fragment,useState } from 'react';
 import Select from 'react-select'
-import { checkBoxData, optionscountry, optionscompany, customizedTypeType, invoiceType1, InvoiceCategory, InvoiceShow, InVoiceSupplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { checkBoxData, optionscountry, optionscompany, customizedTypeType, invoiceType1,UlramarinvoiceType, InvoiceCategory, InvoiceShow, InVoiceSupplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';

@@ -11,15 +11,12 @@ import {
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import {
-  optionscountry,
-  supplier,
-} from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import HeaderCard from "../Common/Component/HeaderCard";
 import { useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
+import { toast } from "react-toastify";
+import { Create_retail_invoice } from "../../api/index";
 import axios from "axios";
 const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
    const[supplierData,setSupplierData]=useState([])
@@ -28,8 +25,24 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
    const { control, handleSubmit, formState: { errors }, setValue } = useForm();
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+    console.log(data)
+  const  payload={
+  supplier_id:data.supplier.value,
+  country_id: data.country.value,
+  from:data.startDate,
+  to: data.endDate
+    }
+    console.log(payload)
+    // axios.post(Create_retail_invoice,payload)
+    // .then((res)=>{
+    //   console.log(res)  
+    //    toast.success(res.message);
+    //    reset();
+    // })
+    // .catch((err)=>{
+    //   console.log(err);
+    //    toast.error(err);
+    // })
   };
   const getParamsByType = () => {
     switch (type) {
@@ -192,7 +205,8 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
                    
                        const countryOptions = isFixedType
                          ? [country[2]]
-                         : country.filter((_, i) => i !== 0);
+                         : country
+                         ;
                    
                        return (
                          <Select

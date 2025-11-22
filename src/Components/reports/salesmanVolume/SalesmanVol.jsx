@@ -8,7 +8,9 @@ import DatePicker from "react-datepicker";
 import { salesman_volume as APINAME } from '../../../api';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useCountry } from '../../../Hooks/Dropdowns';
 const SalesmanVol = ({btnTitle}) => {
+  const{data:country}=useCountry()
     const {
         register,
         control,
@@ -160,7 +162,7 @@ del:""
                                     render={({ field }) => (
                                         <Select
                                             {...field}
-                                            options={optionscountry}
+                                            options={country}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Country"
                                         />

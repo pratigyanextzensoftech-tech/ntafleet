@@ -336,6 +336,12 @@ export const invoiceType1=[
         {value: "RG",label:"RG (Rack Invoice with general unit price update)"},
         {value: "RP",label:"RP (Rack Invoice with daily pricing pdf unit price update)"}
 ]
+export const UlramarinvoiceType=[
+        {label: 'Select Status', isDisabled: true },
+        {value: 'RT', label: 'R (Rack Invoice)' },
+        {value: 'R', label: 'RG (General Unit Price Update)' },
+        {value: "RP",label:"RP ( pricing pdf unit price update)"}
+]
 export const optionSalesMan=[
         {value: 'rahul', label: 'rahul' },
         {value: 'hrithik', label: 'hrithik' },

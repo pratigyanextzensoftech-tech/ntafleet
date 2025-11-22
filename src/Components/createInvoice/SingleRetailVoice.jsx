@@ -19,13 +19,15 @@ import {
 import HeaderCard from "../Common/Component/HeaderCard";
 import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
+import { toast } from "react-toastify";
 import axios from "axios";
+import { Create_retail_invoice } from "../../api/index";
 const SingleRetailVoice = ({ title, btnTtitle, type }) => {
   const[supplierData,setSupplierData]=useState([])
       const{ data:companies}=useCompany()
       const{ data:country}=useCountry()
 
- const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+ const { control, handleSubmit, formState: { errors }, setValue,reset } = useForm();
 
 
 
@@ -90,8 +92,25 @@ useEffect(() => {
 
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+    console.log(data)
+  const  payload={
+company_id:data.company.value,
+  supplier_id:data.supplier.value,
+  country_id: data.country.value,
+  from:data.startDate,
+  to: data.endDate
+    }
+    console.log(payload)
+    // axios.post(Create_retail_invoice,payload)
+    // .then((res)=>{
+    //   console.log(res)  
+    //    toast.success(res.message);
+    //    reset();
+    // })
+    // .catch((err)=>{
+    //   console.log(err);
+    //    toast.error(err);
+    // })
   };
   return (
     <Fragment>
