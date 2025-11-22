@@ -6,7 +6,9 @@ import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import HeaderCard from '../Common/Component/HeaderCard';
+import { useCountry } from '../../Hooks/Dropdowns';
 const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
+  const {data:country}=useCountry()
   console.log(type, '++++++++++++++')
   const [selectedValues, setSelectedValues] = useState([]);
   const {
@@ -79,7 +81,8 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
           <Col sm="3">
             <FormGroup className="m-form__group">
               <InputGroup>
-                <InputGroupText>To Date</InputGroupText>
+               <Col sm="4"> 
+                <InputGroupText>To Date</InputGroupText></Col><Col sm="8">
                 <Controller
                   name="ToDate"
                   control={control}
@@ -93,7 +96,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                     />
                   )}
                 />
-
+</Col>
               </InputGroup>
               {errors.ToDate && (
                 <span className="text-danger">{errors.ToDate.message}</span>
@@ -151,12 +154,11 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                 <Controller
                   name="country"
                   rules={{ required: "country is required" }}
-                  defaultValue={[optionscountry[2]]}
                   control={control}
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={[optionscountry[2]]}
+                      options={country}
                       className="form-control p-0 border-0"
                       placeholder="Select Country"
                     />

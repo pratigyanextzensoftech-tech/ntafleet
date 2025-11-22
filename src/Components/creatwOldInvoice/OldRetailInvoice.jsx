@@ -1,20 +1,53 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState,useEffect } from 'react'
 import { Col, Row, Form, FormGroup, InputGroup, InputGroupText, Card, CardBody } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import { optionscountry, optionscompany, supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
-import HeaderCard from '../Common/Component/HeaderCard';
+import { useCountry,useCompany } from '../../Hooks/Dropdowns';
+import { supplierById } from '../../api';
+import axios from 'axios';
 const OldRetailInvoice = ({ title, btnTtitle, type }) => {
-
+  const {data:country}=useCountry()
+  const {data:company}=useCompany()
   const {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
+    const[supplierData,setSupplierData]=useState()
+  
+useEffect(() => {
+  axios
+    .get(`${supplierById}/1`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
 
+      setSupplierData(formatted);
+setValue("supplier",formatted)
+   
+    })
+}, []);
+useEffect(() => {
+  if (!country || country.length === 0) return;
+
+  if (
+    type === "single_rack_actual" ||
+    type === "bulk_rack_actual" 
+  ) {
+    // Auto select the single allowed country
+    setValue("country", country[2]);   // Set default value here
+  } else {
+    // Clear value if normal dropdown
+    setValue("country", null);
+  }
+}, [type, country]);
   const onSubmit = (data) => {
     console.log("Form Data:", data);  // ✅ This will print your inputs
     // alert("Form submitted successfully!");
@@ -39,7 +72,7 @@ const OldRetailInvoice = ({ title, btnTtitle, type }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select Company Name"
                           />
@@ -60,11 +93,10 @@ const OldRetailInvoice = ({ title, btnTtitle, type }) => {
                         name="supplier"
                         rules={{ required: "supplier is required" }}
                         control={control}
-                        defaultValue={supplier[1]}
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={supplier[1]}
+                            options={supplierData}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
                           />
@@ -82,22 +114,32 @@ const OldRetailInvoice = ({ title, btnTtitle, type }) => {
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Country</InputGroupText>
-                      <Controller
-                        name="country"
-                        rules={{ required: "country is required" }}
-                        defaultValue={type === "single_rack_actual" || type === "bulk_rack_actual" ? [optionscountry[1]] : null}
+                 
+                                        <Controller
+  name="country"
+  rules={{ required: "country is required" }}
+  control={control}
+  render={({ field }) => {
+    const isFixedType =
+      type === "single_rack_actual" ||
+      type === "bulk_rack_actual" 
 
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={type === "single_rack_actual" || type === "bulk_rack_actual" ? [optionscountry[1]] : optionscountry}
+    const countryOptions = isFixedType
+      ? [country[2]]
+      : country.filter((_, i) => i !== 0);
 
-                            className="form-control p-0 border-0"
-                            placeholder="Select Country"
-                          />
-                        )}
-                      />
+    return (
+      <Select
+        {...field}
+        options={countryOptions}
+        className="form-control p-0 border-0"
+        placeholder="Select Country"
+        value={field.value}
+        onChange={(val) => field.onChange(val)}
+      />
+    );
+  }}
+/>
                     </InputGroup>
 
                     {errors.country && (
@@ -109,54 +151,68 @@ const OldRetailInvoice = ({ title, btnTtitle, type }) => {
               <Row className="mt-3">
                 <Col sm="4">
                   <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Start Date</InputGroupText>
-                      <Controller
-                        name="startDate"
-                        control={control}
-                        rules={{ required: "Start Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            placeholderText="Select start date"
-                            className={`form-control `}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
+                    <Row>
+                      <InputGroup>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>Start Date</InputGroupText>
+                        </Col>
+                        <Col sm="8">
+                          <Controller
+                            name="startDate"
+                            control={control}
+                            rules={{ required: "Start Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select start date"
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
                           />
-                        )}
-                      />
-
-                    </InputGroup>
-
-                    {errors.startDate && (
-                      <span className="text-danger">{errors.startDate.message}</span>
-                    )}
+                        </Col>
+                      </InputGroup>
+                      {errors.startDate && (
+                        <span className="text-danger">
+                          {errors.startDate.message}
+                        </span>
+                      )}
+                    </Row>
                   </FormGroup>
                 </Col>
 
                 <Col sm="4">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>End Date</InputGroupText>
-                      <Controller
-                        name="endDate"
-                        control={control}
-                        rules={{ required: "End Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            placeholderText="Select end date"
-                            className={`form-control digits`}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
+                  <FormGroup className={`m-form__group  `}>
+                    <Row>
+                      <InputGroup>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>End Date</InputGroupText>
+                        </Col>
+                        <Col sm="8">
+                          <Controller
+                            name="endDate"
+                            control={control}
+                            rules={{ required: "End Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select end date"
+                                className={`form-control digits`}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
                           />
-                        )}
-                      />
-
-                    </InputGroup>
-                    {errors.endDate && (
-                      <span className="text-danger">{errors.endDate.message}</span>
-                    )}
+                        </Col>
+                      </InputGroup>
+                      {errors.endDate && (
+                        <span className="text-danger">
+                          {errors.endDate.message}
+                        </span>
+                      )}
+                    </Row>
                   </FormGroup>
-
                 </Col>
                 <Col sm={{ size: 2, offset: 2 }}>
                   <div className='text-end'>

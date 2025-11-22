@@ -5,9 +5,13 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText } f
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import { useCompany,useCountry,useStates } from '../../../Hooks/Dropdowns';
 const CreateReport = ({ title }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
+    const{data:company}=useCompany();
+    const{data:country}=useCountry()
+    const{data:states}=useStates()
 
     const {
         register,
@@ -62,7 +66,7 @@ const CreateReport = ({ title }) => {
                                                         render={({ field }) => (
                                                             <Select
                                                                 {...field}
-                                                                options={optionscompany}
+                                                                options={company}
                                                                 className="form-control p-0 border-0"
                                                                 placeholder="Select Company Name"
                                                             />
@@ -257,7 +261,7 @@ const CreateReport = ({ title }) => {
                                                         render={({ field }) => (
                                                             <Select
                                                                 {...field}
-                                                                options={optionscountry}
+                                                                options={country}
                                                                 className="form-control p-0 border-0"
                                                             />
                                                         )}
@@ -457,7 +461,7 @@ const CreateReport = ({ title }) => {
                                                             render={({ field }) => (
                                                                 <Select
                                                                     {...field}
-                                                                    options={invoiceType}
+                                                                    options={states}
                                                                     className="form-control p-0 border-0"
                                                                 />
                                                             )}
