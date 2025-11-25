@@ -1,21 +1,58 @@
-import React, { Fragment,useState } from 'react'
-import {  Col, Row, Form, FormGroup, InputGroup, InputGroupText,Label,Card,CardBody } from 'reactstrap';
+import React, { Fragment,useState,useEffect } from 'react'
+import {  Col, Row, Form, FormGroup, InputGroup, InputGroupText,Label } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import {  optionscountry, InVoiceSupplier,invoiceType1 } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
-import HeaderCard from '../Common/Component/HeaderCard';
+import axios from 'axios';
+import { supplierById } from '../../api';
 const BulkEssoMulti = ({checkBoxData,title,btnTtitle,type}) => {
        
          const [selectedValues, setSelectedValues] = useState([]);
+              const[supplierData,setSupplierData]=useState([])
              const {
                 register,
                 control,
+                setValue,
                 handleSubmit,
                 formState: { errors, isSubmitted, isValid },
               } = useForm();
+              const getParamsByType = () => {
+  switch (type) {
+    case "owner_operator":
+      return "6";
+    case "bulk_esso":
+      return "6";
+    default:
+      return "3,6"; // no type → hit default API
+  }
+};
+           useEffect(() => {
+             const params = getParamsByType();
+             axios
+               .get(`${supplierById}/${params}`)
+               .then((res) => {
+                 const formatted = res.data.map((s) => ({
+                   value: s.id,
+                   label: s.supplier_name,
+                 }));
            
+                 setSupplierData(formatted);
+           
+                 // ⭐ Automatically set default supplier based on type
+                 if (type === "owner_operator") {
+                   setValue("supplier", formatted[0]); // pick first data
+                 } else if (type === "bulk_esso") {
+                   setValue("supplier", formatted[1] || formatted[0]);
+                 }
+                
+                 else {
+                   setValue("supplier", null); // no default for no-type
+                 }
+               })
+               .catch((err) => console.log(err));
+           }, [type, setValue]);
            const onSubmit = (data) => {
         console.log("Form Data:", data);  // ✅ This will print your inputs
         // alert("Form submitted successfully!");
@@ -64,57 +101,70 @@ const BulkEssoMulti = ({checkBoxData,title,btnTtitle,type}) => {
 <legend>{title}</legend>
    <Form className='p-4' noValidate='' onSubmit={handleSubmit(onSubmit)}>  
          <Row >
-                <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>
-                        Start Date
-                      </InputGroupText>
-                   
-                    <Controller
-            name="startDate"
-            control={control}
-            rules={{ required: "Start Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select start date"
-                className={`form-control `}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-          </InputGroup>
-          {errors.startDate && (
-            <span className="text-danger">{errors.startDate.message}</span>
-          )}
-                  </FormGroup>
-                </Col>
-                <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>
-                        End Date
-                      </InputGroupText>
-                   <Controller
-            name="endDate"
-            control={control}
-            rules={{ required: "End Date is required" }}
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select end date"
-                className={`form-control digits`}
-                selected={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-                      </InputGroup>
-                       {errors.endDate && (
-            <span className="text-danger">{errors.endDate.message}</span>
-          )}
-                  </FormGroup>
-                </Col>
+                   <Col sm="3">
+                            <FormGroup className="m-form__group">
+                              <Row>
+                                <InputGroup>
+                                  <Col sm="4">
+                                    {" "}
+                                    <InputGroupText>Start Date</InputGroupText>
+                                  </Col>
+                                  <Col sm="8">
+                                    <Controller
+                                      name="startDate"
+                                      control={control}
+                                      rules={{ required: "Start Date is required" }}
+                                      render={({ field }) => (
+                                        <DatePicker
+                                          placeholderText="Select start date"
+                                          className={`form-control `}
+                                          selected={field.value}
+                                          onChange={(date) => field.onChange(date)}
+                                        />
+                                      )}
+                                    />
+                                  </Col>
+                                </InputGroup>
+                                {errors.startDate && (
+                                  <span className="text-danger">
+                                    {errors.startDate.message}
+                                  </span>
+                                )}
+                              </Row>
+                            </FormGroup>
+                          </Col>
+            <Col sm="3">
+              <FormGroup className="m-form__group">
+                <Row>
+                  <InputGroup>
+                    <Col sm="4">
+                      {" "}
+                      <InputGroupText>End Date</InputGroupText>
+                    </Col>
+                    <Col sm="8">
+                      <Controller
+                        name="endDate"
+                        control={control}
+                        rules={{ required: "End Date is required" }}
+                        render={({ field }) => (
+                          <DatePicker
+                            placeholderText="Select End date"
+                            className={`form-control `}
+                            selected={field.value}
+                            onChange={(date) => field.onChange(date)}
+                          />
+                        )}
+                      />
+                    </Col>
+                  </InputGroup>
+                  {errors.startDate && (
+                    <span className="text-danger">
+                      {errors.endDate.message}
+                    </span>
+                  )}
+                </Row>
+              </FormGroup>
+            </Col>
   <Col sm="3">
                         <FormGroup className="m-form__group">
                             <InputGroup>
@@ -144,30 +194,32 @@ const BulkEssoMulti = ({checkBoxData,title,btnTtitle,type}) => {
 
                 <Col sm="3">
                   <FormGroup className="m-form__group">
-                    <InputGroup >
-                      <InputGroupText>Supplier</InputGroupText>
+                <InputGroup>
+                  <InputGroupText>Supplier</InputGroupText>
                   <Controller
-                        name="supplier"
-                                                rules={{ required: "supplier is required" }}
- defaultValue={type === "owner_operator" || type==="bulk_esso" ? [InVoiceSupplier[2]] : null}
-
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                                  options={type === "owner_operator" || type==="bulk_esso" ? [InVoiceSupplier[2]] : InVoiceSupplier}
-
-                            className="form-control p-0 border-0"
-                            placeholder="Select supplier"
-                          />
-                        )}
+                    name="supplier"
+                    rules={{ required: "supplier is required" }}
+                   
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={
+                        supplierData
+                        }
+                        className="form-control p-0 border-0"
+                        placeholder="Select supplier"
                       />
-                    </InputGroup>
-
-                    {errors.supplier && (
-                      <span className="text-danger">{errors.supplier?.message}</span>
                     )}
-                  </FormGroup>
+                  />
+                </InputGroup>
+
+                {errors.supplier && (
+                  <span className="text-danger">
+                    {errors.supplier?.message}
+                  </span>
+                )}
+              </FormGroup>
                 </Col>
 
            

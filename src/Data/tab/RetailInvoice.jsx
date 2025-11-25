@@ -30,7 +30,7 @@ export const RetailInvoiceTab = [
        Single Rack - <strong>[Actual]</strong>
       </>
     ),
-    component: <SingleRetailMulti type="single_rack_actual" title="Create Single Rack Invoice (Actual)" btnTtitle="Create  Rack Invoice"/>,
+    component: <SingleRetailMulti  type="single_rack_actual" title="Create Single Rack Invoice (Actual)" btnTtitle="Create Rack Invoice"/>,
   },
    {
     id: '4',
@@ -39,7 +39,7 @@ export const RetailInvoiceTab = [
        Bulk Rack - <strong>[Actual]</strong>
       </>
     ),
-    component: <BulkRetailMulti  type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual)"  checkBoxData={checkBoxData}/>,
+    component: <BulkRetailMulti companyDropDown={false}  type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual)"  checkBoxData={checkBoxData}/>,
   },
  
   

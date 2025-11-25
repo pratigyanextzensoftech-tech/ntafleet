@@ -22,8 +22,10 @@ import {supplierById} from '../../api/index'
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Create_retail_invoice } from "../../api/index";
+import Loader from "../../Layout/Loader";
 const SingleRetailVoice = ({ title, btnTtitle, type }) => {
-  const[supplierData,setSupplierData]=useState([])
+    const[supplierData,setSupplierData]=useState([])
+  const[loading,setLoading]=useState(false)
       const{ data:companies}=useCompany()
       const{ data:country}=useCountry()
 
@@ -90,34 +92,47 @@ useEffect(() => {
   }
 }, [type, country]);
 
-
+const formatDate = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
   const onSubmit = (data) => {
     console.log(data)
   const  payload={
 company_id:data.company.value.toString(),
   supplier_id:data.supplier.value,
   country_id: data.country.value,
-  from:data.startDate? new Date(data.startDate).toISOString().split("T")[0]: "",  
-  to: data.endDate? new Date(data.endDate).toISOString().split("T")[0]: "",  
+     from:data.startDate?formatDate(data.startDate) : "",
+    to: data.endDate?formatDate(data.endDate) : "" ,
   invoice_creation:"weekly"
 
     }
     console.log(payload)
+                  setLoading(true)
+
     axios.post(Create_retail_invoice, payload, {
     headers: { "Content-Type": "application/json" },
   })
+
     .then((res)=>{
       console.log(res)  
-       toast.success(res.message);
+       toast.success(res.data.message);
        reset();
+             setLoading(false)
     })
     .catch((err)=>{
       console.log(err);
+            setLoading(false)
+
        toast.error(err);
     })
   };
   return (
     <Fragment>
+      {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>

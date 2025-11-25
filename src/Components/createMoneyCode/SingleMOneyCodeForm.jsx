@@ -6,7 +6,9 @@ import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import {  optionscountry, supplier, optionscompany } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import HeaderCard from '../Common/Component/HeaderCard';
+import { useCompany } from '../../Hooks/Dropdowns';
 const SingleMOneyCodeForm = ({title,btnTtitle}) => {
+  const{data:company}=useCompany()
      const {
         register,
         control,
@@ -39,7 +41,7 @@ const SingleMOneyCodeForm = ({title,btnTtitle}) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select a country"
                           />

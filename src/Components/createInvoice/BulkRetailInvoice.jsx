@@ -17,34 +17,51 @@ import { useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
 import { toast } from "react-toastify";
 import { Create_retail_invoice } from "../../api/index";
+import Loader from "../../Layout/Loader";
 import axios from "axios";
 const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
    const[supplierData,setSupplierData]=useState([])
+     const[loading,setLoading]=useState(false)
+   
         const{ data:country}=useCountry()
   
-   const { control, handleSubmit, formState: { errors }, setValue } = useForm();
-
+   const { control,reset, handleSubmit, formState: { errors }, setValue } = useForm();
+const formatDate = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
   const onSubmit = (data) => {
     console.log(data)
   const  payload={
   supplier_id:data.supplier.value,
   country_id: data.country.value,
-  from:data.startDate,
-  to: data.endDate,
+  from:data.startDate?formatDate(data.startDate) : "",
+    to: data.endDate?formatDate(data.endDate) : "" ,
   invoice_creation:"weekly"
 
     }
     console.log(payload)
-    // axios.post(Create_retail_invoice,payload)
-    // .then((res)=>{
-    //   console.log(res)  
-    //    toast.success(res.message);
-    //    reset();
-    // })
-    // .catch((err)=>{
-    //   console.log(err);
-    //    toast.error(err);
-    // })
+                     setLoading(true)
+
+     axios.post(Create_retail_invoice, payload, {
+       headers: { "Content-Type": "application/json" },
+     })
+   
+       .then((res)=>{
+         setLoading(false)
+         console.log(res)  
+          toast.success(res.data.message);
+          reset();
+       })
+       .catch((err)=>{
+         console.log(err);
+               setLoading(false)
+   
+          toast.error(err);
+       })
   };
   const getParamsByType = () => {
     switch (type) {
@@ -76,6 +93,7 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
       })
       .catch((err) => console.log(err));
   }, [type, setValue]);
+  
   useEffect(() => {
     if (!country || country.length === 0) return;
   
@@ -91,6 +109,7 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
   }, [type, country]);
   return (
     <Fragment>
+                  {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>

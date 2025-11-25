@@ -22,13 +22,16 @@ import axios from "axios";
 import HeaderCard from "../Common/Component/HeaderCard";
 import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
+import Loader from "../../Layout/Loader";
 import { toast } from "react-toastify";
 import { Create_retail_invoice } from "../../api/index";
 const SingleRetailMulti = ({ title, btnTtitle, type }) => {
     const[supplierData,setSupplierData]=useState([])
+    const[loading,setLoading]=useState(false)
+  
   const{ data:companies}=useCompany()
   const{ data:country}=useCountry()
- const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+ const { control,reset, handleSubmit, formState: { errors }, setValue } = useForm();
 
 const getParamsByType = () => {
   switch (type) {
@@ -79,31 +82,48 @@ useEffect(() => {
     setValue("country", null);
   }
 }, [type, country]);
+const formatDate = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
    const onSubmit = (data) => {
       console.log(data)
     const  payload={
-  company_id:data.company.value,
+  company_id:data.company.value.toString(),
     supplier_id:data.supplier.value,
     country_id: data.country.value,
-    from:data.startDate,
-    to: data.endDate,
+    from:data.startDate?formatDate(data.startDate) : "",
+    to: data.endDate?formatDate(data.endDate) : "" ,
     invoice_creation:"many_times"
   
       }
       console.log(payload)
-      // axios.post(Create_retail_invoice,payload)
-      // .then((res)=>{
-      //   console.log(res)  
-      //    toast.success(res.message);
-      //    reset();
-      // })
-      // .catch((err)=>{
-      //   console.log(err);
-      //    toast.error(err);
-      // })
-    };
+              setLoading(true)
+          axios.post(Create_retail_invoice, payload, {
+    headers: { "Content-Type": "application/json" },
+  })
+
+    .then((res)=>{
+      setLoading(false)
+      console.log(res)  
+       toast.success(res.data.message);
+       reset();
+    })
+    .catch((err)=>{
+      console.log(err);
+            setLoading(false)
+
+       toast.error(err);
+    })
+  };
+    
+  
   return (
     <Fragment>
+            {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>

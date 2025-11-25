@@ -52,7 +52,7 @@ export const EssoInvoiceTab = [
         Single Esso - <strong>[ Multi ]</strong>
       </>
     ),
-    component: <SingleEssoForm btnTtitle="Create  Esso Invoice" title="Create Single Esso Invoice-[Multi]" checkBoxData={checkBoxData} />,
+    component: <SingleEssoForm type="esso_invoice" btnTtitle="Create  Esso Invoice" title="Create Single Esso Invoice-[Multi]" checkBoxData={checkBoxData} />,
 
   },
   {

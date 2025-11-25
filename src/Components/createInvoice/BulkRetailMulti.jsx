@@ -24,12 +24,16 @@ import { useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
 import { toast } from "react-toastify";
 import { Create_retail_invoice } from "../../api/index";
-const BulkRetailMulti = ({ checkBoxData, title, btnTtitle, type }) => {
+import Loader from "../../Layout/Loader";
+
+const BulkRetailMulti = ({ checkBoxData, title, btnTtitle, type,companyDropDown }) => {
   const [selectedValues, setSelectedValues] = useState([]);
+    const[loading,setLoading]=useState(false)
+  
   const {data:country}=useCountry()
  
  const[supplierData,setSupplierData]=useState([])
- const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+ const { control,reset, handleSubmit, formState: { errors }, setValue } = useForm();
 
 const getParamsByType = () => {
   switch (type) {
@@ -81,27 +85,41 @@ useEffect(() => {
   }
 }, [type, country]);
 
+const formatDate = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
   const onSubmit = (data) => {
     console.log(data)
   const  payload={
   supplier_id:data.supplier.value,
   country_id: data.country.value,
-  from:data.startDate,
-  to: data.endDate,
+   from:data.startDate?formatDate(data.startDate) : "",
+  to: data.endDate?formatDate(data.endDate) : "" ,
   invoice_creation:"many_times"
 
     }
     console.log(payload)
-    // axios.post(Create_retail_invoice,payload)
-    // .then((res)=>{
-    //   console.log(res)  
-    //    toast.success(res.message);
-    //    reset();
-    // })
-    // .catch((err)=>{
-    //   console.log(err);
-    //    toast.error(err);
-    // })
+                     setLoading(true)
+      axios.post(Create_retail_invoice, payload, {
+       headers: { "Content-Type": "application/json" },
+     })
+   
+       .then((res)=>{
+         setLoading(false)
+         console.log(res)  
+          toast.success(res.data.message);
+          reset();
+       })
+       .catch((err)=>{
+         console.log(err);
+               setLoading(false)
+   
+          toast.error(err);
+       })
   };
   const handleCheckboxChange = (value, field) => {
     const allValues = checkBoxData.map((c) => c.value); // all possible
@@ -142,6 +160,7 @@ useEffect(() => {
 
   return (
     <Fragment>
+                  {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>
@@ -283,8 +302,7 @@ useEffect(() => {
                       </span>
                     )}
                   </FormGroup>
-                </Col>
-              <Col sm="12">
+                </Col>{companyDropDown ===false?null:      <Col sm="12">
                 <fieldset>
                   <legend >Choose Company</legend>
                   <Controller
@@ -324,6 +342,8 @@ useEffect(() => {
                   )}
                 </fieldset>
                 </Col>
+                }
+        
               </Row>
                 <Col sm={{ size: 2, offset: 10 }}>
                   <div className="text-end">
