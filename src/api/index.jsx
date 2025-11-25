@@ -78,6 +78,7 @@ export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;
 export const tcheck_upload = `${baseurl}/api/tcheck/upload`;
 export const smenu = `${baseurl}/api/smenu`;
 export const Create_retail_invoice = `${baseurl}/api/invoice/create_retail_invoice`;
+export const Create_rack_invoice = `${baseurl}/api/invoice/create_rack_invoice`;
 
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;

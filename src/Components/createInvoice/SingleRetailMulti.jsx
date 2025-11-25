@@ -24,8 +24,8 @@ import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
 import Loader from "../../Layout/Loader";
 import { toast } from "react-toastify";
-import { Create_retail_invoice } from "../../api/index";
-const SingleRetailMulti = ({ title, btnTtitle, type }) => {
+import { Create_retail_invoice ,Create_rack_invoice} from "../../api/index";
+const SingleRetailMulti = ({ title, btnTtitle, type,rackcase,invoice }) => {
     const[supplierData,setSupplierData]=useState([])
     const[loading,setLoading]=useState(false)
   
@@ -89,36 +89,57 @@ const formatDate = (date) => {
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
-   const onSubmit = (data) => {
-      console.log(data)
-    const  payload={
-  company_id:data.company.value.toString(),
-    supplier_id:data.supplier.value,
-    country_id: data.country.value,
-    from:data.startDate?formatDate(data.startDate) : "",
-    to: data.endDate?formatDate(data.endDate) : "" ,
-    invoice_creation:"many_times"
-  
-      }
-      console.log(payload)
-              setLoading(true)
-          axios.post(Create_retail_invoice, payload, {
-    headers: { "Content-Type": "application/json" },
-  })
+ const onSubmit = (data) => {
+  setLoading(true);
 
-    .then((res)=>{
-      setLoading(false)
-      console.log(res)  
-       toast.success(res.data.message);
-       reset();
-    })
-    .catch((err)=>{
-      console.log(err);
-            setLoading(false)
+  let payload = {};  // declare first
+  let apiUrl = "";   // store api endpoint
 
-       toast.error(err);
+  // ---- Case 1: RACK INVOICE ----
+  if (invoice === "rackInvoice") {
+    payload = {
+      company_id: data.company.value.toString(),
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_creation: rackcase !== "Actual" ? "many_times" : "weekly",
+      invoice_type: rackcase === "Actual" ? "Actual" : "Capped",
+    };
+
+    apiUrl = Create_rack_invoice; // <-- hit rack API
+  }
+
+  // ---- Case 2: RETAIL INVOICE ----
+  else {
+    payload = {
+      company_id: data.company.value.toString(),
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_creation: "weekly",
+    };
+
+    apiUrl = Create_retail_invoice; // <-- hit retail API
+  }
+
+  console.log(" Final Payload:", payload);
+  console.log(" Hit API:", apiUrl);
+
+  axios
+    .post(apiUrl, payload, { headers: { "Content-Type": "application/json" } })
+    .then((res) => {
+      setLoading(false);
+      toast.success(res.data.message);
+      reset();
     })
-  };
+    .catch((err) => {
+      setLoading(false);
+      toast.error(err);
+    });
+};
+
     
   
   return (
