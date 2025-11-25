@@ -1,20 +1,51 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState,useEffect } from 'react'
 import { Col, Row, Form, FormGroup, InputGroup, InputGroupText, Card, CardBody } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import { optionscountry, supplier, optionscompany } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-import HeaderCard from '../Common/Component/HeaderCard';
+import { useCompany,useCountry } from '../../Hooks/Dropdowns';
+import { supplierById } from '../../api';
+import axios from 'axios';
 const Retail_capped = ({ title, btnTtitle, type }) => {
+    const[supplierData,setSupplierData]=useState([])
+
+  const{data:company}=useCompany()
+  const{data:country}=useCountry()
   const {
     register,
     control,
+    setValue,   
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
+useEffect(() => {
+  if (!country || country.length === 0) return;
 
+  
+    // Clear value if normal dropdown
+    setValue("country", country[2]);
+  
+}, [ country]);
+useEffect(() => {
+  axios
+    .get(`${supplierById}/3`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
 
+      setSupplierData(formatted);
+
+      // ⭐ Automatically set default supplier based on type
+     
+        setValue("supplier", formatted[0]); // no default for no-type
+      
+    })
+    .catch((err) => console.log(err));
+}, [ setValue]);
   const onSubmit = (data) => {
     console.log("Form Data:", data);  // ✅ This will print your inputs
     // alert("Form submitted successfully!");
@@ -39,7 +70,7 @@ const Retail_capped = ({ title, btnTtitle, type }) => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={optionscompany}
+                        options={company}
                         className="form-control p-0 border-0"
                         placeholder="Select a country"
                       />
@@ -54,32 +85,33 @@ const Retail_capped = ({ title, btnTtitle, type }) => {
               </FormGroup>
             </Col>
             <Col sm="4">
-              <FormGroup className="m-form__group">
-                <InputGroup >
-                  <InputGroupText>Supplier</InputGroupText>
-                  <Controller
-                    name="supplier"
-                    rules={{ required: "supplier is required" }}
-                    defaultValue={supplier[5]}
+          <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Supplier</InputGroupText>
+                     <Controller
+  name="supplier"
+  control={control}
+  rules={{ required: "supplier is required" }}
+  render={({ field }) => (
+    <Select
+      {...field}
+      options={supplierData}
+      className="form-control p-0 border-0"
+      placeholder="Select supplier"
+      value={field.value}
+      onChange={(val) => field.onChange(val)}
+    />
+  )}
+/>
 
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={
-                          supplier[5]
-                        }
-                        className="form-control p-0 border-0"
-                        placeholder="Select supplier"
-                      />
+                    </InputGroup>
+
+                    {errors.supplier && (
+                      <span className="text-danger">
+                        {errors.supplier?.message}
+                      </span>
                     )}
-                  />
-                </InputGroup>
-
-                {errors.supplier && (
-                  <span className="text-danger">{errors.supplier?.message}</span>
-                )}
-              </FormGroup>
+                  </FormGroup>
             </Col>
 
             <Col sm="4">
@@ -89,14 +121,14 @@ const Retail_capped = ({ title, btnTtitle, type }) => {
                   <Controller
                     name="country"
                     rules={{ required: "country is required" }}
-                    defaultValue={optionscountry[1]}
 
                     control={control}
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={optionscountry[1]}
-
+                        options={[country[2]]}
+                       value={field.value}
+                        onChange={(val) => field.onChange(val)}
                         className="form-control p-0 border-0"
                         placeholder="Select Country"
                       />

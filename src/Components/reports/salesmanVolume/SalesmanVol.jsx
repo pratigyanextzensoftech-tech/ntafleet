@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
 import { optionscompany,optionscountry,supplier,salesman } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
@@ -9,16 +9,39 @@ import { salesman_volume as APINAME } from '../../../api';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useCountry } from '../../../Hooks/Dropdowns';
+import { supplierById } from '../../../api';
 const SalesmanVol = ({btnTitle}) => {
+    const[supplierData,setSupplierData]=useState([])
+  
   const{data:country}=useCountry()
     const {
         register,
         control,
         reset,
+        setValue,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
+useEffect(() => {
+
+  axios
+    .get(`${supplierById}/1,3,5,6,7`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
+
+      setSupplierData(formatted);
+
+      // ⭐ Automatically set default supplier based on type
+    
+        setValue("supplier", null); // no default for no-type
+      
+    })
+    .catch((err) => console.log(err));
+}, [ setValue]);
      const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
@@ -188,7 +211,7 @@ del:""
                           <Select
                             {...field}
      options={
-            supplier
+            supplierData
             }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"

@@ -36,7 +36,7 @@ export const CreateRepeatTab = [
    {
     id: '4',
     label:"Create Repeat Esso Invoice",
-    component:  <SingleEssoForm btnTtitle="Create Rack Invoice"  title="Create Repeat Esso Invoice"/>,
+    component:  <SingleEssoForm type="esso_invoice" btnTtitle="Create Rack Invoice"  title="Create Repeat Esso Invoice"/>,
   },
  
   
