@@ -17,119 +17,160 @@ import {
   supplier,
 } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../Common/Component/HeaderCard";
-import { useCompany,useCountry } from "../../Hooks/Dropdowns";
-import {supplierById} from '../../api/index'
+import { useCompany, useCountry } from "../../Hooks/Dropdowns";
+import { supplierById } from '../../api/index'
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Create_retail_invoice } from "../../api/index";
+import { Create_retail_invoice, Create_rack_invoice } from "../../api/index";
 import Loader from "../../Layout/Loader";
-const SingleRetailVoice = ({ title, btnTtitle, type }) => {
-    const[supplierData,setSupplierData]=useState([])
-  const[loading,setLoading]=useState(false)
-      const{ data:companies}=useCompany()
-      const{ data:country}=useCountry()
+const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice, invoice_creation, invoice_type }) => {
+  const [supplierData, setSupplierData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const { data: companies } = useCompany()
+  const { data: country } = useCountry()
 
- const { control, handleSubmit, formState: { errors }, setValue,reset } = useForm();
-
-
+  const { control, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
 
-const getParamsByType = () => {
-  switch (type) {
-    case "single_rack_actual":
-      return "3";
 
-    case "bulk_rack_actual":
-      return "3";
 
-    case "single_customized":
-      return "3";
+  const getParamsByType = () => {
+    switch (type) {
+      case "single_rack_actual":
+        return "3";
 
-    default:
-      return "1,3,5,4,7"; // no type → hit default API
-  }
-};
-useEffect(() => {
-  const params = getParamsByType();
+      case "bulk_rack_actual":
+        return "3";
 
-  axios
-    .get(`${supplierById}/${params}`)
-    .then((res) => {
-      const formatted = res.data.map((s) => ({
-        value: s.id,
-        label: s.supplier_name,
-      }));
+      case "single_customized":
+        return "3";
 
-      setSupplierData(formatted);
-
-      // ⭐ Automatically set default supplier based on type
-      if (type === "single_rack_actual") {
-        setValue("supplier", formatted[0]); // pick first data
-      } else if (type === "bulk_rack_actual") {
-        setValue("supplier", formatted[1] || formatted[0]);
-      } else if (type === "single_customized") {
-        setValue("supplier", formatted[2] || formatted[0]);
-      } else {
-        setValue("supplier", null); // no default for no-type
-      }
-    })
-    .catch((err) => console.log(err));
-}, [type, setValue]);
-
-useEffect(() => {
-  if (!country || country.length === 0) return;
-
-  if (
-    type === "single_rack_actual" ||
-    type === "bulk_rack_actual" ||
-    type === "single_customized"
-  ) {
-    // Auto select the single allowed country
-    setValue("country", country[2]);   // Set default value here
-  } else {
-    // Clear value if normal dropdown
-    setValue("country", null);
-  }
-}, [type, country]);
-
-const formatDate = (date) => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-  const onSubmit = (data) => {
-    console.log(data)
-  const  payload={
-company_id:data.company.value.toString(),
-  supplier_id:data.supplier.value,
-  country_id: data.country.value,
-     from:data.startDate?formatDate(data.startDate) : "",
-    to: data.endDate?formatDate(data.endDate) : "" ,
-  invoice_creation:"weekly"
-
+      default:
+        return "1,3,5,4,7"; // no type → hit default API
     }
-    console.log(payload)
-                  setLoading(true)
-
-    axios.post(Create_retail_invoice, payload, {
-    headers: { "Content-Type": "application/json" },
-  })
-
-    .then((res)=>{
-      console.log(res)  
-       toast.success(res.data.message);
-       reset();
-             setLoading(false)
-    })
-    .catch((err)=>{
-      console.log(err);
-            setLoading(false)
-
-       toast.error(err);
-    })
   };
+  useEffect(() => {
+    const params = getParamsByType();
+
+    axios
+      .get(`${supplierById}/${params}`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
+
+        setSupplierData(formatted);
+
+        // ⭐ Automatically set default supplier based on type
+        if (type === "single_rack_actual") {
+          setValue("supplier", formatted[0]); // pick first data
+        } else if (type === "bulk_rack_actual") {
+          setValue("supplier", formatted[1] || formatted[0]);
+        } else if (type === "single_customized") {
+          setValue("supplier", formatted[2] || formatted[0]);
+        } else {
+          setValue("supplier", null); // no default for no-type
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [type, setValue]);
+
+  useEffect(() => {
+    if (!country || country.length === 0) return;
+
+    if (
+      type === "single_rack_actual" ||
+      type === "bulk_rack_actual" ||
+      type === "single_customized"
+    ) {
+      // Auto select the single allowed country
+      setValue("country", country[2]);   // Set default value here
+    } else {
+      // Clear value if normal dropdown
+      setValue("country", null);
+    }
+  }, [type, country]);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const onSubmit = (data) => {
+    setLoading(true);
+
+
+
+    const basePayload = {
+      invoice_creation: invoice_creation,
+      company_id: data.company.value.toString(),
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+    };
+
+    let finalPayload = {};
+
+    if (data.supplier.value === '3') 
+      { finalPayload = { ...basePayload, invoice_type:invoice_type, }; }
+    else {
+      if(data.invoice_type.value)
+      {
+      finalPayload = { ...basePayload, invoice_type:data.invoice_type.value, };
+    }
+    }
+
+    if (invoice === "rackInvoice") {
+      // ---- RACK CONDITIONS ----
+
+
+
+      // Create final payload
+
+
+      axios
+        .post(Create_rack_invoice, finalPayload, { headers: { "Content-Type": "application/json" } })
+        .then((res) => {
+
+          toast.success(res.data.message);
+          reset();
+          setLoading(false);
+        })
+        .catch((err) => {
+          toast.error(err);
+          setLoading(false);
+        });
+    } else {
+      // ---- RETAIL INVOICE ----
+      finalPayload = {
+        ...basePayload,
+        invoice_creation: "weekly",
+      };
+
+      axios
+        .post(Create_retail_invoice, finalPayload, { headers: { "Content-Type": "application/json" } })
+        .then((res) => {
+          toast.success(res.data.message);
+          reset();
+          setLoading(false);
+        })
+        .catch((err) => {
+          toast.error(err);
+          setLoading(false);
+        });
+    }
+
+    console.log("Final Payload Sent =>", finalPayload);
+  };
+
+
+
+
+
   return (
     <Fragment>
       {loading && <Loader loading={true} />}
@@ -169,22 +210,22 @@ company_id:data.company.value.toString(),
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
-                     <Controller
-  name="supplier"
-  control={control}
-  rules={{ required: "supplier is required" }}
-  defaultValue={null}
-  render={({ field }) => (
-    <Select
-      {...field}
-      options={supplierData}
-      className="form-control p-0 border-0"
-      placeholder="Select supplier"
-      value={field.value}
-      onChange={(val) => field.onChange(val)}
-    />
-  )}
-/>
+                      <Controller
+                        name="supplier"
+                        control={control}
+                        rules={{ required: "supplier is required" }}
+                        defaultValue={null}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={supplierData}
+                            className="form-control p-0 border-0"
+                            placeholder="Select supplier"
+                            value={field.value}
+                            onChange={(val) => field.onChange(val)}
+                          />
+                        )}
+                      />
 
                     </InputGroup>
 
@@ -200,35 +241,35 @@ company_id:data.company.value.toString(),
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                 <Controller
-  name="country"
-  rules={{ required: "country is required" }}
-  control={control}
-  render={({ field }) => {
-    const isFixedType =
-      type === "single_rack_actual" ||
-      type === "bulk_rack_actual" ||
-      type === "single_customized";
+                      <Controller
+                        name="country"
+                        rules={{ required: "country is required" }}
+                        control={control}
+                        render={({ field }) => {
+                          const isFixedType =
+                            type === "single_rack_actual" ||
+                            type === "bulk_rack_actual" ||
+                            type === "single_customized";
 
-    const countryOptions = isFixedType
-      ? [country[2]]
-      : country.filter((_, i) => i !== 0);
+                          const countryOptions = isFixedType
+                            ? [country[2]]
+                            : country.filter((_, i) => i !== 0);
 
-    return (
-      <Select
-        {...field}
-        options={countryOptions}
-        className="form-control p-0 border-0"
-        placeholder="Select Country"
-        value={field.value}
-        onChange={(val) => field.onChange(val)}
-      />
-    );
-  }}
-/>
+                          return (
+                            <Select
+                              {...field}
+                              options={countryOptions}
+                              className="form-control p-0 border-0"
+                              placeholder="Select Country"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                            />
+                          );
+                        }}
+                      />
 
 
-                      
+
                     </InputGroup>
                     {errors.country && (
                       <span className="text-danger">
@@ -257,8 +298,8 @@ company_id:data.company.value.toString(),
                                 placeholderText="Select start date"
                                 className={`form-control `}
                                 selected={field.value}
-                                
-                                 onChange={(date) => field.onChange(date)}
+
+                                onChange={(date) => field.onChange(date)}
 
                               />
                             )}

@@ -11,7 +11,7 @@ export const RetailInvoiceTab = [
         Single Rack  - <strong>[Capped]</strong>
       </>
     ),
-    component: <SingleRetailVoice btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Capped)"/>,
+    component: <SingleRetailVoice invoice_creation="weekly" invoice_type ="Capped" racktype="single_rack_actual"  invoice="rackInvoice" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Capped)"/>,
   },
   {
     id: '2',
@@ -20,7 +20,7 @@ export const RetailInvoiceTab = [
         Bulk Rack  - <strong>[Capped]</strong>
       </>
     ),
-    component: <BulkRetailInvoice btnTtitle="Create Bulk Rack Invoice"  title="Create Bulk Rack Invoice (Capped)"/>,
+    component: <BulkRetailInvoice invoice_creation="weekly" invoice_type ="Capped"  rackcase="Capped-multi" invoice="rackInvoice" btnTtitle="Create Bulk Rack Invoice"  title="Create Bulk Rack Invoice (Capped)"/>,
   },
   
   {
@@ -30,7 +30,7 @@ export const RetailInvoiceTab = [
        Single Rack - <strong>[Actual]</strong>
       </>
     ),
-    component: <SingleRetailMulti  type="single_rack_actual" title="Create Single Rack Invoice (Actual)" btnTtitle="Create Rack Invoice"/>,
+    component: <SingleRetailMulti invoice_creation="weekly" invoice_type ="Actual"  rackcase="Actual" invoice="rackInvoice"  type="single_rack_actual" title="Create Single Rack Invoice (Actual)" btnTtitle="Create Rack Invoice"/>,
   },
    {
     id: '4',
@@ -39,7 +39,7 @@ export const RetailInvoiceTab = [
        Bulk Rack - <strong>[Actual]</strong>
       </>
     ),
-    component: <BulkRetailMulti companyDropDown={false}  type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual)"  checkBoxData={checkBoxData}/>,
+    component: <BulkRetailMulti  invoice_creation="weekly" invoice_type ="Actual" invoice="rackInvoice" rackcase="Actual-multi" companyDropDown={false}  type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual)"  checkBoxData={checkBoxData}/>,
   },
  
   
@@ -50,7 +50,7 @@ export const RetailInvoiceTab = [
        Single Rack - <strong>[Capped Multi ]</strong>
       </>
     ),
-    component: <SingleRetailVoice btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Capped)"/>,
+    component: <SingleRetailVoice  invoice_creation="many_times" invoice_type ="Capped" rackcase="Capped-multi" invoice="rackInvoice" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Capped)"/>,
   },
    {
     id: '6',
@@ -59,7 +59,7 @@ export const RetailInvoiceTab = [
        Bulk Rack - <strong>[Capped Multi ]</strong>
       </>
     ),
-    component: <BulkRetailMulti  btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Capped)"  checkBoxData={checkBoxData}/>,
+    component: <BulkRetailMulti invoice_creation="many_times" invoice_type ="Capped" invoice="rackInvoice" rackcase="Capped-multi"  btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Capped)"  checkBoxData={checkBoxData}/>,
   },
     {
     id: '7',
@@ -68,7 +68,7 @@ export const RetailInvoiceTab = [
        Single Rack - <strong>[Actual Multi ]</strong>
       </>
     ),
-    component: <SingleRetailVoice type="single_rack_actual" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Actual-MULTI)"/>,
+    component: <SingleRetailVoice invoice_creation="many_times" invoice_type ="Actual" rackcase="Actual-multi" invoice="rackInvoice"  type="single_rack_actual" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Actual-MULTI)"/>,
   },
    {
     id: '8',
@@ -77,7 +77,7 @@ export const RetailInvoiceTab = [
        Bulk Rack - <strong>[Actual Multi ]</strong>
       </>
     ),
-    component: <BulkRetailMulti type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual-MULTI)"  checkBoxData={checkBoxData}/>,
+    component: <BulkRetailMulti invoice_creation="many_times" invoice_type ="Actual" invoice="rackInvoice"  rackcase="Actual-multi" type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual-MULTI)"  checkBoxData={checkBoxData}/>,
  
   },
 ];

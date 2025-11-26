@@ -23,10 +23,10 @@ import axios from "axios";
 import { useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
 import { toast } from "react-toastify";
-import { Create_retail_invoice } from "../../api/index";
+import { Create_retail_invoice,Create_rack_invoice } from "../../api/index";
 import Loader from "../../Layout/Loader";
 
-const BulkRetailMulti = ({ checkBoxData, title, btnTtitle, type,companyDropDown }) => {
+const BulkRetailMulti = ({ checkBoxData, title, btnTtitle, type,companyDropDown,invoice,rackcase }) => {
   const [selectedValues, setSelectedValues] = useState([]);
     const[loading,setLoading]=useState(false)
   
@@ -92,35 +92,70 @@ const formatDate = (date) => {
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
-  const onSubmit = (data) => {
-    console.log(data)
-  const  payload={
-  supplier_id:data.supplier.value,
-  country_id: data.country.value,
-   from:data.startDate?formatDate(data.startDate) : "",
-  to: data.endDate?formatDate(data.endDate) : "" ,
-  invoice_creation:"many_times"
+ const onSubmit = (data) => {
+  console.log(data);
+  setLoading(true);
 
+  let payload = {};
+  let apiUrl = "";
+
+  if (invoice === "rackInvoice") {
+    // Default values
+    let invoice_type = "";
+    let invoice_creation = "many_times";
+
+    // Decision based on rackcase
+    if (rackcase === "Capped-multi") {
+      invoice_type = "Capped";
+    } 
+    else if (rackcase === "Actual-multi") {
+      invoice_type = "Actual";
+    } 
+    else if (rackcase === "Bulk-multi") {
+      invoice_type = "Actual";     // as you mentioned
     }
-    console.log(payload)
-                     setLoading(true)
-      axios.post(Create_retail_invoice, payload, {
-       headers: { "Content-Type": "application/json" },
-     })
-   
-       .then((res)=>{
-         setLoading(false)
-         console.log(res)  
-          toast.success(res.data.message);
-          reset();
-       })
-       .catch((err)=>{
-         console.log(err);
-               setLoading(false)
-   
-          toast.error(err);
-       })
-  };
+
+    payload = {
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_creation,
+      invoice_type,
+    };
+
+    apiUrl = Create_rack_invoice;
+  } 
+  
+  // Retail Invoice
+  else {
+    payload = {
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_creation: "weekly",
+    };
+
+    apiUrl = Create_retail_invoice;
+  }
+
+  console.log("Final Payload:", payload);
+
+  axios
+    .post(apiUrl, payload, { headers: { "Content-Type": "application/json" } })
+    .then((res) => {
+      setLoading(false);
+      toast.success(res.data.message);
+      reset();
+    })
+    .catch((err) => {
+      setLoading(false);
+      toast.error(err);
+    });
+};
+
+
   const handleCheckboxChange = (value, field) => {
     const allValues = checkBoxData.map((c) => c.value); // all possible
     const companyValues = allValues.filter((v) => v !== "ALL"); // only companies
@@ -305,7 +340,7 @@ const formatDate = (date) => {
                 </Col>{companyDropDown ===false?null:      <Col sm="12">
                 <fieldset>
                   <legend >Choose Company</legend>
-                  <Controller
+                  {/* <Controller
                     name="selectedCompanies"
                     control={control}
                     rules={{ required: "Select at least one company" }}
@@ -334,12 +369,12 @@ const formatDate = (date) => {
                         ))}
                       </Row>
                     )}
-                  />
-                  {errors.selectedCompanies && (
+                  /> */}
+                  {/* {errors.selectedCompanies && (
                     <span className="text-danger">
                       {errors.selectedCompanies.message}
                     </span>
-                  )}
+                  )} */}
                 </fieldset>
                 </Col>
                 }

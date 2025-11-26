@@ -16,10 +16,10 @@ import Select from "react-select";
 import { useCountry } from "../../Hooks/Dropdowns";
 import {supplierById} from '../../api/index'
 import { toast } from "react-toastify";
-import { Create_retail_invoice } from "../../api/index";
+import { Create_retail_invoice,Create_rack_invoice } from "../../api/index";
 import Loader from "../../Layout/Loader";
 import axios from "axios";
-const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
+const BulkRetailInvoice = ({ title, btnTtitle, type,rackcase,invoice }) => {
    const[supplierData,setSupplierData]=useState([])
      const[loading,setLoading]=useState(false)
    
@@ -33,36 +33,63 @@ const formatDate = (date) => {
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
-  const onSubmit = (data) => {
-    console.log(data)
-  const  payload={
-  supplier_id:data.supplier.value,
-  country_id: data.country.value,
-  from:data.startDate?formatDate(data.startDate) : "",
-    to: data.endDate?formatDate(data.endDate) : "" ,
-  invoice_creation:"weekly"
+ const onSubmit = (data) => {
+  setLoading(true);
+  console.log(data);
 
-    }
-    console.log(payload)
-                     setLoading(true)
+  let payload = {};   // 🔥 declare first (important)
 
-     axios.post(Create_retail_invoice, payload, {
-       headers: { "Content-Type": "application/json" },
-     })
-   
-       .then((res)=>{
-         setLoading(false)
-         console.log(res)  
-          toast.success(res.data.message);
-          reset();
-       })
-       .catch((err)=>{
-         console.log(err);
-               setLoading(false)
-   
-          toast.error(err);
-       })
-  };
+  if (invoice === "rackInvoice") {
+    // 🔥 build payload for Rack Invoice
+    payload = {
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_creation: "weekly",
+      invoice_type: "Capped",
+    };
+console.log("🚀 Final Payload Sent dd => ", payload);
+    axios
+      .post(Create_rack_invoice, payload, { headers: { "Content-Type": "application/json" } })
+      .then((res) => {
+        setLoading(false);
+        toast.success(res.data.message);
+       // reset();
+       console.log("🚀 resp => ", res.data.message);
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err);
+         console.log("🚀 Error => ", err);
+      });
+  } 
+  else {
+    // 🔥 build payload for Retail Invoice
+    payload = {
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_creation: "weekly",
+    };
+
+    axios
+      .post(Create_retail_invoice, payload, { headers: { "Content-Type": "application/json" } })
+      .then((res) => {
+        setLoading(false);
+        toast.success(res.data.message);
+       // reset();
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err);
+      });
+  }
+
+  
+};
+
   const getParamsByType = () => {
     switch (type) {
       case "bulk_customized":
