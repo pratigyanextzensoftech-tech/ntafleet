@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -20,131 +20,134 @@ import DatePicker from "react-datepicker";
 import Select from "react-select";
 import axios from "axios";
 import HeaderCard from "../Common/Component/HeaderCard";
-import { useCompany,useCountry } from "../../Hooks/Dropdowns";
-import {supplierById} from '../../api/index'
+import { useCompany, useCountry } from "../../Hooks/Dropdowns";
+import { supplierById } from "../../api/index";
 import Loader from "../../Layout/Loader";
 import { toast } from "react-toastify";
-import { Create_retail_invoice ,Create_rack_invoice} from "../../api/index";
-const SingleRetailMulti = ({ title, btnTtitle, type,rackcase,invoice }) => {
-    const[supplierData,setSupplierData]=useState([])
-    const[loading,setLoading]=useState(false)
-  
-  const{ data:companies}=useCompany()
-  const{ data:country}=useCountry()
- const { control,reset, handleSubmit, formState: { errors }, setValue } = useForm();
+import { Create_retail_invoice, Create_rack_invoice } from "../../api/index";
+const SingleRetailMulti = ({
+  title,
+  btnTtitle,
+  type,
+  rackcase,
+  invoice,
+  invoice_creation,
+  invoice_type,
+  supplier_ids,
+  supplier_name,
+}) => {
+  const [supplierData, setSupplierData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-const getParamsByType = () => {
-  switch (type) {
-    case "single_rack_actual":
-      return "3";
+  const { data: companies } = useCompany(invoice_creation);
+  const { data: country } = useCountry();
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
 
-    case "bulk_rack_actual":
-      return "3";
-    default:
-      return "1,3,5,4,7"; // no type → hit default API
-  }
-};
-useEffect(() => {
-  const params = getParamsByType();
+ 
+  useEffect(() => {
+    const params = supplier_ids? supplier_ids : "";
 
-  axios
-    .get(`${supplierById}/${params}`)
-    .then((res) => {
-      const formatted = res.data.map((s) => ({
-        value: s.id,
-        label: s.supplier_name,
-      }));
+    axios
+      .get(`${supplierById}/${params}`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
 
-      setSupplierData(formatted);
+        setSupplierData(formatted);
 
-      // ⭐ Automatically set default supplier based on type
-      if (type === "single_rack_actual") {
-        setValue("supplier", formatted[0]); // pick first data
-      } else if (type === "bulk_rack_actual") {
-        setValue("supplier", formatted[1] || formatted[0]);
-      }  else {
-        setValue("supplier", null); // no default for no-type
-      }
-    })
-    .catch((err) => console.log(err));
-}, [type, setValue]);
-useEffect(() => {
-  if (!country || country.length === 0) return;
+        // ⭐ Automatically set default supplier based on type
+        if (type === "single_rack_actual") {
+          setValue("supplier", formatted[0]); // pick first data
+        } else if (type === "bulk_rack_actual") {
+          setValue("supplier", formatted[1] || formatted[0]);
+        } else {
+          setValue("supplier", null); // no default for no-type
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [type, setValue]);
+  useEffect(() => {
+    if (!country || country.length === 0) return;
 
-  if (
-    type === "single_rack_actual" ||
-    type === "bulk_rack_actual" 
-  ) {
-    // Auto select the single allowed country
-    setValue("country", country[2]);   // Set default value here
-  } else {
-    // Clear value if normal dropdown
-    setValue("country", null);
-  }
-}, [type, country]);
-const formatDate = (date) => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
- const onSubmit = (data) => {
-  setLoading(true);
+    if (type === "single_rack_actual" || type === "bulk_rack_actual") {
+      // Auto select the single allowed country
+      setValue("country", country[2]); // Set default value here
+    } else {
+      // Clear value if normal dropdown
+      setValue("country", null);
+    }
+  }, [type, country]);
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const onSubmit = (data) => {
+    setLoading(true);
 
-  let payload = {};  // declare first
-  let apiUrl = "";   // store api endpoint
+    let payload = {}; // declare first
+    let apiUrl = ""; // store api endpoint
 
-  // ---- Case 1: RACK INVOICE ----
-  if (invoice === "rackInvoice") {
-    payload = {
-      company_id: data.company.value.toString(),
-      supplier_id: data.supplier.value,
-      country_id: data.country.value,
-      from: data.startDate ? formatDate(data.startDate) : "",
-      to: data.endDate ? formatDate(data.endDate) : "",
-      invoice_creation: rackcase !== "Actual" ? "many_times" : "weekly",
-      invoice_type: rackcase === "Actual" ? "Actual" : "Capped",
-    };
+    // ---- Case 1: RACK INVOICE ----
+    if (invoice === "rackInvoice") {
+      payload = {
+        company_id: data.company.value.toString(),
+        supplier_id: data.supplier.value,
+        country_id: data.country.value,
+        from: data.startDate ? formatDate(data.startDate) : "",
+        to: data.endDate ? formatDate(data.endDate) : "",
+        invoice_creation: rackcase !== "Actual" ? "many_times" : "weekly",
+        invoice_type: rackcase === "Actual" ? "Actual" : "Capped",
+      };
 
-    apiUrl = Create_rack_invoice; // <-- hit rack API
-  }
+      apiUrl = Create_rack_invoice; // <-- hit rack API
+    }
 
-  // ---- Case 2: RETAIL INVOICE ----
-  else {
-    payload = {
-      company_id: data.company.value.toString(),
-      supplier_id: data.supplier.value,
-      country_id: data.country.value,
-      from: data.startDate ? formatDate(data.startDate) : "",
-      to: data.endDate ? formatDate(data.endDate) : "",
-      invoice_creation: "weekly",
-    };
+    // ---- Case 2: RETAIL INVOICE ----
+    else {
+      payload = {
+        company_id: data.company.value.toString(),
+        supplier_id: data.supplier.value,
+        country_id: data.country.value,
+        from: data.startDate ? formatDate(data.startDate) : "",
+        to: data.endDate ? formatDate(data.endDate) : "",
+        invoice_creation: "weekly",
+      };
 
-    apiUrl = Create_retail_invoice; // <-- hit retail API
-  }
+      apiUrl = Create_retail_invoice; // <-- hit retail API
+    }
 
-  console.log(" Final Payload:", payload);
-  console.log(" Hit API:", apiUrl);
+    console.log(" Final Payload:", payload);
+    console.log(" Hit API:", apiUrl);
 
-  axios
-    .post(apiUrl, payload, { headers: { "Content-Type": "application/json" } })
-    .then((res) => {
-      setLoading(false);
-      toast.success(res.data.message);
-      reset();
-    })
-    .catch((err) => {
-      setLoading(false);
-      toast.error(err);
-    });
-};
+    axios
+      .post(apiUrl, payload, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        setLoading(false);
+        toast.success(res.data.message);
+        reset();
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err);
+      });
+  };
 
-    
-  
   return (
     <Fragment>
-            {loading && <Loader loading={true} />}
+      {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>
@@ -181,23 +184,23 @@ const formatDate = (date) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
-                     
-                     <Controller
-  name="supplier"
-  control={control}
-  rules={{ required: "supplier is required" }}
-  defaultValue={null}
-  render={({ field }) => (
-    <Select
-      {...field}
-      options={supplierData}
-      className="form-control p-0 border-0"
-      placeholder="Select supplier"
-      value={field.value}
-      onChange={(val) => field.onChange(val)}
-    />
-  )}
-/>
+
+                      <Controller
+                        name="supplier"
+                        control={control}
+                        rules={{ required: "supplier is required" }}
+                        defaultValue={null}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={supplierData}
+                            className="form-control p-0 border-0"
+                            placeholder="Select supplier"
+                            value={field.value}
+                            onChange={(val) => field.onChange(val)}
+                          />
+                        )}
+                      />
                     </InputGroup>
 
                     {errors.supplier && (
@@ -212,32 +215,32 @@ const formatDate = (date) => {
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                   
-                                       <Controller
-  name="country"
-  rules={{ required: "country is required" }}
-  control={control}
-  render={({ field }) => {
-    const isFixedType =
-      type === "single_rack_actual" ||
-      type === "bulk_rack_actual" 
 
-    const countryOptions = isFixedType
-      ? [country[2]]
-      : country.filter((_, i) => i !== 0);
+                      <Controller
+                        name="country"
+                        rules={{ required: "country is required" }}
+                        control={control}
+                        render={({ field }) => {
+                          const isFixedType =
+                            type === "single_rack_actual" ||
+                            type === "bulk_rack_actual";
 
-    return (
-      <Select
-        {...field}
-        options={countryOptions}
-        className="form-control p-0 border-0"
-        placeholder="Select Country"
-        value={field.value}
-        onChange={(val) => field.onChange(val)}
-      />
-    );
-  }}
-/>
+                          const countryOptions = isFixedType
+                            ? [country[2]]
+                            : country.filter((_, i) => i !== 0);
+
+                          return (
+                            <Select
+                              {...field}
+                              options={countryOptions}
+                              className="form-control p-0 border-0"
+                              placeholder="Select Country"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                            />
+                          );
+                        }}
+                      />
                     </InputGroup>
 
                     {errors.country && (

@@ -27,7 +27,7 @@ import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { supplierById } from "../../api";
-const SingleEssoForm = ({ title, btnTtitle, type }) => {
+const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type }) => {
      const[supplierData,setSupplierData]=useState([])
   
   const{data:company}=useCompany()

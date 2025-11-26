@@ -10,41 +10,41 @@ export const EssoInvoiceTab = [
   {
     id: '1',
     label: "Single Esso",
-    component: <SingleEssoForm type="single" btnTtitle="Create Esso Invoice" title="Create Single Esso Invoice " />,
+    component: <SingleEssoForm supplier_ids="6"  supplier_name="ESSO" country="1"  invoice_creation="weekly" invoice_type =""  type="single" btnTtitle="Create Esso Invoice" title="Create Single Esso Invoice " />,
   },
   {
     id: '2',
     label: "Bulk Esso",
-    component: <BulkEssoForm tab="bulk_esso" btnTtitle="Create Bulk Esso Invoice" title="Create Bulk Esso Invoice" />,
+    component: <BulkEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="weekly" invoice_type ="" tab="bulk_esso" btnTtitle="Create Bulk Esso Invoice" title="Create Bulk Esso Invoice" />,
   },
 
   {
     id: '3',
     label: "Single Owner Operator",
-    component: <SingleEssoForm type="owner_operator" btnTtitle="Create Owner Operator Invoice" title="Create Single Owner Operator Invoice " />,
+    component: <SingleEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="weekly" invoice_type ="" type="owner_operator" btnTtitle="Create Owner Operator Invoice" title="Create Single Owner Operator Invoice " />,
   },
   {
     id: '4',
     label: "Bulk Owner Operator",
-    component: <BulkEssoForm type="bulk_owner" btnTtitle="Create Bulk Owner Operator Invoice" title="Create Bulk Owner Operator Invoice" checkBoxData={checkBoxData} />,
+    component: <BulkEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="weekly" invoice_type ="" type="bulk_owner" btnTtitle="Create Bulk Owner Operator Invoice" title="Create Bulk Owner Operator Invoice" checkBoxData={checkBoxData} />,
   },
 
 
   {
     id: '5',
     label: "Single Customized",
-    component: <SingleEssoForm type="single" btnTtitle="Create Customized Invoice" title="Create Customized Invoice " />,
+    component: <SingleEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="weekly" invoice_type =""  type="single" btnTtitle="Create Customized Invoice" title="Create Customized Invoice " />,
   },
   {
     id: '6',
     label: "Bulk Customized",
-    component: <BulkEssoForm btnTtitle="Create Bulk Customized Invoice" title="Create Bulk Customized Invoice " />,
+    component: <BulkEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="weekly" invoice_type ="" btnTtitle="Create Bulk Customized Invoice" title="Create Bulk Customized Invoice " />,
   },
-  {
-    id: '7',
-    label: 'RP as R',
-    component: <SingleEssoForm type="owner_operator" btnTtitle="Create RP as R Invoice" title="Create RP as R Invoice" />,
-  },
+  // {
+  //   id: '7',
+  //   label: 'RP as R',
+  //   component: <SingleEssoForm supplier_ids=""  supplier_name="" country="" invoice_creation="weekly" invoice_type ="Actual"  type="owner_operator" btnTtitle="Create RP as R Invoice" title="Create RP as R Invoice" />,
+  // },
   {
     id: '8',
     label: (
@@ -52,7 +52,7 @@ export const EssoInvoiceTab = [
         Single Esso - <strong>[ Multi ]</strong>
       </>
     ),
-    component: <SingleEssoForm type="esso_invoice" btnTtitle="Create  Esso Invoice" title="Create Single Esso Invoice-[Multi]" checkBoxData={checkBoxData} />,
+    component: <SingleEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="many_times" invoice_type ="" type="esso_invoice" btnTtitle="Create  Esso Invoice" title="Create Single Esso Invoice-[Multi]" checkBoxData={checkBoxData} />,
 
   },
   {
@@ -62,7 +62,7 @@ export const EssoInvoiceTab = [
         Bulk Esso - <strong>[ Multi ]</strong>
       </>
     ),
-    component: <BulkEssoMulti checkBoxData={checkBoxData}  type="bulk_esso" btnTtitle="Create Bulk Esso Invoice" title="Create Bulk Esso Invoice" />,
+    component: <BulkEssoMulti supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="many_times" invoice_type ="" checkBoxData={checkBoxData}  type="bulk_esso" btnTtitle="Create Bulk Esso Invoice" title="Create Bulk Esso Invoice" />,
 
   },
   {
@@ -72,7 +72,7 @@ export const EssoInvoiceTab = [
         Single Owner Operator- <strong>[ Multi ]</strong>
       </>
     ),
-    component: <SingleEssoForm type="owner_operator" btnTtitle="Create  Owner Operator Invoice" title="Create Single Owner Operator Invoice-[Multi]"  />,
+    component: <SingleEssoForm supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="many_times" invoice_type ="" type="owner_operator" btnTtitle="Create  Owner Operator Invoice" title="Create Single Owner Operator Invoice-[Multi]"  />,
 
   },
   {
@@ -82,7 +82,7 @@ export const EssoInvoiceTab = [
         Bulk Owner Operator- <strong>[ Multi ]</strong>
       </>
     ),
-    component: <BulkEssoMulti checkBoxData={checkBoxData} type="bulk_esso" btnTtitle="Create Bulk Owner Operator Invoice" title="Create Bulk Owner Operator Invoice (MULTI)"/>,
+    component: <BulkEssoMulti supplier_ids="6"  supplier_name="ESSO" country="1" invoice_creation="many_times" invoice_type ="" checkBoxData={checkBoxData} type="bulk_esso" btnTtitle="Create Bulk Owner Operator Invoice" title="Create Bulk Owner Operator Invoice (MULTI)"/>,
 
   },
 ];

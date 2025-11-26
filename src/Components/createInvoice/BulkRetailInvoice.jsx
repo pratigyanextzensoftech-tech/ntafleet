@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -14,81 +14,96 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { useCountry } from "../../Hooks/Dropdowns";
-import {supplierById} from '../../api/index'
+import { supplierById } from "../../api/index";
 import { toast } from "react-toastify";
-import { Create_retail_invoice,Create_rack_invoice } from "../../api/index";
+import { Create_retail_invoice, Create_rack_invoice } from "../../api/index";
 import Loader from "../../Layout/Loader";
 import axios from "axios";
-const BulkRetailInvoice = ({ title, btnTtitle, type,rackcase,invoice }) => {
-   const[supplierData,setSupplierData]=useState([])
-     const[loading,setLoading]=useState(false)
-   
-        const{ data:country}=useCountry()
-  
-   const { control,reset, handleSubmit, formState: { errors }, setValue } = useForm();
-const formatDate = (date) => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
- const onSubmit = (data) => {
-  setLoading(true);
-  console.log(data);
+const BulkRetailInvoice = ({
+  title,
+  btnTtitle,
+  type,
+  rackcase,
+  invoice,
+  supplier_ids,
+  supplier_name,
+  invoice_creation,
+  invoice_type,
+}) => {
+  const [supplierData, setSupplierData] = useState([]);
+  const [loading, setLoading] = useState(false); 
+  const { data: country } = useCountry(); 
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const onSubmit = (data) => {
+    setLoading(true);
+    console.log(data);
 
-  let payload = {};   // 🔥 declare first (important)
+    let payload = {}; // 🔥 declare first (important)
 
-  if (invoice === "rackInvoice") {
-    // 🔥 build payload for Rack Invoice
-    payload = {
-      supplier_id: data.supplier.value,
-      country_id: data.country.value,
-      from: data.startDate ? formatDate(data.startDate) : "",
-      to: data.endDate ? formatDate(data.endDate) : "",
-      invoice_creation: "weekly",
-      invoice_type: "Capped",
-    };
-console.log("🚀 Final Payload Sent dd => ", payload);
-    axios
-      .post(Create_rack_invoice, payload, { headers: { "Content-Type": "application/json" } })
-      .then((res) => {
-        setLoading(false);
-        toast.success(res.data.message);
-       // reset();
-       console.log("🚀 resp => ", res.data.message);
-      })
-      .catch((err) => {
-        setLoading(false);
-        toast.error(err);
-         console.log("🚀 Error => ", err);
-      });
-  } 
-  else {
-    // 🔥 build payload for Retail Invoice
-    payload = {
-      supplier_id: data.supplier.value,
-      country_id: data.country.value,
-      from: data.startDate ? formatDate(data.startDate) : "",
-      to: data.endDate ? formatDate(data.endDate) : "",
-      invoice_creation: "weekly",
-    };
+    if (invoice === "rackInvoice") {
+      // 🔥 build payload for Rack Invoice
+      payload = {
+        supplier_id: data.supplier.value,
+        country_id: data.country.value,
+        from: data.startDate ? formatDate(data.startDate) : "",
+        to: data.endDate ? formatDate(data.endDate) : "",
+        invoice_creation: "weekly",
+        invoice_type: "Capped",
+      };
+      console.log("🚀 Final Payload Sent dd => ", payload);
+      axios
+        .post(Create_rack_invoice, payload, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          setLoading(false);
+          toast.success(res.data.message);
+          // reset();
+          console.log("🚀 resp => ", res.data.message);
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast.error(err);
+          console.log("🚀 Error => ", err);
+        });
+    } else {
+      // 🔥 build payload for Retail Invoice
+      payload = {
+        supplier_id: data.supplier.value,
+        country_id: data.country.value,
+        from: data.startDate ? formatDate(data.startDate) : "",
+        to: data.endDate ? formatDate(data.endDate) : "",
+        invoice_creation: "weekly",
+      };
 
-    axios
-      .post(Create_retail_invoice, payload, { headers: { "Content-Type": "application/json" } })
-      .then((res) => {
-        setLoading(false);
-        toast.success(res.data.message);
-       // reset();
-      })
-      .catch((err) => {
-        setLoading(false);
-        toast.error(err);
-      });
-  }
-
-  
-};
+      axios
+        .post(Create_retail_invoice, payload, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          setLoading(false);
+          toast.success(res.data.message);
+          // reset();
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast.error(err);
+        });
+    }
+  };
 
   const getParamsByType = () => {
     switch (type) {
@@ -100,7 +115,7 @@ console.log("🚀 Final Payload Sent dd => ", payload);
   };
   useEffect(() => {
     const params = getParamsByType();
-  
+
     axios
       .get(`${supplierById}/${params}`)
       .then((res) => {
@@ -108,9 +123,9 @@ console.log("🚀 Final Payload Sent dd => ", payload);
           value: s.id,
           label: s.supplier_name,
         }));
-  
+
         setSupplierData(formatted);
-  
+
         // ⭐ Automatically set default supplier based on type
         if (type === "bulk_customized") {
           setValue("supplier", formatted[0]); // pick first data
@@ -120,15 +135,13 @@ console.log("🚀 Final Payload Sent dd => ", payload);
       })
       .catch((err) => console.log(err));
   }, [type, setValue]);
-  
+
   useEffect(() => {
     if (!country || country.length === 0) return;
-  
-    if (
-      type === "bulk_customized"  
-    ) {
+
+    if (type === "bulk_customized") {
       // Auto select the single allowed country
-      setValue("country", country[2]);   // Set default value here
+      setValue("country", country[2]); // Set default value here
     } else {
       // Clear value if normal dropdown
       setValue("country", null);
@@ -136,14 +149,14 @@ console.log("🚀 Final Payload Sent dd => ", payload);
   }, [type, country]);
   return (
     <Fragment>
-                  {loading && <Loader loading={true} />}
+      {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
-               <Col sm="3">
+                <Col sm="3">
                   <FormGroup className="m-form__group">
                     <Row>
                       <InputGroup>
@@ -213,22 +226,22 @@ console.log("🚀 Final Payload Sent dd => ", payload);
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
-                       <Controller
-  name="supplier"
-  control={control}
-  rules={{ required: "supplier is required" }}
-  defaultValue={null}
-  render={({ field }) => (
-    <Select
-      {...field}
-      options={supplierData}
-      className="form-control p-0 border-0"
-      placeholder="Select supplier"
-      value={field.value}
-      onChange={(val) => field.onChange(val)}
-    />
-  )}
-/>
+                      <Controller
+                        name="supplier"
+                        control={control}
+                        rules={{ required: "supplier is required" }}
+                        defaultValue={null}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={supplierData}
+                            className="form-control p-0 border-0"
+                            placeholder="Select supplier"
+                            value={field.value}
+                            onChange={(val) => field.onChange(val)}
+                          />
+                        )}
+                      />
                     </InputGroup>
 
                     {errors.supplier && (
@@ -243,31 +256,28 @@ console.log("🚀 Final Payload Sent dd => ", payload);
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
-                    <Controller
-                     name="country"
-                     rules={{ required: "country is required" }}
-                     control={control}
-                     render={({ field }) => {
-                       const isFixedType =
-                         type === "bulk_customized" ;
-                   
-                       const countryOptions = isFixedType
-                         ? [country[2]]
-                         : country
-                         ;
-                   
-                       return (
-                         <Select
-                           {...field}
-                           options={countryOptions}
-                           className="form-control p-0 border-0"
-                           placeholder="Select Country"
-                           value={field.value}
-                           onChange={(val) => field.onChange(val)}
-                         />
-                       );
-                     }}
-                   />
+                      <Controller
+                        name="country"
+                        rules={{ required: "country is required" }}
+                        control={control}
+                        render={({ field }) => {
+                          const isFixedType = type === "bulk_customized";
+
+                          const countryOptions = isFixedType
+                            ? [country[2]]
+                            : country;
+                          return (
+                            <Select
+                              {...field}
+                              options={countryOptions}
+                              className="form-control p-0 border-0"
+                              placeholder="Select Country"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                            />
+                          );
+                        }}
+                      />
                     </InputGroup>
 
                     {errors.country && (

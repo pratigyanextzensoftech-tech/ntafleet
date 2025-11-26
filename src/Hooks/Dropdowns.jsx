@@ -53,11 +53,16 @@ const useDropdown = (apiUrl, mapFn) => {
  * 🔸 Specific dropdown hooks
  */
 
-export const useCompany = () =>
-  useDropdown(companyall, (c) => ({
+export const useCompany = (invoice_creation = "") => {
+  const url = invoice_creation
+    ? `${companyall}?invoice_creation=${invoice_creation}`
+    : companyall;
+
+  return useDropdown(url, (c) => ({
     value: c.company_id,
     label: c.company_name,
   }));
+};
 
 export const useItems = () =>
   useDropdown(itemsAll, (i) => ({

@@ -13,59 +13,57 @@ import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import {
-  supplier,
-} from "../Forms/FormWidget/FormSelect2/OptionDatas";
+import { supplier } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../Common/Component/HeaderCard";
 import { useCompany, useCountry } from "../../Hooks/Dropdowns";
-import { supplierById } from '../../api/index'
+import { supplierById } from "../../api/index";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Create_retail_invoice, Create_rack_invoice } from "../../api/index";
 import Loader from "../../Layout/Loader";
-const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice, invoice_creation, invoice_type }) => {
-  const [supplierData, setSupplierData] = useState([])
-  const [loading, setLoading] = useState(false)
-  const { data: companies } = useCompany()
-  const { data: country } = useCountry()
+const SingleRetailVoice = ({
+  title,
+  btnTtitle,
+  type,
+  rackcase,
+  racktype,
+  invoice,
+  invoice_creation,
+  invoice_type,
+  supplier_ids,
+  supplier_name,
+}) => {
+  const [supplierData, setSupplierData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { data: companies } = useCompany(invoice_creation);
+  const { data: country } = useCountry();
 
-  const { control, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm();
 
-
-
-
-  const getParamsByType = () => {
-    switch (type) {
-      case "single_rack_actual":
-        return "3";
-
-      case "bulk_rack_actual":
-        return "3";
-
-      case "single_customized":
-        return "3";
-
-      default:
-        return "1,3,5,4,7"; // no type → hit default API
-    }
-  };
+   
   useEffect(() => {
-    const params = getParamsByType();
+    const params = supplier_ids? supplier_ids : "";
 
     axios
       .get(`${supplierById}/${params}`)
       .then((res) => {
-        const formatted = res.data.map((s) => ({
-          value: s.id,
-          label: s.supplier_name,
-        }));
+        const formatted = res.data.map((s) => ({  value: s.id,  label: s.supplier_name, }));
 
         setSupplierData(formatted);
 
         // ⭐ Automatically set default supplier based on type
-        if (type === "single_rack_actual") {
+        if (type === "single_rack_actual") 
+          {
           setValue("supplier", formatted[0]); // pick first data
-        } else if (type === "bulk_rack_actual") {
+        } 
+        else if (type === "bulk_rack_actual") 
+          {
           setValue("supplier", formatted[1] || formatted[0]);
         } else if (type === "single_customized") {
           setValue("supplier", formatted[2] || formatted[0]);
@@ -85,7 +83,7 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
       type === "single_customized"
     ) {
       // Auto select the single allowed country
-      setValue("country", country[2]);   // Set default value here
+      setValue("country", country[2]); // Set default value here
     } else {
       // Clear value if normal dropdown
       setValue("country", null);
@@ -102,8 +100,6 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
   const onSubmit = (data) => {
     setLoading(true);
 
-
-
     const basePayload = {
       invoice_creation: invoice_creation,
       company_id: data.company.value.toString(),
@@ -115,27 +111,27 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
 
     let finalPayload = {};
 
-    if (data.supplier.value === '3') 
-      { finalPayload = { ...basePayload, invoice_type:invoice_type, }; }
-    else {
-      if(data.invoice_type.value)
-      {
-      finalPayload = { ...basePayload, invoice_type:data.invoice_type.value, };
-    }
+    if (data.supplier.value === "3") {
+      finalPayload = { ...basePayload, invoice_type: invoice_type };
+    } else {
+      if (data.invoice_type.value) {
+        finalPayload = {
+          ...basePayload,
+          invoice_type: data.invoice_type.value,
+        };
+      }
     }
 
     if (invoice === "rackInvoice") {
       // ---- RACK CONDITIONS ----
 
-
-
       // Create final payload
 
-
       axios
-        .post(Create_rack_invoice, finalPayload, { headers: { "Content-Type": "application/json" } })
+        .post(Create_rack_invoice, finalPayload, {
+          headers: { "Content-Type": "application/json" },
+        })
         .then((res) => {
-
           toast.success(res.data.message);
           reset();
           setLoading(false);
@@ -152,7 +148,9 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
       };
 
       axios
-        .post(Create_retail_invoice, finalPayload, { headers: { "Content-Type": "application/json" } })
+        .post(Create_retail_invoice, finalPayload, {
+          headers: { "Content-Type": "application/json" },
+        })
         .then((res) => {
           toast.success(res.data.message);
           reset();
@@ -166,10 +164,6 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
 
     console.log("Final Payload Sent =>", finalPayload);
   };
-
-
-
-
 
   return (
     <Fragment>
@@ -226,7 +220,6 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
                           />
                         )}
                       />
-
                     </InputGroup>
 
                     {errors.supplier && (
@@ -267,9 +260,6 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
                           );
                         }}
                       />
-
-
-
                     </InputGroup>
                     {errors.country && (
                       <span className="text-danger">
@@ -298,9 +288,7 @@ const SingleRetailVoice = ({ title, btnTtitle, type, rackcase, racktype, invoice
                                 placeholderText="Select start date"
                                 className={`form-control `}
                                 selected={field.value}
-
                                 onChange={(date) => field.onChange(date)}
-
                               />
                             )}
                           />
