@@ -21,6 +21,9 @@ import usePaginatedTable from "../../../Hooks/usePagination";
 const Index = () => {
     const [openRowId, setOpenRowId] = useState(null);
      const [tableColumns, setTableColumns] = useState([]);
+     const [selectedRow, setSelectedRow] = useState(null);
+      const[Edit,setEdit]=useState(false)
+       
     const columnsMap = {
     "City ID": "city_id",
     "City Name": "city_name",
@@ -38,6 +41,7 @@ const Index = () => {
        handlePerRowsChange,
        handleSearch, // ✅ Added
        setData,
+       fetchData
      } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
      useEffect(() => {
        const cols = Object.keys(columnsMap).map((key) => ({
@@ -104,20 +108,16 @@ const Index = () => {
        document.addEventListener("mousedown", handleClickOutside);
        return () => document.removeEventListener("mousedown", handleClickOutside);
      }, []);
-     useEffect(() => {
-    if (data?.length) {
-      const normalized = data.map((item) => ({
-        ...item,
-        id: item["City ID"], 
-       
-      }));
-  
-      setData(normalized);
-    }
-  }, [data]);
-   const handleEdit=(row)=>{
-    console.log(row)
-   }
+    
+      const handleEdit = async(row) => {
+ try {
+    const response = await axios.get(`${APINAME}/${row["City ID"]}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+    }; 
      const handleDelete = (row) => {
        Swal.fire({
          title: 'Are you sure?',
@@ -130,9 +130,9 @@ const Index = () => {
          cancelButtonText: 'Cancel'
        }).then((result) => {
          if (result.isConfirmed) {
-           axios.delete(`${APINAME}/${row.id}`)
+           axios.delete(`${APINAME}/${row["City ID"]}`)
              .then(() => {
-               setData((prevData) => prevData.filter((item) => item.id !== row.id));
+               setData((prevData) => prevData.filter((item) => item[["City ID"]] !== row["City ID"]));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
              })
              .catch(() => {
@@ -141,6 +141,9 @@ const Index = () => {
          }
        });
      };
+        const refreshTable = () => {
+    fetchData(); // fetch latest data
+  };
     return (
     <Fragment>
       <Breadcrumbs parent='Location' title='Manage City' />
@@ -150,7 +153,9 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add City" />
               <CardBody>
-                <ViewCityForm />
+                <ViewCityForm onDataAdded={refreshTable} Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit}/>
               </CardBody>
             </Card>
           </Col>

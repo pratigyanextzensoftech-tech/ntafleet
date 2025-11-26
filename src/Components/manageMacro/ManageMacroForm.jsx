@@ -11,7 +11,7 @@ const ManageMacroForm = ({ title, btnTtitle }) => {
                         <legend>{title}</legend>
                         <Form >
 
-                            <Row>
+                            <Row className='px-3'>
                                 <Col sm="9">
                                     <Row>
                                         <Col className='px-0' sm="2">

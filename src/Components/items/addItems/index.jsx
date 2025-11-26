@@ -6,8 +6,8 @@ import AddItems from "./AddItems";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { items } from "../../../api"; // API endpoint
-
+import { items as  APINAME } from "../../../api"; // API endpoint
+import Swal from "sweetalert2";
 const Index = () => {
   const [Items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,8 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
-
+  const [selectedRow, setSelectedRow] = useState(null);
+  const[Edit,setEdit]=useState(false)
   // Fetch Items API with server-side pagination
   const fetchItems = async (page = 1, limit = 10) => {
     setLoading(true);
@@ -24,17 +25,9 @@ const Index = () => {
       const start = (page - 1) * limit;
       const params = { draw, start, length: limit };
 
-      const res = await axios.get(items, { params });
-      const data = Array.isArray(res.data.data) ? res.data.data : res.data;
-
-      const formatted = data.map((item, index) => ({
-        id: item.id || start + index + 1,
-        name: item.item_name,
-        discount: item.discount_applied,
-        tax: item.tax_applied,
-      }));
-
-      setItems(formatted);
+      const res = await axios.get(APINAME, { params });
+      const data = Array.isArray(res.data.data) ? res.data.data : res.data; 
+      setItems(data);
       setTotalRows(res.data.recordsTotal || res.data.total || data.length);
       setDraw((prev) => prev + 1);
     } catch (error) {
@@ -54,15 +47,36 @@ const Index = () => {
     setCurrentPage(page);
   };
 
-  const handleEdit = (row) => console.log("Edit Item:", row);
+  const handleEdit =(row)=>{
+    console.log(row)
+    setEdit(true)
+    setSelectedRow(row); 
+  }
+  
   const handleDelete = (row) => {
-    if (window.confirm(`Delete Item "${row.name}"?`)) {
-      setItems((prev) => prev.filter((item) => item.id !== row.id));
-      // call delete API if needed
-    }
+    console.log(row)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${APINAME}/${row.item_id}`)
+          .then(() => {
+            setItems((prevData) => prevData.filter((item) => item.item_id !== row.item_id));
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+          })
+          .catch(() => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+          });
+      }
+    });
   };
-
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".dropdown-action")) {
@@ -75,26 +89,26 @@ const Index = () => {
 
   // Table columns
   const tableColumns = [
-    { name: "Item ID", selector: (row) => row.id, sortable: true },
-    { name: "Item Name", selector: (row) => row.name, sortable: true },
+    { name: "Item ID", selector: (row) => row.item_id, sortable: true },
+    { name: "Item Name", selector: (row) => row.item_name, sortable: true },
     {
       name: "Discount Applied",
-      selector: (row) => row.discount,
+      selector: (row) => row.discount==0?"yes":"No",
       sortable: true,
     },
-    { name: "Tax Applied", selector: (row) => row.tax, sortable: true },
+    { name: "Tax Applied", selector: (row) => row.tax==0?"yes":"No", sortable: true },
     {
       name: "Action",
       cell: (row) => (
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row.item_id ? null : row.item_id)}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row.item_id && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -110,7 +124,7 @@ const Index = () => {
                 style={{ padding: "8px 12px", gap: "8px" }}
                 onClick={() => handleEdit(row)}
               >
-                <FaEdit /> Edit
+                <FaEdit /> Edit  
               </button>
               <button
                 className="dropdown-item d-flex align-items-center text-danger"
@@ -129,7 +143,9 @@ const Index = () => {
       width: "160px",
     },
   ];
-
+const refreshTable=()=>{
+  fetchItems()
+}
   return (
     <Fragment>
       <Breadcrumbs parent="Items" title="Manage Item" />
@@ -139,7 +155,9 @@ const Index = () => {
             <Card>
               <HeaderCard title="Add Item" />
               <CardBody>
-                <AddItems btnTitle="Add Item" />
+                <AddItems Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit} btnTitle="Add Item" onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

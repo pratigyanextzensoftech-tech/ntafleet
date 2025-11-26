@@ -1,25 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
 import { optionscompany,optionscountry,supplier,salesman } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
+import { salesman_volume as APINAME } from '../../../api';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useCountry } from '../../../Hooks/Dropdowns';
+import { supplierById } from '../../../api';
 const SalesmanVol = ({btnTitle}) => {
+    const[supplierData,setSupplierData]=useState([])
+  
+  const{data:country}=useCountry()
     const {
         register,
         control,
         reset,
+        setValue,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
-    const onSubmit = (data) => {
+useEffect(() => {
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+  axios
+    .get(`${supplierById}/1,3,5,6,7`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
 
-    };
+      setSupplierData(formatted);
+
+      // ⭐ Automatically set default supplier based on type
+    
+        setValue("supplier", null); // no default for no-type
+      
+    })
+    .catch((err) => console.log(err));
+}, [ setValue]);
+     const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+    salesman_id: formData.salesman.value,
+    date_from:formData.startDate.value,
+    date_to:formData.endDate.value,
+    country:formData.country.value,
+supplier_id:0,
+us_total:"",
+ca_total:"",
+total_gln:"",
+total_ltr:"",
+dated:new Date(),
+idby:sessionStorage.getItem("userId"),
+del:""
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
@@ -131,7 +185,7 @@ const SalesmanVol = ({btnTitle}) => {
                                     render={({ field }) => (
                                         <Select
                                             {...field}
-                                            options={optionscountry}
+                                            options={country}
                                             className="form-control p-0 border-0"
                                             placeholder="Select Country"
                                         />
@@ -157,7 +211,7 @@ const SalesmanVol = ({btnTitle}) => {
                           <Select
                             {...field}
      options={
-            supplier
+            supplierData
             }
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"

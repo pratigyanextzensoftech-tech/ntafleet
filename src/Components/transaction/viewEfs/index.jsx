@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState,useEffect,useRef } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
@@ -8,6 +8,55 @@ import { transactions_efs } from "../../../api";
 import axios from "axios";
 import qs from "qs"; // npm install qs
 import ViewEfs from "./ViewEfs";
+import Swal from "sweetalert2";
+const ActionDropdown = ({ row, onEdit, onDelete }) => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={dropdownRef} className="position-relative dropdown-action">
+      <button
+        className="btn btn-sm btn-primary px-2"
+        onClick={() => setOpen(prev => !prev)}
+      >
+        Action
+      </button>
+
+      {open && (
+        <div
+          className="position-absolute bg-white border rounded shadow"
+          style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 120, padding: "5px 0" }}
+        >
+          <button
+            className="dropdown-item d-flex align-items-center"
+            style={{ padding: "8px 12px", gap: "8px" }}
+            onClick={() => onEdit(row)}
+          >
+            <FaEdit /> Edit
+          </button>
+
+          <button
+            className="dropdown-item d-flex align-items-center text-danger"
+            style={{ padding: "8px 12px", gap: "8px" }}
+            onClick={(e) => onDelete(e, row)}
+          >
+            <FaTrashAlt /> Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -33,10 +82,10 @@ const Index = () => {
     Fees: "fees",
     Item: "item",
     Unit_Price: "unit_price",
-    Tax_Unit_Price: "tax_unit_price",
+    Qty: "qty",
     Qty: "qty",
     Amt: "amt",
-    TaxAmt: "tax_amt",
+    TaxAmt: "amt",
     Currency: "currency",
   };
   
@@ -55,25 +104,17 @@ const Index = () => {
     // ✅ Add Actions column at the end
     cols.push({
       name: "Actions",
-      cell: (row) => (
-        <div className="d-flex gap-2">
-          <FaEdit
-            color="blue"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleEdit(row)}
-          />
-          <FaSignInAlt
-            color="green"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleLogin(row)}
-          />
-          <FaTrashAlt
-            color="red"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleDelete(row)}
-          />
-        </div>
+      cell: row => (
+        <ActionDropdown
+          row={row}
+          onEdit={(e)=>handleEdit(e,row)}
+          onDelete={(e)=>handleDelete(e,row)}
+        />
       ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width: "160px",
     });
 
     setTableColumns(cols);
@@ -138,7 +179,49 @@ const Index = () => {
     fetchData(currentPage, perPage, filters);
      
   }, [perPage]);
+  const handleEdit = async (e, row) => {
+    console.log(row)
+//   try {
+//     const response = await axios.get(`${esso_transactions}/${row.id}`);
+// console.log(response.data)
+//     setSelectedRow(response.data);
+//     setEdit(true);
 
+//     const encodedId = btoa(row.id); // encode ID
+
+//     navigate(`/edit-unknown/${encodedId}`, {
+//       state: { data: response.data }
+//     });
+
+//   } catch (error) {
+//     console.error("Error fetching full row data", error);
+//   }
+};
+  const handleDelete = (e, row) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to delete?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(result => {
+      if (result.isConfirmed) {
+        axios.delete(`${transactions_efs}/${row.id}`)
+          .then(res => {
+            setData(prev => prev.filter(item => item.id !== row.id));
+            Swal.fire("Deleted!", "Record deleted successfully.", "success");
+          })
+          .catch(err => {
+            Swal.fire("Error!", "Failed to delete record.", "error");
+            console.error(err);
+          });
+      }
+    });
+  };
   // ✅ Page change
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -152,10 +235,7 @@ const Index = () => {
     fetchData(page, newPerPage, filters);
   };
 
-  // ✅ Action handlers
-  const handleEdit = (row) => alert("Edit " + row.id);
-  const handleLogin = (row) => alert("Login " + row.id);
-  const handleDelete = (row) => alert("Delete " + row.id);
+
 
   // ✅ Handle search/filter submit from form
   const handleSearch = (formData) => {
@@ -166,15 +246,15 @@ const Index = () => {
   };
 
   
-  const stickyColumns = tableColumns.map((col, index) => {
-    if (index === 0) {
-      return { ...col, style: { position: "sticky", left: 0, background: "#f9f9f9", zIndex: 2 } };
-    }
-    if (index === tableColumns.length - 1) {
-      return { ...col, style: { position: "sticky", right: 0, background: "#f9f9f9", zIndex: 2 } };
-    }
-    return col;
-  });
+  // const stickyColumns = tableColumns.map((col, index) => {
+  //   if (index === 0) {
+  //     return { ...col, style: { position: "sticky", left: 0, background: "#f9f9f9", zIndex: 2 } };
+  //   }
+  //   if (index === tableColumns.length - 1) {
+  //     return { ...col, style: { position: "sticky", right: 0, background: "#f9f9f9", zIndex: 2 } };
+  //   }
+  //   return col;
+  // });
 
   return (
     <Fragment>
@@ -194,7 +274,7 @@ const Index = () => {
         <DataTableComponent
           title="EFS Transactions List " 
           tableData={data}
-          tableColumns={stickyColumns}
+          tableColumns={tableColumns}
           loading={loading}
           pagination
           paginationServer

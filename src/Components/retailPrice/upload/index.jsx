@@ -120,7 +120,7 @@ const RetailPrice = () => {
             <Card>
               <HeaderCard title="Manage Retail Prices" />
               <CardBody>
-                <Upload btnTitle="Add Item" />
+                <Upload btnTitle="Submit" />
               </CardBody>
             </Card>
           </Col>

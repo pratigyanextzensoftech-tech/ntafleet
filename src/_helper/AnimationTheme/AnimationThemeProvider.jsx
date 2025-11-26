@@ -7,7 +7,7 @@ const AnimationThemeProvider = (props) => {
 
   const routerAnimation = (layout_anim) => {
     ConfigDB.data.router_animation = layout_anim;
-    localStorage.setItem('animation', layout_anim);
+    sessionStorage.setItem('animation', layout_anim);
     setAnimation(layout_anim);
   };
 

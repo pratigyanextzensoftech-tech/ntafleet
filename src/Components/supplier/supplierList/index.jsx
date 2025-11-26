@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { supplierAll } from '../../../api/index';
+import { supplier } from '../../../api/index';
 import SupplierList from './SupplierList';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import { Breadcrumbs } from '../../../AbstractElements';
 import { Container , Row, Col, Card, CardBody  } from 'reactstrap';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-
+import Swal from 'sweetalert2';
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -18,7 +18,8 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
   const [openRowId, setOpenRowId] = useState(null);
-
+  const [selectedRow, setSelectedRow] = useState(null);
+const[Edit,setEdit]=useState(false)
   // Column mapping: display name => API field
   const columnsMap = {
     "Supplier ID": "id",
@@ -32,7 +33,7 @@ const Index = () => {
       const start = (page - 1) * perPage;
       const params = { draw, start, length: perPage, ...filtersData };
 
-      const response = await axios.get(supplierAll, { params });
+      const response = await axios.get(supplier, { params });
       const apiData = Array.isArray(response.data.data) ? response.data.data : response.data;
 
       const tableData = apiData.map(row => {
@@ -63,15 +64,46 @@ const Index = () => {
     setPerPage(newPerPage);
     setCurrentPage(page);
   };
-
+const handleDataAdded = () => {
+  fetchData(currentPage, perPage, filters);
+};
   // Actions
-  const handleEdit = (row) => console.log("Edit", row);
-  const handleDelete = (row) => {
-    if (window.confirm(`Delete Supplier "${row["Supplier Name"]}"?`)) {
-      setData(prev => prev.filter(item => item.id !== row.id));
-      // TODO: call delete API here
-    }
-  };
+  const handleEdit =(row)=>{
+    setEdit(true)
+    setSelectedRow(row); 
+  }
+
+
+   const handleDelete = (e,row) => {
+    console.log(row.id)
+    console.log(data)
+    e.preventDefault()
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you really want to delete ?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete(`${supplier}/${row.id}`)
+            .then((res) => {
+        setData((prevData) => prevData.filter((item) => item.id !== row.id));
+
+              Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+                console.log(res.data)
+  
+            })
+            .catch((error) => {
+              Swal.fire('Error!', 'Failed to delete record.', 'error');
+              console.log(error)
+            });
+        }
+      });
+    }; 
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -121,7 +153,7 @@ const Index = () => {
               <button
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
+                onClick={(e) => handleDelete(e,row)}
               >
                 <FaTrashAlt /> Delete
               </button>
@@ -137,7 +169,6 @@ const Index = () => {
 
     setTableColumns(cols);
   }, [openRowId]);
-
   return (
     <>
       <Breadcrumbs parent='Supplier' title='Manage Supplier' />
@@ -155,7 +186,9 @@ const Index = () => {
               <HeaderCard title="Add Supplier" />
               <CardBody>
 
-                <SupplierList btntitle="Add Supplier" btnTitle1="Reset" />
+                <SupplierList  Edit={Edit}
+  selectedRow={selectedRow}
+  setEdit={setEdit} btntitle="Add Supplier" btnTitle1="Reset"  onDataAdded={handleDataAdded}/>
 
               </CardBody>
             </Card>

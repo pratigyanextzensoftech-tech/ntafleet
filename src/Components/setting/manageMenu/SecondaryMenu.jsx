@@ -1,5 +1,5 @@
 
-import React, { Fragment } from 'react';
+import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
@@ -8,8 +8,10 @@ import { type } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import usePmenu from '../../../Hooks/usePmenu';
-
-const SecondaryMenu = ({ title }) => {
+import { menu,smenu } from '../../../api';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
     const { pmenu, loading, error } = usePmenu();
     const {
         register,
@@ -18,6 +20,71 @@ const SecondaryMenu = ({ title }) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+     useEffect(() => {
+      if (Edit && selectedRow) {
+        console.log(selectedRow)
+        reset({
+            menuName: selectedRow.name,
+          primaryMenu:{
+          value:  selectedRow.idmenu,
+          },
+          menuLink: selectedRow.link,
+           type:{
+            value:selectedRow.sw,
+            label:selectedRow.sw==0?"visible":"hidden"
+           }
+        });
+      }
+    }, [Edit, selectedRow]);
+         const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = { 
+    "name":formData.menuName,
+    "link":formData.menuLink?formData.menuLink:'',
+    "idmenu":formData.primaryMenu.value?formData.primaryMenu.value:"",
+    "dated":new Date(),
+    "ord":0,
+    "icon":"",
+    "del":0,
+    "idby":sessionStorage.getItem('userId'),
+    "sw":0 
+     }
+      if (Edit && selectedRow) {
+            console.log(selectedRow)
+          axios.put(`${menu}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+          if (fetchSmenuData)  fetchSmenuData.fetchData();
+          setEdit(false);
+          reset({
+       city:"",
+      country:"",
+      state:"",
+     
+          });
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
+    axios.post(menu,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+          if (fetchSmenuData)  fetchSmenuData.fetchData();
+
+    reset();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+}
+        };
     return (
 
         <Fragment>
@@ -25,7 +92,7 @@ const SecondaryMenu = ({ title }) => {
                 <Col>
                     <fieldset>
                         <legend>{title}</legend>
-                        <Form>
+                        <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                             <Row>
                                 <Col sm="4">
                                     <DropDown
@@ -82,7 +149,7 @@ const SecondaryMenu = ({ title }) => {
                                 </Col>
                                 <Col md={8}>
                                     <div className='text-end'>
-                                        <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >Add Menu</Btn>
+                                        <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Menu"}</Btn>
                                     </div>
                                 </Col>
                             </Row>

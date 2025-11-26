@@ -4,8 +4,7 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import { OwnerOperatorRackTab } from "../../../Data/tab/OwnerOperatorRackTab";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
+
 const index = () => {
   return (
     <Fragment>
@@ -24,11 +23,7 @@ const index = () => {
             </Card>
           </Col>
         </Row>
-          <DataTableComponent
-          title="Rack Cent List"
-          tableData={dummytabledata}
-          tableColumns={tableColumns}
-        />
+      
       </Container>
     </Fragment>
   );

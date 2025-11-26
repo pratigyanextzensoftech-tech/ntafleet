@@ -23,7 +23,9 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
+import { useCountry } from "../../../Hooks/Dropdowns";
+const UpdateUnitForm = ({ btnTitle }) => {
+  const{data:country}=useCountry()
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
 
@@ -43,7 +45,6 @@ const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
       setShowMessage(false); // hide only when form is completely valid
     }
   };
-
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
@@ -153,7 +154,7 @@ const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={optionscountry}
+                    options={country}
                     className="form-control p-0 border-0"
                     placeholder="Select Country"
                   />
@@ -200,7 +201,6 @@ const UpdateUnitForm = ({ btnTitle, btnTitle1 }) => {
             >
               {btnTitle}
             </Btn>
-            <button className="btn btn-secondary">{btnTitle1}</button>
           </div>
         </Col>
       </Row>

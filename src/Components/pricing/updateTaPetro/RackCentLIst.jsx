@@ -4,6 +4,8 @@ import {
   Row,
   Form,
   FormGroup,
+  Container,
+  Card,CardBody,
   InputGroup,
   InputGroupText,
   Input,
@@ -15,11 +17,13 @@ import {
   pricigSupplier,
   optionscompany,
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import HeaderCard from "../../Common/Component/HeaderCard";
+import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
+import { tableColumns,dummytabledata } from "../../../Data/Table/Defaultdata";
 import DatePicker from "react-datepicker";
-
+import { useCompany } from "../../../Hooks/Dropdowns";
 
 const RackCentList = ({ title, btnTitle }) => {
+  const {data:company}=useCompany()
   const {
     register,
     control,
@@ -42,17 +46,35 @@ const RackCentList = ({ title, btnTitle }) => {
               noValidate=""
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div
-                style={{
-                  border: "1px solid #ccc",
-                  padding: "5px 5px",
-                  bprderRadius: "3px",
-                  marginBottom: "10px",
-                }}
-              >
+            
                 <Row className="mt-3">
-               
-                  <Col sm="5">
+                    <Col sm="3">
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <InputGroupText>Company</InputGroupText>
+                        <Controller
+                          name="company"
+                          control={control}
+                          rules={{ required: "company is required" }}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              options={company}
+                              className="form-control p-0 border-0"
+                              placeholder="Select a country"
+                            />
+                          )}
+                        />
+                      </InputGroup>
+
+                      {errors.company && (
+                        <span className="text-danger">
+                          {errors.company.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                  </Col>
+                  <Col sm="3">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
@@ -83,7 +105,7 @@ const RackCentList = ({ title, btnTitle }) => {
                       </FormGroup>
                     </Row>
                   </Col>
-                  <Col sm="5">
+                  <Col sm="3">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
@@ -115,7 +137,7 @@ const RackCentList = ({ title, btnTitle }) => {
                     </Row>
                   </Col>
 
-                  <Col sm="2">
+                  <Col sm="3">
                     <div className="text-end">
                       <Btn
                         attrBtn={{
@@ -129,11 +151,24 @@ const RackCentList = ({ title, btnTitle }) => {
                     </div>
                   </Col>
                 </Row>
-              </div>
             </Form>
           </fieldset>
         </Col>
       </Row>
+  <Container fluid>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <CardBody>
+ <DataTableComponent
+          title="Pricing PDF List "
+          tableData={dummytabledata}
+          tableColumns={tableColumns}
+        />
+              </CardBody>
+              </Card></Col>
+              </Row ></Container>
+
     </Fragment>
   );
 };

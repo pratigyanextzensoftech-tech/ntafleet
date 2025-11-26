@@ -6,6 +6,7 @@ import View from './View';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent'; 
 import qs from 'qs'
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { tcheck_invoice } from '../../../api';
 import {
   FaDownload,
@@ -171,7 +172,7 @@ const Index = () => {
               <button
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
+                onClick={(e) => handleDelete(e,row)}
               >
                 <FaTrashAlt /> Delete
               </button>
@@ -188,7 +189,40 @@ const Index = () => {
   // ✅ Action handlers
   const handleEdit = (row) => alert("Edit " + row.id);
   const handleLogin = (row) => alert("Login " + row.id);
-  const handleDelete = (row) => alert("Delete " + row.id);
+
+ const handleDelete = (e,row) => {
+  e.preventDefault()
+            console.log(row)
+            console.log(data)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${tcheck_invoice}/${row.id}`)
+          .then((res) => {
+            setData((prevData) => {
+  prevData.forEach((item) => console.log("Existing item id:", item.id)); // ✅ print each item id
+  return  prevData.filter((item) => item.id !== row.id);
+});
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+              console.log(res.data)
+
+          })
+          .catch((error) => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+            console.log(error)
+          });
+      }
+    });
+  };  
   const handleEmail = (row) => alert("Delete " + row.id);
   const handleRegenerateInvoice = (row) => alert("Delete " + row.id);
   const handleView = (row) => alert("Delete " + row.id);

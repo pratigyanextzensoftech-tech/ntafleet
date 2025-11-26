@@ -8,11 +8,11 @@ import PrivateRoute from "./PrivateRoute";
 import OtpVerify from "../Auth/OtpVerify";
 
 const Routers = () => {
-  const login = JSON.parse(localStorage.getItem("login"));
+  const login = JSON.parse(sessionStorage.getItem("login"));
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    setAuthenticated(JSON.parse(localStorage.getItem("authenticated")));
+    setAuthenticated(JSON.parse(sessionStorage.getItem("authenticated")));
   }, []);
 
   return (

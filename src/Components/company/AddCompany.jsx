@@ -408,7 +408,7 @@ const Index = () => {
                         <InputGroup className="mb-3">
                           <InputGroupText>Country</InputGroupText>
                           <Select
-                            options={optionscountry}
+                            options={countries}
                             className="form-control p-0 border-0"
                             name="country_name"
                           />

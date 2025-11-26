@@ -12,24 +12,24 @@ const UserHeader = () => {
   const [profile, setProfile] = useState("");
   const [name, setName] = useState("");
   const { layoutURL } = useContext(CustomizerContext);
-  const authenticated = JSON.parse(localStorage.getItem("authenticated"));
-  const auth0_profile = JSON.parse(localStorage.getItem("auth0_profile"));
+  const authenticated = JSON.parse(sessionStorage.getItem("authenticated"));
+  const auth0_profile = JSON.parse(sessionStorage.getItem("auth0_profile"));
 
   useEffect(() => {
-    setProfile(localStorage.getItem("profileURL") || man);
-    setName(localStorage.getItem("Name") ? localStorage.getItem("Name") : name);
+    setProfile(sessionStorage.getItem("profileURL") || man);
+    setName(sessionStorage.getItem("Name") ? sessionStorage.getItem("Name") : name);
   }, []);
 
   const Logout = () => {
-    localStorage.removeItem("profileURL");
-    localStorage.removeItem("token");
-    localStorage.removeItem("auth0_profile");
-    localStorage.removeItem("Name");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("login");
-    localStorage.removeItem("Menu");
+    sessionStorage.removeItem("profileURL");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("auth0_profile");
+    sessionStorage.removeItem("Name");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("login");
+    sessionStorage.removeItem("Menu");
 
-    localStorage.setItem("authenticated", false);
+    sessionStorage.setItem("authenticated", false);
     history(`/login`);
   };
 

@@ -8,7 +8,9 @@ import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import {
   owner_report,report,report_new
 } from "../../../api";
+import Swal from 'sweetalert2';
 import usePaginatedTable from "../../../Hooks/usePagination";
+import axios from 'axios';
 const Index = () => {
   const { createColumns } = useSelectableColumns();
     // ✅ Define individual column mappings per API
@@ -62,11 +64,11 @@ reportList : {
    
   
   const tabs = [
-    { id: "1", label: "Report List", data: reportList, map: columnSets.reportList },
-    { id: "2", label: "Owner Operator Report List", data:ownerReportlist, map:  columnSets.ownerReportlist },
-    { id: "3", label: "Old Report List", data: oldReportList, map: columnSets.oldReportList },
-   
-  ];
+  { id: "1", label: "Report List", data: reportList, map: columnSets.reportList, deleteApi: report_new },
+  { id: "2", label: "Owner Operator Report List", data: ownerReportlist, map: columnSets.ownerReportlist, deleteApi: owner_report },
+  { id: "3", label: "Old Report List", data: oldReportList, map: columnSets.oldReportList, deleteApi: report },
+];
+
   // ✅ Define tab content dynamically
   const ReportTableTab = tabs.map((tab) => ({
     id: tab.id,
@@ -80,7 +82,40 @@ reportList : {
     showDownload: true,         // ✅ conditionally show download
     showDelete: true,          // ❌ hide delete
     onDownload: (row) => console.log("Download:", row),
-    onDelete: (row) => console.log("Delete:", row),
+  onDelete: (row) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then(result => {
+    if (result.isConfirmed) {
+
+      axios.delete(`${tab.deleteApi}/${row.id}`)
+        .then(res => {
+
+          // Remove deleted row from table
+          tab.data.setData(prev => prev.filter(item => item.id !== row.id));
+
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+
+          // refresh table if server uses pagination
+          tab.data.fetchData();
+
+        })
+        .catch(err => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+          console.error(err);
+        });
+
+    }
+  });
+},
+
 
     
     })}

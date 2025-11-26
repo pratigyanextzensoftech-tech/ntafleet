@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Form,
   Row,
@@ -20,20 +20,133 @@ import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Select from "react-select";
+import { useCompany } from "../../../Hooks/Dropdowns";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { sub_company as APINAME } from "../../../api";
 
-const SubLoginForm = ({ btnTtitle }) => {
+const SubLoginForm = ({ btnTtitle,onDataAdded,selectedRow,Edit,setEdit,setSelectedRow }) => {
+  const{data}=useCompany()
   const {
     register,
     control,
     reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  } = useForm(
+  //   {
+  //     defaultValues: {
+  //   Name: "",
+  //   email: "",
+  //   otpEmail: "",
+  //   card: null,
+  //   company: null,
+  //   userName: "",
+  //   password: "",
+  // }
+  // }
+);
+useEffect(() => {
+  if (Edit && selectedRow) {
+console.log(selectedRow)
+  const selectedCompany = data?.find(
+      (item) => item.value === selectedRow.company_id
+    );
+    const cardDiscount = companyLoginAccess?.find(
+      (item) => item.value === selectedRow.card_discount == '0' ? "Yes" : "No"
+    );
+  
+console.log(data)
+    reset({
+      Name: selectedRow.name,
+      email: selectedRow.email,
+      otpEmail: selectedRow.otp_email,
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+    company: 
+         {
+            value:selectedCompany.value ,
+            label: selectedCompany.label,
+          }
+        ,
+
+      card: {
+        value: cardDiscount.value,
+        label: cardDiscount.label
+      },
+
+      userName: selectedRow.username,
+      password: selectedRow.password,
+      added_by: selectedRow.Added_By,
+      added_on: selectedRow.Added_On
+    });
+  }
+}, [Edit, selectedRow, reset]);
+
+  const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+
+     const payload = {
+    name: formData.Name,
+    email:formData.email,
+    otp_email:formData.otpEmail,
+    card_discount:formData.card.label,   
+    company_name:formData.company.label,
+company_id:formData.company.value,
+username:formData.userName,
+password:formData.password,
+added_by:sessionStorage.getItem("userId"),
+added_on: new Date()
+     }
+
+      if (Edit && selectedRow) {
+          axios.put(`${APINAME}/${selectedRow.id}`, payload)
+        .then((res) => {
+          toast.success("Supplier updated successfully!");
+          setSelectedRow(null);
+          setEdit(false);
+ reset({
+        Name: "",
+        email: "",
+        otpEmail: "",
+        card: {
+          value:"",
+          label:""
+        },
+  company: {
+    value: "",
+    label: ""
+  },
+        userName: "",
+        password: "",
+      });
+
+          if (onDataAdded) onDataAdded(res.data);
+
+        })
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    }
+    else{
+ axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+   reset();
+
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data);
+
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+    }
+   
+        };
   return (
     <div>
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
@@ -120,6 +233,9 @@ const SubLoginForm = ({ btnTtitle }) => {
                         options={companyLoginAccess}
                         className="form-control p-0 border-0"
                         placeholder="Select  "
+         value={field.value}
+      onChange={(val) => field.onChange(val)}
+           
                       />
                     )}
                   />
@@ -143,9 +259,11 @@ const SubLoginForm = ({ btnTtitle }) => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={optionscompany}
+                        options={data}
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
+                       value={field.value}
+      onChange={(val) => field.onChange(val)}
                       />
                     )}
                   />
@@ -218,7 +336,7 @@ const SubLoginForm = ({ btnTtitle }) => {
                     type: "submit",
                   }}
                 >
-                  {btnTtitle}
+                  {Edit?"Update":btnTtitle}
                 </Btn>
               </div>
             </Col>

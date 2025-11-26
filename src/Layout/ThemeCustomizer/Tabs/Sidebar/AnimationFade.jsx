@@ -7,7 +7,7 @@ import AnimationThemeContext from '../../../../_helper/AnimationTheme';
 
 const AnimationFade = () => {
     const { routerAnimation } = useContext(AnimationThemeContext);
-    const layout_animation = localStorage.getItem('animation') || ConfigDB.data.router_animation;
+    const layout_animation = sessionStorage.getItem('animation') || ConfigDB.data.router_animation;
 
     useEffect(() => {
         ConfigDB.data.router_animation = layout_animation

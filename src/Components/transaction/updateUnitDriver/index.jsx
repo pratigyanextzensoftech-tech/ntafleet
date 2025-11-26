@@ -15,7 +15,7 @@ const index = () => {
             <Card>
               <HeaderCard title="Update Unit / Driver" />
               <CardBody>
-                <UpdateUnitForm btnTitle="Search Data" btnTitle1="Reset"/>
+                <UpdateUnitForm btnTitle="Update Data" />
               </CardBody>
             </Card>
           </Col>

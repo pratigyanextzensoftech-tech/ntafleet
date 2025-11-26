@@ -85,7 +85,7 @@ useEffect(() => {
               }}
             >
               <Link
-                to={`/manage_user/${btoa(row.id)}`}
+                to={`/tcheck_list/${btoa(row.id)}`}
                 className="dropdown-item d-flex align-items-center text-success"
                 style={{ padding: "8px 12px", gap: "8px" }}
               >

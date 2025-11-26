@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import {
   Col,
   Row,
@@ -6,25 +6,46 @@ import {
   FormGroup,
   InputGroup,
   InputGroupText,
-  Input,
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import {
-  supplier,
-  DiscountType,
-} from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-
+import axios from "axios";
+import { supplierById } from "../../../api";
 const MailTaPetro = ({ title, btnTtitle }) => {
-  const {
-    register,
+  const [supplierData,setSupplierData]=useState([])
+  
+ const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      supplier: null,
+    },
+  });
+
+  useEffect(() => {
+    
+     axios
+    .get(`${supplierById}/3`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
+
+      setSupplierData(formatted);
+      setValue("supplier", supplierData);
+
+      // ⭐ Automatically set default supplier based on type
+      
+    })
+    .catch((err) => console.log(err));
+   
+  }, [supplierData, setValue]);
 
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
@@ -81,7 +102,7 @@ const MailTaPetro = ({ title, btnTtitle }) => {
                         name="supplier"
                         control={control}
                         rules={{ required: "Supplier is required" }}
-                        defaultValue={supplier[5]}
+                        defaultValue={supplierData}
                         render={({ field }) => (
                           <Select
                             {...field}

@@ -1,9 +1,22 @@
-import React from 'react'
-import { Row, Col, FormGroup, InputGroup, InputGroupText, Container } from 'reactstrap';
-import { useForm, Controller } from 'react-hook-form';
-import DatePicker from 'react-datepicker'
-const DatePickerInput = ({name,control,placeholder,label,errors={},required}) => {
-    
+import React from "react";
+import {
+  Row,
+  Col,
+  FormGroup,
+  InputGroup,
+  InputGroupText,
+  Container,
+} from "reactstrap";
+import { useForm, Controller } from "react-hook-form";
+import DatePicker from "react-datepicker";
+const DatePickerInput = ({
+  name,
+  control,
+  placeholder,
+  label,
+  errors = {},
+  required,
+}) => {
   return (
     <>
      <FormGroup className="m-form__group">
@@ -16,7 +29,6 @@ const DatePickerInput = ({name,control,placeholder,label,errors={},required}) =>
  <Controller
             name={name}
             control={control}
-            rules={{ required:required}}
             render={({ field }) => (
               <DatePicker
                 placeholderText={placeholder}
@@ -30,16 +42,14 @@ const DatePickerInput = ({name,control,placeholder,label,errors={},required}) =>
         </Col>
                       
                       </InputGroup>
-  {errors[name] && (
-            <span className="text-danger">{errors[name].message}</span>
-          )}
+ 
                     </Row>
 
 
                  
                   </FormGroup>  
     </>
-  )
-}
+  );
+};
 
-export default DatePickerInput
+export default DatePickerInput;

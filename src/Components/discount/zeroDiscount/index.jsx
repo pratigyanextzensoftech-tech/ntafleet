@@ -1,11 +1,126 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useEffect,useState } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
 import ZeroDiscount from "./ZeroDiscount";
-const index = () => {
+import {zero_discount} from '../../../api/index'
+import usePaginatedTable from "../../../Hooks/usePagination";
+import { FaEdit,FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import axios from 'axios';
+const Index = () => {
+   const [tableColumns, setTableColumns] = useState([]);
+  
+    const columnsMap = {
+      "Id #": "id",
+      "	Location #": "loc_id",
+      "	State": "state",
+      "	City": "city",
+      "	Supplier": "supplier_id",
+      "	Added_On": "dated",
+      "Added_By": "idby",
+    };
+     const {
+        data,
+        totalRows,
+        loading,
+        handlePageChange,
+        handlePerRowsChange,
+        handleSearch, // ✅ Added
+        setData,
+        fetchData
+      } = usePaginatedTable({ apiUrl: zero_discount, columnsMap });
+       const [openRowId, setOpenRowId] = useState(null);
+      
+      
+        useEffect(() => {
+          const handleClickOutside = (event) => {
+            if (!event.target.closest(".dropdown-action")) {
+              setOpenRowId(null);
+            }
+          };
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => document.removeEventListener("mousedown", handleClickOutside);
+        }, []);
+        const handleChange = (id, field, value) => {
+          setData((prevData) =>
+            prevData.map((item) =>
+              item.id === id ? { ...item, [field]: value } : item
+            )
+          );
+      
+      
+        };
+         useEffect(() => {
+    const cols = Object.keys(columnsMap).map((key) => ({
+      name: key,
+      selector: (row) => row[key],
+      sortable: true,
+      wrap: true,
+    }));
+
+   
+
+    // ✅ Add Actions column at the end
+    cols.push({
+      name: "Action",
+      cell: (row) => (
+        <div className="position-relative dropdown-action">
+          <button
+            className="btn btn-sm btn-primary px-2"
+ onClick={(e) => handleDelete(e,row)}
+>
+             <FaTrashAlt /> Delete
+          </button>
+
+         
+
+        </div>
+      ),
+    });
+
+    setTableColumns(cols);
+  }, [openRowId]);
+
+  // ✅ Action handlers
+  const handleEdit = (row) => alert("Edit " + row.id);
+
+ const handleDelete = (e,row) => {
+  e.preventDefault()
+            
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${zero_discount}/${row[ "Id #"]}`)
+          .then((res) => {
+            setData((prevData) => {
+  prevData.forEach((item) => console.log("Existing item id:", item.id)); // ✅ print each item id
+  return  prevData.filter((item) => item[ "Id #"] !== row[ "Id #"]);
+});
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+              console.log(res.data)
+
+          })
+          .catch((error) => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+            console.log(error)
+          });
+      }
+    });
+  };  
+  const refreshTable=()=>{
+    fetchData()
+  }
   return (
     <Fragment>
       <Breadcrumbs parent="Discount" title="TA-Petro Zero Discount Location" />
@@ -15,7 +130,7 @@ const index = () => {
             <Card>
               <HeaderCard title="Add TA-Petro Zero Discount Location" />
               <CardBody>
-                <ZeroDiscount btnTitle="Save Location" />
+                <ZeroDiscount btnTitle="Save Location" onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>
@@ -23,11 +138,18 @@ const index = () => {
         <DataTableComponent
           title="TA-Petro Location List  "
           tableColumns={tableColumns}
-          tableData={dummytabledata}
+          tableData={data}
+          progressPending={loading}
+          pagination
+          paginationServer
+          loading={loading}
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
         />
       </Container>
     </Fragment>
   );
 };
 
-export default index;
+export default Index;

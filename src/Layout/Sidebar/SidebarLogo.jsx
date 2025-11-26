@@ -12,7 +12,7 @@ const SidebarLogo = () => {
     toggleSidebar(!toggleIcon);
   };
 
-  const layout1 = localStorage.getItem("sidebar_layout") || layout;
+  const layout1 = sessionStorage.getItem("sidebar_layout") || layout;
 
   return (
     <div className='logo-wrapper'>

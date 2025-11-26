@@ -18,9 +18,11 @@ import axios from "axios";
 import { upload_esso_pricing } from "../../../api";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import { supplierById } from "../../../api";
 const EssoPricing = ({ title, btnTtitle }) => {
   const [csvData, setCsvData] = useState([]);
   const [file, setFile] = useState(null);
+    const [supplierData,setSupplierData]=useState([])
   const [pricingDate, setPricingDate] = useState(new Date());
   const { data: suppliers, loading } = useSupplier();
 const [fileKey, setFileKey] = useState(Date.now());
@@ -37,11 +39,25 @@ const [fileKey, setFileKey] = useState(Date.now());
   });
 
   // 🧠 Auto-select default supplier
-  useEffect(() => {
-    if (suppliers.length > 0) {
-      setValue("supplier", suppliers[5]); // pick first by default
-    }
-  }, [suppliers, setValue]);
+ useEffect(() => {
+     
+      axios
+     .get(`${supplierById}/6`)
+     .then((res) => {
+       const formatted = res.data.map((s) => ({
+         value: s.id,
+         label: s.supplier_name,
+       }));
+ 
+       setSupplierData(formatted);
+       setValue("supplier", supplierData);
+ 
+       // ⭐ Automatically set default supplier based on type
+       
+     })
+     .catch((err) => console.log(err));
+    
+   }, [supplierData, setValue]);
 
   // 🧩 Handle CSV file upload
   const handleFileChange = (e) => {
@@ -201,6 +217,7 @@ const formatDate = (value) => {
                       <Controller
                         name="supplier"
                         control={control}
+                        defaultValue={supplierData}
                         rules={{ required: "Supplier is required" }}
                         render={({ field }) => (
                           <Select
@@ -211,7 +228,6 @@ const formatDate = (value) => {
                                 ? "Loading suppliers..."
                                 : "Select supplier"
                             }
-                            options={suppliers}
                             isLoading={loading}
                             onChange={(option) => field.onChange(option)}
                             value={field.value}

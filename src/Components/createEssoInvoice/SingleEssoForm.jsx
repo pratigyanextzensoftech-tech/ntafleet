@@ -1,4 +1,4 @@
-import React, { Fragment,useState } from "react";
+import React, { Fragment,useState,useEffect } from "react";
 import Select from "react-select";
 import {
   checkBoxData,
@@ -23,19 +23,79 @@ import {
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
+import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
-import HeaderCard from "../Common/Component/HeaderCard";
-const SingleEssoForm = ({ title, btnTtitle, type }) => {
+import axios from "axios";
+import { supplierById } from "../../api";
+const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type }) => {
+     const[supplierData,setSupplierData]=useState([])
+  
+  const{data:company}=useCompany()
+  const{data:country}=useCountry()
   console.log(type, "++++++++++++++");
   const [selectedValues, setSelectedValues] = useState([]);
   const {
     register,
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
+const getParamsByType = () => {
+  switch (type) {
+    case "single_ultramar":
+      return "10";
+    case "single_owner_ultramar":
+      return "10";
+      case "repeat_ultramar":
+      return "10";
+      case "esso_invoice":
+        return 6;
+        case "owner_operator":
+          return 6;
+        case "single":
+        return "6"
+    default:
+      return "3,6"; // no type → hit default API
+  }
+};
+useEffect(() => {
+  const params = getParamsByType();
+  axios
+    .get(`${supplierById}/${params}`)
+    .then((res) => {
+      const formatted = res.data.map((s) => ({
+        value: s.id,
+        label: s.supplier_name,
+      }));
 
+      setSupplierData(formatted);
+
+      // ⭐ Automatically set default supplier based on type
+      if (type === "single_ultramar") {
+        setValue("supplier", formatted[0]); // pick first data
+      } else if (type === "single_owner_ultramar") {
+        setValue("supplier", formatted[1] || formatted[0]);
+      }
+      else if(type==="repeat_ultramar"){
+                setValue("supplier", formatted[0] );
+      }
+      else if(type==="esso_invoice" || type==="single" || type==="owner_operator"){
+                        setValue("supplier", formatted[0] );
+
+      }
+      else { 
+        setValue("supplier", null); // no default for no-type
+      }
+    })
+    .catch((err) => console.log(err));
+}, [type, setValue]);
+ useEffect(() => {
+    if (!country || country.length === 0) return;
+      setValue("country", country[1]);
+    
+  }, [ country]);
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
@@ -74,7 +134,7 @@ const SingleEssoForm = ({ title, btnTtitle, type }) => {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={optionscompany}
+                        options={company}
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
                       />
@@ -157,27 +217,36 @@ const SingleEssoForm = ({ title, btnTtitle, type }) => {
                 </Row>
               </FormGroup>
             </Col>
-            <Col sm="3">
+         <Col sm="3">
               <FormGroup className="m-form__group">
-                <InputGroup>
-                  <InputGroupText>End Date</InputGroupText>
-                  <Controller
-                    name="endDate"
-                    control={control}
-                    rules={{ required: "End Date is required" }}
-                    render={({ field }) => (
-                      <DatePicker
-                        placeholderText="Select end date"
-                        className={`form-control digits`}
-                        selected={field.value}
-                        onChange={(date) => field.onChange(date)}
+                <Row>
+                  <InputGroup>
+                    <Col sm="4">
+                      {" "}
+                      <InputGroupText>End Date</InputGroupText>
+                    </Col>
+                    <Col sm="8">
+                      <Controller
+                        name="endDate"
+                        control={control}
+                        rules={{ required: "End Date is required" }}
+                        render={({ field }) => (
+                          <DatePicker
+                            placeholderText="Select End date"
+                            className={`form-control `}
+                            selected={field.value}
+                            onChange={(date) => field.onChange(date)}
+                          />
+                        )}
                       />
-                    )}
-                  />
-                </InputGroup>
-                {errors.endDate && (
-                  <span className="text-danger">{errors.endDate.message}</span>
-                )}
+                    </Col>
+                  </InputGroup>
+                  {errors.startDate && (
+                    <span className="text-danger">
+                      {errors.endDate.message}
+                    </span>
+                  )}
+                </Row>
               </FormGroup>
             </Col>
           </Row>
@@ -189,25 +258,13 @@ const SingleEssoForm = ({ title, btnTtitle, type }) => {
                   <Controller
                     name="supplier"
                     rules={{ required: "supplier is required" }}
-                    defaultValue={
-                      type === "single_ultramar" ||
-                      type === "single_owner_ultramar"
-                        ? { value: "Ultramar", label: "Ultramar" } // ✅ default must be an object
-                        : {
-                            value: InVoiceSupplier[2].value,
-                            label: InVoiceSupplier[2].label,
-                          }
-                    }
+                   
                     control={control}
                     render={({ field }) => (
                       <Select
                         {...field}
                         options={
-                          type === "single_ultramar" ||
-                          type === "single_owner_ultramar" ||
-                          type === "repeat_ultramar"
-                            ? [{ value: "Ultramar", label: "Ultramar" }] // ✅ array of objects
-                            : InVoiceSupplier // your normal supplier array
+                        supplierData
                         }
                         className="form-control p-0 border-0"
                         placeholder="Select supplier"
@@ -230,12 +287,11 @@ const SingleEssoForm = ({ title, btnTtitle, type }) => {
                   <Controller
                     name="country"
                     rules={{ required: "country is required" }}
-                    defaultValue={[optionscountry[2]]}
                     control={control}
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={[optionscountry[2]]}
+                        options={[country[1]]}
                         className="form-control p-0 border-0"
                         placeholder="Select Country"
                       />

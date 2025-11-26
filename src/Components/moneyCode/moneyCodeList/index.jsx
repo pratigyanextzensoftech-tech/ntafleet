@@ -9,7 +9,7 @@ import { Btn } from '../../../AbstractElements';
 import axios from 'axios';
 import { money_code } from '../../../api';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
-
+import Swal from "sweetalert2";
 const Index = () => {
   const [moneyCodes, setMoneyCodes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,11 +72,37 @@ const Index = () => {
   };
 
   const handleEdit = (row) => console.log("Edit:", row);
-  const handleDelete = (row) => {
-    if (window.confirm(`Delete "${row.company}"?`)) {
-      setMoneyCodes(prev => prev.filter(item => item.id !== row.id));
-    }
-  };
+ const handleDelete = (e,row) => {
+  e.preventDefault()
+            
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${money_code}/${row.id}`)
+          .then((res) => {
+            setMoneyCodes((prevData) => {
+  prevData.forEach((item) => console.log("Existing item id:", item.id)); // ✅ print each item id
+  return  prevData.filter((item) => item.id !== row.id);
+});
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+              console.log(res.data)
+
+          })
+          .catch((error) => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+            console.log(error)
+          });
+      }
+    });
+  }; 
 
   // Select all rows
   const handleSelectAll = (checked) => {
@@ -192,7 +218,7 @@ const Index = () => {
               <button
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
+                onClick={(e) => handleDelete(e,row)}
               >
                 <FaTrashAlt /> Delete
               </button>

@@ -7,7 +7,6 @@ import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab';
 import ManageMenuTable from '../../../Data/tab/ManageMenuTable'; 
 const Index = () => {
 const menuTabs = ManageMenuTable(); // returns array of tabs
-
   return (
     <Fragment>
       <Breadcrumbs parent='Setting' title='Manage Menu' />
@@ -17,7 +16,15 @@ const menuTabs = ManageMenuTable(); // returns array of tabs
             <Card>
               <HeaderCard title="Manage Menu" />
               <CardBody>
-                <BasicTabCard tabContent={ManageMenuTab} />
+<BasicTabCard
+  tabContent={ManageMenuTab({
+    selectedRow: menuTabs.selectedRow,
+    Edit: menuTabs.Edit,
+    fetchPmenuData:menuTabs.pmenu,
+    fetchSmenuData:menuTabs.sMenu,
+    setEdit: menuTabs.setEdit
+  })}
+/>
               </CardBody>
             </Card>
           </Col>
@@ -28,11 +35,12 @@ const menuTabs = ManageMenuTable(); // returns array of tabs
             <Card>
               <HeaderCard title="Menu List" />
               <CardBody>
-                <BasicTabCard tabContent={menuTabs} />
+                <BasicTabCard tabContent={menuTabs.tabs} />
               </CardBody>
             </Card>
           </Col>
         </Row>
+
       </Container>
     </Fragment>
   );

@@ -7,8 +7,8 @@ import CustomizerContext from "../../../../_helper/Customizer";
 
 const ColorsComponent = () => {
   const { addColor } = useContext(CustomizerContext);
-  const default_color = localStorage.getItem("default_color") || ConfigDB.data.color.primary_color;
-  const secondary_color = localStorage.getItem("secondary_color") || ConfigDB.data.color.secondary_color;
+  const default_color = sessionStorage.getItem("default_color") || ConfigDB.data.color.primary_color;
+  const secondary_color = sessionStorage.getItem("secondary_color") || ConfigDB.data.color.secondary_color;
   // const config_primary = configDB.color.primary_color;
   // const config_primary = configDB.color.primary_color;
   const [colorBackground1, setColorBackground1] = useState(default_color);

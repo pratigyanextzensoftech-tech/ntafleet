@@ -195,7 +195,9 @@ const DiscountSheetPage = () => {
       width: "160px",
     },
   ];
-
+const refreshTable=()=>{
+  fetchDiscountSheets()
+}
   return (
     <Fragment>
       <Breadcrumbs parent="Discount" title="Manage Discount Sheet" />
@@ -205,7 +207,7 @@ const DiscountSheetPage = () => {
             <Card>
               <HeaderCard title="Create Discount Sheet" />
               <CardBody>
-                <DiscountSheetForm btnTitle="Create" />
+                <DiscountSheetForm btnTitle="Create" onDataAdded={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

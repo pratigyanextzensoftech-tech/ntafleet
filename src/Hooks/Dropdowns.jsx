@@ -7,6 +7,7 @@ import {
   salesmanAll,
   esso_rack_all,
   country_all,
+  state_all
 } from "../api/index";
 
 /**
@@ -52,11 +53,16 @@ const useDropdown = (apiUrl, mapFn) => {
  * 🔸 Specific dropdown hooks
  */
 
-export const useCompany = () =>
-  useDropdown(companyall, (c) => ({
+export const useCompany = (invoice_creation = "") => {
+  const url = invoice_creation
+    ? `${companyall}?invoice_creation=${invoice_creation}`
+    : companyall;
+
+  return useDropdown(url, (c) => ({
     value: c.company_id,
     label: c.company_name,
   }));
+};
 
 export const useItems = () =>
   useDropdown(itemsAll, (i) => ({
@@ -69,6 +75,7 @@ export const useSupplier = () =>
     value: s.id,
     label: s.supplier_name,
   }));
+  
 
 export const useSalesman = () =>
   useDropdown(salesmanAll, (s) => ({
@@ -81,8 +88,14 @@ export const useSalesman = () =>
     value: s.id,
     label: s.name,
   }));
- 
 
+
+   export const useStates = () =>
+    useDropdown(state_all, (s) => ({
+    value: s.state_id,
+    label: s.province_name,
+  }));
+   
   export const useCountry = () => {
   const { data, loading, error } = useDropdown(country_all, (s) => ({
     value: s.country_id,
@@ -91,7 +104,7 @@ export const useSalesman = () =>
 
   // Add static first entry (e.g., "Select Country")
   const countries = [
-    { value: "0", label: "Both Country" }, // 👈 static option
+    { isDisabled: true, label: "Select Country" }, // 👈 static option
     ...data,
   ];
 

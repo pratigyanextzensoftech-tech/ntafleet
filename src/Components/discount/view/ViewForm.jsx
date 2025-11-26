@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import {
   checkBoxData,
@@ -28,9 +28,17 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import useCompany from "../../../Hooks/useCompany";
 import useSupplier from "../../../Hooks/useSupplier";
-const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
+import axios from "axios";
+import { toast } from "react-toastify";
+import { discount_list as APINAME } from "../../../api"; // ✅ Your API endpoint
+import { useCountry } from "../../../Hooks/Dropdowns";
+import { supplierById } from "../../../api";
+const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
-  const { supplier, loading, error } = useSupplier();
+  const { supplier, loading, error,setValue } = useSupplier();
+  const {data:country}=useCountry()
+    const[supplierData,setSupplierData]=useState([])
+  
   const {
     register,
     control,
@@ -38,11 +46,66 @@ const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
+ useEffect(() => {
+  
+    axios
+      .get(`${supplierById}/1,5,4`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
+  
+        setSupplierData(formatted);
+          setValue("supplier", null); // no default for no-type
+      })
+      .catch((err) => console.log(err));
+  }, [ setValue]);
+ const onSubmit = (formData) => {
+                        console.log("Form Data:", formData);  // ✅ This will print your inputs
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+     const payload = {
+      company_id:formData.company.value,
+      company_name:formData.company.label,
+   end_date: formData.endDate,
+    start_date:formData.startDate,
+    country:formData.country.label,
+supplier_id:formData.supplier.value,
+supplier_name:formData.supplier.label,
+discount_amt_us:formData.discount,
+// discount_amt_us:0,
+discount_ca:0,
+total_ca:0,
+retail_total_ca:0,
+fuel_unit_ca:0,
+fuel_unit_ca_disc_free:0,
+discount_amt_ca:0,
+discount_us:0,
+total_us:0,
+retail_total_us:0,
+fuel_unit_us:0,
+fuel_unit_us_disc_free:0,
+added_by:sessionStorage.getItem("userId"),
+added_on:new Date()
+     }
+    axios.post(APINAME,payload)
+    .then((res)=>{
+        console.log(res);
+       
+          toast.success("Add successfully!");
+ reset();
+
+    // ✅ Immediately update UI
+    if (onDataAdded) onDataAdded(res.data);
+   reset();
+
+        // if (onDataAdded) onDataAdded();
+    })
+    .catch((err)=>{
+        console.log(err);
+          toast.error(err.message);
+    })
+        };
 
   return (
     <> 
@@ -91,8 +154,9 @@ const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
               rules={{ required: "Country is required" }}
               placeholder="Select Country"
               // loading={companyLoading}
-              options={optionscountry}
-            />
+              options={country.filter((_,i)=>i!==0)}
+
+/>
           </Col>
           <Col sm="4">
             <DropDown
@@ -103,7 +167,7 @@ const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
               rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
               // loading={companyLoading}
-              options={viewDiscountsupplier}
+              options={supplierData}
             />
           </Col>
 
@@ -117,6 +181,7 @@ const ViewForm = ({ title, btnTitle, btnTitle1 }) => {
                 }}
               >
                 {btnTitle}
+                
               </Btn>
               <button className="btn btn-secondary">{btnTitle1}</button>
             </div>

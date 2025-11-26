@@ -1,20 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
-import { FaEdit, FaSignInAlt } from "react-icons/fa";
+import React, { useState, useRef, useEffect } from "react";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import DataTableComponent from "../../Components/Tables/DataTable/DataTableComponent";
+import { pmenu as pmenuApi, smenu as smenuApi } from "../../api";
+import usePaginatedTable from "../../Hooks/usePagination";
 import axios from "axios";
-import { pmenu as pmenuApi } from "../../api";
-
-// 🔹 Action Dropdown (Edit + Login, closes on outside click)
-const ActionDropdown = ({ row, onEdit, onLogin }) => {
+import Swal from "sweetalert2";
+import { menu } from "../../api";
+// 🔹 Action Dropdown
+const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef();
+  const dropdownRef = useRef(null);
 
-  const toggle = () => setOpen(!open);
-
-  // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpen(false);
       }
     };
@@ -24,121 +23,180 @@ const ActionDropdown = ({ row, onEdit, onLogin }) => {
 
   return (
     <div ref={dropdownRef} className="position-relative dropdown-action">
-      <button className="btn btn-sm btn-primary px-2" onClick={toggle}>
+      <button
+        type="button"
+        className="btn btn-sm btn-primary show_hide"
+        style={{ padding: "2px 4px" }}
+        onClick={() => setOpen((prev) => !prev)}
+      >
         Action
       </button>
 
       {open && (
-        <div
-          className="position-absolute bg-white border rounded shadow"
-          style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 150, padding: "5px 0" }}
+        <ul
+          className="dropdown-menu show"
+          style={{
+            display: "block",
+            position: "absolute",
+            right: 0,
+            marginTop: 4,
+            zIndex: 9999,
+            minWidth: 120,
+          }}
         >
-          <button
-            className="dropdown-item d-flex align-items-center"
-            style={{ padding: "8px 12px", gap: "8px" }}
-            onClick={() => onEdit(row)}
-          >
-            <FaEdit /> Edit
-          </button>
-          <button
-            className="dropdown-item d-flex align-items-center"
-            style={{ padding: "8px 12px", gap: "8px" }}
-            onClick={() => onLogin(row)}
-          >
-            <FaSignInAlt /> Login
-          </button>
-        </div>
+          <li>
+            <button
+              type="button"
+              className="text-success dropdown-item d-flex align-items-center"
+              onClick={() => {
+                setOpen(false);
+                onEdit(row, apiUrl);
+              }}
+            >
+              <FaEdit className="me-2" /> Edit
+            </button>
+          </li>
+
+          <li>
+            <button
+              type="button"
+              className="text-danger dropdown-item d-flex align-items-center"
+              onClick={() => {
+                setOpen(false);
+                onDelete(row);
+              }}
+            >
+              <FaTrashAlt className="me-2" /> Delete
+            </button>
+          </li>
+        </ul>
       )}
     </div>
   );
 };
 
-// 🔹 Table Columns
-const tableColumns = (handleEdit, handleLogin) => [
-  { name: "ID", selector: (row) => row.id, sortable: true, width: "80px" },
-  { name: "Menu Name", selector: (row) => row.name, sortable: true },
-  { name: "Menu Link", selector: (row) => row.link, sortable: true },
-  { name: "Added By", selector: (row) => row.idby, sortable: true },
-  { name: "Added On", selector: (row) => row.dated, sortable: true },
-  { name: "Menu Order", selector: (row) => row.ord, sortable: true, width: "120px" },
-  {
-    name: "Action",
-    cell: (row) => <ActionDropdown row={row} onEdit={handleEdit} onLogin={handleLogin} />,
-    center: true,
-    width: "150px",
-  },
-];
-
 const ManageMenuTable = () => {
-  const [pmenuData, setPmenuData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [Edit, setEdit] = useState(false);
 
-  const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [draw, setDraw] = useState(1);
+  // 🔹 Columns mapping for your custom hook
+  const columnSets = {
+    primaryMenu: {
+      Id: "id",
+      "Menu Name": "name",
+      "Menu Link": "link",
+      "Added By": "added_by",
+      "Added On": "dated",
+      "Menu Order": "ord",
+    },
+    secondaryMenu: {
+      Id: "id",
+      "Menu Name": "name",
+      "Primary Menu": "primary_menu",
+      "Menu Link": "link",
+      "Added By": "added_by",
+      "Added On": "dated",
+      "Menu Order": "ord",
+    },
+  };
 
-  // ✅ Fetch API with server-side pagination
-  const fetchMenuData = async (page = 1, limit = 10) => {
-    setLoading(true);
+  // 🔹 Fetch data via custom hook
+  const pmenu = usePaginatedTable({
+    apiUrl: pmenuApi,
+    columnsMap: columnSets.primaryMenu,
+  });
+
+  const sMenu = usePaginatedTable({
+    apiUrl: smenuApi,
+    columnsMap: columnSets.secondaryMenu,
+  });
+
+  // 🔹 DELETE
+  const handleDelete = (row) => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${menu}/${row["Id"]}`)
+          .then(() => {
+            Swal.fire("Deleted!", "Record deleted successfully.", "success");
+            pmenu.fetchData();
+            sMenu.fetchData();
+          })
+          .catch(() => Swal.fire("Error!", "Failed to delete.", "error"));
+      }
+    });
+  };
+
+  // 🔹 EDIT
+  const handleEdit = async (row) => {
+    console.log(row,"row")
     try {
-      const start = (page - 1) * limit;
-      const params = { draw, start, length: limit };
-      const res = await axios.get(pmenuApi, { params });
-
-      const data = Array.isArray(res.data.data) ? res.data.data : res.data;
-
-      const mappedData = data.map((item, index) => ({
-        id: item.id || index + 1,
-        name: item.name,
-        link: item.link,
-        idby: item.idby,
-        dated: item.dated,
-        ord: item.ord,
-        menu_type: item.menu_type || "primary",
-      }));
-
-      setPmenuData(mappedData);
-      setTotalRows(res.data.recordsTotal || res.data.total || data.length);
-      setDraw((prev) => prev + 1);
+      const response = await axios.put(`${menu}/${row.Id}`);
+      setSelectedRow(response.data);
+      setEdit(true);
     } catch (error) {
-      console.error("Error fetching menu data:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching full row data", error);
     }
   };
 
-  useEffect(() => {
-    fetchMenuData(currentPage, perPage);
-  }, [currentPage, perPage]);
+  // 🔹 Generate columns
+  const getTableColumns = (apiUrl, includePrimary = false) => {
+    const cols = [
+      { name: "ID", selector: (row) => row.Id, sortable: true },
+      { name: "Menu Name", selector: (row) => row["Menu Name"], sortable: true },
+      { name: "Menu Link", selector: (row) => row["Menu Link"], sortable: true },
+      { name: "Added By", selector: (row) => row["Added By"], sortable: true },
+      { name: "Added On", selector: (row) => row["Added On"], sortable: true },
+      {
+        name: "Menu Order",
+        selector: (row) => row["Menu Order"],
+        sortable: true,
+      },
+      {
+        name: "Action",
+        cell: (row) => (
+          <ActionDropdown
+            row={row}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            apiUrl={apiUrl}
+          />
+        ),
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+      },
+    ];
 
-  const handlePageChange = (page) => setCurrentPage(page);
-  const handlePerRowsChange = (newPerPage, page) => {
-    setPerPage(newPerPage);
-    setCurrentPage(page);
+    if (includePrimary) {
+      cols.splice(2, 0, {
+        name: "Primary Menu",
+        selector: (row) => row["Primary Menu"],
+        sortable: true,
+      });
+    }
+
+    return cols;
   };
 
-  // ✅ Action handlers
-  const handleEdit = (row) => console.log("Edit:", row);
-  const handleLogin = (row) => console.log("Login:", row);
-
-  const primaryMenu = pmenuData.filter((item) => item.menu_type === "primary");
-  const secondaryMenu = pmenuData.filter((item) => item.menu_type === "secondary");
-
+  // 🔹 Tabs
   const tabContent = [
     {
       id: "1",
       label: "Primary Menu",
       component: (
         <DataTableComponent
-          tableColumns={tableColumns(handleEdit, handleLogin)}
-          tableData={primaryMenu}
-          loading={loading}
+          tableColumns={getTableColumns(pmenuApi)}
+          tableData={pmenu.data}
+          loading={pmenu.loading}
           pagination
           paginationServer
-          paginationTotalRows={totalRows}
-          onChangeRowsPerPage={handlePerRowsChange}
-          onChangePage={handlePageChange}
+          paginationTotalRows={pmenu.totalRows}
+          onChangeRowsPerPage={pmenu.handlePerRowsChange}
+          onChangePage={pmenu.handlePageChange}
         />
       ),
     },
@@ -147,20 +205,26 @@ const ManageMenuTable = () => {
       label: "Secondary Menu",
       component: (
         <DataTableComponent
-          tableColumns={tableColumns(handleEdit, handleLogin)}
-          tableData={secondaryMenu}
-          loading={loading}
+          tableColumns={getTableColumns(smenuApi, true)}
+          tableData={sMenu.data}
+          loading={sMenu.loading}
           pagination
           paginationServer
-          paginationTotalRows={totalRows}
-          onChangeRowsPerPage={handlePerRowsChange}
-          onChangePage={handlePageChange}
+          paginationTotalRows={sMenu.totalRows}
+          onChangeRowsPerPage={sMenu.handlePerRowsChange}
+          onChangePage={sMenu.handlePageChange}
         />
       ),
     },
   ];
 
-  return tabContent;
-};
+return {
+  tabs: tabContent,
+  selectedRow,
+  pmenu,
+  sMenu,
+  Edit,
+  setEdit
+};};
 
 export default ManageMenuTable;

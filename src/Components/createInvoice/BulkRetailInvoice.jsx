@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -11,27 +11,145 @@ import {
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import {
-  optionscountry,
-  supplier,
-} from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import HeaderCard from "../Common/Component/HeaderCard";
-const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
+import { useCountry } from "../../Hooks/Dropdowns";
+import { supplierById } from "../../api/index";
+import { toast } from "react-toastify";
+import { Create_retail_invoice, Create_rack_invoice } from "../../api/index";
+import Loader from "../../Layout/Loader";
+import axios from "axios";
+const BulkRetailInvoice = ({
+  title,
+  btnTtitle,
+  type,
+  rackcase,
+  invoice,
+  supplier_ids,
+  supplier_name,
+  invoice_creation,
+  invoice_type,
+}) => {
+  const [supplierData, setSupplierData] = useState([]);
+  const [loading, setLoading] = useState(false); 
+  const { data: country } = useCountry(); 
   const {
-    register,
     control,
+    reset,
     handleSubmit,
-    formState: { errors, isSubmitted, isValid },
+    formState: { errors },
+    setValue,
   } = useForm();
-
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
+  const onSubmit = (data) => {
+    setLoading(true);
+    console.log(data);
+
+    let payload = {}; // 🔥 declare first (important)
+
+    if (invoice === "rackInvoice") {
+      // 🔥 build payload for Rack Invoice
+      payload = {
+        supplier_id: data.supplier.value,
+        country_id: data.country.value,
+        from: data.startDate ? formatDate(data.startDate) : "",
+        to: data.endDate ? formatDate(data.endDate) : "",
+        invoice_creation: "weekly",
+        invoice_type: "Capped",
+      };
+      console.log("🚀 Final Payload Sent dd => ", payload);
+      axios
+        .post(Create_rack_invoice, payload, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          setLoading(false);
+          toast.success(res.data.message);
+          // reset();
+          console.log("🚀 resp => ", res.data.message);
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast.error(err);
+          console.log("🚀 Error => ", err);
+        });
+    } else {
+      // 🔥 build payload for Retail Invoice
+      payload = {
+        supplier_id: data.supplier.value,
+        country_id: data.country.value,
+        from: data.startDate ? formatDate(data.startDate) : "",
+        to: data.endDate ? formatDate(data.endDate) : "",
+        invoice_creation: "weekly",
+      };
+
+      axios
+        .post(Create_retail_invoice, payload, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          setLoading(false);
+          toast.success(res.data.message);
+          // reset();
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast.error(err);
+        });
+    }
+  };
+
+  const getParamsByType = () => {
+    switch (type) {
+      case "bulk_customized":
+        return "3";
+      default:
+        return "1,3,5,4,7";
+    }
+  };
+  useEffect(() => {
+    const params = getParamsByType();
+
+    axios
+      .get(`${supplierById}/${params}`)
+      .then((res) => {
+        const formatted = res.data.map((s) => ({
+          value: s.id,
+          label: s.supplier_name,
+        }));
+
+        setSupplierData(formatted);
+
+        // ⭐ Automatically set default supplier based on type
+        if (type === "bulk_customized") {
+          setValue("supplier", formatted[0]); // pick first data
+        } else {
+          setValue("supplier", null); // no default for no-type
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [type, setValue]);
+
+  useEffect(() => {
+    if (!country || country.length === 0) return;
+
+    if (type === "bulk_customized") {
+      // Auto select the single allowed country
+      setValue("country", country[2]); // Set default value here
+    } else {
+      // Clear value if normal dropdown
+      setValue("country", null);
+    }
+  }, [type, country]);
   return (
     <Fragment>
+      {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>
@@ -40,53 +158,67 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
               <Row className="mt-3">
                 <Col sm="3">
                   <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Start Date</InputGroupText>
-                      <Controller
-                        name="startDate"
-                        control={control}
-                        rules={{ required: "Start Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            placeholderText="Select start date"
-                            className={`form-control `}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
+                    <Row>
+                      <InputGroup>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>Start Date</InputGroupText>
+                        </Col>
+                        <Col sm="8">
+                          <Controller
+                            name="startDate"
+                            control={control}
+                            rules={{ required: "Start Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select start date"
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                    </InputGroup>
-
-                    {errors.startDate && (
-                      <span className="text-danger">
-                        {errors.startDate.message}
-                      </span>
-                    )}
+                        </Col>
+                      </InputGroup>
+                      {errors.startDate && (
+                        <span className="text-danger">
+                          {errors.startDate.message}
+                        </span>
+                      )}
+                    </Row>
                   </FormGroup>
                 </Col>
+
                 <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>End Date</InputGroupText>
-                      <Controller
-                        name="endDate"
-                        control={control}
-                        rules={{ required: "End Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            placeholderText="Select end date"
-                            className={`form-control digits`}
-                            selected={field.value}
-                            onChange={(date) => field.onChange(date)}
+                  <FormGroup className={`m-form__group  `}>
+                    <Row>
+                      <InputGroup>
+                        <Col sm="4">
+                          {" "}
+                          <InputGroupText>End Date</InputGroupText>
+                        </Col>
+                        <Col sm="8">
+                          <Controller
+                            name="endDate"
+                            control={control}
+                            rules={{ required: "End Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                placeholderText="Select end date"
+                                className={`form-control digits`}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                    </InputGroup>
-                    {errors.endDate && (
-                      <span className="text-danger">
-                        {errors.endDate.message}
-                      </span>
-                    )}
+                        </Col>
+                      </InputGroup>
+                      {errors.endDate && (
+                        <span className="text-danger">
+                          {errors.endDate.message}
+                        </span>
+                      )}
+                    </Row>
                   </FormGroup>
                 </Col>
 
@@ -96,21 +228,17 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
                         name="supplier"
-                        rules={{ required: "supplier is required" }}
-                        defaultValue={
-                          type === "bulk_customized" ? [supplier[5]] : supplier
-                        }
                         control={control}
+                        rules={{ required: "supplier is required" }}
+                        defaultValue={null}
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={
-                              type === "bulk_customized"
-                                ? [supplier[5]]
-                                : supplier
-                            }
+                            options={supplierData}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
+                            value={field.value}
+                            onChange={(val) => field.onChange(val)}
                           />
                         )}
                       />
@@ -131,24 +259,24 @@ const BulkRetailInvoice = ({ title, btnTtitle, type }) => {
                       <Controller
                         name="country"
                         rules={{ required: "country is required" }}
-                        defaultValue={
-                          type === "bulk_customized"
-                            ? [optionscountry[1]]
-                            : optionscountry
-                        }
                         control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={
-                              type === "bulk_customized"
-                                ? [optionscountry[1]]
-                                : optionscountry
-                            }
-                            className="form-control p-0 border-0"
-                            placeholder="Select Country"
-                          />
-                        )}
+                        render={({ field }) => {
+                          const isFixedType = type === "bulk_customized";
+
+                          const countryOptions = isFixedType
+                            ? [country[2]]
+                            : country;
+                          return (
+                            <Select
+                              {...field}
+                              options={countryOptions}
+                              className="form-control p-0 border-0"
+                              placeholder="Select Country"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                            />
+                          );
+                        }}
                       />
                     </InputGroup>
 
