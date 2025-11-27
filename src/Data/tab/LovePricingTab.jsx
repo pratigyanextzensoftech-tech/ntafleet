@@ -1,12 +1,6 @@
-import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
 import CreateLoveBulk from '../../Components/pricing/loveBulk/CreateLoveBulk';
 import MailLoveBulk from '../../Components/pricing/loveBulk/MailLoveBulk';
-import EssoPricing from '../../Components/pricing/singlePricingPdf/EssoPdf';
-import LovePricing from '../../Components/pricing/singlePricingPdf/LovesPdf';
-import TaPetro from '../../Components/pricing/singlePricingPdf/TaPetro';
-import CreateRetailTaPetro from '../../Components/pricing/taPetroBulk/CreateRetailTaPetro';
-import CreateTaPetro from '../../Components/pricing/taPetroBulk/CreateTaPetro';
-import MailTaPetro from '../../Components/pricing/taPetroBulk/MailTaPetro';
+
 export const LovePricingTab = [
   {
     id: '1',

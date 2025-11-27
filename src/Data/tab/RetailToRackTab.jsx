@@ -1,8 +1,3 @@
-import SingleRetailVoice from '../../Components/createInvoice/SingleRetailVoice';
-import BulkRetailInvoice from '../../Components/createInvoice/BulkRetailInvoice';
-import BulkRetailMulti from '../../Components/createInvoice/BulkRetailMulti';
-import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
-import { checkBoxData } from '../../Components/Forms/FormWidget/FormSelect2/OptionDatas';
 import RetailToRack from '../../Components/transaction/retailToRack/RetailToRack';
 import EssoForm from '../../Components/transaction/retailToRack/EssoForm';
 import EssoOwner from '../../Components/transaction/retailToRack/EssoOwner';

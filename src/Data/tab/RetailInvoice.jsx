@@ -1,83 +1,174 @@
-import SingleRetailVoice from '../../Components/createInvoice/SingleRetailVoice';
-import BulkRetailInvoice from '../../Components/createInvoice/BulkRetailInvoice';
-import BulkRetailMulti from '../../Components/createInvoice/BulkRetailMulti';
-import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
-import { checkBoxData } from '../../Components/Forms/FormWidget/FormSelect2/OptionDatas';
+import CreateInvoiceCommon from "../../Components/createInvoice/CreateInvoiceCommon";
+import { CreateRackInvoice } from "../../api/index";
 export const RetailInvoiceTab = [
   {
-    id: '1',
-    label:  (
+    id: "1",
+    label: (
       <>
-        Single Rack  - <strong>[Capped]</strong>
+        Single Rack - <strong>[Capped]</strong>
       </>
     ),
-    component: <SingleRetailVoice supplier_ids=""  supplier_name="" country="" invoice_creation="weekly" invoice_type ="Capped" racktype="single_rack_actual"  invoice="rackInvoice" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Capped)"/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list="list"
+        country_id="2"
+        invoice_type="R"
+        ta_retail_invoice="Capped"
+        invoice_creation="weekly"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Rack Invoice"
+        title="Create Single Rack Invoice (Capped)"
+      />
+    ),
   },
   {
-    id: '2',
+    id: "2",
     label: (
       <>
-        Bulk Rack  - <strong>[Capped]</strong>
+        Bulk Rack - <strong>[Capped]</strong>
       </>
     ),
-    component: <BulkRetailInvoice supplier_ids=""  supplier_name="" country="" invoice_creation="weekly" invoice_type ="Capped"  rackcase="Capped-multi" invoice="rackInvoice" btnTtitle="Create Bulk Rack Invoice"  title="Create Bulk Rack Invoice (Capped)"/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list=""
+        country_id="2"
+        invoice_type="R"
+        ta_retail_invoice="Capped"
+        invoice_creation="weekly"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Bulk Rack Invoice"
+        title="Create Bulk Rack Invoice (Capped)"
+      />
+    ),
   },
-  
+
   {
-    id: '3',
+    id: "3",
     label: (
       <>
-       Single Rack - <strong>[Actual]</strong>
+        Single Rack - <strong>[Actual]</strong>
       </>
     ),
-    component: <SingleRetailMulti supplier_ids=""  supplier_name="" country="" invoice_creation="weekly" invoice_type ="Actual"  rackcase="Actual" invoice="rackInvoice"  type="single_rack_actual" title="Create Single Rack Invoice (Actual)" btnTtitle="Create Rack Invoice"/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list="list"
+        country_id="2"
+       invoice_type="R"
+        ta_retail_invoice="Actual"
+        invoice_creation="weekly"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Rack Invoice"
+        title="Create Single Rack Invoice (Actual)"
+      />
+    ),
   },
-   {
-    id: '4',
+  {
+    id: "4",
     label: (
       <>
-       Bulk Rack - <strong>[Actual]</strong>
+        Bulk Rack - <strong>[Actual]</strong>
       </>
     ),
-    component: <BulkRetailMulti  supplier_ids=""  supplier_name="" country="" invoice_creation="weekly" invoice_type ="Actual" invoice="rackInvoice" rackcase="Actual-multi" companyDropDown={false}  type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual)"  checkBoxData={checkBoxData}/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list=""
+        country_id="2"
+        invoice_type="R"
+        ta_retail_invoice="Actual"
+        invoice_creation="weekly"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Bulk Rack Invoice"
+        title="Create Bulk Rack Invoice (Actual)"
+      />
+    ),
   },
- 
-  
-   {
-    id: '5',
+
+  {
+    id: "5",
     label: (
       <>
-       Single Rack - <strong>[Capped Multi ]</strong>
+        Single Rack - <strong>[Capped Multi ]</strong>
       </>
     ),
-    component: <SingleRetailVoice  supplier_ids=""  supplier_name="" country="" invoice_creation="many_times" invoice_type ="Capped" rackcase="Capped-multi" invoice="rackInvoice" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Capped)"/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list="list"
+        country_id="2"
+       invoice_type="R"
+        ta_retail_invoice="Capped"
+        invoice_creation="many_times"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Rack Invoice"
+        title="Create Single Rack Invoice (Capped)"
+      />
+    ),
   },
-   {
-    id: '6',
+  {
+    id: "6",
     label: (
       <>
-       Bulk Rack - <strong>[Capped Multi ]</strong>
+        Bulk Rack - <strong>[Capped Multi ]</strong>
       </>
     ),
-    component: <BulkRetailMulti supplier_ids=""  supplier_name="" country="" invoice_creation="many_times" invoice_type ="Capped" invoice="rackInvoice" rackcase="Capped-multi"  btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Capped)"  checkBoxData={checkBoxData}/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list="checkbox"
+        country_id="2"
+        invoice_type="R"
+        ta_retail_invoice="Capped"
+        invoice_creation="many_times"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Bulk Rack Invoice"
+        title="Create Bulk Rack Invoice (Capped)"
+      />
+    ),
   },
-    {
-    id: '7',
+  {
+    id: "7",
     label: (
       <>
-       Single Rack - <strong>[Actual Multi ]</strong>
+        Single Rack - <strong>[Actual Multi ]</strong>
       </>
     ),
-    component: <SingleRetailVoice supplier_ids=""  supplier_name="" country="" invoice_creation="many_times" invoice_type ="Actual" rackcase="Actual-multi" invoice="rackInvoice"  type="single_rack_actual" btnTtitle="Create Rack Invoice" title="Create Single Rack Invoice (Actual-MULTI)"/>,
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list="list"
+        country_id="2"
+        invoice_type="R"
+        ta_retail_invoice="Actual"
+        invoice_creation="many_times"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Rack Invoice"
+        title="Create Single Rack Invoice (Actual-MULTI)"
+      />
+    ),
   },
-   {
-    id: '8',
+  {
+    id: "8",
     label: (
       <>
-       Bulk Rack - <strong>[Actual Multi ]</strong>
+        Bulk Rack - <strong>[Actual Multi ]</strong>
       </>
     ),
-    component: <BulkRetailMulti supplier_ids=""  supplier_name="" country="" invoice_creation="many_times" invoice_type ="Actual" invoice="rackInvoice"  rackcase="Actual-multi" type="bulk_rack_actual" btnTtitle="Create Bulk Rack Invoice" title="Create Bulk Rack Invoice (Actual-MULTI)"  checkBoxData={checkBoxData}/>,
- 
+    component: (
+      <CreateInvoiceCommon
+        supplier_ids="3"
+        company_list="checkbox"
+        country_id="2"
+        invoice_type="R"
+        ta_retail_invoice="Actual"
+        invoice_creation="many_times"
+        api_name={CreateRackInvoice}
+        btnTtitle="Create Bulk Rack Invoice"
+        title="Create Bulk Rack Invoice (Actual-MULTI)"
+      />
+    ),
   },
 ];

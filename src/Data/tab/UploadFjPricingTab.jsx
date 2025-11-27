@@ -1,4 +1,3 @@
-import SingleRetailMulti from "../../Components/createInvoice/SingleRetailMulti";
 import EssoPricing from "../../Components/pricing/uploadPricing/EssoPricing";
 import FjPricing from "../../Components/pricing/uploadPricing/FjPricing";
 import LovePricing from "../../Components/pricing/uploadPricing/LovePricing";

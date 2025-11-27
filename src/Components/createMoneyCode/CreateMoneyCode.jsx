@@ -4,6 +4,7 @@ import HeaderCard from '../Common/Component/HeaderCard'
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import { CreateMoneyCodeTab } from '../../Data/tab/CreateMOneycodeTab'
+
 const CreateMoneyCode = () => {
   return (
     <Fragment>

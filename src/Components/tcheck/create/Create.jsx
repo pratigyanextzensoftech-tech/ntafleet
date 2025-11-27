@@ -1,22 +1,59 @@
-import React, { Fragment } from 'react'
+import React, { Fragment,useState } from 'react'
 import { Col, Row, Form } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm } from 'react-hook-form';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import HeaderCard from '../../Common/Component/HeaderCard';
+import {CreateTcheckInvoice} from '../../../api/index'
+import axios from 'axios';
+import { toast } from 'react-toastify';
 const Create = ({ title, btnTitle }) => {
+    const [loading, setLoading] = useState(false);
+  
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);  // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
+  const onSubmit = (data) => {
+    setLoading(true);
+
+    const basePayload = {
+      // invoice_creation: "",
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+    };
+
+   
+      // ---- RACK CONDITIONS ----
+
+setLoading(true)
+      axios
+        .post(CreateTcheckInvoice, basePayload, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          toast.success(res.data.message);
+          reset();
+          setLoading(false);
+        })
+        .catch((err) => {
+          toast.error(err);
+          setLoading(false);
+        });
+    } 
+  
   return (
     <Fragment>
 

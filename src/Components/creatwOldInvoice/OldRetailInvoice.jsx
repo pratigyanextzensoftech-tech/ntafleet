@@ -2,7 +2,6 @@ import React, { Fragment, useState,useEffect } from 'react'
 import { Col, Row, Form, FormGroup, InputGroup, InputGroupText, Card, CardBody } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
-import { optionscountry, optionscompany, supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import { useCountry,useCompany } from '../../Hooks/Dropdowns';

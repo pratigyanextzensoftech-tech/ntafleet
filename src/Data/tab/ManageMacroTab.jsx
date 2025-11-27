@@ -1,5 +1,4 @@
-import SingleMOneyCodeForm from '../../Components/createMoneyCode/SingleMOneyCodeForm';
-import BulkMOneyCodeForm from '../../Components/createMoneyCode/BulkMoneyCodeForm';
+
 import ManageMacroForm from '../../Components/manageMacro/ManageMacroForm';
 export const ManageMacroTab = [
   {

@@ -10,20 +10,8 @@ export const optionscountry = [
     { value: 'United States of America', label: 'United States of America' },
     { value: 'Canada', label: 'Canada' }
 ];
-export const optionsPrimary = [
-    { value: 'Dashboard', label: 'Dashboard' },
-    { value: 'view Discounts', label: 'view Discounts' },
-    { value: 'Retail Prices', label: 'Retail Prices' },
-    { value: 'Location', label: 'Locations' },
-    { value: 'Items', label: 'Items' },
-    { value: 'Company', label: 'Company' },
-    { value: 'Supplier', label: 'Supplier' },
-];
-export const optionscountry1 = [
-    { value: 'United States of America', label: 'United States of America' },
-    { value: 'Canada', label: 'Canada' },
-    { value: 'Both', label: "Both" }
-];
+
+
 export const checkBoxData = [
     { id: 'All Company', label: 'All Company', value: "All Company" },
     { id: '1000157697 ONTARIO INC.', label: '1000157697 ONTARIO INC.', value: '1000157697 ONTARIO INC' },
@@ -327,14 +315,14 @@ export const customizedTypeType = [
 export const invoiceType1 = [
     { label: 'Select Status', isDisabled: true },
     { value: 'RT', label: 'RT (Retail Invoice with daily pricing pdf unit price/retail price update)' },
-    { value: 'R', label: 'R (Rack Invoice/Show Discount)' },
+    { value: 'R', label:  ' R (Rack Invoice/Show Discount)' },
     { value: "RG", label: "RG (Rack Invoice with general unit price update)" },
     { value: "RP", label: "RP (Rack Invoice with daily pricing pdf unit price update)" }
 ]
 export const UlramarinvoiceType = [
     { label: 'Select Status', isDisabled: true },
-    { value: 'RT', label: 'R (Rack Invoice)' },
-    { value: 'R', label: 'RG (General Unit Price Update)' },
+    { value: 'R', label: 'R (Rack Invoice)' },
+    { value: 'RG', label: 'RG (General Unit Price Update)' },
     { value: "RP", label: "RP ( pricing pdf unit price update)" }
 ]
 export const optionSalesMan = [

@@ -1,7 +1,3 @@
-import SingleRetailMulti from '../../Components/createInvoice/SingleRetailMulti';
-import EssoPricing from '../../Components/pricing/singlePricingPdf/EssoPdf';
-import LovePricing from '../../Components/pricing/singlePricingPdf/LovesPdf';
-import TaPetro from '../../Components/pricing/singlePricingPdf/TaPetro';
 import CreateRetailTaPetro from '../../Components/pricing/taPetroBulk/CreateRetailTaPetro';
 import CreateTaPetro from '../../Components/pricing/taPetroBulk/CreateTaPetro';
 import MailTaPetro from '../../Components/pricing/taPetroBulk/MailTaPetro';

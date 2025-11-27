@@ -54,16 +54,27 @@ const useDropdown = (apiUrl, mapFn) => {
  * 🔸 Specific dropdown hooks
  */
 
-export const useCompany = (invoice_creation = "") => {
-  const url = invoice_creation
-    ? `${companyall}?invoice_creation=${invoice_creation}`
-    : companyall;
+export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_operator_invoice = "",cust_inv_type = "",  ul_owner_operator_invoice="",
+) => {
+
+  let url = companyall; // Base URL
+
+  const params = new URLSearchParams();
+
+  if (invoice_creation) params.append("invoice_creation", invoice_creation);
+  if (ta_retail_invoice) params.append("ta_retail_invoice", ta_retail_invoice);
+  if (owner_operator_invoice) params.append("owner_operator_invoice", owner_operator_invoice);
+  if (cust_inv_type) params.append("cust_inv_type", cust_inv_type); 
+  if (ul_owner_operator_invoice) params.append("ul_owner_operator_invoice", ul_owner_operator_invoice); 
+
+  if (params.toString()) url = `${companyall}?${params.toString()}`;
 
   return useDropdown(url, (c) => ({
     value: c.company_id,
     label: c.company_name,
   }));
 };
+
 
 export const useItems = () =>
   useDropdown(itemsAll, (i) => ({
@@ -80,6 +91,20 @@ export const useSupplier = (supplier_ids = "") => {
     label: s.supplier_name,
   }));
 };
+
+
+export const InvoiceType = (type = "") => {
+
+  const invoiceTypes = [
+  { value: "R", label: "R (Rack Invoice)" },
+  { value: "RG", label: "RG (General Unit Price Update)" },
+  { value: "RP", label: "RP (Pricing PDF Unit Price Update)" }
+];
+
+  return type ? invoiceTypes.filter(item => item.value === type) : invoiceTypes;
+};
+  
+
   
 
 export const useSalesman = () =>
@@ -102,7 +127,7 @@ export const useSalesman = () =>
   }));
 
 
-  export const useCountry = (country_id = "") => {
+  export const useCountry = (country_id = "",) => {
   const url = country_id
     ? `${country_all}?country_id=${country_id}`
     : country_all;
@@ -113,7 +138,7 @@ export const useSalesman = () =>
   })); 
   // Add static first entry (e.g., "Select Country")
   const countries = [
-    { isDisabled: true, label: "Select Country" }, // 👈 static option
+  //  { isDisabled: true, label: "Select Country" }, // 👈 static option
     ...data,
   ];
 

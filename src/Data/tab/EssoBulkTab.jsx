@@ -1,6 +1,4 @@
-import BulkRetailInvoice from '../../Components/createInvoice/BulkRetailInvoice';
 import MailEsso from '../../Components/pricing/essoBulk/MailEsso';
-import SingleEssoForm from '../../Components/createEssoInvoice/SingleEssoForm';
 import CreateEsso from '../../Components/pricing/essoBulk/CreateEsso';
 export const EssoBulkTab = [
   {
