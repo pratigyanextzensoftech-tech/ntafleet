@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Col,
   Row,
@@ -13,65 +13,45 @@ import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import {
-  optionscountry,
-  supplier,
-  optionscompany,
-} from "../Forms/FormWidget/FormSelect2/OptionDatas";
-import { Create_retail_invoice as ApiName, supplierById } from "../../api";
+import { supplier } from "../Forms/FormWidget/FormSelect2/OptionDatas";
+import HeaderCard from "../Common/Component/HeaderCard";
+import { useCompany, useCountry,useSupplier } from "../../Hooks/Dropdowns";
+import { supplierById } from "../../api/index";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useCompany, useCountry } from "../../Hooks/Dropdowns";
-const Repeat_Retail_Invoice = ({
+import {
+  CreateRetailInvoice,
+  CreateRackInvoice,
+  CreateEssoInvoice,
+  CreateEssoOwnerInvoice,
+  CreateEssoCustomizedInvoice,
+  CreateUttramarInvoice,
+  CreateUttramarOwnerInvoice,
+  CreateUttramarCustomizedInvoice,
+  CreateMonocodeInvoice,
+  CreateTcheckInvoice,
+} from "../../api/index";
+import Loader from "../../Layout/Loader"; 
+const CreateInvoiceCommon = ({
   title,
   btnTtitle,
-  type,
   supplier_ids,
-  invoice_creation,
   supplier_name,
+  country_id,
+  invoice_type,
+  invoice_creation,
+  api_name,
+  type,
+  invoice
 }) => {
-  const [loading, setLoading] = useState();
-  const [supplierData, setSupplierData] = useState([]);
-  const { data: company } = useCompany(invoice_creation);
-  const { data: country } = useCountry();
-  const {
-    register,
-    control,
-    reset,
-    setValue,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
-  useEffect(() => {
-      const params = supplier_ids? supplier_ids : "";
-    axios
-      .get(`${supplierById}/${params}`)
-      .then((res) => {
-        const formatted = res.data.map((s) => ({
-          value: s.id,
-          label: s.supplier_name,
-        }));
 
-        setSupplierData(formatted);
-        setValue("supplier", formatted[0]); // no default for no-type
-      })
-      .catch((err) => console.log(err));
-  }, [setValue]);
-  useEffect(() => {
-    if (!country || country.length === 0) return;
-
-    if (
-      type === "single_rack_actual" ||
-      type === "bulk_rack_actual" ||
-      type === "single_customized"
-    ) {
-      // Auto select the single allowed country
-      setValue("country", country[2]); // Set default value here
-    } else {
-      // Clear value if normal dropdown
-      setValue("country", null);
-    }
-  }, [type, country]);
+ // const [supplierData, setSupplierData] = useState([]);
+ 
+  const { data: country } = useCountry(country_id);
+  const { data: supplierData } = useSupplier(supplier_ids);
+  const { data: companies } = useCompany(invoice_creation); 
+  const [loading, setLoading] = useState(false); 
+  const {control, handleSubmit, formState: { errors }, setValue, reset,} = useForm();  
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -80,38 +60,44 @@ const Repeat_Retail_Invoice = ({
     return `${year}-${month}-${day}`;
   };
 
+
   const onSubmit = (data) => {
-    console.log(data);
-    const payload = {
-      company_id: data.company.value.toString(),
+    setLoading(true); 
+    const basePayload = 
+    { 
+      company_id: data.company.value?data.company.value.toString():'',
+      invoice_creation: invoice_creation?invoice_creation:'weekly',
       supplier_id: data.supplier.value,
       country_id: data.country.value,
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
-      invoice_creation: "weekly",
-    };
-    console.log(payload);
-    setLoading(true);
+      invoice_type:data.invoice_type?data.invoice_type.value:invoice_type
+    }; 
 
-    //   axios.post(ApiName, payload, {
-    //   headers: { "Content-Type": "application/json" },
-    // })
+    
+     axios
+        .post(api_name, basePayload, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((res) => {
+          toast.success(res.data.message);
+          reset();
+          setLoading(false);
+        })
+        .catch((err) => {
+          toast.error(err);
+          setLoading(false);
+        });
 
-    // .then((res)=>{
-    //   console.log(res)
-    //    toast.success(res.data.message);
-    //    reset();
-    //          setLoading(false)
-    // })
-    // .catch((err)=>{
-    //   console.log(err);
-    //         setLoading(false)
 
-    //    toast.error(err);
-    // })
+ 
+
+    console.log("Final Payload Sent =>", basePayload);
   };
+
   return (
     <Fragment>
+      {loading && <Loader loading={true} />}
       <Row>
         <Col>
           <fieldset>
@@ -129,7 +115,7 @@ const Repeat_Retail_Invoice = ({
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={company}
+                            options={companies}
                             className="form-control p-0 border-0"
                             placeholder="Select a country"
                           />
@@ -301,4 +287,4 @@ const Repeat_Retail_Invoice = ({
   );
 };
 
-export default Repeat_Retail_Invoice;
+export default CreateInvoiceCommon;

@@ -10,7 +10,7 @@ export const CreateRepeatTab = [
   {
     id: '1',
     label:"Create Repeat Retail Invoice",
-    component: <Repeat_Retail_Invoice btnTtitle="Create Invoice" title="Create Old  Invoice "/>,
+    component: <Repeat_Retail_Invoice supplier_ids="4"  supplier_name="" country="" invoice_type="RT"  invoice_creation="weekly" btnTtitle="Create Invoice" title="Create Old  Invoice "/>,
   },
   {
     id: '2',
@@ -20,7 +20,7 @@ export const CreateRepeatTab = [
         Create Repeat Rack Invoice - <strong>[Capped]</strong>
       </>
     ),
-    component: <Retail_capped btnTtitle="Create Rack Invoice"  title="Create Repeat Rack Invoice [Capped]"/>,
+    component: <Retail_capped supplier_ids="3"  supplier_name="" country="2" invoice_type="Capped"  invoice_creation="weekly" btnTtitle="Create Rack Invoice"  title="Create Repeat Rack Invoice [Capped]"/>,
   },
   
   {
@@ -31,19 +31,19 @@ export const CreateRepeatTab = [
        Create Repeat Rack Invoice - <strong>[Actual]</strong>
       </>
     ),
-    component: <Retail_capped btnTtitle="Create Rack Invoice" title="Create Repeat Rack Invoice (Actual)"/>,
+    component: <Retail_capped supplier_ids="3"  supplier_name="" country="2" invoice_type="Actual"  invoice_creation="weekly" btnTtitle="Create Rack Invoice" title="Create Repeat Rack Invoice (Actual)"/>,
   },
    {
     id: '4',
     label:"Create Repeat Esso Invoice",
-    component:  <SingleEssoForm type="esso_invoice" btnTtitle="Create Rack Invoice"  title="Create Repeat Esso Invoice"/>,
+    component:  <SingleEssoForm supplier_ids="6"  supplier_name="ESSO " country="1" invoice_type=""  invoice_creation="weekly" type="esso_invoice" btnTtitle="Create Rack Invoice"  title="Create Repeat Esso Invoice"/>,
   },
  
   
    {
     id: '5',
     label:"Create Repeat Ultramar Invoice",
-    component: <SingleEssoForm type="repeat_ultramar" btnTtitle="Create Repeat Ultramar Invoice" title="Create Repeat Ultramar Invoice" />,
+    component: <SingleEssoForm supplier_ids="10"  supplier_name="" country="1" invoice_type="RT"  invoice_creation="weekly" type="repeat_ultramar" btnTtitle="Create Repeat Ultramar Invoice" title="Create Repeat Ultramar Invoice" />,
   },
   
 ];

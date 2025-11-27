@@ -7,7 +7,8 @@ import {
   salesmanAll,
   esso_rack_all,
   country_all,
-  state_all
+  state_all,
+  supplierById
 } from "../api/index";
 
 /**
@@ -70,11 +71,15 @@ export const useItems = () =>
     label: i.item_name,
   }));
 
-export const useSupplier = () =>
-  useDropdown(supplierAll, (s) => ({
+export const useSupplier = (supplier_ids = "") => {
+  const url = supplier_ids
+    ? `${supplierById}/${supplier_ids}`
+    : supplierById;
+  return useDropdown(url, (s) => ({
     value: s.id,
     label: s.supplier_name,
   }));
+};
   
 
 export const useSalesman = () =>
@@ -95,13 +100,17 @@ export const useSalesman = () =>
     value: s.state_id,
     label: s.province_name,
   }));
-   
-  export const useCountry = () => {
-  const { data, loading, error } = useDropdown(country_all, (s) => ({
+
+
+  export const useCountry = (country_id = "") => {
+  const url = country_id
+    ? `${country_all}?country_id=${country_id}`
+    : country_all;
+
+  const { data, loading, error } = useDropdown(url, (s) => ({
     value: s.country_id,
     label: s.country_name,
-  }));
-
+  })); 
   // Add static first entry (e.g., "Select Country")
   const countries = [
     { isDisabled: true, label: "Select Country" }, // 👈 static option

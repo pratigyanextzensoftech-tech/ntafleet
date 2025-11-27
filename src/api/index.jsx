@@ -77,8 +77,21 @@ export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;
 export const tcheck_upload = `${baseurl}/api/tcheck/upload`;
 export const smenu = `${baseurl}/api/smenu`;
+
 export const Create_retail_invoice = `${baseurl}/api/invoice/create_retail_invoice`;
 export const Create_rack_invoice = `${baseurl}/api/invoice/create_rack_invoice`;
+
+export const CreateRetailInvoice = `${baseurl}/api/invoice/create_retail_invoice`;
+export const CreateRackInvoice = `${baseurl}/api/invoice/create_rack_invoice`;
+export const CreateEssoInvoice = `${baseurl}/api/invoice/create_esso_invoice`;
+export const CreateEssoOwnerInvoice = `${baseurl}/api/invoice/create_esso_owner_invoice`;
+export const CreateEssoCustomizedInvoice = `${baseurl}/api/invoice/create_esso_customized_invoice`;
+export const CreateUttramarInvoice = `${baseurl}/api/invoice/create_uttramar_invoice`;
+export const CreateUttramarOwnerInvoice = `${baseurl}/api/invoice/create_uttramar_owner_invoice`;
+export const CreateUttramarCustomizedInvoice = `${baseurl}/api/invoice/create_uttramar_customized_invoice`;
+export const CreateMonocodeInvoice = `${baseurl}/api/invoice/create_monycode_invoice`;
+export const CreateTcheckInvoice = `${baseurl}/api/invoice/create_tcheck_invoice`;
+
 
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;

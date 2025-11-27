@@ -8,7 +8,9 @@ import { optionscountry, supplier, optionscompany } from '../Forms/FormWidget/Fo
 import { useCompany,useCountry } from '../../Hooks/Dropdowns';
 import { supplierById } from '../../api';
 import axios from 'axios';
-const Retail_capped = ({ title, btnTtitle, type }) => {
+const Retail_capped = ({ title, btnTtitle, type,supplier_ids,
+  invoice_creation,
+  supplier_name,}) => {
     const[supplierData,setSupplierData]=useState([])
 
   const{data:company}=useCompany()
@@ -29,8 +31,9 @@ useEffect(() => {
   
 }, [ country]);
 useEffect(() => {
+   const params = supplier_ids? supplier_ids : "";
   axios
-    .get(`${supplierById}/3`)
+    .get(`${supplierById}/${params}`)
     .then((res) => {
       const formatted = res.data.map((s) => ({
         value: s.id,
