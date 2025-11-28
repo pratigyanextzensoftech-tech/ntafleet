@@ -163,7 +163,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                           <Controller
                             name="to"
                             control={control}
-                            rules={{ required: "Required" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control digits`}
@@ -175,9 +174,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                         </Col>
                       </InputGroup>
 
-                      {errors.to && (
-                        <span className="text-danger">{errors.to.message}</span>
-                      )}
+                    
                     </FormGroup>
                   </Row>
                 </Col>
@@ -189,7 +186,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       <Controller
                         name="company"
                         control={control}
-                        rules={{ required: "Company Name is required" }}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -200,11 +196,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                         )}
                       />
                     </InputGroup>
-                    {errors.company && (
-                      <span className="text-danger">
-                        {errors.company.message}
-                      </span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
 
@@ -215,7 +207,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       <Controller
                         name="country"
                         control={control}
-                        rules={{ required: "Country is required" }}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -226,11 +217,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                         )}
                       />
                     </InputGroup>
-                    {errors.country && (
-                      <span className="text-danger">
-                        {errors.country.message}
-                      </span>
-                    )}
+                   
                   </FormGroup>
                 </Col>
               </Row>
@@ -243,7 +230,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       <Controller
                         name="invoiceType"
                         control={control}
-                        rules={{ required: "Invoice Type is required" }}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -263,7 +249,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       <Controller
                         name="category"
                         control={control}
-                        rules={{ required: "Category is required" }}
                         render={({ field }) => (
                           <Select
                             {...field}
@@ -283,7 +268,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       <Controller
                         name="invoiceShow"
                         control={control}
-                        rules={{ required: "This field is required" }}
                         render={({ field }) => (
                           <Select
                             {...field}

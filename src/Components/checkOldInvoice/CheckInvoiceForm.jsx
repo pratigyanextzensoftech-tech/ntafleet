@@ -57,7 +57,6 @@ const CheckInvoiceForm = () => {
                                         <Controller
                                             name="from"
                                             control={control}
-                                            rules={{ required: " Required" }}
                                             render={({ field }) => (
                                                 <DatePicker
                                                     className={`form-control `}
@@ -72,9 +71,7 @@ const CheckInvoiceForm = () => {
 
                                 </InputGroup>
 
-                                {errors.from && (
-                                    <span className="text-danger">{errors.from.message}</span>
-                                )}
+                               
                             </FormGroup>
                         </Row>
                     </Col>
@@ -93,7 +90,6 @@ const CheckInvoiceForm = () => {
                                         <Controller
                                             name="to"
                                             control={control}
-                                            rules={{ required: "Required" }}
                                             render={({ field }) => (
                                                 <DatePicker
                                                     className={`form-control digits`}
@@ -105,9 +101,6 @@ const CheckInvoiceForm = () => {
                                     </Col>
                                 </InputGroup>
 
-                                {errors.to && (
-                                    <span className="text-danger">{errors.to.message}</span>
-                                )}
                             </FormGroup>
                         </Row>
                     </Col>
@@ -118,7 +111,6 @@ const CheckInvoiceForm = () => {
                                 <InputGroupText>Country</InputGroupText>
                                 <Controller
                                     name="country"
-                                    rules={{ required: "country is required" }}
 
                                     control={control}
                                     render={({ field }) => (
@@ -132,9 +124,7 @@ const CheckInvoiceForm = () => {
                                 />
                             </InputGroup>
 
-                            {errors.country && (
-                                <span className="text-danger">{errors.country?.message}</span>
-                            )}
+                        
                         </FormGroup>
                     </Col>
 
@@ -143,7 +133,6 @@ const CheckInvoiceForm = () => {
                             <InputGroup >
                                 <InputGroupText>Supplier</InputGroupText>
                                 <Controller name="supplier"
-                                    rules={{ required: " Required" }}
 
                                     control={control}
                                     render={({ field }) => (
@@ -157,9 +146,7 @@ const CheckInvoiceForm = () => {
                                 />
                             </InputGroup>
 
-                            {errors.supplier && (
-                                <span className="text-danger">{errors.supplier?.message}</span>
-                            )}
+                           
                         </FormGroup>
                     </Col>
                                         <Col sm="2">

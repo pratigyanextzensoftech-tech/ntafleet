@@ -67,7 +67,6 @@ const OwnerOperator = ({ title }) => {
                           <Controller
                             name="from"
                             control={control}
-                            rules={{ required: " Required" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control `}
@@ -79,11 +78,7 @@ const OwnerOperator = ({ title }) => {
                         </Col>
                       </InputGroup>
 
-                      {errors.from && (
-                        <span className="text-danger">
-                          {errors.from.message}
-                        </span>
-                      )}
+                  
                     </FormGroup>
                   </Row>
                 </Col>
@@ -98,7 +93,6 @@ const OwnerOperator = ({ title }) => {
                           <Controller
                             name="to"
                             control={control}
-                            rules={{ required: "Required" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control digits`}
@@ -110,9 +104,7 @@ const OwnerOperator = ({ title }) => {
                         </Col>
                       </InputGroup>
 
-                      {errors.to && (
-                        <span className="text-danger">{errors.to.message}</span>
-                      )}
+                  
                     </FormGroup>
                   </Row>
                 </Col>
@@ -123,7 +115,6 @@ const OwnerOperator = ({ title }) => {
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
                         name="company"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -136,11 +127,7 @@ const OwnerOperator = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.company && (
-                      <span className="text-danger">
-                        {errors.company?.message}
-                      </span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
 
@@ -150,7 +137,6 @@ const OwnerOperator = ({ title }) => {
                       <InputGroupText>Country</InputGroupText>
                       <Controller
                         name="country"
-                        rules={{ required: "country is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -163,11 +149,6 @@ const OwnerOperator = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.country && (
-                      <span className="text-danger">
-                        {errors.country?.message}
-                      </span>
-                    )}
                   </FormGroup>
                 </Col>
               
@@ -177,7 +158,6 @@ const OwnerOperator = ({ title }) => {
                       <InputGroupText>Invoice Type</InputGroupText>
                       <Controller
                         name="company"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -188,9 +168,7 @@ const OwnerOperator = ({ title }) => {
                         )}
                       />
                     </InputGroup>
-                    {errors.to && (
-                      <span className="text-danger">{errors.to.message}</span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
 
@@ -200,7 +178,6 @@ const OwnerOperator = ({ title }) => {
                       <InputGroupText>Company</InputGroupText>
                       <Controller
                         name="company"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -213,11 +190,7 @@ const OwnerOperator = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.company && (
-                      <span className="text-danger">
-                        {errors.company?.message}
-                      </span>
-                    )}
+                   
                   </FormGroup>
                 </Col>
 
@@ -227,7 +200,6 @@ const OwnerOperator = ({ title }) => {
                       <InputGroupText>Invoice Category</InputGroupText>
                       <Controller
                         name="category"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -239,11 +211,7 @@ const OwnerOperator = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.category && (
-                      <span className="text-danger">
-                        {errors.category?.message}
-                      </span>
-                    )}
+                 
                   </FormGroup>
                 </Col>
 
@@ -253,7 +221,6 @@ const OwnerOperator = ({ title }) => {
                       <InputGroupText>Invoice(Show/Hide) </InputGroupText>
                       <Controller
                         name="show"
-                        rules={{ required: " Required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -265,11 +232,7 @@ const OwnerOperator = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.country && (
-                      <span className="text-danger">
-                        {errors.country?.message}
-                      </span>
-                    )}
+                
                   </FormGroup>
                 </Col>
               </Row>

@@ -27,12 +27,12 @@ import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { supplierById } from "../../api";
-const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type }) => {
+const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type,onSearch }) => {
      const[supplierData,setSupplierData]=useState([])
   
   const{data:company}=useCompany()
   const{data:country}=useCountry()
-  console.log(type, "++++++++++++++");
+  // console.log(type, "++++++++++++++");
   const [selectedValues, setSelectedValues] = useState([]);
   const {
     register,
@@ -96,8 +96,25 @@ useEffect(() => {
       setValue("country", country[1]);
     
   }, [ country]);
+    const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
+    console.log("Form Data:", data); 
+    const payload={
+company_id:data.company?.value,
+country:data.country?.value,
+invoice_type:data.invoice?.value,
+to1:data.endDate? formatDate(data.endDate) : "",
+from1:data.startDate? formatDate(data.startDate) : "",
+supplier_id:data.supplier?.value
+
+    }
+     if (onSearch) onSearch(payload);// ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
   const handleReset = () => {
@@ -129,7 +146,6 @@ useEffect(() => {
                   <InputGroupText>Company</InputGroupText>
                   <Controller
                     name="company"
-                    rules={{ required: "company Name is required" }}
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -142,9 +158,7 @@ useEffect(() => {
                   />
                 </InputGroup>
 
-                {errors.company && (
-                  <span className="text-danger">{errors.company?.message}</span>
-                )}
+          
               </FormGroup>
             </Col>
             <Col sm="3">
@@ -153,7 +167,6 @@ useEffect(() => {
                   <InputGroupText>Invoice Type</InputGroupText>
                   <Controller
                     name="invoice"
-                    rules={{ required: "company Name is required" }}
                     defaultValue={
                       type === "owner_operator" ||
                       type === "single_owner_ultramar"
@@ -179,9 +192,7 @@ useEffect(() => {
                     )}
                   />
                 </InputGroup>
-                {errors.invoice && (
-                  <span className="text-danger">{errors.invoice.message}</span>
-                )}
+             
               </FormGroup>
             </Col>
 
@@ -197,7 +208,6 @@ useEffect(() => {
                       <Controller
                         name="startDate"
                         control={control}
-                        rules={{ required: "Start Date is required" }}
                         render={({ field }) => (
                           <DatePicker
                             placeholderText="Select start date"
@@ -209,11 +219,7 @@ useEffect(() => {
                       />
                     </Col>
                   </InputGroup>
-                  {errors.startDate && (
-                    <span className="text-danger">
-                      {errors.startDate.message}
-                    </span>
-                  )}
+                 
                 </Row>
               </FormGroup>
             </Col>
@@ -229,7 +235,6 @@ useEffect(() => {
                       <Controller
                         name="endDate"
                         control={control}
-                        rules={{ required: "End Date is required" }}
                         render={({ field }) => (
                           <DatePicker
                             placeholderText="Select End date"
@@ -241,11 +246,7 @@ useEffect(() => {
                       />
                     </Col>
                   </InputGroup>
-                  {errors.startDate && (
-                    <span className="text-danger">
-                      {errors.endDate.message}
-                    </span>
-                  )}
+                 
                 </Row>
               </FormGroup>
             </Col>
@@ -273,11 +274,7 @@ useEffect(() => {
                   />
                 </InputGroup>
 
-                {errors.supplier && (
-                  <span className="text-danger">
-                    {errors.supplier?.message}
-                  </span>
-                )}
+              
               </FormGroup>
             </Col>
             <Col sm="3">
@@ -286,7 +283,6 @@ useEffect(() => {
                   <InputGroupText>Country</InputGroupText>
                   <Controller
                     name="country"
-                    rules={{ required: "country is required" }}
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -299,9 +295,7 @@ useEffect(() => {
                   />
                 </InputGroup>
 
-                {errors.country && (
-                  <span className="text-danger">{errors.country?.message}</span>
-                )}
+               
               </FormGroup>
             </Col>
 

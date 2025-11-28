@@ -55,7 +55,6 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                     <Controller
                       name="fromDate"
                       control={control}
-                      rules={{ required: " Date is required" }}
                       render={({ field }) => (
                         <DatePicker
                           placeholderText="Select  date"
@@ -69,9 +68,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                   </Col>
 
                 </InputGroup>
-                {errors.fromDate && (
-                  <span className="text-danger">{errors.fromDate.message}</span>
-                )}
+             
               </Row>
 
 
@@ -86,7 +83,6 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                 <Controller
                   name="ToDate"
                   control={control}
-                  rules={{ required: " Date is required" }}
                   render={({ field }) => (
                     <DatePicker
                       placeholderText="Select  date"
@@ -98,9 +94,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                 />
 </Col>
               </InputGroup>
-              {errors.ToDate && (
-                <span className="text-danger">{errors.ToDate.message}</span>
-              )}
+          
             </FormGroup>
 
           </Col>
@@ -109,7 +103,6 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
               <InputGroup >
                 <InputGroupText>Search Type</InputGroupText>
                 <Controller name="type"
-                  rules={{ required: "type is is required" }}
 
                   control={control}
                   render={({ field }) => (
@@ -123,9 +116,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                 />
               </InputGroup>
 
-              {errors.type && (
-                <span className="text-danger">{errors.type?.message}</span>
-              )}
+             
             </FormGroup>
           </Col>
           <Col md="3">
@@ -153,7 +144,6 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                 <InputGroupText>Country</InputGroupText>
                 <Controller
                   name="country"
-                  rules={{ required: "country is required" }}
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -166,9 +156,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                 />
               </InputGroup>
 
-              {errors.country && (
-                <span className="text-danger">{errors.country?.message}</span>
-              )}
+             
             </FormGroup>
           </Col>
 

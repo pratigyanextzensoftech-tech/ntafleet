@@ -168,7 +168,6 @@ const BulkRetailInvoice = ({
                           <Controller
                             name="startDate"
                             control={control}
-                            rules={{ required: "Start Date is required" }}
                             render={({ field }) => (
                               <DatePicker
                                 placeholderText="Select start date"
@@ -180,11 +179,7 @@ const BulkRetailInvoice = ({
                           />
                         </Col>
                       </InputGroup>
-                      {errors.startDate && (
-                        <span className="text-danger">
-                          {errors.startDate.message}
-                        </span>
-                      )}
+                  
                     </Row>
                   </FormGroup>
                 </Col>
@@ -201,7 +196,6 @@ const BulkRetailInvoice = ({
                           <Controller
                             name="endDate"
                             control={control}
-                            rules={{ required: "End Date is required" }}
                             render={({ field }) => (
                               <DatePicker
                                 placeholderText="Select end date"
@@ -213,11 +207,7 @@ const BulkRetailInvoice = ({
                           />
                         </Col>
                       </InputGroup>
-                      {errors.endDate && (
-                        <span className="text-danger">
-                          {errors.endDate.message}
-                        </span>
-                      )}
+                
                     </Row>
                   </FormGroup>
                 </Col>
@@ -229,7 +219,6 @@ const BulkRetailInvoice = ({
                       <Controller
                         name="supplier"
                         control={control}
-                        rules={{ required: "supplier is required" }}
                         defaultValue={null}
                         render={({ field }) => (
                           <Select
@@ -244,11 +233,7 @@ const BulkRetailInvoice = ({
                       />
                     </InputGroup>
 
-                    {errors.supplier && (
-                      <span className="text-danger">
-                        {errors.supplier?.message}
-                      </span>
-                    )}
+                   
                   </FormGroup>
                 </Col>
 
@@ -258,7 +243,6 @@ const BulkRetailInvoice = ({
                       <InputGroupText>Country</InputGroupText>
                       <Controller
                         name="country"
-                        rules={{ required: "country is required" }}
                         control={control}
                         render={({ field }) => {
                           const isFixedType = type === "bulk_customized";
@@ -280,11 +264,7 @@ const BulkRetailInvoice = ({
                       />
                     </InputGroup>
 
-                    {errors.country && (
-                      <span className="text-danger">
-                        {errors.country?.message}
-                      </span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
               </Row>

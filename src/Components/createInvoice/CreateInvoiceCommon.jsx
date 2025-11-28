@@ -21,7 +21,6 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 import Loader from "../../Layout/Loader";
-import { tr } from "date-fns/locale";
 const CreateInvoiceCommon = ({
   title,
   btnTtitle,
@@ -99,6 +98,7 @@ const CreateInvoiceCommon = ({
   };
 
   const handleCheckboxChange = (value, field) => {
+    
     const allValues = companies.map((c) => c.value); // all possible
     const companyValues = allValues.filter((v) => v !== "All Company"); // only companies
     let updated = [...selectedValues];
@@ -373,6 +373,7 @@ const CreateInvoiceCommon = ({
                                     type="checkbox"
                                     id="checkbox-0"
                                     value="All Company"
+                                    
                                     checked={selectedValues.includes(
                                       "All Company"
                                     )}

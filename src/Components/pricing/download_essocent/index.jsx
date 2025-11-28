@@ -24,6 +24,7 @@ const Index = () => {
   const [open, setOpen] = useState(false);
 const handleChildChange = (company_id,start_date,end_date) => {
  console.log(company_id)
+ console.log(start_date)
  setCompnyId(company_id)
  setStatrtDate(start_date)
  setEndDate(end_date)

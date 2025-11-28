@@ -184,12 +184,12 @@ const SendBulkTab = [
   {
     id: '1',
     label:"Send Invoice",
-    component: <SingleEssoForm btnTtitle="Search Invoice" title="Search Invoice"/>,
+    component: <SingleEssoForm btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch}/>,
   },
   {
     id: '2',
     label:"Send Owner Operator Invoice",
-    component: <BulkRetailInvoice btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"/>,
+    component: <BulkRetailInvoice btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
   },
   
   {

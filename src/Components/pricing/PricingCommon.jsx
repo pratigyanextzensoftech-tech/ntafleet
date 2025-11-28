@@ -1,42 +1,30 @@
-import React, { Fragment, useState } from "react";
+import React,{Fragment} from 'react'
 import {
   Col,
   Row,
   Form,
   FormGroup,
-  Container,
-  Card,CardBody,
   InputGroup,
   InputGroupText,
   Input,
 } from "reactstrap";
-import { Btn } from "../../../AbstractElements";
+import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from "react-hook-form";
-import Select from "react-select";
-import {
-  pricigSupplier,
-  optionscompany,
-} from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { tableColumns,dummytabledata } from "../../../Data/Table/Defaultdata";
 import DatePicker from "react-datepicker";
-import { useCompany } from "../../../Hooks/Dropdowns";
-
-const RackCentList = ({ title, btnTitle }) => {
-  const {data:company}=useCompany()
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
-
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+const PricingCommon = ({title,btnTitle,csvFile,fromUpto,pricingDate}) => {
+      const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors, isSubmitted, isValid },
+      } = useForm();
+    
+      const onSubmit = (data) => {
+        console.log("Form Data:", data); // ✅ This will print your inputs
+        // alert("Form submitted successfully!");
+      };
   return (
-    <Fragment>
+      <Fragment>
       <Row>
         <Col>
           <fieldset>
@@ -46,35 +34,61 @@ const RackCentList = ({ title, btnTitle }) => {
               noValidate=""
               onSubmit={handleSubmit(onSubmit)}
             >
-            
-                <Row className="mt-3">
-                    <Col sm="3">
+              <Row className="mt-3">
+                {pricingDate===true &&(
+      <Col sm="4">
+                  <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <InputGroupText>Company</InputGroupText>
-                        <Controller
-                          name="company"
-                          control={control}
-                          rules={{ required: "company is required" }}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={company}
-                              className="form-control p-0 border-0"
-                              placeholder="Select a country"
-                            />
-                          )}
-                        />
+                        <Col sm="3">
+                          <InputGroupText>Pricing Date</InputGroupText>
+                        </Col>
+                        <Col sm="9">
+                          <Controller
+                            name="pricingDate"
+                            control={control}
+                            rules={{ required: " Required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                              />
+                            )}
+                          />
+                        </Col>
                       </InputGroup>
 
-                      {errors.company && (
+                      {errors.pricingDate && (
                         <span className="text-danger">
-                          {errors.company.message}
+                          {errors.pricingDate.message}
                         </span>
                       )}
                     </FormGroup>
-                  </Col>
-                  <Col sm="3">
+                  </Row>
+                </Col>
+                )}
+          
+                {csvFile==true &&(
+   <Col sm="4">
+                  <Row>
+                    <Col className="pe-0" sm="3">
+                      {" "}
+                      <InputGroupText> CSV File</InputGroupText>
+                    </Col>
+                    <Col className="px-0" sm="9">
+                      <Input
+                        style={{ border: "1px solid #ccc" }}
+                        className="form-control w-100c "
+                        type="file"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                )}
+                {fromUpto==true && (
+                    <>
+ <Col sm="4">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
@@ -105,7 +119,7 @@ const RackCentList = ({ title, btnTitle }) => {
                       </FormGroup>
                     </Row>
                   </Col>
-                  <Col sm="3">
+                  <Col sm="4">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
@@ -136,41 +150,29 @@ const RackCentList = ({ title, btnTitle }) => {
                       </FormGroup>
                     </Row>
                   </Col>
-
-                  <Col sm="3">
-                    <div className="text-end">
-                      <Btn
-                        attrBtn={{
-                          color: "primary",
-                          className: "m-r-15",
-                          type: "submit",
-                        }}
-                      >
-                        {btnTitle}
-                      </Btn>
-                    </div>
-                  </Col>
-                </Row>
+                  </>
+                )}
+  
+                <Col >
+                  <div className="text-end">
+                    <Btn
+                      attrBtn={{
+                        color: "primary",
+                        className: "m-r-15",
+                        type: "submit",
+                      }}
+                    >
+                      {btnTitle}
+                    </Btn>
+                  </div>
+                </Col>
+              </Row>
             </Form>
           </fieldset>
         </Col>
       </Row>
-  <Container fluid>
-        <Row>
-          <Col sm="12">
-            <Card>
-              <CardBody>
- <DataTableComponent
-          title="Pricing PDF List "
-          tableData={dummytabledata}
-          tableColumns={tableColumns}
-        />
-              </CardBody>
-              </Card></Col>
-              </Row ></Container>
-
     </Fragment>
-  );
-};
+  )
+}
 
-export default RackCentList;
+export default PricingCommon

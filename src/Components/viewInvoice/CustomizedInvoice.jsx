@@ -58,7 +58,6 @@ const CustomizedInvoice = ({ title }) => {
                           <Controller
                             name="from"
                             control={control}
-                            rules={{ required: " Required" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control `}
@@ -70,11 +69,7 @@ const CustomizedInvoice = ({ title }) => {
                         </Col>
                       </InputGroup>
 
-                      {errors.from && (
-                        <span className="text-danger">
-                          {errors.from.message}
-                        </span>
-                      )}
+                   
                     </FormGroup>
                   </Row>
                 </Col>
@@ -89,7 +84,6 @@ const CustomizedInvoice = ({ title }) => {
                           <Controller
                             name="to"
                             control={control}
-                            rules={{ required: "Required" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control digits`}
@@ -101,9 +95,7 @@ const CustomizedInvoice = ({ title }) => {
                         </Col>
                       </InputGroup>
 
-                      {errors.to && (
-                        <span className="text-danger">{errors.to.message}</span>
-                      )}
+                    
                     </FormGroup>
                   </Row>
                 </Col>
@@ -114,7 +106,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
                         name="supplier"
-                        rules={{ required: "Required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -127,11 +118,7 @@ const CustomizedInvoice = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.supplier && (
-                      <span className="text-danger">
-                        {errors.supplier?.message}
-                      </span>
-                    )}
+                   
                   </FormGroup>
                 </Col>
 
@@ -141,7 +128,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Country</InputGroupText>
                       <Controller
                         name="country"
-                        rules={{ required: "country is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -154,11 +140,7 @@ const CustomizedInvoice = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.country && (
-                      <span className="text-danger">
-                        {errors.country?.message}
-                      </span>
-                    )}
+                 
                   </FormGroup>
                 </Col>
               
@@ -168,7 +150,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Invoice Type</InputGroupText>
                       <Controller
                         name="company"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -179,9 +160,7 @@ const CustomizedInvoice = ({ title }) => {
                         )}
                       />
                     </InputGroup>
-                    {errors.to && (
-                      <span className="text-danger">{errors.to.message}</span>
-                    )}
+               
                   </FormGroup>
                 </Col>
 
@@ -191,7 +170,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Company</InputGroupText>
                       <Controller
                         name="company"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -202,11 +180,7 @@ const CustomizedInvoice = ({ title }) => {
                         )}
                       />
                     </InputGroup>
-                    {errors.company && (
-                      <span className="text-danger">
-                        {errors.company.message}
-                      </span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
                 <Col sm="3">
@@ -215,7 +189,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Customised Type</InputGroupText>
                       <Controller
                         name="customised"
-                        rules={{ required: "Required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -227,11 +200,7 @@ const CustomizedInvoice = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.customised && (
-                      <span className="text-danger">
-                        {errors.customised?.message}
-                      </span>
-                    )}
+                   
                   </FormGroup>
                 </Col>
                 <Col sm="3">
@@ -240,7 +209,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Invoice Category</InputGroupText>
                       <Controller
                         name="company"
-                        rules={{ required: "company Name is required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -252,11 +220,7 @@ const CustomizedInvoice = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.company && (
-                      <span className="text-danger">
-                        {errors.company?.message}
-                      </span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
                
@@ -266,7 +230,6 @@ const CustomizedInvoice = ({ title }) => {
                       <InputGroupText>Invoice(Show/Hide) </InputGroupText>
                       <Controller
                         name="show"
-                        rules={{ required: " Required" }}
                         control={control}
                         render={({ field }) => (
                           <Select
@@ -278,11 +241,7 @@ const CustomizedInvoice = ({ title }) => {
                       />
                     </InputGroup>
 
-                    {errors.show && (
-                      <span className="text-danger">
-                        {errors.show?.message}
-                      </span>
-                    )}
+                  
                   </FormGroup>
                 </Col>
                 <Col sm="9">

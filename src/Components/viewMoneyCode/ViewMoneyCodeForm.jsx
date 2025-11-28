@@ -56,7 +56,6 @@ const ViewMoneyCodeForm = () => {
                                     <Controller
                                         name="from"
                                         control={control}
-                                        rules={{ required: " Required" }}
                                         render={({ field }) => (
                                             <DatePicker
                                                 className={`form-control `}
@@ -71,9 +70,7 @@ const ViewMoneyCodeForm = () => {
 
                             </InputGroup>
 
-                            {errors.from && (
-                                <span className="text-danger">{errors.from.message}</span>
-                            )}
+                           
                         </FormGroup>
                     </Row>
                 </Col>
@@ -92,7 +89,6 @@ const ViewMoneyCodeForm = () => {
                                     <Controller
                                         name="to"
                                         control={control}
-                                        rules={{ required: "Required" }}
                                         render={({ field }) => (
                                             <DatePicker
                                                 className={`form-control digits`}
@@ -104,9 +100,7 @@ const ViewMoneyCodeForm = () => {
                                 </Col>
                             </InputGroup>
 
-                            {errors.to && (
-                                <span className="text-danger">{errors.to.message}</span>
-                            )}
+                           
                         </FormGroup>
                     </Row>
                 </Col>
@@ -115,7 +109,6 @@ const ViewMoneyCodeForm = () => {
                         <InputGroup >
                             <InputGroupText>Company</InputGroupText>
                             <Controller name="company"
-                                rules={{ required: "company Name is required" }}
 
                                 control={control}
                                 render={({ field }) => (
@@ -129,9 +122,7 @@ const ViewMoneyCodeForm = () => {
                             />
                         </InputGroup>
 
-                        {errors.company && (
-                            <span className="text-danger">{errors.company?.message}</span>
-                        )}
+                      
                     </FormGroup>
                 </Col>
 

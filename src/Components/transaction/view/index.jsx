@@ -189,6 +189,7 @@ const columnsMap = {
       });
 
       setData(tableData);
+      console.log(data,"data")
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
