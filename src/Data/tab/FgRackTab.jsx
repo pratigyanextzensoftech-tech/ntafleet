@@ -1,17 +1,15 @@
 
-import { tableColumns,dummytabledata } from '../Table/Defaultdata';
-import UpdateFgRack from '../../Components/pricing/updateFg/UpdateFgRack';
-import FgRackCent from '../../Components/pricing/updateFg/FgRackCent';
+import PricingCommon from '../../Components/pricing/PricingCommon';
 export const FgRack = [
   {
     id: '1',
     label: 'Update FG Rack Cent',
-    component: <UpdateFgRack title="Multiple FG Rack Cent Entry " btnTitle="Search Rack Company" />
+    component: <PricingCommon pricingDate={true} title="Multiple FG Rack Cent Entry " btnTitle="Search Rack Company" />
 ,
   },
   {
     id: '2',
     label: 'FG Rack Cent List',
-    component: <FgRackCent title="Filters" btnTitle="Search" />,
+    component: <PricingCommon pricingDate={true} company={true} rackus={true} rackca={true} title="Filters" btnTitle="Search" />,
   }
 ];

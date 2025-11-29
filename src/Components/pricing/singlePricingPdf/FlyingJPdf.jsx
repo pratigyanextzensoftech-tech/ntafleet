@@ -35,7 +35,6 @@ const FlyingJPdf = ({ title, btnTtitle,onDataAdded }) => {
 
  const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
-
      const payload = {
       company_id:formData.Company.value,
       company_name:formData.Company.label,
@@ -54,7 +53,6 @@ idby:sessionStorage.getItem("userId")
         console.log(res);
           toast.success("Add successfully!");
    reset();
-
         if (onDataAdded) onDataAdded();
     })
     .catch((err)=>{
