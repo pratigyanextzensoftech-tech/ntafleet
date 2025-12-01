@@ -21,6 +21,7 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 import Loader from "../../Layout/Loader";
+import { InvoiceCategory,customizedTypeType } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 const CreateInvoiceCommon = ({
   title,
   btnTtitle,
@@ -30,7 +31,9 @@ const CreateInvoiceCommon = ({
   invoice_type,
   invoice_type_dropdown,
   owner_operator_invoice,
+  invoice_category_dropdown,
   cust_inv_type, 
+  cust_inv_dropdown,
   ul_owner_operator_invoice, 
   invoice_creation,
   ta_retail_invoice,
@@ -355,7 +358,76 @@ const CreateInvoiceCommon = ({
                     </FormGroup>
                   </Col>
                 )}
+ {cust_inv_dropdown === true && (
+                  <Col sm="4">
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <InputGroupText>Invoice Category</InputGroupText>
+                        <Controller
+                          name="invCateory"
+                          rules={{ required: "Invoice Category is required" }}
+                          control={control}
+                          defaultValue={null}
+                          render={({ field }) => {
+                
 
+                            return (
+                              <Select
+                                {...field}
+                                options={InvoiceCategory}
+                                className="form-control p-0 border-0"
+                                placeholder="Select Invoice Type"
+                                value={field.value}
+                                onChange={(val) => field.onChange(val)}
+                              />
+                            );
+                          }}
+                        />
+                      </InputGroup>
+
+                      {errors.invoiceType && (
+                        <span className="text-danger">
+                          {errors.invoiceType?.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                  </Col>
+                )}
+             {invoice_category_dropdown === true && (
+                  <Col sm="4">
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <InputGroupText>Customized Type</InputGroupText>
+                        <Controller
+                          name="invCateory"
+                          rules={{ required: "Customized Type is required" }}
+                          control={control}
+                          defaultValue={null}
+                          render={({ field }) => {
+                
+
+                            return (
+                              <Select
+                                {...field}
+                                options={customizedTypeType}
+                                className="form-control p-0 border-0"
+                                placeholder="Select Invoice Type"
+                                value={field.value}
+                                onChange={(val) => field.onChange(val)}
+                              />
+                            );
+                          }}
+                        />
+                      </InputGroup>
+
+                      {errors.invoiceType && (
+                        <span className="text-danger">
+                          {errors.invoiceType?.message}
+                        </span>
+                      )}
+                    </FormGroup>
+                  </Col>
+                )}    
                 {company_list === "checkbox" && (
                   <Col sm="12">
                     <fieldset>

@@ -11,6 +11,7 @@ import usePaginatedTable from "../../Hooks/usePagination";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import CreateInvoiceCommon from '../createInvoice/CreateInvoiceCommon';
 import { combine_invoice, owner_invoice, customized_invoice } from "../../api";
 import {
   FaEdit,
@@ -189,25 +190,26 @@ const SendBulkTab = [
   {
     id: '2',
     label:"Send Owner Operator Invoice",
-    component: <BulkRetailInvoice btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
+    component: <CreateInvoiceCommon  company_list="list"
+ supplier_ids="6" invoice_category_dropdown={true}   country_id="1" invoice_type_dropdown={true} invoice_creation={true} invoice_type="RG" btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
   },
   
   {
     id: '3',
     label: "Send MoneyCode Invoice",
-    component: <SingleEssoForm btnTtitle="Search Data" title="Search MoneyCode Invoice"/>,
+    component: <CreateInvoiceCommon company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={ownerHandleSearch}/>,
   },
    {
     id: '4',
     label:"Send Customized Invoice",
-    component:  <BulkRetailInvoice btnTtitle="Search Data" btn1Title="Reset"  title="Search Customized Invoice"/>,
+    component:  <CreateInvoiceCommon company_list="list" cust_inv_dropdown={true}
+ supplier_ids="6,3" invoice_category_dropdown={true}   country_id="" invoice_type_dropdown={true} invoice_creation={true}  btnTtitle="Search Data" btn1Title="Reset"  title="Search Customized Invoice" onSearch={customizedHandleSearch}/>,
   },
  
-  
    {
     id: '5',
     label:"Send T-check Invoice",
-    component: <SingleEssoForm btnTtitle="Search Data" title="Search T-check Invoice"/>,
+    component: <CreateInvoiceCommon company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={ownerHandleSearch}/>,
   },
   
 ];

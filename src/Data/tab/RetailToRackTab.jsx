@@ -1,7 +1,5 @@
 import RetailToRack from '../../Components/transaction/retailToRack/RetailToRack';
-import EssoForm from '../../Components/transaction/retailToRack/EssoForm';
-import EssoOwner from '../../Components/transaction/retailToRack/EssoOwner';
-import Linamar from '../../Components/transaction/retailToRack/LinamarBar';
+
 export const RetailToRackTab = [
   {
     id: '1',
@@ -10,7 +8,7 @@ export const RetailToRackTab = [
        TA - <strong>[Capped]</strong>
       </>
     ),
-    component: <RetailToRack btnTtitle="Create Rack Transaction" title="Create Single Rack Invoice (Capped)"/>,
+    component: <RetailToRack  invoice_type="Capped" country_id="" company_list="checkbox"  supplier_ids="3" btnTtitle="Update Rack Transaction" title="Create Single Rack Invoice (Capped)"/>,
   },
   {
     id: '2',
@@ -19,18 +17,18 @@ export const RetailToRackTab = [
        TA  - <strong>[Actual]</strong>
       </>
     ),
-    component: <RetailToRack btnTtitle="Create Rack Transaction" title="Create Single Rack Invoice (Capped)"/>,
+    component: <RetailToRack  invoice_type= "Actual" country_id="" company_list="checkbox"  supplier_ids="3" btnTtitle="Update Rack Transaction" title="Create Single Rack Invoice (Capped)"/>,
   },
   
   {
     id: '3',
      label: "Esso",
-    component: <EssoForm  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
+    component: <RetailToRack country_id="1"  invoice_type_dropdown={true}  supplier_ids="6"  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
   },
    {
     id: '4',
     label:"ESSO Owner Operator",
-    component: <EssoOwner  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
+    component: <RetailToRack country_id="1" invoice_type="RG" invoice_type_dropdown={true}  supplier_ids="6"  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
   },
  
   
@@ -41,7 +39,7 @@ export const RetailToRackTab = [
        Love - <strong>[Capped ]</strong>
       </>
     ),
-    component: <RetailToRack type="loves" btnTtitle="Create Rack Transaction" title="Create Single Rack Invoice (Capped)"/>,
+    component: <RetailToRack invoice_type="Capped" country_id="" company_list="checkbox"  supplier_ids="7" type="loves" btnTtitle="Create Rack Transaction" title="Update Single Rack Invoice (Capped)"/>,
   },
    {
     id: '6',
@@ -50,22 +48,22 @@ export const RetailToRackTab = [
       Love - <strong>[Actual]</strong>
       </>
     ),
-    component: <RetailToRack type="loves" btnTtitle="Create Rack Transaction" title="Create Single Rack Invoice (Capped)"/>,
+    component: <RetailToRack  invoice_type= "Actual" country_id="" company_list="checkbox"   supplier_ids="7" type="loves" btnTtitle="Create Rack Transaction" title="Update Single Rack Invoice (Capped)"/>,
   },
     {
     id: '7',
     label:"ULTRAMAR",
-    component: <EssoForm type="ultramar"  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
+    component: <RetailToRack country_id="1" company_list="checkbox"  invoice_type_dropdown={true}  supplier_ids="10" type="ultramar"  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
   },
    {
     id: '8',
     label:"Ultramar Owner Operator",
-    component: <EssoOwner type="ultramar"  title="Create Single Rack Invoice (Actual)" btnTtitle="Search Company"/>,
+    component: <RetailToRack country_id="1"  invoice_type="RG" invoice_type_dropdown={true}     supplier_ids="10" type="ultramar"  title="Create Single Rack Invoice (Actual)" btnTtitle="Update Transaction"/>,
  
   },
   {
     id: '9',
     label:"Linamar Price Update",
-    component: <Linamar  title="Linamar Price Update"  btnTtitle="Update Transaction"/>,
+    component: <RetailToRack country_id="" countryDropDown={false}   supplier_ids="6,4"  title="Linamar Price Update"  btnTtitle="Update Transaction"/>,
   },
 ];

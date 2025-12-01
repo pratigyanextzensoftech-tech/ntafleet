@@ -5,14 +5,14 @@ import { H6, Image, LI, UL, P } from '../../AbstractElements';
 import man from '../../assets/images/dashboard/1.png';
 
 const Profile = () => {
-  const authenticated = JSON.parse(sessionStorage.getItem('authenticated'));
-  const auth0_profile = JSON.parse(sessionStorage.getItem('auth0_profile'));
+  const authenticated = JSON.parse(localStorage.getItem('authenticated'));
+  const auth0_profile = JSON.parse(localStorage.getItem('auth0_profile'));
   const [profile, setProfile] = useState('');
   const [name, setName] = useState('');
 
   useEffect(() => {
-    setProfile(sessionStorage.getItem('profileURL') || man);
-    setName(sessionStorage.getItem('Name'));
+    setProfile(localStorage.getItem('profileURL') || man);
+    setName(localStorage.getItem('Name'));
   }, [setProfile, setName]);
 
   return (

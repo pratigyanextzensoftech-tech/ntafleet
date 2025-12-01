@@ -6,7 +6,7 @@ import CommenUL from './CommenUL';
 
 const SidebarType = () => {
   const { addSidebarLayouts } = useContext(CustomizerContext);
-  const sidebarType = sessionStorage.getItem('sidebar_types') || ConfigDB.data.settings.sidebar.type;
+  const sidebarType = localStorage.getItem('sidebar_types') || ConfigDB.data.settings.sidebar.type;
 
   useEffect(() => {
     ConfigDB.data.settings.sidebar.type = sidebarType;

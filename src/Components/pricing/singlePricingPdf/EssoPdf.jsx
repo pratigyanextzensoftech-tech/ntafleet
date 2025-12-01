@@ -48,7 +48,7 @@ const EssoPdf = ({ title, btnTtitle,onDataAdded }) => {
   mailby:0,
     added_on:new Date(),
 // added_on:new Date(),
-idby:sessionStorage.getItem("userId")
+idby:localStorage.getItem("userId")
      }
     axios.post(APINAME,payload)
     .then((res)=>{

@@ -5,10 +5,43 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Ca
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-const RackToRetail = ({btnTitle,type}) => {
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import {
+  useCompany,
+  useCountry,
+  useSupplier,
+  InvoiceType,
+} from "../../../Hooks/Dropdowns";
+const RackToRetail = ({btnTitle,type, supplier_ids,
+  company_list,
+  country_id,
+  invoice_type,
+  invoice_type_dropdown,
+  owner_operator_invoice,
+  invoice_category_dropdown,
+  cust_inv_type, 
+  cust_inv_dropdown,
+  ul_owner_operator_invoice, 
+  invoice_creation,
+  ta_retail_invoice,
+  suplier_list,
+  country_list,
+  defaultSupplierValue,
+  api_name,}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
-
+ const { data: country } = useCountry(country_id);
+  const { data: supplierData } = useSupplier(supplier_ids);
+  const { data: companies } = useCompany( 
+    invoice_creation,
+    ta_retail_invoice,
+    owner_operator_invoice,
+    cust_inv_type,
+    ul_owner_operator_invoice, 
+  );
+  const invoiceTypes = InvoiceType(invoice_type);
+  const [loading, setLoading] = useState(false);
     const {
         register,
 
@@ -17,28 +50,83 @@ const RackToRetail = ({btnTitle,type}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
-
+ const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
     const onSubmit = (data) => {
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-        if (isValid) {
-            setShowMessage(false); // hide only when form is completely valid
-        }
+       setLoading(true);
+    const basePayload = {
+      company_id: data.company.value ? data.company.value.toString() : "",
+      invoice_creation: invoice_creation ? invoice_creation : "",
+      supplier_id: data.supplier.value,
+      country_id: data.country.value,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_type: data.invoice_type ? data.invoice_type.value : invoice_type,
     };
 
+    axios
+      .post(api_name, basePayload, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        reset();
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.error(err);
+        setLoading(false);
+      });
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
+    console.log("Final Payload Sent =>", basePayload);
+  };
 
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
+  const handleCheckboxChange = (value, field) => {
+    
+    const allValues = companies.map((c) => c.value); // all possible
+    const companyValues = allValues.filter((v) => v !== "All Company"); // only companies
+    let updated = [...selectedValues];
+
+    if (value === "All Company") {
+      // ✅ Clicked ALL → toggle everything
+      if (updated.includes("All Company")) {
+        updated = []; // unselect all
+      } else {
+        updated = ["All Company", ...companyValues]; // select all
+      }
+    } else {
+      // ✅ Clicked a normal company
+      if (updated.includes(value)) {
+        updated = updated.filter((v) => v !== value);
+      } else {
+        updated.push(value);
+      }
+
+      // If all companies are selected, add ALL
+      const onlyCompanies = updated.filter((v) => v !== "All Company");
+      const isAllSelected = companyValues.every((v) =>
+        onlyCompanies.includes(v)
+      );
+
+      if (isAllSelected) {
+        updated = ["All Company", ...companyValues];
+      } else {
+        updated = updated.filter((v) => v !== "All Company");
+      }
     }
+
+    setSelectedValues(updated);
+    field.onChange(updated);
+  };
+
+
+  
     return (
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                     <Row>
@@ -110,88 +198,151 @@ const RackToRetail = ({btnTitle,type}) => {
                                 </FormGroup>
                             </Row>
                         </Col>
-                             <Col sm="3">
-                            <FormGroup className="m-form__group">
-                                <InputGroup >
-                                    <InputGroupText>Supplier</InputGroupText>
-                                <Controller
-  name="supplier"
-  defaultValue={type==="flying"?supplier[1]:type==="ta-petro"?InVoiceSupplier[1]:InVoiceSupplier[2]}
-  control={control}
-  rules={{ required: "Supplier is required" }}
+                           {suplier_list!== false &&(
+         <Col sm="3">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Supplier</InputGroupText>
 
-  render={({ field }) => (
-    <Select
-      {...field}
-      className="form-control p-0 border-0"
-      placeholder="Select supplier"
-      onChange={(selectedOption) => field.onChange(selectedOption)}
-      value={field.value}
-    />
-  )}
-/>
+                      <Controller
+                        name="supplier"
+                        control={control}
+                        rules={{ required: "Supplier is required" }}
+                        defaultValue={null}
+                        render={({ field }) => {
+                          // Auto select if only one option exists
+                          if (
+                            supplierData?.length === 1   &&
+                            field.value === null
+                          ) {
+                            field.onChange(supplierData[0]);
+                          }
+                           
+                          return (
+                            <Select
+                              {...field}
+                              options={supplierData}
+                              className="form-control p-0 border-0"
+                              placeholder="Select supplier"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                            />
+                          );
+                        }}
+                      />
+                    </InputGroup>
 
-                                </InputGroup>
-
-                                {errors.supplier && (
-                                    <span className="text-danger">{errors.supplier?.message}</span>
-                                )}
-                            </FormGroup>
-                        </Col>
-                             <Col sm="3">
-                        <FormGroup className="m-form__group">
-                            <InputGroup>
-                                <InputGroupText>Country</InputGroupText>
-                                <Controller
-                                    name="country"
-                                    rules={{ required: "country is required" }}
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            options={optionscountry}
-                                            className="form-control p-0 border-0"
-                                            placeholder="Select Country"
-                                        />
-                                    )}
-                                />
-                            </InputGroup>
-
-                            {errors.country && (
-                                <span className="text-danger">{errors.country?.message}</span>
-                            )}
-                        </FormGroup>
-                    </Col>
+                    {errors.supplier && (
+                      <span className="text-danger">
+                        {errors.supplier.message}
+                      </span>
+                    )}
+                  </FormGroup>
+                </Col>
+                )}
+                              {suplier_list!== false &&(
+                                           <Col sm="3">
+                                             <FormGroup className="m-form__group">
+                                               <InputGroup>
+                                                 <InputGroupText>Country</InputGroupText>
+                           
+                                                 <Controller
+                                                   name="country"
+                                                   rules={{ required: "Country is required" }}
+                                                   control={control}
+                                                   defaultValue={null}
+                                                   render={({ field }) => {
+                                                     // Auto-select if only one country exists AND no value already selected
+                                                     if (country?.length === 1 && !field.value) {
+                                                       field.onChange(country[0]);
+                                                     }
+                           
+                                                     return (
+                                                       <Select
+                                                         {...field}
+                                                         options={country}
+                                                         className="form-control p-0 border-0"
+                                                         placeholder="Select Country"
+                                                         value={field.value}
+                                                         onChange={(val) => field.onChange(val)}
+                                                       />
+                                                     );
+                                                   }}
+                                                 />
+                                               </InputGroup>
+                           
+                                               {errors.country && (
+                                                 <span className="text-danger">
+                                                   {errors.country?.message}
+                                                 </span>
+                                               )}
+                                             </FormGroup>
+                                           </Col>
+                                   )}
                         </Row>
                         <Row>
                        
-                        <Row className='mt-5 px-md-4 px-0'>
-                             <fieldset className='inputField' >
-                <legend className='legend'>choose Supplier</legend>
-                <Row>
-{(type === "esso" ? checkBoxData : transactionCheckBox)?.map((item, index) => (
-  <Col sm="3" key={index}>
-         <div className="checkbox checkbox-dark">
-      <input
-        id={`checkbox-${index}`}
-        type="checkbox"
-        value={item.value}
-        checked={selectedValues?.includes(item.value)}
-        onChange={handleCheckboxChange}
-      />
-      <Label for={`checkbox-${index}`} className="ms-2">
-        {item.label}
-      </Label>
-    </div>
-      
-   
-  </Col>
-))}
-</Row>
-
-
-                                            </fieldset>
-                                        </Row>
+                        {company_list === "checkbox" && (
+                                       <Col sm="12">
+                                         <fieldset>
+                                           <legend>Choose Company </legend>
+                                           {
+                                             <Controller
+                                               name="selectedCompanies"
+                                               control={control}
+                                               rules={{ required: "Select at least one company" }}
+                                               render={({ field }) => (
+                                                 <Row>
+                                                   <Col sm="4">
+                                                     <div className="checkbox checkbox-dark">
+                                                       <input
+                                                         type="checkbox"
+                                                         id="checkbox-0"
+                                                         value="All Company"
+                                                         
+                                                         checked={selectedValues.includes(
+                                                           "All Company"
+                                                         )}
+                                                         onChange={() =>
+                                                           handleCheckboxChange("All Company", field)
+                                                         }
+                                                       />
+                                                       <Label for={`checkbox-0`} className="ms-2 ">
+                                                         All Company
+                                                       </Label>
+                                                     </div>
+                                                   </Col>
+                     
+                                                   {companies.map((item, index) => (
+                                                     <Col sm="4" key={index}>
+                                                       <div className="checkbox checkbox-dark">
+                                                         <input
+                                                           type="checkbox"
+                                                           id={`checkbox-${index}`}
+                                                           value={item.value}
+                                                           checked={selectedValues.includes(
+                                                             item.value
+                                                           )}
+                                                           onChange={() =>
+                                                             handleCheckboxChange(item.value, field)
+                                                           }
+                                                         />
+                                                         <Label
+                                                           for={`checkbox-${index}`}
+                                                           className="ms-2 "
+                                                         >
+                                                           {item.label}
+                                                         </Label>
+                                                       </div>
+                                                     </Col>
+                                                   ))}
+                                                 </Row>
+                                               )}
+                                             />
+                                           }
+                                         </fieldset>
+                                       </Col>
+                                     )}
                  
                         
                     </Row>

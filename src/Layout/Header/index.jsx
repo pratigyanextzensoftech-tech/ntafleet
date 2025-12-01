@@ -27,7 +27,7 @@ const Header = () => {
   const layout_type = customizer.settings.layout_type;
   const layout_versions = customizer.color.mix_background_layout;
 
-  const layout_version = sessionStorage.getItem('layout_version') || (layout_versions && sessionStorage.setItem('layout_version', layout_versions));
+  const layout_version = localStorage.getItem('layout_version') || (layout_versions && localStorage.setItem('layout_version', layout_versions));
 
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {

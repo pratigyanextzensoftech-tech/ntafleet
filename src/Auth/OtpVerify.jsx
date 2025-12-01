@@ -27,8 +27,8 @@ const OtpVerify = () => {
         toast.success("OTP verified successfully!");
         
         // ✅ Save user info only
-        sessionStorage.setItem("userId", userId);
-sessionStorage.setItem("Menu", JSON.stringify(mainmenu));
+        localStorage.setItem("userId", userId);
+localStorage.setItem("Menu", JSON.stringify(mainmenu));
         setLoading(false);
         navigate("/dashboard");
       } else {

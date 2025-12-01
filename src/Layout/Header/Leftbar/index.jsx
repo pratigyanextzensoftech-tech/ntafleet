@@ -42,7 +42,7 @@ const Leftbar = () => {
       if (toggle) {
         console.log("toggle")
         toggleSidebar(!toggle);
-         const currentLayout = sessionStorage.getItem("sidebar_layout");
+         const currentLayout = localStorage.getItem("sidebar_layout");
 
     if (currentLayout === "horizontal-wrapper") {
       // If horizontal, switch to compact (show sidebar)
@@ -54,7 +54,7 @@ const Leftbar = () => {
         console.log("991 54 else", toggle);
         toggleSidebar(!toggle);
                 addSidebarLayouts("horizontal-wrapper")
-                sessionStorage.setItem("sidebar_layout", "horizontal-wrapper");
+                localStorage.setItem("sidebar_layout", "horizontal-wrapper");
         document.querySelector(".sidebar-wrapper").className = "sidebar-wrapper ";
       }
     }

@@ -15,13 +15,13 @@ import Loader from "./Loader";
 const AppLayout = ({ children, classNames, ...rest }) => {
   const { layout } = useContext(CustomizerContext);
   const { sidebarIconType } = useContext(CustomizerContext);
-  const sidebarType = sessionStorage.getItem('sidebar_types') || ConfigDB.data.settings.sidebar.type;
+  const sidebarType = localStorage.getItem('sidebar_types') || ConfigDB.data.settings.sidebar.type;
 
-  const layout1 = sessionStorage.getItem("sidebar_layout");
-  const sideBarIcon = sessionStorage.getItem("sidebar_icon_type") || sidebarIconType;
+  const layout1 = localStorage.getItem("sidebar_layout");
+  const sideBarIcon = localStorage.getItem("sidebar_icon_type") || sidebarIconType;
   const location = useLocation();
   const { animation } = useContext(AnimationThemeContext);
-  const animationTheme = sessionStorage.getItem("animation") || animation || ConfigDB.data.router_animation;
+  const animationTheme = localStorage.getItem("animation") || animation || ConfigDB.data.router_animation;
 
   return (
     <Fragment>

@@ -114,7 +114,7 @@ const DiscountSheet = ({ title, btnTitle, onDataAdded}) => {
     id:0,
     dated:new Date(),
 // added_on:new Date(),
-idby:sessionStorage.getItem("userId")
+idby:localStorage.getItem("userId")
      }
     axios.post(APINAME,payload)
     .then((res)=>{

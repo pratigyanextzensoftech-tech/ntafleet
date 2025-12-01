@@ -56,7 +56,7 @@ ca_total:"",
 total_gln:"",
 total_ltr:"",
 dated:new Date(),
-idby:sessionStorage.getItem("userId"),
+idby:localStorage.getItem("userId"),
 del:""
      }
     axios.post(APINAME,payload)

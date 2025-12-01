@@ -6,25 +6,25 @@ export const UltramarGroupTab = [
   {
     id: "1",
     label: "Update ULTRAMAR  Group Rack Cent",
-    // component: (
-    //   <UpdateFgRack
-    //     title=" ULTRAMAR  Group Rack Entry"
-    //     btnTitle="Search Group"
-    //   />
-    // ),
-         component: <PricingCommon  title="ULTRAMAR  Group Rack Entry" btnTitle="Search Group" apiname={""}/>
+    component: (
+      <UpdateFgRack
+        title=" ULTRAMAR  Group Rack Entry"
+        btnTitle="Search Group"
+      />
+    ),
+        //  component: <PricingCommon  title="ULTRAMAR  Group Rack Entry" btnTitle="Search Group" apiname={""}/>
 
   },
   {
     id: "2",
     label: "Upload ULTRAMAR  Group Rack Cent ",
-    // component: (
-    //   <UploadEssoGroupRackForm
-    //     title=" ULTRAMAR  Group Rack Entry"
-    //     btnTitle="Search Group"
-    //   />
-    // ),
-             component: <PricingCommon csvFile={true} title="ULTRAMAR  Group Rack Entry" btnTitle="Search Group" apiname={""}/>
+    component: (
+      <UploadEssoGroupRackForm
+        title=" ULTRAMAR  Group Rack Entry"
+        btnTitle="Search Group"
+      />
+    ),
+            //  component: <PricingCommon csvFile={true} title="ULTRAMAR  Group Rack Entry" btnTitle="Search Group" apiname={""}/>
 
   },
   {

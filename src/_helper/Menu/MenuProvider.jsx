@@ -11,7 +11,7 @@ export const MenuProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storedMenu = sessionStorage.getItem("Menu");
+    const storedMenu = localStorage.getItem("Menu");
 
     if (storedMenu) {
       try {
@@ -22,20 +22,20 @@ export const MenuProvider = ({ children }) => {
           return; // ✅ Exit early, no need to hit API
         }
       } catch (err) {
-        sessionStorage.removeItem("Menu"); // clean invalid data
+        localStorage.removeItem("Menu"); // clean invalid data
       }
     }
 
     // ✅ Fallback: fetch from API if not found or invalid
     const fetchMenu = async () => {
       setLoading(true);
-const userID = sessionStorage.getItem("userId") || 0;
+const userID = localStorage.getItem("userId") || 0;
 
       try {
         const resp = await axios.post(MenuApi, { userID });
         if (resp.data && Array.isArray(resp.data.Menu)) {
           setMainMenu(resp.data.Menu);
-          sessionStorage.setItem("Menu", JSON.stringify(resp.data.Menu));
+          localStorage.setItem("Menu", JSON.stringify(resp.data.Menu));
         } else {
           setMainMenu([]);
         }

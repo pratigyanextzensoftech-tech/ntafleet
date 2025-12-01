@@ -17,12 +17,12 @@ const Signin = ({ selected }) => {
   const [loading, setLoading] = useState(false); 
   const history = useNavigate();
 
-  const [value, setValue] = useState(sessionStorage.getItem("profileURL") || man);
-  const [name, setName] = useState(sessionStorage.getItem("Name") || "");
+  const [value, setValue] = useState(localStorage.getItem("profileURL") || man);
+  const [name, setName] = useState(localStorage.getItem("Name") || "");
   
   useEffect(() => {
-    sessionStorage.setItem("profileURL", man);
-    sessionStorage.setItem("Name", "Emay Walter");
+    localStorage.setItem("profileURL", man);
+    localStorage.setItem("Name", "Emay Walter");
   }, [value, name]);
 
   const loginAuth = async (e) => {
@@ -44,11 +44,11 @@ console.log(response);
         const userData = response.data.admin;
 
         // Save token or user info in localStorage
-        sessionStorage.setItem("login", JSON.stringify(true));
-        sessionStorage.setItem("token", userData.token);
-        sessionStorage.setItem("profileURL", userData.profileURL || man);
-        sessionStorage.setItem("Name", userData.name || "User");
-        sessionStorage.setItem("userId", userData.id || "UserId");
+        localStorage.setItem("login", JSON.stringify(true));
+        localStorage.setItem("token", userData.token);
+        localStorage.setItem("profileURL", userData.profileURL || man);
+        localStorage.setItem("Name", userData.name || "User");
+        localStorage.setItem("userId", userData.id || "UserId");
 
         toast.success(response.data.message);
 

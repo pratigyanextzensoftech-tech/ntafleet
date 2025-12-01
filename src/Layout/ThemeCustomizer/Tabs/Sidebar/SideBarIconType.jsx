@@ -6,7 +6,7 @@ import CommenUL from './CommenUL';
 
 const SideBarIconType = () => {
   const { addSidebarIconType } = useContext(CustomizerContext);
-  const SideBarIconType = sessionStorage.getItem('sidebar_icon_type') || ConfigDB.data.settings.sidebar.iconType;
+  const SideBarIconType = localStorage.getItem('sidebar_icon_type') || ConfigDB.data.settings.sidebar.iconType;
 
   useEffect(() => {
     ConfigDB.data.settings.sidebar.iconType = SideBarIconType;

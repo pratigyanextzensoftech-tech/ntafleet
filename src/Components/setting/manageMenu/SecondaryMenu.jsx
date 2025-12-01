@@ -47,7 +47,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
     "ord":0,
     "icon":"",
     "del":0,
-    "idby":sessionStorage.getItem('userId'),
+    "idby":localStorage.getItem('userId'),
     "sw":0 
      }
       if (Edit && selectedRow) {

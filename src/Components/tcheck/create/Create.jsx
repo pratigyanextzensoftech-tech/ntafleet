@@ -33,10 +33,10 @@ const Create = ({ title, btnTitle }) => {
       // invoice_creation: "",
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
-    };
+      invoice_creation:"weekly",
 
-   
-      // ---- RACK CONDITIONS ----
+
+    };
 
 setLoading(true)
       axios

@@ -44,7 +44,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
     "ord":0,
     "icon":"",
     "del":0,
-    "idby":sessionStorage.getItem('userId'),
+    "idby":localStorage.getItem('userId'),
   
      }
       if (Edit && selectedRow) {

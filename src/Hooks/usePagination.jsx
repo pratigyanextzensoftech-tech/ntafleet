@@ -27,7 +27,7 @@ export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters =
 
       const res = response.data;
       const apiData = res.data || [];
-
+console.log(res)
       const mapped = apiData.map((row) => {
         const newRow = {};
         Object.keys(columnsMap).forEach((key) => {
@@ -62,6 +62,7 @@ export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters =
   };
 
   const handleSearch = (formData) => {
+    console.log(formData)
     setFilters(formData);
     setCurrentPage(1);
     fetchData(1, perPage, formData);

@@ -1,8 +1,8 @@
 import ConfigDB from '../../../Config/ThemeConfig';
 //  '#7366ff'
-const primary = sessionStorage.getItem('default_color') || ConfigDB.data.color.primary_color;
+const primary = localStorage.getItem('default_color') || ConfigDB.data.color.primary_color;
 //  '#f73164'
-const secondary = sessionStorage.getItem('secondary_color') || ConfigDB.data.color.secondary_color;
+const secondary = localStorage.getItem('secondary_color') || ConfigDB.data.color.secondary_color;
 
 export const Currentlysale = {
   series: [

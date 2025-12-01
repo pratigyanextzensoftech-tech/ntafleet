@@ -7,7 +7,7 @@ import CommenUL from '../Sidebar/CommenUL';
 
 const MixLayoutComponent = () => {
   const { addMixBackgroundLayout, setMixLayout } = useContext(CustomizerContext);
-  const mixLayout = sessionStorage.getItem('mix_background_layout') || ConfigDB.data.color.mix_background_layout;
+  const mixLayout = localStorage.getItem('mix_background_layout') || ConfigDB.data.color.mix_background_layout;
 
   useEffect(() => {
     if (mixLayout !== 'light-only') {

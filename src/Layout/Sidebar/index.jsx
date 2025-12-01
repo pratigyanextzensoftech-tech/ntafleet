@@ -26,7 +26,7 @@ const Sidebar = (props) => {
 
   // ✅ Fetch Menu API
   const MenuData = async () => {
-         const userID=sessionStorage.getItem("userId");
+         const userID=localStorage.getItem("userId");
 
     try {
       const resp = await axios.post(MenuApi,{"userID":userID});

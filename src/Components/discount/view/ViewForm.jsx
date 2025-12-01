@@ -85,7 +85,7 @@ total_us:0,
 retail_total_us:0,
 fuel_unit_us:0,
 fuel_unit_us_disc_free:0,
-added_by:sessionStorage.getItem("userId"),
+added_by:localStorage.getItem("userId"),
 added_on:new Date()
      }
     axios.post(APINAME,payload)

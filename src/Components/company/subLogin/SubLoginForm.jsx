@@ -94,7 +94,7 @@ console.log(data)
 company_id:formData.company.value,
 username:formData.userName,
 password:formData.password,
-added_by:sessionStorage.getItem("userId"),
+added_by:localStorage.getItem("userId"),
 added_on: new Date()
      }
 

@@ -6,7 +6,7 @@ import CommenUL from './CommenUL';
 
 const LayoutType = () => {
   const { addLayout } = useContext(CustomizerContext);
-  const localStorageLayout = sessionStorage.getItem('layout_type') || ConfigDB.data.settings.layout_type;
+  const localStorageLayout = localStorage.getItem('layout_type') || ConfigDB.data.settings.layout_type;
   const [layout_type, setLayout_type] = useState(localStorageLayout);
 
   useEffect(() => {
