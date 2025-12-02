@@ -60,7 +60,7 @@ const Index = () => {
   const { data: essoRacks, loading: essoRackLoading } = useEssoRack();
   const { data: countries, loading: countryLoading } = useCountry();
   const [showMessage, setShowMessage] = useState(true);
-
+ const [FullData, setFullData] = useState([]);
   const {
     reset,
     register,
@@ -72,116 +72,117 @@ const Index = () => {
     axios
       .get(`${company}/${company_id}`)
       .then((res) => {
+        setFullData(res.data);
         console.log(res.data);
-        reset({
-          company_name: res.data.company_name || "",
-          email: res.data.email || "",
-          email2: res.data.email2 || "",
-          other_email: res.data.other_email || "",
-          otp_email: res.data.otp_email || "",
-          otp_email2: res.data.otp_email2 || "",
-          otp_phone: res.data.otp_phone || "",
-          logo: res.data.logo || "",
-          address: res.data.address || "",
-          street: res.data.street || "",
-          city: res.data.city || "",
-          location: res.data.location || "",
-          auth_location: res.data.auth_location || "",
-          province: res.data.province || "",
-          postal_code: res.data.postal_code || "",
-          country_name: res.data.country_name || "",
-          phone: res.data.phone || "",
-          fax: res.data.fax || "",
-          mobile: res.data.mobile || "",
-          company_type: res.data.company_type?.value || "0",
-          website: res.data.website || "",
-          country_id: res.data.country_id?.value || "0",
-          country: res.data.country || "",
-          salesman_id: res.data.salesman_id?.value || "0",
-          policy_number: res.data.policy_number || "",
-          company_status: res.data.company_status?.value || "",
-          susp_comp: res.data.susp_comp?.value || "",
-          defd_mark_up: res.data.defd_mark_up || "",
-          daily_report: res.data.daily_report || "",
-          identifier: res.data.identifier || "",
-          irving: res.data.irving || "",
-          fees: res.data.fees || "",
-          shell_pricing: res.data.shell_pricing || "0",
-          pilot_pricing: res.data.pilot_pricing || "0",
-          discount_canada: res.data.discount_canada || "0",
-          discount_usa: res.data.discount_usa || "0",
-          rack_ca: res.data.rack_ca || "0",
-          rack_us: res.data.rack_us || "0",
-          aoi: res.data.aoi || "",
-          drivers_license: res.data.drivers_license || "",
-          signed_agreement: res.data.signed_agreement || "",
-          void_cheque: res.data.void_cheque || "",
-          check_rebate: res.data.check_rebate || "",
-          retail_invoice: res.data.retail_invoice || "",
-          ta_retail_invoice: res.data.ta_retail_invoice || "",
-          esso_retail_invoice: res.data.esso_retail_invoice || "",
-          esso_inv_type: res.data.esso_inv_type?.value || "",
-          cust_inv_type: res.data.cust_inv_type?.value || "",
-          ul_cust_inv_type: res.data.ul_cust_inv_type?.value || "",
-          ul_inv_type: res.data.ul_inv_type?.value || "",
-          esso_rcent: res.data.esso_rcent || "0",
-          ul_rcent: res.data.ul_rcent || "0",
-          esso_rack: res.data.esso_rack || "0",
-          esso_rack_on: res.data.esso_rack_on || "0",
-          esso_rack_oon: res.data.esso_rack_oon || "0",
-          fee: res.data.fee || "",
-          owner_operator_invoice: res.data.owner_operator_invoice?.value || "",
-          ul_owner_operator_invoice:
-            res.data.ul_owner_operator_invoice?.value || "",
-          sw_owner_invoice: res.data.sw_owner_invoice?.value || "",
-          self_owner_invoice: res.data.self_owner_invoice?.value || "",
-          sw_customised_inv: res.data.sw_customised_inv?.value || "",
-          default_unit: res.data.default_unit || "",
-          default_driver: res.data.default_driver || "",
-          love_retail_invoice: res.data.love_retail_invoice || "",
-          supplier_fee: res.data.supplier_fee || "",
-          ibp_adjustment: res.data.ibp_adjustment || "",
-          pumping_fee: res.data.pumping_fee || "",
-          net_price: res.data.net_price || "",
-          daily_pricing: res.data.daily_pricing || "",
-          ta_daily_pricing: res.data.ta_daily_pricing || "",
-          esso_daily_pricing: res.data.esso_daily_pricing || "",
-          esso_daily_pricing_wtax: res.data.esso_daily_pricing_wtax || "",
-          love_daily_pricing: res.data.love_daily_pricing || "",
-          ul_daily_pricing: res.data.ul_daily_pricing || "",
-          ul_daily_pricing_wtax: res.data.ul_daily_pricing_wtax || "",
-          invoice_creation:
-            invoiceCreation.find(
-              (opt) => opt.value === res.data.invoice_creation
-            ) || null,
-          invoice_day:
-            invoiceDay.find((opt) => opt.value === res.data.invoice_day) ||
-            null,
+        // reset({
+        //   company_name: res.data.company_name || "",
+        //   email: res.data.email || "",
+        //   email2: res.data.email2 || "",
+        //   other_email: res.data.other_email || "",
+        //   otp_email: res.data.otp_email || "",
+        //   otp_email2: res.data.otp_email2 || "",
+        //   otp_phone: res.data.otp_phone || "",
+        //   logo: res.data.logo || "",
+        //   address: res.data.address || "",
+        //   street: res.data.street || "",
+        //   city: res.data.city || "",
+        //   location: res.data.location || "",
+        //   auth_location: res.data.auth_location || "",
+        //   province: res.data.province || "",
+        //   postal_code: res.data.postal_code || "",
+        //   country_name: res.data.country_name || "",
+        //   phone: res.data.phone || "",
+        //   fax: res.data.fax || "",
+        //   mobile: res.data.mobile || "",
+        //   company_type: res.data.company_type?.value || "0",
+        //   website: res.data.website || "",
+        //   country_id: res.data.country_id?.value || "0",
+        //   country: res.data.country || "",
+        //   salesman_id: res.data.salesman_id?.value || "0",
+        //   policy_number: res.data.policy_number || "",
+        //   company_status: res.data.company_status?.value || "",
+        //   susp_comp: res.data.susp_comp?.value || "",
+        //   defd_mark_up: res.data.defd_mark_up || "",
+        //   daily_report: res.data.daily_report || "",
+        //   identifier: res.data.identifier || "",
+        //   irving: res.data.irving || "",
+        //   fees: res.data.fees || "",
+        //   shell_pricing: res.data.shell_pricing || "0",
+        //   pilot_pricing: res.data.pilot_pricing || "0",
+        //   discount_canada: res.data.discount_canada || "0",
+        //   discount_usa: res.data.discount_usa || "0",
+        //   rack_ca: res.data.rack_ca || "0",
+        //   rack_us: res.data.rack_us || "0",
+        //   aoi: res.data.aoi || "",
+        //   drivers_license: res.data.drivers_license || "",
+        //   signed_agreement: res.data.signed_agreement || "",
+        //   void_cheque: res.data.void_cheque || "",
+        //   check_rebate: res.data.check_rebate || "",
+        //   retail_invoice: res.data.retail_invoice || "",
+        //   ta_retail_invoice: res.data.ta_retail_invoice || "",
+        //   esso_retail_invoice: res.data.esso_retail_invoice || "",
+        //   esso_inv_type: res.data.esso_inv_type?.value || "",
+        //   cust_inv_type: res.data.cust_inv_type?.value || "",
+        //   ul_cust_inv_type: res.data.ul_cust_inv_type?.value || "",
+        //   ul_inv_type: res.data.ul_inv_type?.value || "",
+        //   esso_rcent: res.data.esso_rcent || "0",
+        //   ul_rcent: res.data.ul_rcent || "0",
+        //   esso_rack: res.data.esso_rack || "0",
+        //   esso_rack_on: res.data.esso_rack_on || "0",
+        //   esso_rack_oon: res.data.esso_rack_oon || "0",
+        //   fee: res.data.fee || "",
+        //   owner_operator_invoice: res.data.owner_operator_invoice?.value || "",
+        //   ul_owner_operator_invoice:
+        //     res.data.ul_owner_operator_invoice?.value || "",
+        //   sw_owner_invoice: res.data.sw_owner_invoice?.value || "",
+        //   self_owner_invoice: res.data.self_owner_invoice?.value || "",
+        //   sw_customised_inv: res.data.sw_customised_inv?.value || "",
+        //   default_unit: res.data.default_unit || "",
+        //   default_driver: res.data.default_driver || "",
+        //   love_retail_invoice: res.data.love_retail_invoice || "",
+        //   supplier_fee: res.data.supplier_fee || "",
+        //   ibp_adjustment: res.data.ibp_adjustment || "",
+        //   pumping_fee: res.data.pumping_fee || "",
+        //   net_price: res.data.net_price || "",
+        //   daily_pricing: res.data.daily_pricing || "",
+        //   ta_daily_pricing: res.data.ta_daily_pricing || "",
+        //   esso_daily_pricing: res.data.esso_daily_pricing || "",
+        //   esso_daily_pricing_wtax: res.data.esso_daily_pricing_wtax || "",
+        //   love_daily_pricing: res.data.love_daily_pricing || "",
+        //   ul_daily_pricing: res.data.ul_daily_pricing || "",
+        //   ul_daily_pricing_wtax: res.data.ul_daily_pricing_wtax || "",
+        //   invoice_creation:
+        //     invoiceCreation.find(
+        //       (opt) => opt.value === res.data.invoice_creation
+        //     ) || null,
+        //   invoice_day:
+        //     invoiceDay.find((opt) => opt.value === res.data.invoice_day) ||
+        //     null,
 
-          invoice_week:
-            invoiceWeek.find((opt) => opt.value === res.data.invoice_week) ||
-            null,
-          customer_type:
-            customerType.find((opt) => opt.value === res.data.customer_type) ||
-            null,
+        //   invoice_week:
+        //     invoiceWeek.find((opt) => opt.value === res.data.invoice_week) ||
+        //     null,
+        //   customer_type:
+        //     customerType.find((opt) => opt.value === res.data.customer_type) ||
+        //     null,
 
-          special_instructions: res.data.special_instructions || "",
-          first_name: res.data.first_name || "",
-          last_name: res.data.last_name || "",
-          card_discount: res.data.card_discount || "",
-          username: res.data.username || "",
-          password: res.data.password || "",
-          date: res.data.date || "1970-01-01 00:00:00",
-          esso_live: res.data.esso_live || "",
-          remarks: res.data.remarks || "",
-          rest_OTP: res.data.rest_OTP || "",
-          last_login: res.data.last_login || "1970-01-01 00:00:00",
-          lang: res.data.lang || "",
-          lat: res.data.lat || "",
-          login_failed: res.data.login_failed || "0",
-          last_failed: res.data.last_failed || "1970-01-01 00:00:00",
-          added_on: new Date().toISOString().slice(0, 19).replace("T", " "),
-        });
+        //   special_instructions: res.data.special_instructions || "",
+        //   first_name: res.data.first_name || "",
+        //   last_name: res.data.last_name || "",
+        //   card_discount: res.data.card_discount || "",
+        //   username: res.data.username || "",
+        //   password: res.data.password || "",
+        //   date: res.data.date || "1970-01-01 00:00:00",
+        //   esso_live: res.data.esso_live || "",
+        //   remarks: res.data.remarks || "",
+        //   rest_OTP: res.data.rest_OTP || "",
+        //   last_login: res.data.last_login || "1970-01-01 00:00:00",
+        //   lang: res.data.lang || "",
+        //   lat: res.data.lat || "",
+        //   login_failed: res.data.login_failed || "0",
+        //   last_failed: res.data.last_failed || "1970-01-01 00:00:00",
+        //   added_on: new Date().toISOString().slice(0, 19).replace("T", " "),
+        // });
       })
       .catch((err) => {
         console.log(err);
@@ -304,6 +305,7 @@ const Index = () => {
                             <input
                               className="form-control"
                               name="company_name"
+                              defaultValue={FullData.company_name}
                               type="text"
                               {...register("company_name", { required: true })}
                             />
@@ -329,6 +331,7 @@ const Index = () => {
                               className="form-control"
                               name="email"
                               type="email"
+                              defaultValue={FullData.email}
                               disabled
                               {...register("email", {
                                 required: "Email-1 is required",
@@ -582,11 +585,11 @@ const Index = () => {
                       <Col sm="3">
                         <DropDown
                           name="salesman_id"
-                          label="Sales Man"
+                          label="Sales Man" 
                           control={control}
                           placeholder="Select SalesMan"
-                          defaultValueId={0}
-                          options={salesman}
+                          defaultValueId={FullData.salesman_id?FullData.salesman_id:0}
+                          options={salesman} 
                         />
                       </Col>
                       <Col sm="3">
@@ -1312,6 +1315,7 @@ const Index = () => {
                     <Row className="mt-3 py-3">
                       {/* Invoice Creation */}
                       <Col sm="3">
+                      
                         <FormGroup>
                           <InputGroup>
                             <InputGroupText>
@@ -1320,21 +1324,26 @@ const Index = () => {
                                 *
                               </span>
                             </InputGroupText>
+                               {FullData.invoice_creation && (
                             <Controller
                               name="invoice_creation"
                               control={control}
-                              rules={{
-                                required: "Invoice creation is required",
+                               defaultValue={invoiceCreation?.find(opt => opt.value === FullData.invoice_creation) || null}
+                              rules={{required: "Invoice creation is required",
                               }}
+                             
                               render={({ field }) => (
                                 <Select
                                   {...field}
                                   options={invoiceCreation}
                                   className="form-control p-0 border-0"
                                   placeholder="Select option"
+                                  value={field.value}
+                                 onChange={(val) => field.onChange(val)}
                                 />
                               )}
                             />
+                               )}
                           </InputGroup>
                           {errors.invoice_creation && (
                             <span className="text-danger">
@@ -1349,12 +1358,14 @@ const Index = () => {
                         <FormGroup>
                           <InputGroup>
                             <InputGroupText>Invoice Pay Day</InputGroupText>
+                            {FullData.invoice_day && (
                             <Controller
                               name="invoice_day"
                               control={control}
                               rules={{
                                 required: "Invoice pay day is required",
                               }}
+                               defaultValue={invoiceDay?.find(opt => opt.value === FullData.invoice_day) || null}
                               render={({ field }) => (
                                 <Select
                                   {...field}
@@ -1364,6 +1375,7 @@ const Index = () => {
                                 />
                               )}
                             />
+                            )}
                           </InputGroup>
                           {errors.invoice_day && (
                             <span className="text-danger">
@@ -1382,7 +1394,9 @@ const Index = () => {
                               name="invoice_week"
                               control={control}
                               rules={{ required: "Invoice week is required" }}
+                                 defaultValue={invoiceWeek?.find(opt => opt.value === FullData.invoice_week) || null}
                               render={({ field }) => (
+                                
                                 <Select
                                   {...field}
                                   options={invoiceWeek}
@@ -1414,6 +1428,7 @@ const Index = () => {
                               name="customer_type"
                               control={control}
                               rules={{ required: "Customer type is required" }}
+                              defaultValue={customerType?.find(opt => opt.value === FullData.customer_type) || null}
                               render={({ field }) => (
                                 <Select
                                   {...field}

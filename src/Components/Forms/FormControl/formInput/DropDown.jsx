@@ -12,7 +12,8 @@ const DropDown = ({
   options = [],
   rules = {},
   errors = {},
-  defaultValueId = null, // ✅ ID of the option to select by default
+  defaultValueId = null,
+   // ✅ ID of the option to select by default
 }) => {
   const errorMsg = errors?.[name]?.message;
 
