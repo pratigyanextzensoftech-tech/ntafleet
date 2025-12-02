@@ -84,14 +84,14 @@ const { data: country } = useCountry(country_id);
     return `${year}-${month}-${day}`;
   };
     const onSubmit = (data) => {
-
+console.log(data)
        setLoading(true);
     const basePayload = {
-      company_id: data.company.value ? data.company.value.toString() : "",
+      company_id: data.selectedCompanies ? data.selectedCompanies.toString() : "",
       invoice_creation: invoice_creation ? invoice_creation : "",
       supplier_id: data.supplier.value,
       country_id: data.country.value,
-      from: data.startDate ? formatDate(data.startDate) : "",
+      from: data.start ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
       invoice_type: data.invoice_type ? data.invoice_type.value : invoice_type,
     };
