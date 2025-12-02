@@ -71,7 +71,7 @@ const RetailToRack = ({
   const { data: country } = useCountry(country_id);
   const { data: supplierData } = useSupplier(supplier_ids);
 
-  console.log("supplier_ids -",supplier_ids);
+ 
   
   const { data: companies } = useCompany('', invoice_type, owner_operator_invoice, '', '',supplier_ids);
   const invoiceTypes = InvoiceType(invoice_type);
