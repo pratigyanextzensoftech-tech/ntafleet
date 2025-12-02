@@ -81,7 +81,7 @@ console.log(response);
                 <Image attrImage={{ className: "img-fluid my-4", src: NtaIcon, alt: "", width:"200px" }} />
 
                 <Form className="theme-form">
-                  <H4>{selected === "simpleLogin" ? "" : "Sign In With Simple Login"}</H4>
+                  <H4>{selected === "simpleLogin" ? "" : "SignIn to your account"}</H4>
                   <P>{"Enter your email & password to login"}</P>
 
                   <FormGroup>

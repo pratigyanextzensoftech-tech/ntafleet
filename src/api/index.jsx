@@ -91,6 +91,8 @@ export const CreateUttramarOwnerInvoice = `${baseurl}/api/invoice/create_uttrama
 export const CreateUttramarCustomizedInvoice = `${baseurl}/api/invoice/create_uttramar_customized_invoice`;
 export const CreateMonocodeInvoice = `${baseurl}/api/invoice/create_monycode_invoice`;
 export const CreateTcheckInvoice = `${baseurl}/api/invoice/create_tcheck_invoice`;
+export const retail_to_rack_Api = `${baseurl}/api/transactions/retailtorack`;
+
 
 
 export const esso_cent = `${baseurl}/api/esso_cent`;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { useNavigate, useLocation } from "react-router";
 
@@ -6,15 +6,14 @@ const BasicTabCard = ({ tabContent, title }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Read ?tab= from URL (optional)
   const queryParams = new URLSearchParams(location.search);
   const initialTab = queryParams.get("tab") || (tabContent?.[0]?.id ?? "1");
 
   const [BasicTab, setBasicTab] = useState(String(initialTab));
 
   const handleTabClick = (e, tabId) => {
-    e.preventDefault(); // stop href jump
-    setBasicTab(String(tabId)); // make sure it's a string
+    e.preventDefault();
+    setBasicTab(String(tabId));
     navigate(`?tab=${tabId}`, { replace: true });
   };
 
@@ -37,7 +36,10 @@ const BasicTabCard = ({ tabContent, title }) => {
       <TabContent activeTab={BasicTab}>
         {tabContent.map((tab) => (
           <TabPane className="mt-2" key={tab.id} tabId={String(tab.id)}>
-            {tab.component}
+            {BasicTab === String(tab.id) &&
+              (typeof tab.component === "function"
+                ? tab.component()
+                : tab.component)}
           </TabPane>
         ))}
       </TabContent>

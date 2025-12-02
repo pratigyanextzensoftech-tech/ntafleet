@@ -54,19 +54,50 @@ const useDropdown = (apiUrl, mapFn) => {
  * 🔸 Specific dropdown hooks
  */
 
-export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_operator_invoice = "",cust_inv_type = "",  ul_owner_operator_invoice="",
+export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_operator_invoice = "",cust_inv_type = "",  ul_owner_operator_invoice="",supplier_ids=""
 ) => {
 
   let url = companyall; // Base URL
 
   const params = new URLSearchParams();
+  if(supplier_ids)
+  { 
 
-  if (invoice_creation) params.append("invoice_creation", invoice_creation);
-  if (ta_retail_invoice) params.append("ta_retail_invoice", ta_retail_invoice);
-  if (owner_operator_invoice) params.append("owner_operator_invoice", owner_operator_invoice);
-  if (cust_inv_type) params.append("cust_inv_type", cust_inv_type); 
-  if (ul_owner_operator_invoice) params.append("ul_owner_operator_invoice", ul_owner_operator_invoice); 
+    switch (String(supplier_ids)) {
+        case "3":
+          params.append("ta_retail_invoice", ta_retail_invoice);
+          break;
+        case "6":
+         
+           if (owner_operator_invoice){params.append("owner_operator_invoice", owner_operator_invoice);} 
+           else{ params.append("esso_inv_type", ta_retail_invoice);}
+            
+          break;
+        case "7":
+          params.append("love_retail_invoice", ta_retail_invoice);
+          break;
+        case "10":
 
+         if (owner_operator_invoice){params.append("ul_owner_operator_invoice", owner_operator_invoice);} 
+           else{ params.append("ul_inv_type", ta_retail_invoice);} 
+           
+          break;
+        default:
+         params.append("", "");
+      } 
+  }
+  else
+  {
+    if (invoice_creation) params.append("invoice_creation", invoice_creation);
+    if (ta_retail_invoice) params.append("ta_retail_invoice", ta_retail_invoice);
+    if (owner_operator_invoice) params.append("owner_operator_invoice", owner_operator_invoice);
+    if (cust_inv_type) params.append("cust_inv_type", cust_inv_type); 
+    if (ul_owner_operator_invoice) params.append("ul_owner_operator_invoice", ul_owner_operator_invoice);  
+    //if (esso_inv_type) params.append("esso_inv_type", esso_inv_type); 
+   // if (ul_inv_type) params.append("ul_inv_type", ul_inv_type); 
+   // if (love_retail_invoice) params.append("love_retail_invoice", love_retail_invoice); 
+    
+  } 
   if (params.toString()) url = `${companyall}?${params.toString()}`;
 
   return useDropdown(url, (c) => ({

@@ -6,23 +6,23 @@ import { MenuProvider } from './_helper/Menu/MenuProvider';
 
 const App = () => {
 
-  useEffect(() => {
-    // Generate unique ID for each tab
-    if (!localStorage.getItem("tabId")) {
-      localStorage.setItem("tabId", crypto.randomUUID());
-    }
+  // useEffect(() => {
+  //   // Generate unique ID for each tab
+  //   if (!localStorage.getItem("tabId")) {
+  //     localStorage.setItem("tabId", crypto.randomUUID());
+  //   }
 
-    // Clear login when tab/browser closes
-    const handleClose = () => {
-      localStorage.clear();
-    };
+  //   // Clear login when tab/browser closes
+  //   const handleClose = () => {
+  //     localStorage.clear();
+  //   };
 
-    window.addEventListener("beforeunload", handleClose);
+  //   window.addEventListener("beforeunload", handleClose);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleClose);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleClose);
+  //   };
+  // }, []);
 
   return (
     <div className='App'>
