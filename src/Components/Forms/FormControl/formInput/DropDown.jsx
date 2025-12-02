@@ -13,22 +13,18 @@ const DropDown = ({
   rules = {},
   errors = {},
   defaultValueId = null,
-   // ✅ ID of the option to select by default
+  setValue
 }) => {
-  const errorMsg = errors?.[name]?.message;
 
-  // ✅ Automatically set default value based on ID
+  // Set default value safely
   useEffect(() => {
-    
-    if (defaultValueId != null && control?._formValues[name] == null) {
-      const defaultOption = options.find((opt) => opt.value === defaultValueId);
-      if (defaultOption) {
-        control._formValues[name] = defaultOption;
+    if (defaultValueId && options.length > 0) {
+      const option = options.find(o => o.value === defaultValueId);
+      if (option) {
+        setValue(name, option, { shouldValidate: true });
       }
     }
-  }, [defaultValueId, options, control, name]);
-
-  if (loading) return <p>Loading items...</p>;
+  }, [defaultValueId, options, name, setValue]);
 
   return (
     <FormGroup>
@@ -39,27 +35,24 @@ const DropDown = ({
           name={name}
           control={control}
           rules={rules}
-          defaultValue={options.find((opt) => opt.value === defaultValueId) || null}
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <Select
               {...field}
               options={options}
               placeholder={placeholder}
-              className={`form-control p-0 border-0 ${errorMsg ? "is-invalid" : ""}`}
-              onChange={(selected) => field.onChange(selected)}
-              value={
-                field.value
-                  ? options.find((opt) => opt.value === field.value?.value) || field.value
-                  : defaultValueId != null
-                  ? options.find((opt) => opt.value === defaultValueId) || null
-                  : null
-              }
+              value={field.value || null}
+              onChange={(val) => field.onChange(val)}
+              className={`form-control p-0 border-0 ${
+                fieldState.error ? "is-invalid" : ""
+              }`}
             />
           )}
         />
       </InputGroup>
 
-      {errorMsg && <span className="text-danger small">{errorMsg}</span>}
+      {errors[name] && (
+        <span className="text-danger small">{errors[name].message}</span>
+      )}
     </FormGroup>
   );
 };

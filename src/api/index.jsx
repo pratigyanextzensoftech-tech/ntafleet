@@ -92,6 +92,7 @@ export const CreateUttramarCustomizedInvoice = `${baseurl}/api/invoice/create_ut
 export const CreateMonocodeInvoice = `${baseurl}/api/invoice/create_monycode_invoice`;
 export const CreateTcheckInvoice = `${baseurl}/api/invoice/create_tcheck_invoice`;
 export const retail_to_rack_Api = `${baseurl}/api/transactions/retailtorack`;
+export const create_pricing_pdf = `${baseurl}/api/pricing/create_pricing_pdf`;
 
 
 

@@ -20,7 +20,6 @@ import DatePicker from "react-datepicker";
 import CompanyDropDown from "../../Forms/FormControl/formInput/DropDown";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { pricing_pdf as APINAME } from "../../../api";
 import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 const SinglePdfCommon = ({
@@ -29,7 +28,9 @@ const SinglePdfCommon = ({
   onDataAdded,
   supplier_id,
   invoice_type,
+  supplier,
   tax,
+  api_name
 }) => {
   const { data: companies } = useCompany("", invoice_type);
   const { data: supplierData } = useSupplier(supplier_id);
@@ -40,24 +41,30 @@ const SinglePdfCommon = ({
     reset,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-
+ const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  console.log( {supplierData});
+  
   const onSubmit = (formData) => {
     console.log("Form Data:", formData); // ✅ This will print your inputs
     const payload = {
       company_id: formData.Company.value,
-      company_name: formData.Company.label,
-      pricing_date: formData.pricingDate,
+      // company_name: formData.Company.label,
+      pricing_date: formData.pricingDate?formatDate(formData.pricingDate) :"",
       testing_email: formData.email,
-      supplier: formData.supplier.label,
-      entry_count: 0,
-      mail_on: new Date(),
-      mailby: 0,
-      added_on: new Date(),
-      // added_on:new Date(),
-      idby: localStorage.getItem("userId"),
+      supplier_id: formData.supplier.value,
+      supplier:   supplier_id === "1" ?formData.supplier.value:"",
+      invoice_type: invoice_type?invoice_type:""  , 
+    tax: tax?tax:"No"
     };
+    console.log(payload)
     axios
-      .post(APINAME, payload)
+      .post(api_name, payload)
       .then((res) => {
         console.log(res);
         toast.success("Add successfully!");
@@ -87,6 +94,9 @@ const SinglePdfCommon = ({
                     name="Company"
                     options={companies}
                     control={control}
+              rules={{ required: "Company is required" }}
+               errors={errors}
+
                   />
                 </Col>
                 <Col sm="4">
@@ -122,38 +132,47 @@ const SinglePdfCommon = ({
                   </Row>
                 </Col>
                 <Col sm="4">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                        control={control}
-                        rules={{ required: "Supplier is required" }}
-                        render={({ field }) => {
-                          const options =
-                            supplier_id === "1" ? pricigSupplier : supplierData;
-                          return (
-                            <Select
-                              {...field}
-                              className="form-control p-0 border-0"
-                              options={options}
-                              placeholder="Select supplier"
-                              onChange={(selectedOption) =>
-                                field.onChange(selectedOption)
-                              }
-                              value={field.value || options?.[0] || null} // 👈 Auto-select first option
-                            />
-                          );
-                        }}
-                      />
-                    </InputGroup>
-                    {errors.supplier && (
-                      <span className="text-danger">
-                        {errors.supplier?.message}
-                      </span>
-                    )}
-                  </FormGroup>
-                </Col>
+  <FormGroup className="m-form__group">
+    <InputGroup>
+      <InputGroupText>Supplier</InputGroupText>
+
+      <Controller
+        name="supplier"
+        control={control}
+        rules={{ required: "Supplier is required" }}
+        defaultValue={null} // RHF default
+        render={({ field }) => {
+          const options =
+            supplier_id === "1" ? pricigSupplier : supplierData;
+
+          // ✔ If no value selected, return first option as default
+          const currentValue = field.value || options?.[0] || null;
+
+          // ✔ Inform RHF of the default value (ONLY when empty)
+          if (!field.value && options?.length > 0) {
+            field.onChange(options[0]);
+          }
+
+          return (
+            <Select
+              {...field}
+              className="form-control p-0 border-0"
+              options={options}
+              placeholder="Select supplier"
+              value={currentValue}
+              onChange={(selected) => field.onChange(selected)}
+            />
+          );
+        }}
+      />
+    </InputGroup>
+
+    {errors.supplier && (
+      <span className="text-danger">{errors.supplier?.message}</span>
+    )}
+  </FormGroup>
+</Col>
+
               </Row>
               <Row>
                 <Col sm="4">
