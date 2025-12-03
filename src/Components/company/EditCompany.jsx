@@ -65,6 +65,7 @@ const Index = () => {
     reset,
     register,
     control,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
@@ -587,6 +588,7 @@ const Index = () => {
                           name="salesman_id"
                           label="Sales Man" 
                           control={control}
+                          setValue={setValue}
                           placeholder="Select SalesMan"
                           defaultValueId={FullData.salesman_id?FullData.salesman_id:0}
                           options={salesman} 
@@ -1372,6 +1374,8 @@ const Index = () => {
                                   options={invoiceDay}
                                   className="form-control p-0 border-0"
                                   placeholder="Select day"
+                                    value={field.value}
+                                 onChange={(val) => field.onChange(val)}
                                 />
                               )}
                             />
@@ -1402,6 +1406,8 @@ const Index = () => {
                                   options={invoiceWeek}
                                   className="form-control p-0 border-0"
                                   placeholder="Select week"
+                                    value={field.value}
+                                 onChange={(val) => field.onChange(val)}
                                 />
                               )}
                             />
@@ -1435,6 +1441,8 @@ const Index = () => {
                                   options={customerType}
                                   className="form-control p-0 border-0"
                                   placeholder="Select type"
+                                    value={field.value}
+                                 onChange={(val) => field.onChange(val)}
                                 />
                               )}
                             />

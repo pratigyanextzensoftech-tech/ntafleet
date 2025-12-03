@@ -2,11 +2,12 @@ import CreateRetailTaPetro from '../../Components/pricing/taPetroBulk/CreateReta
 import CreateTaPetro from '../../Components/pricing/taPetroBulk/CreateTaPetro';
 import MailTaPetro from '../../Components/pricing/taPetroBulk/MailTaPetro';
 import PricingCommon from '../../Components/pricing/PricingCommon';
+import { create_pricing_pdf } from '../../api';
 export const TaPetroTab = [
   {
     id: '1',
     label:"Create Ta-Petro Bulk Pricing"  , 
-    component: <PricingCommon validation={true} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} discountType={true} title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
+    component: <PricingCommon invoiceType="" apiName={create_pricing_pdf} validation={true} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} discountType={true} title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
   },
   {
     id: '2',
@@ -16,7 +17,7 @@ export const TaPetroTab = [
        Mail Bulk Pricing PDF - <strong> [Capped]</strong>
       </>
     ), 
-    component: <PricingCommon pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <PricingCommon   apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
   {
     id: '3',
@@ -27,24 +28,24 @@ export const TaPetroTab = [
       </>
     )
    ,
-    component: <PricingCommon pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <PricingCommon  apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
  {
     id: '4',
     label:" Mail Ta-Petro Bulk Pricing (Non-Customer) ", 
-    component: <PricingCommon pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
+    component: <PricingCommon apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
   },
    {
     id: '5',
    label:"Create Retail Ta-Petro Bulk Pricing", 
-    component: <PricingCommon pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} title="Create Retail Bulk Pricing PDF" btnTitle="Search Company"/>,
+    component: <PricingCommon company_list="checkbox" invoiceType="Retail" apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} title="Create Retail Bulk Pricing PDF" btnTitle="Create Retail Pricing Pdf"/>,
   },
    {
     id: '6',
     label: " Mail Retail Ta-Petro Bulk Pricing "
      
     , 
-    component: <PricingCommon pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
+    component: <PricingCommon apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
   },
  
   

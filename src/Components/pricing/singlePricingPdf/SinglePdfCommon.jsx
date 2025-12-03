@@ -49,7 +49,8 @@ const SinglePdfCommon = ({
     return `${year}-${month}-${day}`;
   };
   console.log( {supplierData});
-  
+   const userId=localStorage.getItem("userId")
+
   const onSubmit = (formData) => {
     console.log("Form Data:", formData); // ✅ This will print your inputs
     const payload = {
@@ -58,13 +59,15 @@ const SinglePdfCommon = ({
       pricing_date: formData.pricingDate?formatDate(formData.pricingDate) :"",
       testing_email: formData.email,
       supplier_id: formData.supplier.value,
-      supplier:   supplier_id === "1" ?formData.supplier.value:"",
+      supplier:  formData.supplier.label,
       invoice_type: invoice_type?invoice_type:""  , 
-    tax: tax?tax:"No"
+    tax: tax?tax:"No",
+    added_by:userId
     };
     console.log(payload)
-    axios
-      .post(api_name, payload)
+    axios.post(api_name, payload, {
+        headers: { "Content-Type": "application/json" },
+      })
       .then((res) => {
         console.log(res);
         toast.success("Add successfully!");

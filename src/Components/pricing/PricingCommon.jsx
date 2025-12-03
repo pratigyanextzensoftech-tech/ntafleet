@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment,useState } from 'react'
 import {
   Col,
   Row,
@@ -7,6 +7,7 @@ import {
   InputGroup,
   InputGroupText,
   Input,
+  Label
 } from "reactstrap";
 import { Btn } from '../../AbstractElements';
 import { pricigSupplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
@@ -16,6 +17,10 @@ import Select from 'react-select';
 import { useCompany, useSupplier } from '../../Hooks/Dropdowns';
 import { DiscountType } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import InputText from '../Forms/FormControl/formInput/InputText';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { company_fee } from '../../api';
+
 const PricingCommon = ({
   title,
   btnTitle,
@@ -23,6 +28,7 @@ const PricingCommon = ({
   fromUpto,
   pricingDate,
   company,
+  company_list,
   testingEmail,
   apiName,
   supplier,
@@ -34,6 +40,8 @@ const PricingCommon = ({
 
   const { data: companies } = useCompany();
   const { data: supplierData } = useSupplier(supplier_ids);
+  const [loading, setLoading] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
 
   const {
     register,
@@ -43,11 +51,92 @@ const PricingCommon = ({
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    reset()
+ const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
+ const userId=localStorage.getItem("userId")
 
+ const onSubmit = (data) => {
+  let companyValue = "";
+   if (Array.isArray(data.selectedCompanies)) {
+  if (data.selectedCompanies.includes("All Company")) {
+    companyValue = "All";   // 🔥 If ALL is selected
+  } else {
+    companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
+  }
+}
+  console.log(data)
+    setLoading(true);
+    const basePayload = {
+      company_id: company_list==="checkbox"? companyValue : "",
+      supplier_id: data.supplier.value,
+      supplier:data.supplier.label,
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      testing_email :testingEmail?data.testingEmail:"",
+      tax:"No",
+      pricing_date:data.pricingDate? formatDate(data.pricingDate):"",
+      invoice_type:discountType?data.DiscountType.value:"",
+      added_by:userId
+    };
+
+    axios
+      .post(apiName, basePayload, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        reset();
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.error(err);
+        setLoading(false);
+      });
+
+    console.log("Final Payload Sent =>", basePayload);
+  };
+    const handleCheckboxChange = (value, field) => {
+    
+    const allValues = companies.map((c) => c.value); // all possible
+    const companyValues = allValues.filter((v) => v !== "All Company"); // only companies
+    let updated = [...selectedValues];
+
+    if (value === "All Company") {
+      // ✅ Clicked ALL → toggle everything
+      if (updated.includes("All Company")) {
+        updated = []; // unselect all
+      } else {
+        updated = ["All Company", ...companyValues]; // select all
+      }
+    } else {
+      // ✅ Clicked a normal company
+      if (updated.includes(value)) {
+        updated = updated.filter((v) => v !== value);
+      } else {
+        updated.push(value);
+      }
+
+      // If all companies are selected, add ALL
+      const onlyCompanies = updated.filter((v) => v !== "All Company");
+      const isAllSelected = companyValues.every((v) =>
+        onlyCompanies.includes(v)
+      );
+
+      if (isAllSelected) {
+        updated = ["All Company", ...companyValues];
+      } else {
+        updated = updated.filter((v) => v !== "All Company");
+      }
+    }
+
+    setSelectedValues(updated);
+    field.onChange(updated);
+  };
   return (
     <Fragment>
       <Row>
@@ -322,7 +411,6 @@ const PricingCommon = ({
                       </Row>
                     </Col>
 
-                    {/* UPTO DATE */}
                     <Col sm="4">
                       <Row>
                         <FormGroup className="m-form__group">
@@ -359,9 +447,70 @@ const PricingCommon = ({
                         </FormGroup>
                       </Row>
                     </Col>
+                     
                   </>
                 )}
+ {company_list === "checkbox" && (
+                  <Col sm="12">
+                    <fieldset>
+                      <legend>Choose Company </legend>
+                      {
+                        <Controller
+                          name="selectedCompanies"
+                          control={control}
+                          rules={{ required: "Select at least one company" }}
+                          render={({ field }) => (
+                            <Row>
+                              <Col sm="4">
+                                <div className="checkbox checkbox-dark">
+                                  <input
+                                    type="checkbox"
+                                    id="checkbox-0"
+                                    value="All Company"
+                                    
+                                    checked={selectedValues.includes(
+                                      "All Company"
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange("All Company", field)
+                                    }
+                                  />
+                                  <Label for={`checkbox-0`} className="ms-2 ">
+                                    All Company
+                                  </Label>
+                                </div>
+                              </Col>
 
+                              {companies.map((item, index) => (
+                                <Col sm="4" key={index}>
+                                  <div className="checkbox checkbox-dark">
+                                    <input
+                                      type="checkbox"
+                                      id={`checkbox-${index}`}
+                                      value={item.value}
+                                      checked={selectedValues.includes(
+                                        item.value
+                                      )}
+                                      onChange={() =>
+                                        handleCheckboxChange(item.value, field)
+                                      }
+                                    />
+                                    <Label
+                                      for={`checkbox-${index}`}
+                                      className="ms-2 "
+                                    >
+                                      {item.label}
+                                    </Label>
+                                  </div>
+                                </Col>
+                              ))}
+                            </Row>
+                          )}
+                        />
+                      }
+                    </fieldset>
+                  </Col>
+                )}
                 {/* SUBMIT BUTTON */}
                 <Col className="text-end">
                   <Btn
