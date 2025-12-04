@@ -34,6 +34,7 @@ const PricingCommon = ({
   supplier,
   discountType,
   supplier_ids,
+  tax,
   validation, rackus,
   rackca
 }) => {
@@ -78,7 +79,7 @@ const PricingCommon = ({
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
       testing_email :testingEmail?data.testingEmail:"",
-      tax:"No",
+      tax: tax? tax:"No",
       pricing_date:data.pricingDate? formatDate(data.pricingDate):"",
       invoice_type:discountType?data.DiscountType.value:"",
       added_by:userId
