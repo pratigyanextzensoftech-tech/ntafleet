@@ -19,8 +19,7 @@ import { DiscountType } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import InputText from '../Forms/FormControl/formInput/InputText';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { company_fee } from '../../api';
-
+import Loader from '../../Layout/Loader';
 const PricingCommon = ({
   title,
   btnTitle,
@@ -140,6 +139,8 @@ const PricingCommon = ({
   };
   return (
     <Fragment>
+            {loading && <Loader loading={true} />}
+      
       <Row>
         <Col>
           <fieldset>
@@ -172,6 +173,7 @@ const PricingCommon = ({
                                   className="form-control"
                                   selected={field.value}
                                   onChange={(date) => field.onChange(date)}
+                                   dateFormat="yyyy-MM-dd"
                                 />
                               )}
                             />

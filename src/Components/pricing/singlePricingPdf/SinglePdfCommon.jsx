@@ -22,6 +22,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
 import InputText from "../../Forms/FormControl/formInput/InputText";
+import Loader from "../../../Layout/Loader";
 const SinglePdfCommon = ({
   title,
   btnTtitle,
@@ -34,6 +35,8 @@ const SinglePdfCommon = ({
 }) => {
   const { data: companies } = useCompany("", invoice_type);
   const { data: supplierData } = useSupplier(supplier_id);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     control,
@@ -53,6 +56,8 @@ const SinglePdfCommon = ({
 
   const onSubmit = (formData) => {
     console.log("Form Data:", formData); // ✅ This will print your inputs
+        setLoading(true);
+
     const payload = {
       company_id: formData.Company.value,
       // company_name: formData.Company.label,
@@ -72,15 +77,21 @@ const SinglePdfCommon = ({
         console.log(res);
         toast.success("Add successfully!");
         reset();
+                setLoading(false);
+
         if (onDataAdded) onDataAdded();
       })
       .catch((err) => {
         console.log(err);
         toast.error(err.message);
+                setLoading(false);
+
       });
   };
   return (
     <Fragment>
+                  {loading && <Loader loading={true} />}
+
       <Row>
         <Col>
           <fieldset>
