@@ -75,8 +75,6 @@ const PricingCommon = ({
       company_id: company_list==="checkbox"? companyValue : "",
       supplier_id: data.supplier.value,
       supplier:data.supplier.label,
-      from: data.startDate ? formatDate(data.startDate) : "",
-      to: data.endDate ? formatDate(data.endDate) : "",
       testing_email :testingEmail?data.testingEmail:"",
       tax: tax? tax:"No",
       pricing_date:data.pricingDate? formatDate(data.pricingDate):"",
@@ -88,9 +86,8 @@ const PricingCommon = ({
       .post(apiName, basePayload, {
         headers: { "Content-Type": "application/json" },
       })
-      .then((res) => {
-        toast.success(res.data.message);
-        reset();
+      .then((res) => {  
+        res.data.success?toast.success(res.data.message):toast.error(res.data.message);
         setLoading(false);
       })
       .catch((err) => {
