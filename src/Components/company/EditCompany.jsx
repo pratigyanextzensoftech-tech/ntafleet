@@ -527,8 +527,19 @@ const Index = () => {
                             options={optionscountry}
                             className="form-control p-0 border-0"
                             name="country_name"
+
+
                           />
                         </InputGroup>
+                         <DropDown
+                          name="country_name"
+                          label="Country" 
+                          control={control}
+                          setValue={setValue}
+                          placeholder="Select Country"
+                        defaultValue={optionscountry?.find(opt => opt.value === FullData.country) || null}
+                          options={optionscountry} 
+                        />
                       </Col>
                       <Col sm="3">
                         <InputGroup className="mb-3">
@@ -1464,6 +1475,7 @@ const Index = () => {
                             className="form-control"
                             type="text"
                             name="special_instructions"
+                            defaultValue={FullData.special_instructions}
                           />
                         </InputGroup>
                       </FormGroup>
@@ -1482,6 +1494,7 @@ const Index = () => {
                             <Input
                               className="form-control"
                               type="text"
+                              defaultValue={FullData.first_name}
                               name="first_name"
                             />
                           </InputGroup>
@@ -1496,6 +1509,7 @@ const Index = () => {
                             <Input
                               className="form-control"
                               type="text"
+                              defaultValue={FullData.last_name}
                               name="last_name"
                             />
                           </InputGroup>
@@ -1507,18 +1521,43 @@ const Index = () => {
                   <fieldset>
                     <legend>Account Details</legend>
                     <Row className="mt-3">
+                    
                       <Col sm="4">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup className="mb-3">
+                      
+                        <FormGroup>
+                          <InputGroup>
                             <InputGroupText>
                               Card Discount Sheet Menu
+                              <span className="text-danger fw-bold mx-1">
+                                *
+                              </span>
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
+                               {FullData.card_discount && (
+                            <Controller
                               name="card_discount"
+                              control={control}
+                               defaultValue={YesNo?.find(opt => opt.value === FullData.card_discount) || null}
+                              rules={{required: "Discount is required",
+                              }}
+                             
+                              render={({ field }) => (
+                                <Select
+                                  {...field}
+                              options={YesNo}
+                                  className="form-control p-0 border-0"
+                                  placeholder="Select option"
+                                  value={field.value}
+                                 onChange={(val) => field.onChange(val)}
+                                />
+                              )}
                             />
+                               )}
                           </InputGroup>
+                          {errors.invoice_creation && (
+                            <span className="text-danger">
+                              {errors.invoice_creation.message}
+                            </span>
+                          )}
                         </FormGroup>
                       </Col>
                       <Col sm="4">
@@ -1534,8 +1573,9 @@ const Index = () => {
                               className="form-control"
                               type="text"
                               name="username"
+                              value={FullData.email}
                               disabled
-                              {...register("username", { required: true })}
+                              {...register("username")}
                             />
                           </InputGroup>
                           {errors.username && (

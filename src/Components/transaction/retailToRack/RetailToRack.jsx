@@ -31,7 +31,7 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {  useCompany,  useCountry,  useSupplier,  InvoiceType,} from "../../../Hooks/Dropdowns";
-
+import Loader from "../../../Layout/Loader";
 const RetailToRack = ({
   btnTtitle, 
   title,
@@ -92,7 +92,6 @@ const RetailToRack = ({
   const onSubmit = (data) => {
     setLoading(true);
 let companyValue = "";
-
 if (Array.isArray(data.selectedCompanies)) {
   if (data.selectedCompanies.includes("All Company")) {
     companyValue = "All";   // 🔥 If ALL is selected
@@ -173,6 +172,8 @@ console.log(companyValue)
   };
   return (
     <Fragment>
+            {loading && <Loader loading={true} />}
+
       <Row>
         <Col>
           <fieldset>

@@ -72,9 +72,17 @@ const CreateInvoiceCommon = ({
   };
 
   const onSubmit = (data) => {
+     let companyValue = "";
+   if (Array.isArray(data.selectedCompanies)) {
+  if (data.selectedCompanies.includes("All Company")) {
+    companyValue = "All";   // 🔥 If ALL is selected
+  } else {
+    companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
+  }
+}
     setLoading(true);
     const basePayload = {
-      company_id: data.company.value ? data.company.value.toString() : "",
+      company_id:company_list==="checkbox"? companyValue : data.company.value.toString() ,
       invoice_creation: invoice_creation ? invoice_creation : "",
       supplier_id: data.supplier.value,
       country_id: data.country.value,
@@ -83,19 +91,19 @@ const CreateInvoiceCommon = ({
       invoice_type: data.invoice_type ? data.invoice_type.value : invoice_type,
     };
 
-    axios
-      .post(api_name, basePayload, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        reset();
-        setLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err);
-        setLoading(false);
-      });
+    // axios
+    //   .post(api_name, basePayload, {
+    //     headers: { "Content-Type": "application/json" },
+    //   })
+    //   .then((res) => {
+    //     toast.success(res.data.message);
+    //     reset();
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err);
+    //     setLoading(false);
+    //   });
 
     console.log("Final Payload Sent =>", basePayload);
   };

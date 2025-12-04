@@ -59,14 +59,14 @@ const SinglePdfCommon = ({
         setLoading(true);
 
     const payload = {
-      company_id: formData.Company.value,
+      company_id: String(formData.Company.value),
       // company_name: formData.Company.label,
       pricing_date: formData.pricingDate?formatDate(formData.pricingDate) :"",
       testing_email: formData.email,
-      supplier_id: formData.supplier.value,
+      supplier_id: String(formData.supplier.value),
       supplier:  formData.supplier.label,
       invoice_type: invoice_type?invoice_type:""  , 
-    tax: tax?tax:"No",
+    tax: tax?tax:"",
     added_by:userId
     };
     console.log(payload)

@@ -7,7 +7,7 @@ export const BulkPricingTab = [
   {
     id: '1',
     label:"Create Bulk Pricing PDF",
-    component: <PricingCommon validation={true} invoiceType="" apiName={create_pricing_pdf} supplier={true} testingEmail={true} pricingDate={true} btnTitle="Create pricing Pdf" title="Create Bulk Pricing PDF "/>,
+    component: <PricingCommon validation={true} invoiceType="" tax="" apiName={create_pricing_pdf} supplier={true} testingEmail={true} pricingDate={true} btnTitle="Create pricing Pdf" title="Create Bulk Pricing PDF "/>,
   },
   {
     id: '2',

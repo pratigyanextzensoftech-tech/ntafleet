@@ -73,7 +73,7 @@ const PricingCommon = ({
     setLoading(true);
     const basePayload = {
       company_id: company_list==="checkbox"? companyValue : "",
-      supplier_id: data.supplier.value,
+      supplier_id:  data.supplier.value,
       supplier:data.supplier.label,
       testing_email :testingEmail?data.testingEmail:"",
       tax: tax? tax:"No",

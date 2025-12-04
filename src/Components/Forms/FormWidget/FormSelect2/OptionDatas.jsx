@@ -183,7 +183,7 @@ export const invoiceWeek = [
 ];
 export const customerType = [
     { label: 'Select Customer Type.', isDisabled: true },
-    { value: "Total", label: 'Total' },
+    { value: 'Total', label: 'Total' },
     { value: "Retail", label: 'Retail' },
     { value: "Direct", label: 'Direct' },
 
