@@ -1,17 +1,19 @@
 import React, { Fragment, useState } from 'react';
 import Select from 'react-select'
-import { groupBy, optionscountry, displayFeatureCheckBox, chooseSupplierCheckBox, optionscompany, invoiceType, orderBy, fuelType, currency, InvoiceCategory, InvoiceShow, exportType, VolUnit } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { groupBy, optionscountry, displayFeatureCheckBox, chooseSupplierCheckBox, optionscompany, invoiceType, orderBy, fuelType, currency,Reportcurrency, InvoiceCategory, InvoiceShow, exportType, VolUnit } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-import { useCompany,useCountry,useStates } from '../../../Hooks/Dropdowns';
+import { useCompany,useCountry,useStates,useSupplier } from '../../../Hooks/Dropdowns';
+
 const CreateReport = ({ title }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [showMessage, setShowMessage] = useState(true);
     const{data:company}=useCompany();
     const{data:country}=useCountry()
     const{data:states}=useStates()
+    const{data:supplier}=useSupplier()
 
     const {
         register,
@@ -20,10 +22,38 @@ const CreateReport = ({ title }) => {
         reset,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
-    } = useForm();
+    } = useForm({
+  defaultValues: {
+    volUnit: VolUnit.find(x => x.value === "Gallon"),
+    currency:Reportcurrency.find(x => x.label === "USD"),
+    fuelType:fuelType[0],
+    orderBy:orderBy[0],
+    groupBy:groupBy[0],
+  }
+});
 
     const onSubmit = (data) => {
-
+        console.log(data)
+const payload={
+    company_id:data.company.value,
+    filename:data.file,
+    start_date:data.startDate,
+    end_date:data.endDate,
+    export_type:data.exportType.value,
+    supplier_id:data.selectedValues,
+    end_date:data.selectedValues,
+    country_id:data.country.value,
+    group_by:data.groupBy.value,
+    order_by:data.orderBy.vlaue,
+    volume_unit:data.volUnit.value,
+    fuel_type:data.fuelType.value,
+    currency:data.currency.value,
+    fuel_card:data.card,
+    driver_name:data.driverName,
+    unitno:data.unitNo,
+    city:data.city,
+    state:data.state.value,
+}
         console.log("Form Data:", data);  // ✅ This will print your inputs
         // alert("Form submitted successfully!");
         if (isValid) {
@@ -87,8 +117,11 @@ const CreateReport = ({ title }) => {
                                             <FormGroup className=" m-form__group">
                                                 <InputGroup>
                                                     <InputGroupText>Report File Name</InputGroupText>
-                                                    <Input className="form-control" type="text" />
+                                                    <Input className="form-control" name="file" type="text" {...register("file", { required: "File name is required" })}/>
                                                 </InputGroup>
+                                                 {errors.file && (
+                                                        <span className="text-danger">{errors.file.message}</span>
+                                                    )}
                                             </FormGroup>
 
                                         </Col>
@@ -109,7 +142,7 @@ const CreateReport = ({ title }) => {
                                                         </Col>
                                                         <Col sm="9">
                                                             <Controller
-                                                                name="start"
+                                                                name="startDate"
                                                                 control={control}
                                                                 rules={{ required: " Required" }}
                                                                 render={({ field }) => (
@@ -126,8 +159,8 @@ const CreateReport = ({ title }) => {
 
                                                     </InputGroup>
 
-                                                    {errors.start && (
-                                                        <span className="text-danger">{errors.start.message}</span>
+                                                    {errors.startDate && (
+                                                        <span className="text-danger">{errors.startDate.message}</span>
                                                     )}
                                                 </FormGroup>
                                             </Row>
@@ -145,7 +178,7 @@ const CreateReport = ({ title }) => {
                                                         <Col sm="9">
 
                                                             <Controller
-                                                                name="end"
+                                                                name="endDate"
                                                                 control={control}
                                                                 rules={{ required: "Required" }}
                                                                 render={({ field }) => (
@@ -159,7 +192,7 @@ const CreateReport = ({ title }) => {
                                                         </Col>
                                                     </InputGroup>
 
-                                                    {errors.end && (
+                                                    {errors.endDate && (
                                                         <span className="text-danger">{errors.end.message}</span>
                                                     )}
                                                 </FormGroup>
@@ -171,7 +204,7 @@ const CreateReport = ({ title }) => {
                                                     <InputGroupText>
                                                         Export Type
                                                     </InputGroupText>
-                                                    <Controller name="company"
+                                                    <Controller name="exportType"
                                                         rules={{ required: "company Name is required" }}
 
                                                         control={control}
@@ -185,8 +218,8 @@ const CreateReport = ({ title }) => {
                                                     />
 
                                                 </InputGroup>
-                                                {errors.to && (
-                                                    <span className="text-danger">{errors.to.message}</span>
+                                                {errors.exportType && (
+                                                    <span className="text-danger">{errors.exportType.message}</span>
                                                 )}
                                             </FormGroup>
                                         </Col>
@@ -202,14 +235,14 @@ const CreateReport = ({ title }) => {
                                     <legend>
                                         Choose Supplier Check All </legend>
                                     <Row>
-                                        {chooseSupplierCheckBox.map((item, index) => (
+                                        {supplier.map((item, index) => (
                                             <Col sm="3">
                                                 <div className='checkbox checkbox-dark'>
                                                     <input
                                                         id={`checkbox-${index}`}
                                                         type="checkbox"
-                                                        value={item.value}
-                                                        checked={selectedValues.includes(item.value)}
+                                                        value={String(item.value)}
+                                                        checked={selectedValues.includes(String(item.value))}
                                                         onChange={handleCheckboxChange} />
                                                     <Label for={`checkbox-${index}`} className="ms-2">
                                                         {item.label}
@@ -283,8 +316,8 @@ const CreateReport = ({ title }) => {
                                                 <InputGroup >
                                                     <InputGroupText>Group By
                                                     </InputGroupText>
-                                                    <Controller name="category"
-                                                        rules={{ required: "company Name is required" }}
+                                                    <Controller name="groupBy"
+                                                        rules={{ required: "Group By is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -297,8 +330,8 @@ const CreateReport = ({ title }) => {
                                                     />
                                                 </InputGroup>
 
-                                                {errors.category && (
-                                                    <span className="text-danger">{errors.category?.message}</span>
+                                                {errors.groupBy && (
+                                                    <span className="text-danger">{errors.groupBy?.message}</span>
                                                 )}
                                             </FormGroup>
                                         </Col>
@@ -308,8 +341,8 @@ const CreateReport = ({ title }) => {
                                                 <InputGroup>
                                                     <InputGroupText>Order By </InputGroupText>
                                                     <Controller
-                                                        name="invoice"
-                                                        rules={{ required: "country is required" }}
+                                                        name="orderBy"
+                                                        rules={{ required: "Order By is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -322,8 +355,8 @@ const CreateReport = ({ title }) => {
                                                     />
                                                 </InputGroup>
 
-                                                {errors.invoice && (
-                                                    <span className="text-danger">{errors.invoice?.message}</span>
+                                                {errors.orderBy && (
+                                                    <span className="text-danger">{errors.orderBy?.message}</span>
                                                 )}
                                             </FormGroup>
                                         </Col>
@@ -332,8 +365,8 @@ const CreateReport = ({ title }) => {
                                                 <InputGroup>
                                                     <InputGroupText>Volume Unit </InputGroupText>
                                                     <Controller
-                                                        name="invoice"
-                                                        rules={{ required: "country is required" }}
+                                                        name="volUnit"
+                                                        rules={{ required: "Vol Unit is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -346,8 +379,9 @@ const CreateReport = ({ title }) => {
                                                     />
                                                 </InputGroup>
 
-                                                {errors.invoice && (
-                                                    <span className="text-danger">{errors.invoice?.message}</span>
+                                                {errors.volUnit && (
+
+                                                    <span className="text-danger">{errors.volUnit?.message}</span>
                                                 )}
                                             </FormGroup>
                                         </Col>
@@ -359,7 +393,7 @@ const CreateReport = ({ title }) => {
                                                 <InputGroup>
                                                     <InputGroupText>Fuel Type </InputGroupText>
                                                     <Controller
-                                                        name="invoice"
+                                                        name="fuelType"
                                                         rules={{ required: "country is required" }}
 
                                                         control={control}
@@ -373,8 +407,8 @@ const CreateReport = ({ title }) => {
                                                     />
                                                 </InputGroup>
 
-                                                {errors.invoice && (
-                                                    <span className="text-danger">{errors.invoice?.message}</span>
+                                                {errors.fuelType && (
+                                                    <span className="text-danger">{errors.fuelType?.message}</span>
                                                 )}
                                             </FormGroup>
                                         </Col>
@@ -383,22 +417,22 @@ const CreateReport = ({ title }) => {
                                                 <InputGroup>
                                                     <InputGroupText>Currency </InputGroupText>
                                                     <Controller
-                                                        name="invoice"
-                                                        rules={{ required: "country is required" }}
-
+                                                        name="currency"
+                                                        rules={{ required:"currency is required" }}
                                                         control={control}
                                                         render={({ field }) => (
                                                             <Select
                                                                 {...field}
-                                                                options={currency}
+                                                                options={Reportcurrency}
                                                                 className="form-control p-0 border-0"
                                                             />
                                                         )}
                                                     />
+                                                    
                                                 </InputGroup>
 
-                                                {errors.invoice && (
-                                                    <span className="text-danger">{errors.invoice?.message}</span>
+                                                {errors.currency && (
+                                                    <span className="text-danger">{errors.currency?.message}</span>
                                                 )}
                                             </FormGroup>
                                         </Col>
@@ -415,7 +449,7 @@ const CreateReport = ({ title }) => {
                                             <FormGroup className=" m-form__group">
                                                 <InputGroup>
                                                     <InputGroupText>Fuel Card</InputGroupText>
-                                                    <Input className="form-control" type="text" />
+                                                    <Input name="card" className="form-control" type="text" {...register("card", { required: "Card No is required" })}/>
                                                 </InputGroup>
                                             </FormGroup>
                                         </Col>
@@ -426,7 +460,7 @@ const CreateReport = ({ title }) => {
                                             <FormGroup className=" m-form__group">
                                                 <InputGroup>
                                                     <InputGroupText>Driver Name</InputGroupText>
-                                                    <Input className="form-control" type="text" />
+                                                    <Input name="driverName" className="form-control" type="text"  {...register("driverName", { required: "Driver Name is required" })}/>
                                                 </InputGroup>
                                             </FormGroup>
                                         </Col>
@@ -435,7 +469,7 @@ const CreateReport = ({ title }) => {
                                             <FormGroup className=" m-form__group">
                                                 <InputGroup>
                                                     <InputGroupText>Unit Number</InputGroupText>
-                                                    <Input className="form-control" type="text" />
+                                                    <Input name="unitNo" className="form-control" type="text" {...register("unitNo", { required: "Uit No is required" })}/>
                                                 </InputGroup>
                                             </FormGroup>
                                         </Col>
@@ -444,7 +478,7 @@ const CreateReport = ({ title }) => {
                                                 <FormGroup className=" m-form__group">
                                                     <InputGroup>
                                                         <InputGroupText>City</InputGroupText>
-                                                        <Input className="form-control" type="text" />
+                                                        <Input name="city" className="form-control" type="text"  {...register("city", { required: "Uit No is required" })}/>
                                                     </InputGroup>
                                                 </FormGroup>
                                             </Col>
@@ -454,8 +488,8 @@ const CreateReport = ({ title }) => {
                                                         <InputGroupText>
                                                             State
                                                         </InputGroupText>
-                                                        <Controller name="company"
-                                                            rules={{ required: "company Name is required" }}
+                                                        <Controller name="state"
+                                                            rules={{ required: "State Name is required" }}
 
                                                             control={control}
                                                             render={({ field }) => (
@@ -463,13 +497,13 @@ const CreateReport = ({ title }) => {
                                                                     {...field}
                                                                     options={states}
                                                                     className="form-control p-0 border-0"
+                                                                    placeholder="select State"
                                                                 />
                                                             )}
                                                         />
-
                                                     </InputGroup>
-                                                    {errors.to && (
-                                                        <span className="text-danger">{errors.to.message}</span>
+                                                    {errors.state && (
+                                                        <span className="text-danger">{errors.state.message}</span>
                                                     )}
                                                 </FormGroup>
                                             </Col>

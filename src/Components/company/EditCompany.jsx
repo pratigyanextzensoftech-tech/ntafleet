@@ -521,7 +521,7 @@ const Index = () => {
                     </Row>
                     <Row>
                       <Col sm="3">
-                        <InputGroup className="mb-3">
+                        {/* <InputGroup className="mb-3">
                           <InputGroupText>Country</InputGroupText>
                           <Select
                             options={optionscountry}
@@ -530,15 +530,15 @@ const Index = () => {
 
 
                           />
-                        </InputGroup>
+                        </InputGroup> */}
                          <DropDown
                           name="country_name"
                           label="Country" 
                           control={control}
                           setValue={setValue}
                           placeholder="Select Country"
-                        defaultValue={optionscountry?.find(opt => opt.value === FullData.country) || null}
-                          options={optionscountry} 
+                        defaultValueId={FullData.country}
+                        options={countries} 
                         />
                       </Col>
                       <Col sm="3">
@@ -1155,7 +1155,8 @@ const Index = () => {
                               label="Country"
                               control={control}
                               placeholder="Select Country"
-                              defaultValueId={0}
+                          setValue={setValue}
+                            defaultValue={countries?.find(opt => opt.value === FullData.country) || null}
                               options={countries}
                             />
                           </Col>

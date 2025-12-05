@@ -94,7 +94,11 @@ export const currency = [
     { label: 'Select Currency', isDisabled: true },
     { value: '0', label: 'USD/Gallons' },
     { value: '1', label: 'CAD/Liters' }
-
+]
+export const Reportcurrency = [
+    { label: 'Select Currency', isDisabled: true },
+    { value: '0', label: 'USD' },
+    { value: '1', label: 'CAD' }
 ]
 export const VolUnit = [
     { value: 'Gallon', label: 'Gallon' },
