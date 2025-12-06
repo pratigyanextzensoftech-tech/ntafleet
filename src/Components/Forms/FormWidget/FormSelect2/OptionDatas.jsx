@@ -51,9 +51,8 @@ export const displayFeatureCheckBox = [
     { id: '1', label: 'Page Break', value: 'Page Break' },
     { id: '2', label: 'Show Taxes', value: 'Show Taxes' },
     { id: '3', label: 'Exclude Tax', value: 'Exclude Tax' },
-    { id: '4', label: 'Show Discount Details.', value: 'Show Discount Details' },
-    { id: '5', label: 'No Time.', value: 'No Time' },
-
+    { id: '4', label: 'Show Discount Details', value: 'Show Discount Details' },
+    { id: '5', label: 'No Time', value: 'No Time' },   
 ]
 export const displayFeatureCheckBoxOwner = [
     { id: '1', label: 'Page Break', value: 'Page Break' },
@@ -69,19 +68,19 @@ export const InVoiceSupplier = [
 
 ]
 export const groupBy = [
-    { value: 'Card Number', label: 'Card Number' },
-    { value: 'Driver Name', label: 'Driver Name' },
-    { value: 'Date', label: 'Date' },
-    { value: 'State/Provinace', label: 'State/Provinace' },
-    { value: 'Unit No', label: 'Unit No' },
+    { value: 'card_no', label: 'Card Number' },
+    { value: 'driver_name', label: 'Driver Name' },
+    { value: 'tran_date', label: 'Date' },
+    { value: 'state_prov', label: 'State/Provinace' },
+    { value: 'unit', label: 'Unit No' },
 
 ]
 export const orderBy = [
     { label: 'Select Order By', isDisabled: true },
-    { value: 'Fuel Transaction', label: 'Fuel Transaction' },
-    { value: 'Cash Advances', label: 'Cash Advances' },
-    { value: 'DEFD', label: 'DEFD' },
-    { value: 'Fuel and cash Transction', label: 'Fuel and cash Transction' },
+    { value: 'ft', label: 'Fuel Transaction' },
+    { value: 'ca', label: 'Cash Advances' },
+    { value: 'defd', label: 'DEFD' },
+    { value: 'fact', label: 'Fuel and cash Transction' },
 
 ]
 export const fuelType = [
@@ -92,13 +91,13 @@ export const fuelType = [
 ]
 export const currency = [
     { label: 'Select Currency', isDisabled: true },
-    { value: '0', label: 'USD/Gallons' },
-    { value: '1', label: 'CAD/Liters' }
+    { value: 'USD', label: 'USD/Gallons' },
+    { value: 'CAD', label: 'CAD/Liters' }
 ]
 export const Reportcurrency = [
     { label: 'Select Currency', isDisabled: true },
-    { value: '0', label: 'USD' },
-    { value: '1', label: 'CAD' }
+    { value: 'USD', label: 'USD' },
+    { value: 'CAD', label: 'CAD' }
 ]
 export const VolUnit = [
     { value: 'Gallon', label: 'Gallon' },
@@ -253,11 +252,11 @@ export const essoRack = [
 
 ]
 export const exportType = [
-    { label: 'All Types ', isDisabled: true },
-    { value: 'Fuel Transaction', label: 'Fuel Transaction' },
-    { value: 'Cash Advances', label: 'Cash Advances' },
-    { value: 'DEFD', label: 'DEFD' },
-    { value: 'Fuel and Cash Transaction', label: 'Fuel and Cash Transaction' },
+    { value:'' ,label: 'All Types ', },
+    { value: 'ft', label: 'Fuel Transaction' },
+    { value: 'ca', label: 'Cash Advances' },
+    { value: 'defd', label: 'DEFD' },
+    { value: 'fact', label: 'Fuel and Cash Transaction' },
 
 ]
 export const InvoiceShow = [

@@ -180,8 +180,7 @@ export const routes = [
     { path: `/view_fuelCards`, Component: < ViewFuel /> },
     { path: `/efs_view_card`, Component: < EFSFuel /> },
     { path: `/card_update`, Component: < HistoryFuel /> },
-        { path: `/edit-fuelCards/:id`, Component: < EditFuel /> },
-
+    { path: `/edit-fuelCards/:id`, Component: < EditFuel /> },
 
     //Transaction
     { path: `/view_transaction`, Component: < ViewTransaction /> },

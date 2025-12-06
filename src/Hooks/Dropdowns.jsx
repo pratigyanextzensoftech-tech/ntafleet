@@ -157,6 +157,14 @@ export const useSalesman = () =>
     label: s.province_name,
   }));
 
+     export const useStatesReport = () =>
+    useDropdown(state_all, (s) => ({
+    value: s.province_abbreviation,
+    label: s.province_name,
+  }));
+
+  
+
 
   export const useCountry = (country_id = "",) => {
   const url = country_id
