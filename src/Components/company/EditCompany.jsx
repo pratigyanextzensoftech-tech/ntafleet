@@ -7,6 +7,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import Select from "react-select";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { CompanySupplierCheckbox } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import { companyall, company as table_name, company } from "../../api";
 import {
   optionscountry,
@@ -56,7 +57,7 @@ const Index = () => {
 
   // const { data: companies, loading: companyLoading } = useCompany();
   const { data: salesman, loading: salesmanLoading } = useSalesman();
-  //const { data: suppliers, loading: supplierLoading } = useSupplier();
+  const { data: suppliers, loading: supplierLoading } = useSupplier();
   const { data: essoRacks, loading: essoRackLoading } = useEssoRack();
   const { data: countries, loading: countryLoading } = useCountry();
   const [showMessage, setShowMessage] = useState(true);
@@ -1017,11 +1018,11 @@ const Index = () => {
                   </fieldset>
 
                   <Row className="mt-3">
-                    <Col sm="4">
+                    <Col sm="12">
                       <fieldset>
                         <legend>Ultramar INVOICE TYPE</legend>
                         <Row className="mt-3">
-                          <Col sm="12">
+                          <Col sm="6">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1035,21 +1036,8 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
-                            <FormGroup className="m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Discount Cent(R)
-                                </InputGroupText>
-                                <input
-                                  className="form-control"
-                                  name="ul_rcent"
-                                  type="text"
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
-                          <Col sm="12">
+                         
+                          <Col sm="6">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1063,7 +1051,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
+                          <Col sm="6">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1080,11 +1068,11 @@ const Index = () => {
                         </Row>
                       </fieldset>
                     </Col>
-                    <Col sm="4">
+                    <Col sm="12">
                       <fieldset>
                         <legend>ESSO INVOICE TYPE</legend>
                         <Row className="my-3">
-                          <Col sm="12">
+                          <Col sm="6">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1099,21 +1087,8 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
-                            <FormGroup className="m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Discount Cent(R)
-                                </InputGroupText>
-                                <input
-                                  className="form-control"
-                                  name="esso_rcent"
-                                  type="text"
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
-                          <Col sm="12">
+                        
+                          <Col sm="6">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1128,7 +1103,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
+                          <Col sm="6">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1145,11 +1120,11 @@ const Index = () => {
                         </Row>
                       </fieldset>
                     </Col>
-                    <Col sm="4">
+                    <Col sm="12">
                       <fieldset>
                         <legend>Other Details</legend>
                         <Row className="mt-3">
-                          <Col sm="10">
+                          <Col sm="3">
                             <DropDown
                               name="country_id"
                               label="Country"
@@ -1160,7 +1135,7 @@ const Index = () => {
                               options={countries}
                             />
                           </Col>
-                          <Col sm="2">
+                          <Col sm="3">
                             <div className="checkbox checkbox-dark">
                               <Input
                                 id="checkbox1"
@@ -1171,7 +1146,7 @@ const Index = () => {
                               <Label for="checkbox1">Fees</Label>
                             </div>
                           </Col>
-                          <Col sm="12">
+                          <Col sm="3">
                             <FormGroup className="m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1185,7 +1160,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
+                          {/* <Col sm="12">
                             <FormGroup className="m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1198,10 +1173,61 @@ const Index = () => {
                                 />
                               </InputGroup>
                             </FormGroup>
-                          </Col>
+                          </Col> */}
                         </Row>
                       </fieldset>
                     </Col>
+                  </Row>
+                  <Row>
+                                      <fieldset>
+
+                                        <legend>Fee Setting Check All </legend>
+                                        <Row>
+                                        {/* {suppliers.map((item,index)=>(
+                                         <Col key={index} sm="6">
+                                           <fieldset>
+                                        <legend>{item.label} Check All </legend>
+                                          <div className="checkbox checkbox-dark ">
+                          {CompanySupplierCheckbox.map((v,i)=>(
+                            <>
+                            {item.label==="ESSO MOBIL" ?
+                              <>
+   <Input
+                            id="checkbox2"
+                            type="checkbox"
+                            name="ta_daily_pricing" 
+                            className="mx-3"
+                            value="1"
+                          />
+                          <Label for="checkbox2">
+                            {v.label} 
+                          </Label>
+                          </>
+                          
+                          :
+                          <>
+   <Input
+                            id="checkbox2"
+                            type="checkbox"
+                            name="ta_daily_pricing" 
+                            className="mx-3"
+                            value="1"
+                          />
+                          <Label for="checkbox2">
+                            {v.label} 
+                          </Label>
+                          
+                          </>
+}
+                          ))}
+                       
+                        </div>
+                                                                   </fieldset>
+
+                                        </Col>
+                                        ))} */}
+                                       </Row>
+                                       </fieldset>
                   </Row>
 
                   <fieldset>
