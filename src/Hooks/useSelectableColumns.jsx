@@ -9,7 +9,8 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import { redirect } from "react-router";
-export default function useSelectableColumns(download_link) {
+import { ca } from "date-fns/locale";
+export default function useSelectableColumns(download_link,USEFOR="") {
 
   //console.log("report_new_downlod =",report_new_downlod);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -44,15 +45,17 @@ export default function useSelectableColumns(download_link) {
   const handleTestEmailPdf = (row) => {
     console.log("Test Email PDF clicked for:", row);
   }
-   const Download=(data,TYPE)=>{
-    console.log(data)
-    redirect(`${download_link}/${data["Report_ID"]}/${TYPE}`);
-    // axios.get(`${download_link}/${data["Report_ID"]}/${TYPE}`).then((res)=>{
-    //   console.log(res)
-    // }) 
-    // .catch((err)=>{
-    //   console.log(err);
-    // })
+  const Download=(data,TYPE)=>
+  {
+      switch(USEFOR)
+      { 
+          case("REPORT"):
+            window.open(`${download_link}/${data["id"]}/${TYPE}`, "_blank"); 
+            break;
+          default:
+            alert("Default");
+            break;
+      }
   }
 
   const formatDate = (value, withTime = false) => {
@@ -76,8 +79,8 @@ export default function useSelectableColumns(download_link) {
   };
 
   const createColumns = (map, data = [], options = {},) => {
-    const { withCheckbox = false, withActions = false, onDelete, onDownload } = options;
-console.log(withActions,"action")
+    const { withCheckbox = false, withActions = false, onDelete, onDownload } = options; 
+ 
     const cols = Object.keys(map)
       .filter((key) => key !== "id")
       .map((key) => ({
