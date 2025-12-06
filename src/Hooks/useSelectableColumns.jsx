@@ -8,6 +8,7 @@ import {
   FaEnvelopeOpenText,
 } from "react-icons/fa";
 import axios from "axios";
+import { redirect } from "react-router";
 export default function useSelectableColumns(download_link) {
 
   //console.log("report_new_downlod =",report_new_downlod);
@@ -45,12 +46,13 @@ export default function useSelectableColumns(download_link) {
   }
    const Download=(data,TYPE)=>{
     console.log(data)
-    axios.get(`${download_link}/${data["Report_ID"]}/${TYPE}`).then((res)=>{
-      console.log(res)
-    }) 
-    .catch((err)=>{
-      console.log(err);
-    })
+    redirect(`${download_link}/${data["Report_ID"]}/${TYPE}`);
+    // axios.get(`${download_link}/${data["Report_ID"]}/${TYPE}`).then((res)=>{
+    //   console.log(res)
+    // }) 
+    // .catch((err)=>{
+    //   console.log(err);
+    // })
   }
 
   const formatDate = (value, withTime = false) => {
