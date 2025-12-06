@@ -6,13 +6,13 @@ import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import useSelectableColumns from "../../../Hooks/useSelectableColumns";
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import {
-  owner_report,report,report_new
+  owner_report,report,report_new,report_new_downlod
 } from "../../../api";
 import Swal from 'sweetalert2';
 import usePaginatedTable from "../../../Hooks/usePagination";
 import axios from 'axios';
 const Index = () => {
-  const { createColumns } = useSelectableColumns();
+  const { createColumns } = useSelectableColumns(report_new_downlod);
     // ✅ Define individual column mappings per API
     const columnSets = {
      oldReportList: {
@@ -52,14 +52,19 @@ reportList : {
     const ownerReportlist= usePaginatedTable({
       apiUrl: owner_report,
       columnsMap: columnSets.ownerReportlist,
+      downloadApi:report_new_downlod
+
     });
     const oldReportList = usePaginatedTable({
       apiUrl:report ,
       columnsMap: columnSets.oldReportList,
+      downloadApi:report_new_downlod
+
     });
     const reportList = usePaginatedTable({
       apiUrl: report_new,
       columnsMap: columnSets.reportList,
+      downloadApi:report_new_downlod
     });
    
   
@@ -76,11 +81,12 @@ reportList : {
     component: (
       <DataTableComponent
         title={tab.label}
-        tableColumns={createColumns(tab.map, tab.data.data,{
-    withCheckbox: false,         // ✅ show checkboxes
+        tableColumns={createColumns(tab.map, tab.data.data,
+          {
+    withCheckbox: false,  
     withActions: false,          // ✅ show action column
     showDownload: true,         // ✅ conditionally show download
-    showDelete: true,          // ❌ hide delete
+    showDelete: true,  
     onDownload: (row) => console.log("Download:", row),
   onDelete: (row) => {
   Swal.fire({
@@ -118,7 +124,7 @@ reportList : {
 
 
     
-    })}
+    },)}
         tableData={tab.data.data}
         loading={tab.data.loading}
         pagination

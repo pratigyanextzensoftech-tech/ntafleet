@@ -1200,7 +1200,7 @@ const Index = () => {
                             value="1"
                           />
                           <Label for="checkbox2">
-                            {v.label} 
+                           E-85
                           </Label>
                           </>
                           
@@ -1221,8 +1221,9 @@ const Index = () => {
 }
                           ))}
                        
-                        </div>
+                        
                                                                    </fieldset>
+                                                                   </div>
 
                                         </Col>
                                         ))} */}

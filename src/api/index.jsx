@@ -69,6 +69,8 @@ export const ta_pricing_pdf = `${baseurl}/api/ta_pricing_pdf`;
 export const report = `${baseurl}/api/report`;
 export const report_detail = `${baseurl}/api/report_detail`;
 export const report_new = `${baseurl}/api/report_new`;
+export const report_new_downlod = `${baseurl}/api/report_new/download`;
+
 export const owner_report = `${baseurl}/api/owner_report`;
 export const loc_group_Essogroup = `${baseurl}/api/loc_group_new/esso_group`;
 export const Esso_cent_Data = `${baseurl}/api/loc_group_new/esso_group_input`;

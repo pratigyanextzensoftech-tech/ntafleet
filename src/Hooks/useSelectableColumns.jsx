@@ -7,7 +7,10 @@ import {
   FaEnvelope,
   FaEnvelopeOpenText,
 } from "react-icons/fa";
-export default function useSelectableColumns() {
+import axios from "axios";
+export default function useSelectableColumns(download_link) {
+
+  //console.log("report_new_downlod =",report_new_downlod);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
     const [openRowId, setOpenRowId] = useState(null); // ✅ added
@@ -39,8 +42,16 @@ export default function useSelectableColumns() {
 
   const handleTestEmailPdf = (row) => {
     console.log("Test Email PDF clicked for:", row);
-  };
-
+  }
+   const Download=(data,TYPE)=>{
+    console.log(data)
+    axios.get(`${download_link}/${data["Report_ID"]}/${TYPE}`).then((res)=>{
+      console.log(res)
+    }) 
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
 
   const formatDate = (value, withTime = false) => {
     if (!value) return "-";
@@ -62,7 +73,7 @@ export default function useSelectableColumns() {
     );
   };
 
-  const createColumns = (map, data = [], options = {}) => {
+  const createColumns = (map, data = [], options = {},) => {
     const { withCheckbox = false, withActions = false, onDelete, onDownload } = options;
 console.log(withActions,"action")
     const cols = Object.keys(map)
@@ -206,7 +217,7 @@ Download        </button>
             <button
               className="dropdown-item d-flex align-items-center"
               style={{ padding: "8px 12px", gap: "8px" }}
-              onClick={() => handleViewPdf(row)}
+              onClick={() => Download(row,'EXCEL')}
             >
               <FaDownload /> Download Excel
             </button>
@@ -214,7 +225,7 @@ Download        </button>
             <button
               className="dropdown-item d-flex align-items-center"
               style={{ padding: "8px 12px", gap: "8px" }}
-              onClick={() => handleAdminPdf(row)}
+              onClick={() => Download(row,'CSV')}
             >
               <FaFilePdf />Download CSV
             </button>
@@ -222,7 +233,7 @@ Download        </button>
             <button
               className="dropdown-item d-flex align-items-center"
               style={{ padding: "8px 12px", gap: "8px" }}
-              onClick={() => handleEmailPdf(row)}
+              onClick={() => Download(row,'PDF')}
             >
               <FaEnvelope /> Download PDF
             </button>
