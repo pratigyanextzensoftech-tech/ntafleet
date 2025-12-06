@@ -6,81 +6,128 @@ import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import { useCompany,useCountry,useStates,useSupplier } from '../../../Hooks/Dropdowns';
-
+import axios from 'axios';
+import {
+  report_new as api_name
+} from "../../../api";
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { toast } from 'react-toastify';
+import Loader from '../../../Layout/Loader';
 const CreateReport = ({ title }) => {
     const [selectedValues, setSelectedValues] = useState([]);
+const [featureState, setFeatureState] = useState({
+pageBreak: "",
+    showTaxes: "",
+    excludeTax: "",
+    showDiscountDetails: "",
+    noTime: "",
+});
+    
+        const [loading, setLoading] = useState(false);
     const [showMessage, setShowMessage] = useState(true);
     const{data:company}=useCompany();
     const{data:country}=useCountry()
     const{data:states}=useStates()
     const{data:supplier}=useSupplier()
 
-    const {
-        register,
+   const { register, control, reset, handleSubmit, isValid, formState: { errors } } = useForm({
+  mode: "onChange",   defaultValues: {
+  company: null, // required field
+  country: null, // required field
+  state: null,   // required field
+  volUnit: VolUnit.find(x => x.value === "Gallon"),
+  currency: Reportcurrency.find(x => x.label === "USD"),
+  fuelType: fuelType[0],
+  orderBy: orderBy[0],
+  groupBy: groupBy[0],
+  supplier: [],      // required array
+  features: [],      // optional array
+  startDate: null,   // required
+  endDate: null,     // required
+  exportType: null,  // required
+  file: "",          // required
+  card: "",          // required
+  driverName: "",    // required
+  unitNo: "",        // required
+  city: "",          // required
+}
 
-        control,
-        reset,
-        handleSubmit,
-        formState: { errors, isSubmitted, isValid },
-    } = useForm({
-  defaultValues: {
-    volUnit: VolUnit.find(x => x.value === "Gallon"),
-    currency:Reportcurrency.find(x => x.label === "USD"),
-    fuelType:fuelType[0],
-    orderBy:orderBy[0],
-    groupBy:groupBy[0],
-  }
+  
 });
+ const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
 
     const onSubmit = (data) => {
-        console.log(data)
+        console.log(data,"data")
 const payload={
     company_id:data.company.value,
-    filename:data.file,
-    start_date:data.startDate,
-    end_date:data.endDate,
+    company_name:data.company.label,
+    file_name:data.file,
+    start_date:formatDate(data.startDate),
+    end_date:formatDate(data.endDate),
     export_type:data.exportType.value,
-    supplier_id:data.selectedValues,
-    end_date:data.selectedValues,
-    country_id:data.country.value,
+    supplier_ids:data.supplier.join(""),
+    page_break:"1",
+    show_taxes:"",
+    exclude_tax:"",
+    show_discount_details:"",
+    no_time:"",
+    exclude_tax:"",
+    filter_by_country:data.country.label,
     group_by:data.groupBy.value,
-    order_by:data.orderBy.vlaue,
+    order_by:data.orderBy.vlaue||" ",
     volume_unit:data.volUnit.value,
     fuel_type:data.fuelType.value,
     currency:data.currency.value,
     fuel_card:data.card,
     driver_name:data.driverName,
-    unitno:data.unitNo,
+    unit_number:data.unitNo,
     city:data.city,
     state:data.state.value,
+    amount:0,
+    retail_amount:0,
+    saving:0,
+    fees:0
 }
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+        console.log("Form Data:", payload);  // ✅ This will print your inputs
         if (isValid) {
-            setShowMessage(false); // hide only when form is completely valid
+            setShowMessage(false);
+          
+
         }
+           axios
+      .post(api_name, payload, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        reset();
+        setLoading(false)
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+                setLoading(false)
+
+      })
+      .finally(() => setLoading(false));
     };
 
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
+    
     return (
         <Fragment>
+            {loading && <Loader loading={true} />}
             <Row>
                 <Col>
                     <fieldset>
                         <legend>{title}</legend>
-                        <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-                            
+                        <Form noValidate onSubmit={handleSubmit(onSubmit)}  >
                                 <fieldset>
                                     <legend>
                                         Cover transactions in date range</legend>
@@ -90,7 +137,7 @@ const payload={
                                                 <InputGroup >
                                                     <InputGroupText>Company</InputGroupText>
                                                     <Controller name="company"
-                                                        rules={{ required: "company Name is required" }}
+                                                        rules={{ required:true,message: "company Name is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -114,16 +161,15 @@ const payload={
 
 
                                         <Col sm="3">
-                                            <FormGroup className=" m-form__group">
-                                                <InputGroup>
-                                                    <InputGroupText>Report File Name</InputGroupText>
-                                                    <Input className="form-control" name="file" type="text" {...register("file", { required: "File name is required" })}/>
-                                                </InputGroup>
-                                                 {errors.file && (
-                                                        <span className="text-danger">{errors.file.message}</span>
-                                                    )}
-                                            </FormGroup>
-
+                                         <InputText
+                                                                      name="file"
+                                                                      label="Report File Name "
+                                                                      type="text"
+                                                                      register={register}
+                                                                      errors={errors}
+                                                                      rules={{ required: "Required" }}
+                                                                  />
+                                     
                                         </Col>
 
 
@@ -144,7 +190,7 @@ const payload={
                                                             <Controller
                                                                 name="startDate"
                                                                 control={control}
-                                                                rules={{ required: " Required" }}
+                                                                rules={{ required:"start Date s Required"}}
                                                                 render={({ field }) => (
                                                                     <DatePicker
                                                                         className={`form-control `}
@@ -180,7 +226,7 @@ const payload={
                                                             <Controller
                                                                 name="endDate"
                                                                 control={control}
-                                                                rules={{ required: "Required" }}
+                                                                rules={{ required: "End Date is Required" }}
                                                                 render={({ field }) => (
                                                                     <DatePicker
                                                                         className={`form-control digits`}
@@ -193,7 +239,7 @@ const payload={
                                                     </InputGroup>
 
                                                     {errors.endDate && (
-                                                        <span className="text-danger">{errors.end.message}</span>
+                                                        <span className="text-danger">{errors.endDate.message}</span>
                                                     )}
                                                 </FormGroup>
                                             </Row>
@@ -205,7 +251,7 @@ const payload={
                                                         Export Type
                                                     </InputGroupText>
                                                     <Controller name="exportType"
-                                                        rules={{ required: "company Name is required" }}
+                                                        rules={{required:"Export type is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -231,50 +277,125 @@ const payload={
 
                            
                           
-                                <fieldset className='inputField ' >
-                                    <legend>
-                                        Choose Supplier Check All </legend>
-                                    <Row>
-                                        {supplier.map((item, index) => (
-                                            <Col sm="3">
-                                                <div className='checkbox checkbox-dark'>
-                                                    <input
-                                                        id={`checkbox-${index}`}
-                                                        type="checkbox"
-                                                        value={String(item.value)}
-                                                        checked={selectedValues.includes(String(item.value))}
-                                                        onChange={handleCheckboxChange} />
-                                                    <Label for={`checkbox-${index}`} className="ms-2">
-                                                        {item.label}
-                                                    </Label>
-                                                </div></Col>
-                                        ))}
-                                    </Row>
+                              <Controller
+  name="supplier"
+  control={control}
+  rules={{
+    validate: value =>
+      value && value.length > 0 || "Please select at least one supplier"
+  }}
+  render={({ field }) => {
+    const { value, onChange } = field;
 
-                                </fieldset>
-                           
-                           
-                                <fieldset>
-                                    <legend>
-                                        Display features (optional) </legend>
-                                    <Row>
-                                        {displayFeatureCheckBox.map((item, index) => (
-                                            <Col sm="3">
-                                                <div className='checkbox checkbox-dark'>
-                                                    <input
-                                                        id={`checkbox-${index}`}
-                                                        type="checkbox"
-                                                        value={item.value}
-                                                        checked={selectedValues.includes(item.value)}
-                                                        onChange={handleCheckboxChange} />
-                                                    <Label for={`checkbox-${index}`} className="ms-2">
-                                                        {item.label}
-                                                    </Label>
-                                                </div></Col>
-                                        ))}
-                                    </Row>
+    const handleSupplierChange = (e) => {
+      const { checked, value: val } = e.target;
 
-                                </fieldset>
+      if (checked) {
+        onChange([...(value || []), val]);
+      } else {
+        onChange((value || []).filter(v => v !== val));
+      }
+    };
+
+    return (
+      <>
+        <fieldset className='inputField'>
+          <legend>Choose Supplier Check All</legend>
+          <Row>
+            {supplier.map((item, index) => (
+              <Col key={index} sm="3">
+                <div className='checkbox checkbox-dark'>
+                  <input
+                    id={`supplier-checkbox-${index}`}
+                    type="checkbox"
+                    value={String(item.value)}
+                    checked={(value || []).includes(String(item.value))}
+                    onChange={handleSupplierChange}
+                  />
+                  <Label for={`supplier-checkbox-${index}`} className="ms-2">
+                    {item.label}
+                  </Label>
+                </div>
+              </Col>
+            ))}
+          </Row>
+            {errors.supplier && (
+          <span className="text-danger">{errors.supplier.message}</span>
+        )}
+        </fieldset>
+
+      
+      </>
+    );
+  }}
+/>
+
+           <Controller
+  name="features"
+  control={control}
+  defaultValue={[]}
+  rules={{
+    validate: (value) =>
+      value.length > 0 || "Please select at least one feature"
+  }}
+  render={({ field }) => {
+    const { value, onChange } = field;
+
+    const handleFeatureChange = (e) => {
+      const { value: v, checked } = e.target;
+
+      // 👉 Store only "value", not object
+      const updatedValues = checked
+        ? [...(value || []), v]
+        : (value || []).filter((item) => item !== v);
+
+      onChange(updatedValues);
+
+      // 👉 Also maintain 1 / "" state for each checkbox
+      setFeatureState((prev) => ({
+        ...prev,
+        [v]: checked ? "1" : ""
+      }));
+    };
+
+    return (
+      <>
+        <fieldset>
+          <legend>Display features (optional)</legend>
+
+          <Row>
+            {displayFeatureCheckBox.map((item, index) => (
+              <Col key={index} sm="3">
+                <div className="checkbox checkbox-dark">
+                  <input
+                    id={`feature-${index}`}
+                    type="checkbox"
+                    value={item.value}
+                    checked={(value || []).includes(item.value)}
+                    onChange={handleFeatureChange}
+                  />
+                  <Label for={`feature-${index}`} className="ms-2">
+                    {item.label}
+                  </Label>
+                </div>
+              </Col>
+            ))}
+          </Row>
+
+          {/* ERROR MESSAGE */}
+          {errors.features && (
+            <span className="text-danger small">
+              {errors.features.message}
+            </span>
+          )}
+        </fieldset>
+      </>
+    );
+  }}
+/>
+
+
+
                              
                                 <fieldset>
                                     <legend>
@@ -288,7 +409,7 @@ const payload={
                                                         Filter By Country <span className="text-danger fw-bold mx-1">*</span>
                                                     </InputGroupText>
                                                     <Controller name="country"
-                                                        rules={{ required: "country Name is required" }}
+                                                        rules={{required: "country Name is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -317,7 +438,7 @@ const payload={
                                                     <InputGroupText>Group By
                                                     </InputGroupText>
                                                     <Controller name="groupBy"
-                                                        rules={{ required: "Group By is required" }}
+                                                        rules={{ required:"Group By is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -394,7 +515,7 @@ const payload={
                                                     <InputGroupText>Fuel Type </InputGroupText>
                                                     <Controller
                                                         name="fuelType"
-                                                        rules={{ required: "country is required" }}
+                                                        rules={{ required:"country is required" }}
 
                                                         control={control}
                                                         render={({ field }) => (
@@ -418,7 +539,7 @@ const payload={
                                                     <InputGroupText>Currency </InputGroupText>
                                                     <Controller
                                                         name="currency"
-                                                        rules={{ required:"currency is required" }}
+                                                        rules={{ required: "currency is required" }}
                                                         control={control}
                                                         render={({ field }) => (
                                                             <Select
@@ -445,43 +566,62 @@ const payload={
                                         Match by (optional) </legend>
                                     <Row className="mt-3">
 
-                                        <Col sm="4">
-                                            <FormGroup className=" m-form__group">
-                                                <InputGroup>
-                                                    <InputGroupText>Fuel Card</InputGroupText>
-                                                    <Input name="card" className="form-control" type="text" {...register("card", { required: "Card No is required" })}/>
-                                                </InputGroup>
-                                            </FormGroup>
-                                        </Col>
+                                       <Col sm="4">
+                                         <InputText
+                                                                      name="card"
+                                                                      label="Fuel Card "
+                                                                      type="text"
+                                                                      register={register}
+                                                                      errors={errors}
+                                                                      rules={{ required: "Required" }}
+                                                                  />
+ 
+</Col>
 
 
 
-                                        <Col sm="4">
-                                            <FormGroup className=" m-form__group">
-                                                <InputGroup>
-                                                    <InputGroupText>Driver Name</InputGroupText>
-                                                    <Input name="driverName" className="form-control" type="text"  {...register("driverName", { required: "Driver Name is required" })}/>
-                                                </InputGroup>
-                                            </FormGroup>
-                                        </Col>
 
-                                        <Col sm="4">
-                                            <FormGroup className=" m-form__group">
-                                                <InputGroup>
-                                                    <InputGroupText>Unit Number</InputGroupText>
-                                                    <Input name="unitNo" className="form-control" type="text" {...register("unitNo", { required: "Uit No is required" })}/>
-                                                </InputGroup>
-                                            </FormGroup>
-                                        </Col>
+                                      <Col sm="4">
+                                       <InputText
+                                                                      name="driverName"
+                                                                      label="Driver Name "
+                                                                      type="text"
+                                                                      register={register}
+                                                                      errors={errors}
+                                                                      rules={{ required: "Required" }}
+                                                                  />
+  
+                                      
+ 
+</Col>
+
+<Col sm="4">
+   <InputText
+                                                                      name="unitNo"
+                                                                      label="Unit Number "
+                                                                      type="text"
+                                                                      register={register}
+                                                                      errors={errors}
+                                                                      rules={{ required: "Required" }}
+                                                                  />
+  
+</Col>
+
                                         <Row>
-                                            <Col sm="4">
-                                                <FormGroup className=" m-form__group">
-                                                    <InputGroup>
-                                                        <InputGroupText>City</InputGroupText>
-                                                        <Input name="city" className="form-control" type="text"  {...register("city", { required: "Uit No is required" })}/>
-                                                    </InputGroup>
-                                                </FormGroup>
-                                            </Col>
+                                            
+                                          <Col sm="4">
+                                            <InputText
+                                                                      name="city"
+                                                                      label="City "
+                                                                      type="text"
+                                                                      register={register}
+                                                                      errors={errors}
+                                                                      rules={{ required: "Required" }}
+                                                                  />
+  
+    
+</Col>
+
                                             <Col sm="4">
                                                 <FormGroup className="m-form__group">
                                                     <InputGroup>
