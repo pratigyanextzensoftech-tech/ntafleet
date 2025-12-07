@@ -18,7 +18,7 @@ const Index = () => {
 
   const params = new URLSearchParams(window.location.search);
   const tab = params.get("tab");
-  const { createColumns } = useSelectableColumns(tab==='1'?report_new_downlod:owner_report_downlod,"REPORT");
+  const { createColumns } = useSelectableColumns(tab==='1'?report_new_downlod:owner_report_downlod,tab==='1'?"REPORT":"OWNER_REPORT");
   // ✅ Define individual column mappings per API
   const columnSets = {
     ownerReportlist: {

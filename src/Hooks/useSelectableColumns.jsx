@@ -50,12 +50,19 @@ export default function useSelectableColumns(download_link,USEFOR="") {
       switch(USEFOR)
       { 
           case("REPORT"):
+<<<<<<< HEAD
+=======
+            window.open(`${download_link}/${data["Report_ID"]}/${TYPE}`, "_self"); 
+            break;
+          case("OWNER_REPORT"):
+>>>>>>> 5a7cb4201295e828673d41675a53cc2f515ef7ab
             window.open(`${download_link}/${data["id"]}/${TYPE}`, "_self"); 
             break;
           default:
             alert("Default");
             break;
       }
+      setOpenRowId(null);
   }
 
   const formatDate = (value, withTime = false) => {
