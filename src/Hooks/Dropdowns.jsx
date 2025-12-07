@@ -122,7 +122,6 @@ export const useSupplier = (supplier_ids = "") => {
     label: s.supplier_name,
   }));
 };
-
 export const useSupplierAll = () => {
    
   return useDropdown(supplierAll, (s) => ({
