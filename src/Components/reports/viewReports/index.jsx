@@ -5,49 +5,26 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import useSelectableColumns from "../../../Hooks/useSelectableColumns";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-<<<<<<< HEAD
-import { owner_report, report, report_new } from "../../../api";
-=======
 import {
   owner_report, 
   report_new,
   report_new_downlod,
   owner_report_downlod
 } from "../../../api";
->>>>>>> 33f3d52b35e165cd737d9f20de47bdd123fec340
 import Swal from "sweetalert2";
 import usePaginatedTable from "../../../Hooks/usePagination";
 import axios from "axios";
 const Index = () => {
-<<<<<<< HEAD
-  const { createColumns } = useSelectableColumns();
-  // ✅ Define individual column mappings per API
-  const columnSets = {
-    oldReportList: {
-      id: "report_id",
-      "Report#": "report_id",
-      "Company Name": "company_name",
-      "No Of Transaction": "trans_count",
-      "Start date (EDT)": "start_date",
-      "End date (EDT) incl.": "end_date",
-      Type: "fuel_type",
-    },
-
-    ownerReportlist: {
-      id: "report_id",
-      "Report#": "report_id",
-=======
 
   const params = new URLSearchParams(window.location.search);
   const tab = params.get("tab");
-  const { createColumns } = useSelectableColumns(tab==='1'?report_new_downlod:owner_report_downlod,"REPORT");
+  const { createColumns } = useSelectableColumns(tab==='1'?report_new_downlod:owner_report_downlod,tab==='1'?"REPORT":"OWNER_REPORT");
   // ✅ Define individual column mappings per API
   const columnSets = {
     ownerReportlist: {
       id: "report_id",
       "Report#": "report_id",
        Report_Name: "file_name",
->>>>>>> 33f3d52b35e165cd737d9f20de47bdd123fec340
       "Company Name": "company_name",
       "No Of Transaction": "trans_count",
       "Start date (EDT)": "start_date",
@@ -94,16 +71,6 @@ const Index = () => {
       map: columnSets.ownerReportlist,
       deleteApi: owner_report,
     },
-<<<<<<< HEAD
-    {
-      id: "3",
-      label: "Old Report List",
-      data: oldReportList,
-      map: columnSets.oldReportList,
-      deleteApi: report,
-    },
-=======
->>>>>>> 33f3d52b35e165cd737d9f20de47bdd123fec340
   ];
 
   // ✅ Define tab content dynamically
@@ -114,17 +81,10 @@ const Index = () => {
       <DataTableComponent
         title={tab.label}
         tableColumns={createColumns(tab.map, tab.data.data, {
-<<<<<<< HEAD
-          withCheckbox: false, // ✅ show checkboxes
-          withActions: false, // ✅ show action column
-          showDownload: true, // ✅ conditionally show download
-          showDelete: true, // ❌ hide delete
-=======
           withCheckbox: false,
           withActions: false, // ✅ show action column
           showDownload: true, // ✅ conditionally show download
           showDelete: true,
->>>>>>> 33f3d52b35e165cd737d9f20de47bdd123fec340
           onDownload: (row) => console.log("Download:", row),
           onDelete: (row) => {
             Swal.fire({
@@ -141,12 +101,6 @@ const Index = () => {
                 axios
                   .delete(`${tab.deleteApi}/${row.id}`)
                   .then((res) => {
-<<<<<<< HEAD
-                    tab.data.setData((prev) =>
-                      prev.filter((item) => item.id !== row.id)
-                    );
-                    Swal.fire("Deleted!","Record deleted successfully.","success");
-=======
                     // Remove deleted row from table
                     tab.data.setData((prev) =>
                       prev.filter((item) => item.id !== row.id)
@@ -159,7 +113,6 @@ const Index = () => {
                     );
 
                     // refresh table if server uses pagination
->>>>>>> 33f3d52b35e165cd737d9f20de47bdd123fec340
                     tab.data.fetchData();
                   })
                   .catch((err) => {
