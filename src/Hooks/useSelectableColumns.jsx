@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import dayjs from "dayjs";
 import {
   FaDownload,
@@ -7,11 +7,28 @@ import {
   FaEnvelope,
   FaEnvelopeOpenText,
 } from "react-icons/fa";
-export default function useSelectableColumns() {
+import axios from "axios";
+import { redirect } from "react-router";
+import { ca } from "date-fns/locale";
+export default function useSelectableColumns(download_link,USEFOR="") {
+
+  //console.log("report_new_downlod =",report_new_downlod);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
     const [openRowId, setOpenRowId] = useState(null); // ✅ added
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const dropdowns = document.querySelectorAll(".dropdown-action");
+      let clickedInside = false;
+      dropdowns.forEach(dropdown => {
+        if (dropdown.contains(event.target)) clickedInside = true;
+      });
+      if (!clickedInside) setOpenRowId(null);
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   // ✅ Dummy handlers (replace later with real ones)
   const handleViewPdf = (row) => {
     console.log("View PDF clicked for:", row);
@@ -27,8 +44,19 @@ export default function useSelectableColumns() {
 
   const handleTestEmailPdf = (row) => {
     console.log("Test Email PDF clicked for:", row);
-  };
-
+  }
+  const Download=(data,TYPE)=>
+  {
+      switch(USEFOR)
+      { 
+          case("REPORT"):
+            window.open(`${download_link}/${data["id"]}/${TYPE}`, "_blank"); 
+            break;
+          default:
+            alert("Default");
+            break;
+      }
+  }
 
   const formatDate = (value, withTime = false) => {
     if (!value) return "-";
@@ -50,9 +78,9 @@ export default function useSelectableColumns() {
     );
   };
 
-  const createColumns = (map, data = [], options = {}) => {
-    const { withCheckbox = false, withActions = false, onDelete, onDownload } = options;
-console.log(withActions,"action")
+  const createColumns = (map, data = [], options = {},) => {
+    const { withCheckbox = false, withActions = false, onDelete, onDownload } = options; 
+ 
     const cols = Object.keys(map)
       .filter((key) => key !== "id")
       .map((key) => ({
@@ -165,20 +193,72 @@ console.log(withActions,"action")
     else {
       if (onDownload) {
         cols.push({
-          name: "Download",
-          cell: (row) => (
-            <span
-              className="text-primary d-flex align-items-center"
-              style={{ cursor: "pointer" }}
-              onClick={() => onDownload(row)}
+    name: "Download",
+    cell: (row) => (
+      <div className="position-relative dropdown-action">
+        {/* Toggle Button */}
+        <button
+          className="btn btn-sm btn-primary px-2"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenRowId(openRowId === row.id ? null : row.id);
+          }}
+        >
+Download        </button>
+
+        {/* Dropdown Menu */}
+        {openRowId === row.id && (
+          <div
+            className="position-absolute bg-white border rounded shadow"
+            style={{
+              zIndex: 1000,
+              right: 0,
+              marginTop: 5,
+              minWidth: 180,
+              padding: "5px 0",
+            }}
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+          >
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => Download(row,'EXCEL')}
             >
-              <FaDownload className="me-1" /> Download
-            </span>
-          ),
-          width: "150px",
-          ignoreRowClick: true,
-          allowOverflow: true,
-        });
+              <FaDownload /> Download Excel
+            </button>
+
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => Download(row,'CSV')}
+            >
+              <FaFilePdf />Download CSV
+            </button>
+
+            <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => Download(row,'PDF')}
+            >
+              <FaEnvelope /> Download PDF
+            </button>
+
+            {/* <button
+              className="dropdown-item d-flex align-items-center"
+              style={{ padding: "8px 12px", gap: "8px" }}
+              onClick={() => handleTestEmailPdf(row)}
+            >
+              <FaEnvelopeOpenText /> Testing Email Pricing PDF
+            </button> */}
+          </div>
+        )}
+      </div>
+    ),
+    width: "220px",
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  });
       }
 
       if (onDelete) {

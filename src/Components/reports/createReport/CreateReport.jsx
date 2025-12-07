@@ -8,6 +8,7 @@ import {
   Reportcurrency,
   exportType,
   VolUnit,
+  displayFeatureCheckBoxOwner
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import {
   Row,
@@ -29,7 +30,6 @@ import {
   useSupplier,
 } from "../../../Hooks/Dropdowns";
 import axios from "axios";
-import { report_new as api_name } from "../../../api";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import { toast } from "react-toastify";
 import Loader from "../../../Layout/Loader";
@@ -39,8 +39,8 @@ const CreateReport = ({
   supplier_ids,
   discount,
   company_type,
+  api_name
 }) => {
-  const [selectedValues, setSelectedValues] = useState([]);
 
    const[page_break,setpage_break]=useState('0');
    const[show_taxes,setshow_taxes]=useState('0');
@@ -94,16 +94,13 @@ const CreateReport = ({
   };
 
   const onSubmit = (data) => {
-
-    
-    
     const payload = {
     company_id: data?.company?.value ? data.company.value : "",
     company_name: data?.company?.label ? data.company.label : "",
     file_name: data?.file ? data.file : "",
 
-    start_date: data?.startDate ? formatDate(data.startDate) : formatDate(new Date()),
-    end_date: data?.endDate ? formatDate(data.endDate) : formatDate(new Date()),
+    start_date: data?.startDate ? formatDate(data.startDate)+ " 00:00:00" : formatDate(new Date())+" 00:00:00",
+    end_date: data?.endDate ? formatDate(data.endDate)+ " 23:59:59" : formatDate(new Date())+" 23:59:59",
 
     export_type: data?.exportType?.value ? data.exportType.value : "",
     supplier_ids: data?.supplier?.length ? data.supplier.join(",") : "",
@@ -132,7 +129,6 @@ const CreateReport = ({
     retail_amount: data?.retail_amount ? Number(data.retail_amount) : 0,
     saving: data?.saving ? Number(data.saving) : 0,
     fees: data?.fees ? Number(data.fees) : 0,
-
     trans_count: 0,
     discount_usa: 0,
     discount_canada: 0,
@@ -141,16 +137,16 @@ const CreateReport = ({
     if (isValid) {
       setShowMessage(false);
     }
-    axios.post(api_name, payload, {        headers: { "Content-Type": "application/json" },      })
-      .then((res) => {    toast.success(res.data.message);
-       // reset();
-        setLoading(false);
-      })
-      .catch((err) => {
-        toast.error("Something went wrong");
-        setLoading(false);
-      })
-      .finally(() => setLoading(false));
+    // axios.post(api_name, payload, { headers: { "Content-Type": "application/json" },      })
+    //   .then((res) => {    toast.success(res.data.message);
+    //    // reset();
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     toast.error("Something went wrong");
+    //     setLoading(false);
+    //   })
+    //   .finally(() => setLoading(false));
   };
 
   return (
@@ -294,65 +290,109 @@ const CreateReport = ({
                   </Col>
                 </Row>
               </fieldset>
+<Controller
+  name="supplier"
+  control={control}
+  rules={{
+    validate: (value) =>
+      (value && value.length > 0) ||
+      "Please select at least one supplier",
+  }}
+  render={({ field }) => {
+    const { value, onChange } = field;
 
-              <Controller
-                name="supplier"
-                control={control}
-                rules={{
-                  validate: (value) =>
-                    (value && value.length > 0) ||
-                    "Please select at least one supplier",
-                }}
-                render={({ field }) => {
-                  const { value, onChange } = field;
+    const selectedValues = (value || []).map(String);
 
-                  const handleSupplierChange = (e) => {
-                    const { checked, value: val } = e.target;
+    const handleSupplierChange = (e) => {
+      const { checked, value: val } = e.target;
 
-                    if (checked) {
-                      onChange([...(value || []), val]);
-                    } else {
-                      onChange((value || []).filter((v) => v !== val));
-                    }
-                  };
+      // 👉 Handle ALL checkbox
+      if (val === "All") {
+        if (checked) {
+          const allSupplierValues = supplier.map((s) =>
+            String(s.value)
+          );
+          onChange(allSupplierValues);
+        } else {
+          onChange([]);
+        }
+        return;
+      }
 
-                  return (
-                    <>
-                      <fieldset className="inputField">
-                        <legend>Choose Supplier Check All</legend>
-                        <Row>
-                          {supplier.map((item, index) => (
-                            <Col key={index} sm="3">
-                              <div className="checkbox checkbox-dark">
-                                <input
-                                  id={`supplier-checkbox-${index}`}
-                                  type="checkbox"
-                                  value={String(item.value)}
-                                  checked={(value || []).includes(
-                                    String(item.value)
-                                  )}
-                                  onChange={handleSupplierChange}
-                                />
-                                <Label
-                                  for={`supplier-checkbox-${index}`}
-                                  className="ms-2"
-                                >
-                                  {item.label}
-                                </Label>
-                              </div>
-                            </Col>
-                          ))}
-                        </Row>
-                        {errors.supplier && (
-                          <span className="text-danger">
-                            {errors.supplier.message}
-                          </span>
-                        )}
-                      </fieldset>
-                    </>
-                  );
-                }}
+      // 👉 Individual supplier logic
+      let updated;
+      if (checked) {
+        updated = [...selectedValues, val];
+      } else {
+        updated = selectedValues.filter((v) => v !== val);
+      }
+
+      onChange(updated);
+    };
+
+    const allSelected =
+      selectedValues.length === supplier.length;
+
+    return (
+      <>
+        <fieldset className="inputField">
+          <legend>
+            Choose Supplier
+            {/* 🔥 ALL checkbox inside legend (right side) */}
+            <span className="ms-3">
+              <input
+                id="supplier-all"
+                type="checkbox"
+                value="All"
+                checked={allSelected}
+                onChange={handleSupplierChange}
               />
+              <Label
+                for="supplier-all"
+                className="ms-1"
+              
+              >
+                 checkbox All
+              </Label>
+            </span>
+          </legend>
+
+          <Row>
+            {supplier.map((item, index) => (
+              <Col key={index} sm="3">
+                <div className="checkbox checkbox-dark">
+                  <input
+                    id={`supplier-checkbox-${index}`}
+                    type="checkbox"
+                    value={String(item.value)}
+                    checked={selectedValues.includes(
+                      String(item.value)
+                    )}
+                    onChange={handleSupplierChange}
+                  />
+                  <Label
+                    for={`supplier-checkbox-${index}`}
+                    className="ms-2"
+                  >
+                    {item.label}
+                  </Label>
+                </div>
+              </Col>
+            ))}
+          </Row>
+
+          {errors.supplier && (
+            <span className="text-danger">
+              {errors.supplier.message}
+            </span>
+          )}
+        </fieldset>
+      </>
+    );
+  }}
+/>
+
+
 
               <Controller
                 name="features"
@@ -382,7 +422,8 @@ const CreateReport = ({
                         <legend>Display features (optional)</legend>
 
                         <Row>
-                          {displayFeatureCheckBox.map((item, index) => (
+                          {discount==="Yes" &&(
+ displayFeatureCheckBox.map((item, index) => (
                             <Col key={index} sm="3">
                               <div className="checkbox checkbox-dark">
                                 <input
@@ -400,7 +441,29 @@ const CreateReport = ({
                                 </Label>
                               </div>
                             </Col>
-                          ))}
+                          ))
+                          )}
+                          {discount==="No" &&(
+ displayFeatureCheckBoxOwner.map((item, index) => (
+                            <Col key={index} sm="3">
+                              <div className="checkbox checkbox-dark">
+                                <input
+                                  id={`feature-${index}`}
+                                  type="checkbox"
+                                  value={item.value}
+                                  checked={(value || []).includes(item.value)}
+                                  onChange={handleFeatureChange}
+                                />
+                                <Label
+                                  for={`feature-${index}`}
+                                  className="ms-2"
+                                >
+                                  {item.label}
+                                </Label>
+                              </div>
+                            </Col>
+                          ))
+                          )}
                         </Row>
 
                         {/* ERROR MESSAGE */}

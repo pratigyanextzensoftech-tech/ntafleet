@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import qs from "qs";
 
-export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters = {} }) {
+export default function usePaginatedTable({ apiUrl, columnsMap, initialFilters = {},downloadApi }) {
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
