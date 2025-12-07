@@ -19,7 +19,7 @@ export const MenuProvider = ({ children }) => {
         if (Array.isArray(parsedMenu)) {
           setMainMenu(parsedMenu);
           setLoading(false);
-          return; // ✅ Exit early, no need to hit API
+          return;  
         }
       } catch (err) {
         localStorage.removeItem("Menu"); // clean invalid data
@@ -29,8 +29,7 @@ export const MenuProvider = ({ children }) => {
     // ✅ Fallback: fetch from API if not found or invalid
     const fetchMenu = async () => {
       setLoading(true);
-const userID = localStorage.getItem("userId") || 0;
-
+     const userID = localStorage.getItem("userId") || 0;
       try {
         const resp = await axios.post(MenuApi, { userID });
         if (resp.data && Array.isArray(resp.data.Menu)) {
@@ -48,8 +47,7 @@ const userID = localStorage.getItem("userId") || 0;
     };
 
     fetchMenu();
-  }, []);
-
+  }, []); 
   return (
     <MenuContext.Provider value={{ mainmenu, setMainMenu, loading, error }}>
       {children}

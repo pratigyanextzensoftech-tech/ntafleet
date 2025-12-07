@@ -12,6 +12,7 @@ export const transactions = `${baseurl}/api/transactions`;
 export const pmenu = `${baseurl}/api/pmenu`;
 export const pmenuAll = `${baseurl}/api/pmenu/all`; 
 export const login = `${baseurl}/api/admin/login`;
+export const loginlog = `${baseurl}/api/admin/user_log`;
  export const money_code = `${baseurl}/api/mond_code`;
 export const items = `${baseurl}/api/items`;
 export const itemsAll = `${baseurl}/api/items/all`;

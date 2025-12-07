@@ -7,34 +7,38 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../Layout/Loader";
 import OtherWay from "./OtherWay";
-import {MenuContext} from "../_helper/Menu/MenuProvider";
+import { MenuContext } from "../_helper/Menu/MenuProvider";
+import axios from "axios";
+import { loginlog } from "../api"; 
 const OtpVerify = () => {
   const { mainmenu } = useContext(MenuContext); // ✅ from provider
   const location = useLocation();
   const navigate = useNavigate();
-
   const [enteredOtp, setEnteredOtp] = useState("");
   const [loading, setLoading] = useState(false);
-
   const { otp: sentOtp, userId } = location.state || {};
-
-  const otpVerify = (e) => {
+  const otpVerify =  (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
+    setTimeout(() => 
+      {
       if (enteredOtp == sentOtp) {
         toast.success("OTP verified successfully!");
-        
-        // ✅ Save user info only
         localStorage.setItem("userId", userId);
-localStorage.setItem("Menu", JSON.stringify(mainmenu));
-        setLoading(false);
-        navigate("/dashboard");
+        localStorage.setItem("Menu", JSON.stringify(mainmenu)); 
+        try
+        {
+         // const response = axios.post(loginlog, {userId, msg:"OTP verified successfully!" });
+          setLoading(false);
+          navigate("/dashboard");
+        } 
+        catch (error) {}        
+        
+       
       } else {
         toast.error("Invalid OTP!");
         setLoading(false);
-
       }
     }, 500);
   };
