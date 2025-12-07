@@ -21,12 +21,13 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import ItemsDropDown from "../../Forms/FormControl/formInput/ItemsDropDown";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
-import {  useCompany, useSalesman, useSupplier,useEssoRack,useItems} from "../../../Hooks/Dropdowns";
+import {  useCompany, useSalesman, useSupplierAll,useEssoRack,useItems} from "../../../Hooks/Dropdowns";
 const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const { data: companyOptions, loading: companyLoading } = useCompany();
   const { data: items, loading: itemsLoading } = useItems();
-  const { data: allSuppliercheckbox, loading: allSuppliercheckboxLoading } = useSupplier();
+    const { data: supplier } = useSupplierAll();
+  
    
 
   const {
@@ -75,37 +76,112 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
     if (onSearch) onSearch({}); // ✅ reload all data
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedValues((prev) =>
-      checked ? [...prev, value] : prev.filter((item) => item !== value)
-    );
-  };
+ 
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       {/* ✅ Supplier Checkboxes */}
-      <fieldset>
-        <legend >Choose Supplier Check All</legend>
-        <Row>
-          {allSuppliercheckbox.map((item, index) => (
-            <Col sm="3" key={index}>
-              <div className="checkbox checkbox-dark">
-                <input
-                  id={`checkbox-${index}`}
-                  type="checkbox"
-                  value={item.value}
-                  checked={selectedValues.includes(item.value)}
-                  onChange={handleCheckboxChange}
-                />
-                <Label for={`checkbox-${index}`} className="ms-2">
-                  {item.label}
-                </Label>
-              </div>
-            </Col>
-          ))}
-        </Row>
-      </fieldset>
+ <Controller
+   name="supplier"
+   control={control}
+   rules={{
+     validate: (value) =>
+       (value && value.length > 0) ||
+       "Please select at least one supplier",
+   }}
+   render={({ field }) => {
+     const { value, onChange } = field;
+ 
+     const selectedValues = (value || []).map(String);
+ 
+     const handleSupplierChange = (e) => {
+       const { checked, value: val } = e.target;
+ 
+       // 👉 Handle ALL checkbox
+       if (val === "All") {
+         if (checked) {
+           const allSupplierValues = supplier.map((s) =>
+             String(s.value)
+           );
+           onChange(allSupplierValues);
+         } else {
+           onChange([]);
+         }
+         return;
+       }
+ 
+       // 👉 Individual supplier logic
+       let updated;
+       if (checked) {
+         updated = [...selectedValues, val];
+       } else {
+         updated = selectedValues.filter((v) => v !== val);
+       }
+ 
+       onChange(updated);
+     };
+ 
+     const allSelected =
+       selectedValues.length === supplier.length;
+ 
+     return (
+       <>
+         <fieldset className="inputField">
+           <legend>
+             Choose Supplier
+             {/* 🔥 ALL checkbox inside legend (right side) */}
+             <span className="ms-3">
+               <input
+                 id="supplier-all"
+                 type="checkbox"
+                 value="All"
+                 checked={allSelected}
+                 onChange={handleSupplierChange}
+               />
+               <Label
+                 for="supplier-all"
+                 className="ms-1"
+               
+               >
+                  checkbox All
+               </Label>
+             </span>
+           </legend>
+ 
+           <Row>
+             {supplier.map((item, index) => (
+               <Col key={index} sm="3">
+                 <div className="checkbox checkbox-dark">
+                   <input
+                     id={`supplier-checkbox-${index}`}
+                     type="checkbox"
+                     value={String(item.value)}
+                     checked={selectedValues.includes(
+                       String(item.value)
+                     )}
+                     onChange={handleSupplierChange}
+                   />
+                   <Label
+                     for={`supplier-checkbox-${index}`}
+                     className="ms-2"
+                   >
+                     {item.label}
+                   </Label>
+                 </div>
+               </Col>
+             ))}
+           </Row>
+ 
+           {errors.supplier && (
+             <span className="text-danger">
+               {errors.supplier.message}
+             </span>
+           )}
+         </fieldset>
+       </>
+     );
+   }}
+ />
 
       {/* ✅ Row 1: Dates + StartProv + Unit */}
       <Row>
@@ -152,6 +228,8 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                         className={`form-control digits`}
                         selected={field.value}
                         onChange={(date) => field.onChange(date)}
+                        dateFormat="yyyy-MM-dd"
+
                       />
                     )}
                   />

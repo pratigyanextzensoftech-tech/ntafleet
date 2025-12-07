@@ -17,7 +17,15 @@ const PetroForm = ({btnTitle,btnTitle1}) => {
 
         formState: { errors, isSubmitted, isValid },
     } = useForm();
-
+    
+const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
 const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
         };

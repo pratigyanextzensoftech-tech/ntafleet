@@ -25,6 +25,7 @@ const ZeroDiscount = ({ title, btnTitle,onDataAdded }) => {
  const {
     register,
     control,
+    setValue,
     reset,
     handleSubmit,
     formState: { errors },
@@ -98,6 +99,7 @@ idby:localStorage.getItem("userId")
               errors={errors}
               control={control}
               defaultValueId={3}
+              setValue={setValue}
               rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
               // loading={companyLoading}

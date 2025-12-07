@@ -151,7 +151,7 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                   render={({ field }) => (
                     <Select
                       {...field}
-options={data.filter((_, index) => index !== 0)} 
+options={data} 
                       className="form-control p-0 border-0"
                       placeholder="Select Country"
                         value={field.value}   // ✅ FIXED

@@ -31,7 +31,6 @@ const UpdateUnitForm = ({ btnTitle }) => {
 
   const {
     register,
-
     control,
     reset,
     handleSubmit,
@@ -45,17 +44,14 @@ const UpdateUnitForm = ({ btnTitle }) => {
       setShowMessage(false); // hide only when form is completely valid
     }
   };
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-
-    setSelectedValues((prev) => {
-      if (checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter((item) => item !== value);
-      }
-    });
-  };
+ const formatDate = (date) => {
+        if (!date) return "";
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+            2,
+            "0"
+        )}-${String(d.getDate()).padStart(2, "0")}`;
+    };
   return (
     <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
       <Row>
@@ -100,6 +96,9 @@ const UpdateUnitForm = ({ btnTitle }) => {
                         className={`form-control `}
                         selected={field.value}
                         onChange={(date) => field.onChange(date)}
+                        dateFormat="yyyy-MM-dd"
+
+
                       />
                     )}
                   />
@@ -129,6 +128,8 @@ const UpdateUnitForm = ({ btnTitle }) => {
                         className={`form-control digits`}
                         selected={field.value}
                         onChange={(date) => field.onChange(date)}
+                        dateFormat="yyyy-MM-dd"
+
                       />
                     )}
                   />

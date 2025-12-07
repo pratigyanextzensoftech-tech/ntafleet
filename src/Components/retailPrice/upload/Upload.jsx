@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
+import { Row, Col, Form, } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 const Upload = ({btnTitle}) => {
-    const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
         control,
@@ -14,27 +13,23 @@ const Upload = ({btnTitle}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
 
+const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+
     const onSubmit = (data) => {
 
         console.log("Form Data:", data);  // ✅ This will print your inputs
         // alert("Form submitted successfully!");
 
     };
-    const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
+  
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
     return (
 
         <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >

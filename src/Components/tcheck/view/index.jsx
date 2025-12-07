@@ -186,9 +186,7 @@ const Index = () => {
     setTableColumns(cols);
   }, [openRowId]);
 
-  // ✅ Action handlers
-  const handleEdit = (row) => alert("Edit " + row.id);
-  const handleLogin = (row) => alert("Login " + row.id);
+  
 
  const handleDelete = (e,row) => {
   e.preventDefault()

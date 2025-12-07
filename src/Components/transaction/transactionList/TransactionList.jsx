@@ -52,6 +52,15 @@ const TransactionList = ({ btnTitle, btnTitle1 }) => {
 //       }
 //     })
 // }, [type, setValue]);
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
   const onSubmit = (data) => {
     console.log("Form Data:", data); // ✅ This will print your inputs
     // alert("Form submitted successfully!");
@@ -77,6 +86,8 @@ const TransactionList = ({ btnTitle, btnTitle1 }) => {
                         className={`form-control `}
                         selected={field.value}
                         onChange={(date) => field.onChange(date)}
+                       dateFormat="yyyy-MM-dd"
+
                       />
                     )}
                   />
@@ -106,6 +117,8 @@ const TransactionList = ({ btnTitle, btnTitle1 }) => {
                         className={`form-control digits`}
                         selected={field.value}
                         onChange={(date) => field.onChange(date)}
+                        dateFormat="yyyy-MM-dd"
+
                       />
                     )}
                   />

@@ -42,13 +42,22 @@ useEffect(() => {
     })
     .catch((err) => console.log(err));
 }, [ setValue]);
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
      const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
     salesman_id: formData.salesman.value,
-    date_from:formData.startDate.value,
-    date_to:formData.endDate.value,
+    date_from:formatDate(formData.startDate.value),
+    date_to:formatDate(formData.endDate.value),
     country:formData.country.value,
 supplier_id:0,
 us_total:"",
@@ -128,6 +137,7 @@ del:""
                 className={`form-control `}
                 selected={field.value}
                 onChange={(date) => field.onChange(date)}
+                  dateFormat="yyyy-MM-dd"
               />
             )}
           />
@@ -158,6 +168,7 @@ del:""
                 className={`form-control digits`}
                 selected={field.value}
                 onChange={(date) => field.onChange(date)}
+                  dateFormat="yyyy-MM-dd"
               />
             )}
           />

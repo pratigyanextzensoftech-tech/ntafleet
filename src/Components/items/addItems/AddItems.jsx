@@ -35,7 +35,7 @@ const AddItems = ({ btnTitle, onDataAdded, Edit, selectedRow, setEdit }) => {
     if (Edit && selectedRow) {
       console.log(selectedRow);
       reset({
-        Name: selectedRow.name,
+        Name: selectedRow.item_name,
         discount:
           selectedRow.discount == 0
             ? { value: "0", label: "Yes" }
@@ -50,7 +50,7 @@ const AddItems = ({ btnTitle, onDataAdded, Edit, selectedRow, setEdit }) => {
   }, [Edit, selectedRow, reset]);
   const onSubmit = (formData) => {
     // console.log("Form Data:", formData);  // ✅ This will print your inputs
-
+console.log(formData)
     const payload = {
       item_name: formData.Name,
       discount_applied: formData.discount.value,

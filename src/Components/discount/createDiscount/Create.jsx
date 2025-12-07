@@ -47,15 +47,22 @@ const Create = ({ title, btnTitle,onDataAdded }) => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-
+const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
  const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
       company_id:formData.company.value,
       company_name:formData.company.label,
-   end_date: formData.endDate,
-    start_date:formData.startDate,
+   end_date: formatDate(formData.endDate),
+    start_date:formatDate(formData.startDate),
     country:formData.country.label,
 supplier_id:formData.supplier.value,
 supplier_name:formData.supplier.label,

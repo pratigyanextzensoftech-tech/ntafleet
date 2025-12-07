@@ -123,7 +123,13 @@ export const useSupplier = (supplier_ids = "") => {
   }));
 };
 
-
+export const useSupplierAll = () => {
+   
+  return useDropdown(supplierAll, (s) => ({
+    value: s.id,
+    label: s.supplier_name,
+  }));
+};
 export const InvoiceType = (type = "") => {
 
   const invoiceTypes = [

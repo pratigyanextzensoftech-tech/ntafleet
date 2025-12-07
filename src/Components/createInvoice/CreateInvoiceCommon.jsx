@@ -202,6 +202,8 @@ const CreateInvoiceCommon = ({
                                 className={`form-control `}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
+                               dateFormat="yyyy-MM-dd"
+
                               />
                             )}
                           />
@@ -234,6 +236,8 @@ const CreateInvoiceCommon = ({
                                 className={`form-control digits`}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
+                               dateFormat="yyyy-MM-dd"
+
                               />
                             )}
                           />
