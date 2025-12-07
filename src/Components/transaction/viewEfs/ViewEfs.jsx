@@ -44,6 +44,15 @@ useEffect(() => {
     })
     .catch((err) => console.log(err));
 }, [setValue]);
+
+  const formatDate = (date) => {
+        if (!date) return "";
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+            2,
+            "0"
+        )}-${String(d.getDate()).padStart(2, "0")}`;
+    };
     const onSubmit = (data) => {
 
         console.log("Form Data:", data);  // ✅ This will print your inputs
@@ -54,17 +63,6 @@ useEffect(() => {
     };
 
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
     return (
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
          
@@ -90,6 +88,8 @@ useEffect(() => {
                                                         className={`form-control `}
                                                         selected={field.value}
                                                         onChange={(date) => field.onChange(date)}
+                                                        dateFormat="yyyy-MM-dd"
+
                                                     />
                                                 )}
                                             /></Col>
@@ -126,6 +126,8 @@ useEffect(() => {
                                                         className={`form-control digits`}
                                                         selected={field.value}
                                                         onChange={(date) => field.onChange(date)}
+                                                         dateFormat="yyyy-MM-dd"
+
                                                     />
                                                 )}
                                             />

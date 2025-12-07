@@ -6,8 +6,7 @@ import DatePicker from "react-datepicker";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import useCompany from "../../../Hooks/useCompany";
-import { Esso_cent_Data } from "../../../api";
-import axios from "axios";
+
 const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   // const [showMessage, setShowMessage] = useState(true);
@@ -32,17 +31,6 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
     };
     onChange(payload.company_id, payload.from_date, payload.upto_date);
 
-    const handleCheckboxChange = (e) => {
-      const { value, checked } = e.target;
-
-      setSelectedValues((prev) => {
-        if (checked) {
-          return [...prev, value];
-        } else {
-          return prev.filter((item) => item !== value);
-        }
-      });
-    };
   };
   return (
     <fieldset className="inputField">

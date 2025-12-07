@@ -154,7 +154,7 @@ export const routes = [
     { path: `/fj_bulk_price`, Component: <BulkPrice /> },
     { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
     { path: `/esso_bulk_price`, Component: <EssoBulk /> },
-    // { path: `/love_bulk_price`, Component: <LoveBulk /> },
+    { path: `/love_bulk_price`, Component: <LoveBulk /> },
     { path: `/ultramar_bulk_price`, Component: <Ultramar /> },
     { path: `/update_fg_rack_price`, Component: <UpdateFgRack /> },
     { path: `/update_taPetro_rack_price`, Component: <UpdateTaPetro /> },

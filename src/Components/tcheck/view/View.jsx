@@ -18,6 +18,15 @@ const List = ({btnTitle1}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+    
+     const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
 
     const onSubmit = (data) => {
 
@@ -25,21 +34,9 @@ const List = ({btnTitle1}) => {
         // alert("Form submitted successfully!");
 
     };
-    const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
+    
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
+   
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
@@ -52,8 +49,7 @@ const List = ({btnTitle1}) => {
         name="from"
         control={control}              // ✅ make sure this is passed
         label=" From Date"
-        errors={errors}
-        required="Required"
+
       />   
                    
                     </Col>
@@ -62,8 +58,6 @@ const List = ({btnTitle1}) => {
         name="to"
         control={control}              // ✅ make sure this is passed
         label=" To"
-        errors={errors}
-        required="Required"
       />   
                      
                     </Col>
@@ -72,10 +66,7 @@ const List = ({btnTitle1}) => {
            name="company"
   label="Company"
   control={control}
-          errors={errors}
-  rules={{ required: "Company is required" }}
   placeholder="Select Company"
-  // loading={companyLoading}
   options={companyOptions}
  />
                       

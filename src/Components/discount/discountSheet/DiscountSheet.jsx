@@ -32,18 +32,32 @@ const DiscountSheet = ({ title, btnTitle, onDataAdded}) => {
     register,
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-
+  } = useForm({
+      defaultValues: {
+    flying_j: 0,
+    petro: 0,
+    ta_petro: 0,
+    esso: 0,
+  }
+  });
+const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
    const onSubmit = (formData) => {
-                        console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
       company_id:formData.company.value,
       company_name:formData.company.label,
-      start_date:formData.startDate,
-      end_date:formData.endDate,
+      start_date:formatDate(formData.startDate),
+      end_date:formatDate(formData.endDate),
       es_disc_ca_usd:formData.discountCanada,
       f_disc_ca_usd:formData.discountUSA,
    f_disc_ca_cad: formData.Flyingdiscount,
@@ -55,8 +69,10 @@ const DiscountSheet = ({ title, btnTitle, onDataAdded}) => {
    ta_usa_cent:0,
    ta_usa_cent:0,
    es_canada_cent:0,
-   ta_petro:0,
-   esso:0,
+   ta_petro:formData.ta_petro ? 1: 0,
+   esso:formData.esso ? 1 : 0,
+   petro:formData.petro ? 1 : 0,
+  flying_j:formData.flying_j ? 1 : 0,
    retail_total_usd:0,
    retail_total_cad:0,
    total_usd:0,
@@ -109,13 +125,13 @@ const DiscountSheet = ({ title, btnTitle, onDataAdded}) => {
   es_ca_litres:0,
   es_ca_gallons:0,
   es_ca_tr_count:0,
-
-
     id:0,
     dated:new Date(),
 // added_on:new Date(),
 idby:localStorage.getItem("userId")
      }
+     console.log(payload);
+     
     axios.post(APINAME,payload)
     .then((res)=>{
         console.log(res);
@@ -238,18 +254,46 @@ idby:localStorage.getItem("userId")
           </Col>
         </Row>
         <Row>
-          {discountSheetCheckBox.map((item, index) => (
-            <Col sm="2" key={index}>
-    <div className="checkbox checkbox-dark">
-      <input
-        type="checkbox"
-        value={item.value}
-        {...register("selectedValues")} // ✅ register with form
-      />
-      <Label className="ms-2">{item.label}</Label>
-    </div>
-  </Col>
-          ))}
+   <Col sm="2">
+  <div >
+   <input type="checkbox" {...register("flying_j")} />
+<Label className="ms-2">Exclude Flying J</Label>
+
+  </div>
+</Col>
+
+<Col sm="2">
+  <div>
+    <input
+      type="checkbox"
+      {...register("petro")}
+      
+    />
+    <Label className="ms-2">Exclude Petro</Label>
+  </div>
+</Col>
+
+<Col sm="2">
+  <div >
+    <input
+      type="checkbox"
+      {...register("ta_petro")}
+    />
+    <Label className="ms-2">Exclude Ta-Petro & Love</Label>
+  </div>
+</Col>
+
+<Col sm="2">
+  <div >
+    <input
+      type="checkbox"
+      {...register("esso")}
+    />
+    <Label className="ms-2">Exclude ESSO</Label>
+  </div>
+</Col>
+
+        
 
           <Col sm="4">
             <div className="text-end">

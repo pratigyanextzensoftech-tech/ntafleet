@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import { checkBoxData, optionscountry, optionscompany, customizedTypeType, invoiceType1, InvoiceCategory, InvoiceShow, optionsSearch, Customized_Supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
+import {  optionsSearch } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-import HeaderCard from '../Common/Component/HeaderCard';
 import { useCountry } from '../../Hooks/Dropdowns';
 const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
   const {data:country}=useCountry()
@@ -19,6 +18,14 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
+ const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
   const onSubmit = (data) => {
 
     console.log("Form Data:", data);  // ✅ This will print your inputs
@@ -29,17 +36,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-
-    setSelectedValues(prev => {
-      if (checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter(item => item !== value);
-      }
-    });
-  }
+  
   return (
     <>
 
@@ -61,6 +58,8 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                           className={`form-control `}
                           selected={field.value}
                           onChange={(date) => field.onChange(date)}
+                          dateFormat="yyyy-MM-dd"
+
                         />
                       )}
                     />
@@ -89,6 +88,8 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                       className={`form-control digits`}
                       selected={field.value}
                       onChange={(date) => field.onChange(date)}
+                      dateFormat="yyyy-MM-dd"
+
                     />
                   )}
                 />

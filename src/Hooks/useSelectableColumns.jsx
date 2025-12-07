@@ -7,9 +7,8 @@ import {
   FaEnvelope,
   FaEnvelopeOpenText,
 } from "react-icons/fa";
-import axios from "axios";
-import { redirect } from "react-router";
-import { ca } from "date-fns/locale";
+
+import { IoMdDownload } from "react-icons/io";
 export default function useSelectableColumns(download_link,USEFOR="") {
 
   //console.log("report_new_downlod =",report_new_downlod);
@@ -202,13 +201,13 @@ export default function useSelectableColumns(download_link,USEFOR="") {
       <div className="position-relative dropdown-action">
         {/* Toggle Button */}
         <button
-          className="btn btn-sm btn-primary px-2"
+          className="btn  btn-primary  d-flex align-items-center gap-1"
           onClick={(e) => {
             e.stopPropagation();
             setOpenRowId(openRowId === row.id ? null : row.id);
           }}
         >
-Download        </button>
+Download    <IoMdDownload />    </button>
 
         {/* Dropdown Menu */}
         {openRowId === row.id && (

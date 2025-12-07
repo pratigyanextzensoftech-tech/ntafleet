@@ -214,6 +214,8 @@ supplier_id:data.supplier?.value
                             className={`form-control `}
                             selected={field.value}
                             onChange={(date) => field.onChange(date)}
+                            dateFormat="yyyy-MM-dd"
+
                           />
                         )}
                       />
@@ -241,6 +243,8 @@ supplier_id:data.supplier?.value
                             className={`form-control `}
                             selected={field.value}
                             onChange={(date) => field.onChange(date)}
+                             dateFormat="yyyy-MM-dd"
+
                           />
                         )}
                       />
