@@ -50,7 +50,7 @@ export default function useSelectableColumns(download_link,USEFOR="") {
       switch(USEFOR)
       { 
           case("REPORT"):
-            window.open(`${download_link}/${data["id"]}/${TYPE}`, "_blank"); 
+            window.open(`${download_link}/${data["id"]}/${TYPE}`, "_self"); 
             break;
           default:
             alert("Default");
