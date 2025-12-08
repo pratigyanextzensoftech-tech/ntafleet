@@ -60,6 +60,7 @@ export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_
   let url = companyall; // Base URL
 
   const params = new URLSearchParams();
+  
   if(supplier_ids)
   { 
 

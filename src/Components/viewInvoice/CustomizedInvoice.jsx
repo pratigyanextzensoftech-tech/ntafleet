@@ -1,13 +1,10 @@
-import React, { Fragment,useState } from "react";
+import React, { Fragment } from "react";
 import Select from "react-select";
 import {
-  checkBoxData,
-  optionscountry,
-  optionscompany,
-  InVoiceSupplier,
+  
   InvoiceCategory,
   InvoiceShow,
-  invoiceType,
+  customizedTypeType
 } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import {
   Row,
@@ -20,13 +17,17 @@ import {
   InputGroupText,
   Container,
 } from "reactstrap";
+import { InvoiceType, useCompany,useCountry,useSupplier } from "../../Hooks/Dropdowns";
+
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import HeaderCard from "../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
 
 const CustomizedInvoice = ({ title }) => {
-  const [selectedValues, setSelectedValues] = useState([]);
+   const{data:country}=useCountry()
+    const {data:supplier}=useSupplier("3,6")
+    const invoiceTypes=InvoiceType("")
+    const{data:company}=useCompany()
   const {
     register,
     control,
@@ -113,89 +114,119 @@ const CustomizedInvoice = ({ title }) => {
                   </Row>
                 </Col>
 
-                <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Supplier</InputGroupText>
-                      <Controller
-                        name="supplier"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={InVoiceSupplier}
-                            className="form-control p-0 border-0"
-                            placeholder="Select Supplier"
-                          />
-                        )}
-                      />
-                    </InputGroup>
-
-                   
-                  </FormGroup>
-                </Col>
-
-                <Col sm="3">
+                    <Col sm="3">
+                               <FormGroup className="m-form__group">
+                                 <InputGroup>
+                                   <InputGroupText>Supplier</InputGroupText>
+                                   <Controller
+                                     name="supplier"
+                                     control={control}
+                                     defaultValue={null}
+                                      render={({ field }) => {
+                                                              // Auto select if only one option exists
+                                                         
+                                                               
+                                                              return (
+                                                                <Select
+                                                                  {...field}
+                                                                  options={supplier}
+                                                                  className="form-control p-0 border-0"
+                                                                  placeholder="Select supplier"
+                                                                  value={field.value}
+                                                                  onChange={(val) => field.onChange(val)}
+                                                                />
+                                                              );
+                                                            }}
+                                   />
+                                 </InputGroup>
+             
+                               
+                               </FormGroup>
+                             </Col>
+                   <Col sm="3">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
                       <Controller
                         name="country"
                         control={control}
-                        render={({ field }) => (
-                          <Select
+                        defaultValue={null}
+
+  render={({ field }) => {
+                                                 // Auto select if only one option exists
+                                                 if (
+                                                   country?.length === 1   &&
+                                                   field.value === null
+                                                 ) {
+                                                   field.onChange(country[0]);
+                                                 }
+                                                  
+                                                 return (                        <Select
                             {...field}
-                            options={optionscountry}
+                            options={country}
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                           />
-                        )}
+  )}}
                       />
                     </InputGroup>
 
-                 
                   </FormGroup>
                 </Col>
               
-                <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Invoice Type</InputGroupText>
-                      <Controller
-                        name="company"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={optionscompany}
-                            className="form-control p-0 border-0"
-                          />
-                        )}
-                      />
-                    </InputGroup>
-               
-                  </FormGroup>
-                </Col>
+             <Col sm="3">
+                             <FormGroup className="m-form__group">
+                               <InputGroup>
+                                 <InputGroupText>Invoice Type</InputGroupText>
+                                 <Controller
+                                   name="invType"
+                                   control={control}
+                                     defaultValue={null}
+           
+                                 render={({ field }) => {
+                                                            // Auto select if only one option exists
+                                                            if (
+                                                              invoiceTypes?.length === 1   &&
+                                                              field.value === null
+                                                            ) {
+                                                              field.onChange(invoiceTypes);
+                                                            }
+                                                             
+                                                            return ( 
+                                     <Select
+                                       {...field}
+                                       options={invoiceTypes}
+                                       className="form-control p-0 border-0"
+                                     />
+                                   )}
+                                 }
+                                 />
+                               </InputGroup>
+                             
+                             </FormGroup>
+                           </Col>
 
-                <Col sm="3">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Company</InputGroupText>
-                      <Controller
-                        name="company"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={optionscompany}
-                            className="form-control p-0 border-0"
-                          />
-                        )}
-                      />
-                    </InputGroup>
-                  
-                  </FormGroup>
-                </Col>
+                 <Col sm="3">
+                           <FormGroup className="m-form__group">
+                             <InputGroup>
+                               <InputGroupText>Company</InputGroupText>
+                               <Controller
+                                 name="company"
+                                 control={control}
+                                 render={({ field }) => (
+                                   <Select
+                                     {...field}
+                                     options={company}
+                                     className="form-control p-0 border-0"
+                                     placeholder="Select Company Name"
+                                   />
+                                 )}
+                               />
+                             </InputGroup>
+         
+                            
+                           </FormGroup>
+                         </Col>
                 <Col sm="3">
                   <FormGroup className="m-form__group">
                     <InputGroup>
@@ -206,7 +237,7 @@ const CustomizedInvoice = ({ title }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={invoiceType}
+                            options={customizedTypeType}
                             className="form-control p-0 border-0"
                           />
                         )}

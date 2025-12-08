@@ -33,17 +33,7 @@ const onSubmit = (formData) => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
 
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
     return (
 
         <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >

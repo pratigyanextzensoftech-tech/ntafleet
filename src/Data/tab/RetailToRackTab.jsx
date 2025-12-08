@@ -12,6 +12,7 @@ export const RetailToRackTab = [
         btnTtitle="Update Rack Transaction"
         title="Create Single Rack Invoice (Capped)"
         api_name={retail_to_rack_Api}
+        owner_operator="NO"
 
       />
     ),
@@ -27,6 +28,8 @@ export const RetailToRackTab = [
         btnTtitle="Update Rack Transaction"
         title="Create Single Rack Invoice (Actual)"
         api_name={retail_to_rack_Api}
+        owner_operator="NO"
+
       />
     ),
   },
@@ -37,10 +40,13 @@ export const RetailToRackTab = [
       <RetailToRack
         invoice_type=""
         supplier_ids="6"
+        country_id="1"
         invoice_type_dropdown={true}
         title="Create Single Rack Invoice (Actual)"
         btnTtitle="Search Company"
         api_name={retail_to_rack_Api}
+                owner_operator="NO"
+
       />
     ),
   },
@@ -53,10 +59,13 @@ export const RetailToRackTab = [
         invoice_type="RG"
         invoice_type_dropdown={true}
         supplier_ids="6"
+        country_id="1"
         owner_operator_invoice="Yes"
         title="Create Single Rack Invoice (Actual)"
         btnTtitle="Search Company"
         api_name={retail_to_rack_Api}
+                owner_operator="Yes"
+
       />
     ),
   },
@@ -72,6 +81,8 @@ export const RetailToRackTab = [
         title="Update Single Rack Invoice (Capped)"
         btnTtitle="Create Rack Transaction"
         api_name={retail_to_rack_Api}
+                owner_operator="NO"
+
       />
     ),
   },
@@ -87,6 +98,8 @@ export const RetailToRackTab = [
         title="Update Single Rack Invoice (Actual)"
         btnTtitle="Create Rack Transaction"
         api_name={retail_to_rack_Api}
+                owner_operator="NO"
+
       />
     ),
   },
@@ -98,9 +111,12 @@ export const RetailToRackTab = [
        invoice_type=""
         supplier_ids="10"
         invoice_type_dropdown={true}
+        country_id="1"
         title="Create Single Rack Invoice (Actual)"
         btnTtitle="Search Company" 
         api_name={retail_to_rack_Api}
+                owner_operator="NO"
+
       />
     ),
   },
@@ -115,9 +131,12 @@ export const RetailToRackTab = [
         owner_operator_invoice="Yes"
         invoice_type_dropdown={true}
         type="ultramar"
+         country_id="1"
         title="Create Single Rack Invoice (Actual)"
         btnTtitle="Update Transaction"
         api_name={retail_to_rack_Api}
+                owner_operator="Yes"
+
       />
     ),
   },
@@ -131,6 +150,8 @@ export const RetailToRackTab = [
         title="Linamar Price Update"
         btnTtitle="Update Transaction"
         api_name={retail_to_rack_Api}
+                owner_operator="NO"
+
       />
     ),
   },

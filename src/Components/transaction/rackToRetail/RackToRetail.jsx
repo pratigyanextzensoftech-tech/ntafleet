@@ -46,6 +46,10 @@ const RackToRetail = ({
   const [loading, setLoading] = useState(false);
 
   const { data: country } = useCountry(country_id);
+     const countries = [
+   { value:"All", label: "All Country" }, // 👈 static option
+    ...country,
+  ];
   const { data: supplierData } = useSupplier(supplier_ids);
   const { data: companies } = useCompany(
     invoice_creation,
@@ -271,7 +275,7 @@ const RackToRetail = ({
                       return (
                         <Select
                           {...field}
-                          options={country}
+                          options={countries}
                           placeholder="Select Country"
                           className="form-control p-0 border-0"
                         />

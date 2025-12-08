@@ -156,8 +156,13 @@ del:""
                 </Col>
                        <Col sm="4">
                   <FormGroup className="m-form__group">
+                     <Row>
                     <InputGroup>
+
+                        <Col sm="4">    
                       <InputGroupText>End Date</InputGroupText>
+                      </Col>
+                      <Col sm="8">
                    <Controller
             name="endDate"
             control={control}
@@ -172,8 +177,10 @@ del:""
               />
             )}
           />
+          </Col>
          
                       </InputGroup>
+                      </Row>
                        {errors.endDate && (
             <span className="text-danger">{errors.endDate.message}</span>
           )}
@@ -238,7 +245,7 @@ del:""
                 </Col>
                 <Col sm="4">
                 
-                                            <div className='text-start'>
+                                            <div className='text-end'>
                                                 <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                                             </div>
                                         </Col>

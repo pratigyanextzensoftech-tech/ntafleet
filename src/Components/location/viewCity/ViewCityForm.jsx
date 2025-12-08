@@ -51,7 +51,6 @@ console.log(selectedRow)
 
 
 const onSubmit = (formData) => {
-                            console.log("Form Data:", formData.city);  // ✅ This will print your inputs
     
          const payload = {
         city_name:formData.city,
@@ -108,7 +107,7 @@ const onSubmit = (formData) => {
                             type="text"
                             register={register}
                             errors={errors}
-                            rules={{ required: "Required" }}
+                            rules={!Edit &&{ required: "Required" }}
                         />
       
           </Col>
@@ -119,7 +118,7 @@ const onSubmit = (formData) => {
                 <InputGroupText>Country</InputGroupText>
                 <Controller
                   name="country"
-                  rules={{ required: "country is required" }}
+                  rules={!Edit &&{ required: "country is required" }}
 
                   control={control}
                   render={({ field }) => (
@@ -137,7 +136,7 @@ const onSubmit = (formData) => {
                 />
               </InputGroup>
 
-              {errors.country && (
+              {!Edit && errors.country && (
                 <span className="text-danger">{errors.country?.message}</span>
               )}
             </FormGroup>
@@ -148,7 +147,7 @@ const onSubmit = (formData) => {
                 <InputGroupText>State</InputGroupText>
                 <Controller
                   name="state"
-                  rules={{ required: "state is required" }}
+                  rules={!Edit &&{ required: "state is required" }}
 
                   control={control}
                   render={({ field }) => (
@@ -166,8 +165,8 @@ const onSubmit = (formData) => {
                 />
               </InputGroup>
 
-              {errors.city && (
-                <span className="text-danger">{errors.city?.message}</span>
+              {errors.state && (
+                <span className="text-danger">{errors.state?.message}</span>
               )}
             </FormGroup>
           </Col>

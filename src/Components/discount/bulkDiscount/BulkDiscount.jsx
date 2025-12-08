@@ -8,11 +8,11 @@ import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import useCompany from "../../../Hooks/useCompany";
-import useSupplier from "../../../Hooks/useSupplier";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 import { useCountry } from "../../../Hooks/Dropdowns";
 
 const BulkDiscount = ({ title, btnTitle }) => {
-  const { supplier, loading, error } = useSupplier();
+  const { data:supplier } = useSupplier();
   const {data:country}=useCountry()
   const {
     control,

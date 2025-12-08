@@ -9,10 +9,9 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm } from "react-hook-form";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
-import useSupplier from "../../../Hooks/useSupplier";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 import useCompany from "../../../Hooks/useCompany";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
-import SupplierDropDown from "../../Forms/FormControl/formInput/SupplierDropDown";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import axios from 'axios';
 import { useCountry } from "../../../Hooks/Dropdowns";
@@ -20,7 +19,7 @@ import { toast } from "react-toastify";
 import { discount_list as APINAME } from '../../../api';
 const Create = ({ title, btnTitle,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
-  const { supplier, loading, error } = useSupplier();
+  const {data: supplier } = useSupplier();
   const {data:country}=useCountry()
 
   const {

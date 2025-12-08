@@ -12,7 +12,7 @@ import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
 
-const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded }) => {
+const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded,validation }) => {
   console.log(Edit_id)
   const {
     register,
@@ -92,6 +92,15 @@ const onSubmit = async (formData) => {
       const res = await axios.post(administrator, payload);
       console.log("✅ User Added:", res.data);
       toast.success("User added successfully!");
+        reset({
+       name:"",
+      email:"",
+      phone:"",
+      company:"",
+      password:"",
+      status:"",
+      company_login:""
+    }); 
       if (onUserAdded) {
         onUserAdded({
           ...payload,
@@ -100,15 +109,7 @@ const onSubmit = async (formData) => {
       }
     }
 
-    reset({
-       name:"",
-      email:"",
-      phone:"",
-      company:"",
-      password:"",
-      status:"",
-      company_login:""
-    }); // reset form after submit
+  // reset form after submit
   } catch (error) {
     console.error("❌ Error submitting form:", error);
     toast.error("Something went wrong!");
@@ -128,7 +129,7 @@ const onSubmit = async (formData) => {
               type="text"
               register={register}
               errors={errors}
-              rules={{ required: "Name is required" }}
+              rules={validation && { required: "Name is required" }}
             />
           </Col>
 
@@ -140,7 +141,8 @@ const onSubmit = async (formData) => {
               type="email"
               register={register}
               errors={errors}
-              rules={{ required: "Email is required" }}
+
+              rules={validation &&{ required: "Email is required" }}
             />
           </Col>
 
@@ -152,7 +154,8 @@ const onSubmit = async (formData) => {
               type="number"
               register={register}
               errors={errors}
-              rules={{ required: "Phone number is required" }}
+
+              rules={validation &&{ required: "Phone number is required" }}
             />
           </Col>
         </Row>
@@ -166,7 +169,7 @@ const onSubmit = async (formData) => {
               type="text"
               register={register}
               errors={errors}
-              rules={{ required: "Company is required" }}
+              rules={validation && { required: "Company is required" }}
             />
           </Col>
 
@@ -178,7 +181,7 @@ const onSubmit = async (formData) => {
               type="password"
               register={register}
               errors={errors}
-              rules={{ required: "Password is required" }}
+              rules={validation && { required: "Password is required" }}
             />
           </Col>
 
@@ -206,7 +209,7 @@ const onSubmit = async (formData) => {
                 />
               </InputGroup>
 
-              {errors.status && (
+              {validation && errors.status && (
                 <span className="text-danger">{errors.status?.message}</span>
               )}
             </FormGroup>
@@ -249,7 +252,7 @@ const onSubmit = async (formData) => {
                 />
               </InputGroup>
 
-              {errors.company_login && (
+              {validation && errors.company_login && (
                 <span className="text-danger">{errors.company_login?.message}</span>
               )}
             </FormGroup>

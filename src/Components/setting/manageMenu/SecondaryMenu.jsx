@@ -40,9 +40,10 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = { 
-    "name":formData.menuName,
+    "name":formData.menuName?formData.menuName:"",
     "link":formData.menuLink?formData.menuLink:'',
     "idmenu":formData.primaryMenu.value?formData.primaryMenu.value:"",
+    "type":formData.type?formData.type.value:"",
     "dated":new Date(),
     "ord":0,
     "icon":"",
@@ -58,9 +59,10 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
           if (fetchSmenuData)  fetchSmenuData.fetchData();
           setEdit(false);
           reset({
-       city:"",
-      country:"",
-      state:"",
+       primaryMenu:"",
+      menuName:"",
+      menuLink:"",
+      type:""
      
           });
         })
@@ -100,7 +102,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
                                         label="Primary Menu "
                                         control={control}
                                         errors={errors}
-                                        rules={{ required: "Menu is required" }}
+                                        rules={!Edit &&{ required: "Menu is required" }}
                                         placeholder="Select Menu"
                                         // loading={companyLoading}
                                         options={pmenu}
@@ -114,7 +116,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
                                         type="text"
                                         register={register}
                                         errors={errors}
-                                        rules={{ required: " Required" }}
+                                        rules={!Edit &&{ required: " Required" }}
                                     />
 
 
@@ -126,7 +128,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
                                         type="text"
                                         register={register}
                                         errors={errors}
-                                        rules={{ required: " Required" }}
+                                        rules={!Edit &&{ required: " Required" }}
                                     />
 
                                 </Col>
@@ -139,7 +141,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
                                         label="Type "
                                         control={control}
                                         errors={errors}
-                                        rules={{ required: "Required" }}
+                                        rules={!Edit &&{ required: "Required" }}
                                         placeholder="Select Type"
                                         // loading={companyLoading}
                                         autoSelectFirst={true}

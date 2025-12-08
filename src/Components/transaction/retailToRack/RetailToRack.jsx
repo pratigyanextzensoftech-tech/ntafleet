@@ -39,12 +39,12 @@ const RetailToRack = ({
   company_list,
   country_id,
   invoice_type,
+  owner_operator,
   invoice_type_dropdown,
-  owner_operator_invoice,
   invoice_category_dropdown,
   cust_inv_type,
+  defaultById,
   cust_inv_dropdown,
-  ul_owner_operator_invoice,
   invoice_creation,
   ta_retail_invoice,
   countryDropDown,
@@ -69,11 +69,15 @@ const RetailToRack = ({
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
   const { data: country } = useCountry(country_id);
+   const countries = [
+   { value:"All", label: "All Country" }, // 👈 static option
+    ...country,
+  ];
   const { data: supplierData } = useSupplier(supplier_ids);
 
  
   
-  const { data: companies } = useCompany('', invoice_type, owner_operator_invoice, '', '',supplier_ids);
+  const { data: companies } = useCompany('', invoice_type, owner_operator, '', '',supplier_ids);
   const invoiceTypes = InvoiceType(invoice_type);
   const [loading, setLoading] = useState(false);
   const {register,control,reset, handleSubmit,formState: { errors, isSubmitted, isValid },
@@ -111,10 +115,11 @@ console.log(companyValue)
         supplier_id: data.supplier.value,
         start_date: data.start ? formatDate(data.start) : "",
         end_date: data.end ? formatDate(data.end) : "",
+         country_id: data?data.country.value:"",
         invoice_type: data.invoice_type
           ? data.invoice_type.value
           : invoice_type,
-       owner_operator:  owner_operator_invoice?owner_operator_invoice :" " 
+       owner_operator:  owner_operator?owner_operator :"" 
       };
 
       axios
@@ -305,6 +310,7 @@ console.log(companyValue)
                           control={control}
                           rules={{ required: "Country is required" }}
                           defaultValue={null}
+
                           render={({ field }) => {
                             // Only set default value if not already set
                             if (!field.value && country?.length) {
@@ -323,7 +329,7 @@ console.log(companyValue)
                             return (
                               <Select
                                 {...field}
-                                options={country}
+                                options={countries}
                                 className="form-control p-0 border-0"
                                 placeholder="Select Country"
                                 value={field.value}
