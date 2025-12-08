@@ -1,9 +1,6 @@
 import React, { useState, Fragment } from "react";
 import Select from "react-select";
 import {
-  checkBoxData,
-  optionscountry,
-  optionscompany,
   InvoiceShow,
   InvoiceCategory,
 } from "../Forms/FormWidget/FormSelect2/OptionDatas";
@@ -12,19 +9,18 @@ import {
   Col,
   Form,
   FormGroup,
-  Label,
-  Input,
   InputGroup,
   InputGroupText,
-  Container,
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import HeaderCard from "../Common/Component/HeaderCard";
+import { InvoiceType, useCompany,useCountry,useSupplier } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
-
 const OwnerOperator = ({ title }) => {
-  const [selectedValues, setSelectedValues] = useState([]);
+  const{data:country}=useCountry("1")
+  const {data:supplier}=useSupplier("6,10")
+  const invoiceTypes=InvoiceType("RG")
+  const{data:company}=useCompany()
   const {
     register,
     control,
@@ -118,16 +114,29 @@ const OwnerOperator = ({ title }) => {
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
                       <Controller
-                        name="company"
+                        name="supplier"
                         control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={optionscompany}
-                            className="form-control p-0 border-0"
-                            placeholder="Select Company Name"
-                          />
-                        )}
+                        defaultValue={null}
+                         render={({ field }) => {
+                                                 // Auto select if only one option exists
+                                                 if (
+                                                   supplier?.length >= 1   &&
+                                                   field.value === null
+                                                 ) {
+                                                   field.onChange(supplier[0]);
+                                                 }
+                                                  
+                                                 return (
+                                                   <Select
+                                                     {...field}
+                                                     options={supplier}
+                                                     className="form-control p-0 border-0"
+                                                     placeholder="Select supplier"
+                                                     value={field.value}
+                                                     onChange={(val) => field.onChange(val)}
+                                                   />
+                                                 );
+                                               }}
                       />
                     </InputGroup>
 
@@ -142,14 +151,24 @@ const OwnerOperator = ({ title }) => {
                       <Controller
                         name="country"
                         control={control}
-                        render={({ field }) => (
-                          <Select
+                        defaultValue={null}
+
+  render={({ field }) => {
+                                                 // Auto select if only one option exists
+                                                 if (
+                                                   country?.length === 1   &&
+                                                   field.value === null
+                                                 ) {
+                                                   field.onChange(country[0]);
+                                                 }
+                                                  
+                                                 return (                        <Select
                             {...field}
-                            options={optionscountry}
+                            options={country}
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                           />
-                        )}
+  )}}
                       />
                     </InputGroup>
 
@@ -161,15 +180,27 @@ const OwnerOperator = ({ title }) => {
                     <InputGroup>
                       <InputGroupText>Invoice Type</InputGroupText>
                       <Controller
-                        name="company"
+                        name="invType"
                         control={control}
-                        render={({ field }) => (
+                          defaultValue={null}
+
+                      render={({ field }) => {
+                                                 // Auto select if only one option exists
+                                                 if (
+                                                   invoiceTypes?.length === 1   &&
+                                                   field.value === null
+                                                 ) {
+                                                   field.onChange(invoiceTypes);
+                                                 }
+                                                  
+                                                 return ( 
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={invoiceTypes}
                             className="form-control p-0 border-0"
                           />
                         )}
+                      }
                       />
                     </InputGroup>
                   
@@ -186,7 +217,7 @@ const OwnerOperator = ({ title }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscompany}
+                            options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select Company Name"
                           />

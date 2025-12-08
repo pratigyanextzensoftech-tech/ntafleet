@@ -1178,57 +1178,56 @@ const Index = () => {
                       </fieldset>
                     </Col>
                   </Row>
-                  <Row>
-                                      <fieldset>
+                                 
 
-                                        <legend>Fee Setting Check All </legend>
-                                        <Row>
-                                        {/* {suppliers.map((item,index)=>(
-                                         <Col key={index} sm="6">
-                                           <fieldset>
-                                        <legend>{item.label} Check All </legend>
-                                          <div className="checkbox checkbox-dark ">
-                          {CompanySupplierCheckbox.map((v,i)=>(
-                            <>
-                            {item.label==="ESSO MOBIL" ?
-                              <>
-   <Input
-                            id="checkbox2"
-                            type="checkbox"
-                            name="ta_daily_pricing" 
-                            className="mx-3"
-                            value="1"
-                          />
-                          <Label for="checkbox2">
-                           E-85
-                          </Label>
-                          </>
-                          
-                          :
-                          <>
-   <Input
-                            id="checkbox2"
-                            type="checkbox"
-                            name="ta_daily_pricing" 
-                            className="mx-3"
-                            value="1"
-                          />
-                          <Label for="checkbox2">
-                            {v.label} 
-                          </Label>
-                          
-                          </>
-}
-                          ))}
-                       
-                        
-                                                                   </fieldset>
-                                                                   </div>
+  <Row>
+   <fieldset>
+  <legend>Fee Setting Check All</legend>
 
-                                        </Col>
-                                        ))} */}
-                                       </Row>
-                                       </fieldset>
+  <Row>
+    {suppliers.map((item, index) => (
+      <Col key={index} sm="6">
+        <fieldset>
+          <legend>{item.label} Check All</legend>
+
+          <div className="checkbox checkbox-dark">
+
+            {/* 👉 If ESSO MOBIL – show only 1 checkbox */}
+            {item.label === "ESSO MOBIL" ? (
+              <>
+                <Input
+                  id={`esso-${index}`}
+                  type="checkbox"
+                  name="ta_daily_pricing"
+                  className="mx-3"
+                  value="1"
+                />
+                <Label for={`esso-${index}`}>E-85</Label>
+              </>
+            ) : (
+              /* 👉 Otherwise show all checkbox list */
+              CompanySupplierCheckbox.map((v, i) => (
+                <Fragment key={i}>
+                  <Input
+                    id={`chk-${index}-${i}`}
+                    type="checkbox"
+                    name="ta_daily_pricing"
+                    className="mx-3"
+                    value="1"
+                  />
+                  <Label for={`chk-${index}-${i}`}>{v.label}</Label>
+                </Fragment>
+              ))
+            )}
+
+          </div>
+        </fieldset>
+      </Col>
+    ))}
+  </Row>
+
+</fieldset>
+
                   </Row>
 
                   <fieldset>

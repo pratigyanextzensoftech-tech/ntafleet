@@ -1,35 +1,17 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import {
-  checkBoxData,
-  optionscountry,
-  optionscompany,
-  customizedTypeType,
-  invoiceType1,
-  InvoiceCategory,
-  InvoiceShow,
-  InVoiceSupplier,
-} from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+
 import {
   Row,
   Col,
   Form,
-  FormGroup,
-  Label,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Container,
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
-import { useForm, Controller } from "react-hook-form";
-import DatePicker from "react-datepicker";
+import { useForm } from "react-hook-form";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
-import useSupplier from "../../../Hooks/useSupplier";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 import useCompany from "../../../Hooks/useCompany";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
-import SupplierDropDown from "../../Forms/FormControl/formInput/SupplierDropDown";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import axios from 'axios';
 import { useCountry } from "../../../Hooks/Dropdowns";
@@ -37,7 +19,7 @@ import { toast } from "react-toastify";
 import { discount_list as APINAME } from '../../../api';
 const Create = ({ title, btnTitle,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
-  const { supplier, loading, error } = useSupplier();
+  const {data: supplier } = useSupplier();
   const {data:country}=useCountry()
 
   const {
@@ -149,7 +131,7 @@ added_on:new Date()
               placeholder="Select Country"
               // loading={companyLoading}
               autoSelectFirst={false}
-              options={country.filter((_,i)=>i!==0)}
+              options={country}
             />
           </Col>
           <Col sm="4">

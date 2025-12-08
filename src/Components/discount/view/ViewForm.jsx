@@ -27,7 +27,6 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import useCompany from "../../../Hooks/useCompany";
-import useSupplier from "../../../Hooks/useSupplier";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { discount_list as APINAME } from "../../../api"; // ✅ Your API endpoint
@@ -35,7 +34,6 @@ import { useCountry } from "../../../Hooks/Dropdowns";
 import { supplierById } from "../../../api";
 const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
-  const { supplier, loading, error,setValue } = useSupplier();
   const {data:country}=useCountry()
     const[supplierData,setSupplierData]=useState([])
   
@@ -43,6 +41,7 @@ const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
     register,
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
@@ -159,10 +158,11 @@ added_on:new Date()
               label="Country"
               errors={errors}
               control={control}
+              setValue={setValue}
               rules={{ required: "Country is required" }}
               placeholder="Select Country"
               // loading={companyLoading}
-              options={country.filter((_,i)=>i!==0)}
+              options={country}
 
 />
           </Col>
@@ -172,6 +172,7 @@ added_on:new Date()
               label="Supplier"
               errors={errors}
               control={control}
+              setValue={setValue}
               rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
               // loading={companyLoading}

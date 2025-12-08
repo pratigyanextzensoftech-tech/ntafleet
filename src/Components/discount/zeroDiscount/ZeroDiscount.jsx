@@ -15,12 +15,12 @@ import { useForm, Controller } from "react-hook-form";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
-import useSupplier from "../../../Hooks/useSupplier";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { zero_discount as APINAME } from '../../../api';
 const ZeroDiscount = ({ title, btnTitle,onDataAdded }) => {
-  const { supplier } = useSupplier();
+  const {data: supplier } = useSupplier();
  
  const {
     register,

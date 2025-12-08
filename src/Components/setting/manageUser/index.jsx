@@ -16,6 +16,7 @@ const Index = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const[validation,setValidation]=useState(true)
   const [draw, setDraw] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
   const [editUser, setEditUser] = useState(null);
@@ -92,6 +93,7 @@ console.log("Decoded ID:", Edit_id);
 
   // ✅ Edit / Delete / Send Details
   const handleEdit = async(row) => {
+    setValidation(false)
     console.log(row.id)
     try {
     const response = await axios.get(`${administrator}/${row.id}`);
@@ -270,7 +272,7 @@ const refreshTable=()=>{
               <CardBody>
                 <FormComponent Edit_id={editId} Edit={Edit}
   selectedRow={selectedRow} onDataAdded={refreshTable}
-  setEdit={setEdit}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}/>
+  setEdit={setEdit}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}  validation={validation}/>
               </CardBody>
             </Card>
           </Col>

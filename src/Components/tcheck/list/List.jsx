@@ -10,13 +10,15 @@ const List = ({ btnTitle1 }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const { companies: companyOptions, loading: companyLoading } = useCompany();
 
+  
     const {
+        reset,
         register,
         control,
-        reset,
+        setValue,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
-    } = useForm();
+      } = useForm();
     
   const formatDate = (date) => {
     if (!date) return "";
@@ -84,6 +86,7 @@ const List = ({ btnTitle1 }) => {
                         control={control}
                         rules={{ required: "Company is required" }}
                         placeholder="Select Company"
+                        setValue={setValue}
                         // loading={companyLoading}
                         options={companyOptions}
                     />

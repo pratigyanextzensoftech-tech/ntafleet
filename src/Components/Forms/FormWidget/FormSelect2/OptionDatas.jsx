@@ -269,7 +269,7 @@ export const exportType = [
 
 ]
 export const InvoiceShow = [
-    { label: 'All Types ', isDisabled: true },
+    { label: 'All Types ', value:"All" },
     { value: 'Show', label: 'Show' },
     { value: 'Hide', label: 'Hide' },
 ]

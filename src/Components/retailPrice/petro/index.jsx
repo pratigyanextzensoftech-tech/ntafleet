@@ -42,6 +42,7 @@ const Index = () => {
            setData,
          } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
          useEffect(() => {
+
            const cols = Object.keys(columnsMap).map((key) => ({
              name: key,
              selector: (row) => row[key],
@@ -74,32 +75,7 @@ const Index = () => {
           setData(normalized);
         }
       }, [data]);
-       const handleEdit=(row)=>{
-        console.log(row)
-       }
-         const handleDelete = (row) => {
-           Swal.fire({
-             title: 'Are you sure?',
-             text: `Do you really want to delete ?`,
-             icon: 'warning',
-             showCancelButton: true,
-             confirmButtonColor: '#3085d6',
-             cancelButtonColor: '#d33',
-             confirmButtonText: 'Yes, delete it!',
-             cancelButtonText: 'Cancel'
-           }).then((result) => {
-             if (result.isConfirmed) {
-               axios.delete(`${APINAME}/${row.id}`)
-                 .then(() => {
-                   setData((prevData) => prevData.filter((item) => item.id !== row.id));
-                   Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
-                 })
-                 .catch(() => {
-                   Swal.fire('Error!', 'Failed to delete record.', 'error');
-                 });
-             }
-           });
-         };
+      
   return (
     <Fragment>
       <Breadcrumbs parent="Retail Prices" title="Petro Retail Price" />
@@ -117,7 +93,8 @@ const Index = () => {
 
         <DataTableComponent
           title="Petro Retail List "
-        tableColumns={tableColumns} tableData={data}
+        tableColumns={tableColumns}
+         tableData={data}
           progressPending={loading}
           pagination
            loading={loading}

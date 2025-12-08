@@ -14,6 +14,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
     const {
         register,
         control,
+        setValue,
         reset,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
@@ -36,9 +37,9 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = { 
-    "name":formData.name,
+    "name":formData.name?formData.name:"",
     "link":formData.link?formData.link:'',
-    "sw":formData.type.value,
+    "sw":formData.type.value?formData.type.value:0 ,
     "idmenu":0,
     "dated":new Date(),
     "ord":0,
@@ -52,14 +53,14 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
           axios.put(`${menu}/${selectedRow.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
-          if (fetchPmenuData)  fetchPmenuData.fetchData()();
-          setEdit(false);
-          reset({
-       city:"",
-      country:"",
-      state:"",
-     
+          if (fetchPmenuData)  fetchPmenuData.fetchData();
+            reset({
+       name:"",
+      link:"",
+      type:"",
           });
+          setEdit(false);
+       
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -74,7 +75,11 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
           toast.success("Add successfully!");
             if (fetchPmenuData) fetchPmenuData.fetchData();
 
-    reset();
+       reset({
+        name:"",
+      link:"",
+      type:"",
+          });
     })
     .catch((err)=>{
         console.log(err);
@@ -98,7 +103,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                                         type="text"
                                         register={register}
                                         errors={errors}
-                                        rules={{ required: "Required" }}
+                                        rules={!Edit &&{ required: "Required" }}
                                     />
 
                                 </Col>
@@ -109,7 +114,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                                         type="text"
                                         register={register}
                                         errors={errors}
-                                        rules={{ required: "Required" }}
+                                        rules={!Edit &&{ required: "Required" }}
                                     />
 
                                 </Col>
@@ -119,7 +124,8 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                                         label="Type"
                                         control={control}
                                         errors={errors}
-                                        rules={{ required: "Type is required" }}
+                                        setValue={setValue}
+                                        rules={!Edit && { required: "Type is required" }}
                                         autoSelectFirst={true}
                                         placeholder="Select Type"
                                         // loading={companyLoading}

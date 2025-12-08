@@ -9,6 +9,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useCompany } from '../../../Hooks/Dropdowns';
+import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const{data}=useCompany()
@@ -19,7 +20,14 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
-
+ const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
+  };
     const onSubmit = (formData) => {
     
          const payload = {
@@ -31,10 +39,10 @@ const AddMoneyCodeForm = ({btntitle,btnTitle1}) => {
   IssueType:formData.issueType||"",
 IssuedBy:formData.issueType||"",
 IssuedTo:formData.issueTo||"",
-IssuedDate:formData.issueDate||"",
+IssuedDate:formatDate(formData.issueDate)||"",
 Fee:formData.Fee||"",
 OriginalAmt:formData.originalAmt||"",
-BillDate:formData.billdate||"",
+BillDate:formatDate(formData.billdate)||"",
 CheckNum:formData.checkNum||"",
 DateUsed:formData.dateUsed||"",
 AmountUsed:formData.amountUsed||"",
@@ -140,7 +148,7 @@ PONumber:formData.PONo|| "",
                             <InputGroup >
                                 <InputGroupText>Status</InputGroupText>
                                 <Controller name="status"
-                                    rules={{ required: "company Name is required" }}
+                                    rules={{ required: "Status is required" }}
 
                                     control={control}
                                     render={({ field }) => (
@@ -206,13 +214,13 @@ PONumber:formData.PONo|| "",
                       
                         </Col>
                          <Col sm='3'>
-                           <InputText
+                            <DatePickerInput
                             name="issueDate"
-                            label="Issued Date "
-                            type="text"
-                            register={register}
+                            control={control}              // ✅ make sure this is passed
+                            label="Issued Date"
+                            required="Required"
                         />
-                      
+                
                     
                         </Col>
             </Row> 
@@ -237,12 +245,13 @@ PONumber:formData.PONo|| "",
                    
                         </Col>
                              <Col sm='3'>
-                              <InputText
+                                <DatePickerInput
                             name="billdate"
-                            label=" Bill Date "
-                            type="text"
-                            register={register}
+                            control={control}              // ✅ make sure this is passed
+                            label="Bill Date"
+                            required="Required"
                         />
+                             
                       
                         </Col>
                          <Col sm='3'>

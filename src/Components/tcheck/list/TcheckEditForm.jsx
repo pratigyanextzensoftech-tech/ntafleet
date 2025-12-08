@@ -37,6 +37,7 @@ const TcheckEditForm = ({}) => {
     register,
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
@@ -143,6 +144,7 @@ setFile(e.target.files[0])
                         label="Company"
                         control={control}
                         errors={errors}
+                        setValue={setValue}
                         defaultValueId={Data.company_id}
                         placeholder="Select Company"
                         // loading={companyLoading}

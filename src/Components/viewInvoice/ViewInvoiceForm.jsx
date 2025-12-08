@@ -16,6 +16,7 @@ import {
   InputGroupText,
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
+import { useCountry } from "../../Hooks/Dropdowns";
 import useSupplier from "../../Hooks/useSupplier";
 import useCompany from "../../Hooks/useCompany";
 import { useForm, Controller } from "react-hook-form";
@@ -27,7 +28,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
 
   const [selectedValues, setSelectedValues] = useState([]);
   const [selectAll, setSelectAll] = useState(true);
-
+const{data:country}=useCountry()
   const {
     control,
     reset,
@@ -210,7 +211,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={optionscountry}
+                            options={country}
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                           />

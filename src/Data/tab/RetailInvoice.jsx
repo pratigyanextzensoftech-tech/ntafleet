@@ -10,9 +10,9 @@ export const RetailInvoiceTab = [
     ),
     component: (
       <CreateInvoiceCommon
-        supplier_ids="3"
+        supplier_ids="1,5,7,4,10"
         company_list="list"
-        country_id="2"
+        country_id=""
         invoice_type="R"
         ta_retail_invoice="Capped"
         invoice_creation="weekly"
@@ -31,9 +31,9 @@ export const RetailInvoiceTab = [
     ),
     component: (
       <CreateInvoiceCommon
-        supplier_ids="3"
+        supplier_ids="1,5,7,4,10"
         company_list=""
-        country_id="2"
+        country_id=""
         invoice_type="R"
         ta_retail_invoice="Capped"
         invoice_creation="weekly"
@@ -96,9 +96,9 @@ export const RetailInvoiceTab = [
     ),
     component: (
       <CreateInvoiceCommon
-        supplier_ids="3"
+        supplier_ids="1,5,7,4,10"
         company_list="list"
-        country_id="2"
+        country_id=""
        invoice_type="R"
         ta_retail_invoice="Capped"
         invoice_creation="many_times"
@@ -117,9 +117,9 @@ export const RetailInvoiceTab = [
     ),
     component: (
       <CreateInvoiceCommon
-        supplier_ids="3"
+        supplier_ids="1,5,7,4,10"
         company_list="checkbox"
-        country_id="2"
+        country_id=""
         invoice_type="R"
         ta_retail_invoice="Capped"
         invoice_creation="many_times"

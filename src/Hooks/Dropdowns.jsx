@@ -60,6 +60,7 @@ export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_
   let url = companyall; // Base URL
 
   const params = new URLSearchParams();
+  
   if(supplier_ids)
   { 
 
@@ -122,7 +123,6 @@ export const useSupplier = (supplier_ids = "") => {
     label: s.supplier_name,
   }));
 };
-
 export const useSupplierAll = () => {
    
   return useDropdown(supplierAll, (s) => ({
