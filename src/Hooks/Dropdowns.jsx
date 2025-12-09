@@ -108,6 +108,12 @@ export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_
 };
 
 
+export const formatDate = (date) => {
+  if (!date) return "";
+  const d = new Date(date);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart( 2, "0" )}-${String(d.getDate()).padStart(2, "0")}`;
+};
+  
 export const useItems = () =>
   useDropdown(itemsAll, (i) => ({
     value: i.item_id,

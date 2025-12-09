@@ -103,6 +103,7 @@ export const currency = [
     { value: 'USD', label: 'USD/Gallons' },
     { value: 'CAD', label: 'CAD/Liters' }
 ]
+
 export const Reportcurrency = [
     { label: 'Select Currency', isDisabled: true },
     { value: 'USD', label: 'USD' },
@@ -310,13 +311,13 @@ export const MoneyCodeStatus = [
 ]
 export const InvoiceStatus = [
     { label: 'Select Status', isDisabled: true },
-    { value: '0', label: 'Invoiced' },
-    { value: '1', label: 'Not Invoiced' },
+    { value: '1', label: 'Invoiced' },
+    { value: '0', label: 'Not Invoiced' },
 ]
 export const invoiceType = [
     { label: 'All Type', value: 'All' },
-    { value: 'Rack Invoice', label: 'Rack Invoice' },
-    { value: 'Retail Invoice', label: 'Retail Invoice' },
+    { value: 'Yes', label: 'Rack Invoice' },
+    { value: 'No', label: 'Retail Invoice' },
 ]
 export const customizedTypeType = [
     { label: 'Select Status', isDisabled: true },

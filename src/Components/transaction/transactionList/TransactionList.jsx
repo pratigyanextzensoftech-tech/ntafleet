@@ -18,7 +18,7 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import { useCompany,useItems } from "../../../Hooks/Dropdowns";
+import { useCompany,useItems,formatDate } from "../../../Hooks/Dropdowns";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
   const[supplierData,setSupplierData]=useState()
@@ -52,14 +52,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
 //     })
 // }, [type, setValue]);
 
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(d.getDate()).padStart(2, "0")}`;
-  };
+  
   const onSubmit = (data) => {
       const fullData = {
         // ...data,
