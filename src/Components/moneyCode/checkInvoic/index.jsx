@@ -6,7 +6,9 @@ import DataTableComponent from '../../Tables/DataTable/DataTableComponent'
 import { tableColumns, dummytabledata } from '../../../Data/Table/Defaultdata'
 import MoneyCodeList from '../moneyCodeList/MoneyCodeListForm'
 const index = () => {
-
+const handleSearch=()=>{
+     
+}
      return (
           <Fragment>
                <Breadcrumbs parent='Money Code' title=' Check MoneyCode' />
@@ -16,7 +18,7 @@ const index = () => {
                               <Card>
                                    <HeaderCard title="Filters" />
                                    <CardBody>
-                                        <MoneyCodeList btntitle="Search Data" btnTitle1="Reset" />
+                                        <MoneyCodeList btntitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
                                    </CardBody>
                               </Card>
                          </Col>

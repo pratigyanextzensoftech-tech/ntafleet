@@ -15,14 +15,16 @@ const Index = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+    const [filters, setFilters] = useState({});
   const [draw, setDraw] = useState(1);
 
   // ✅ Fetch data
-  const fetchDiscountData = async (page = 1, limit = 10) => {
+  const fetchDiscountData = async (page = 1, limit = 10, filtersData = filters) => {
     setLoading(true);
     try {
       const start = (page - 1) * limit;
-      const params = { draw, start, length: limit };
+      const params = { draw, start, length: limit,
+          ...filtersData, };
       const res = await axios.get(discount_list, { params });
       const data = Array.isArray(res.data.data) ? res.data.data : res.data;
 
@@ -56,7 +58,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    fetchDiscountData(currentPage, perPage);
+    fetchDiscountData(currentPage, perPage,filters);
   }, [currentPage, perPage]);
 
   // ✅ Dropdown actions
@@ -272,6 +274,12 @@ const Index = () => {
     },
   ];
 
+ const handleSearch = (formData) => {
+    console.log("🔍 Filters received:", formData);
+    setFilters(formData); // save filters
+    setCurrentPage(1); // reset to first page
+    fetchDiscountData(currentPage, perPage, formData); // fetch new data immediately
+  };
   return (
     <Fragment>
       <Breadcrumbs parent="Discount" title="View Discounts" />
@@ -281,7 +289,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Filters" />
               <CardBody>
-                <ViewForm btnTitle="Search Data" btnTitle1="Reset" />
+                <ViewForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
               </CardBody>
             </Card>
           </Col>

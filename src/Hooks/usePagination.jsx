@@ -62,7 +62,7 @@ console.log(res)
   };
 
   const handleSearch = (formData) => {
-    console.log(formData)
+    console.log(formData,"handleSearch")
     setFilters(formData);
     setCurrentPage(1);
     fetchData(1, perPage, formData);

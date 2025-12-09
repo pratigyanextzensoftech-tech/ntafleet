@@ -18,15 +18,16 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [filters,setFilters]=useState({})
   const [selectAll, setSelectAll] = useState(false);
   const [openRowId, setOpenRowId] = useState(null);
 
   // Fetch API data
-  const fetchMoneyCodes = async (page = 1, limit = 10) => {
+  const fetchMoneyCodes = async (page = 1, limit = 10,filtersData = filters) => {
     setLoading(true);
     try {
       const start = (page - 1) * limit;
-      const params = { draw, start, length: limit };
+      const params = { draw, start, length: limit,...filtersData };
 
       const res = await axios.get(money_code, { params });
       const data = Array.isArray(res.data.data) ? res.data.data : res.data;
@@ -62,7 +63,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    fetchMoneyCodes(currentPage, perPage);
+    fetchMoneyCodes(currentPage, perPage,filters);
   }, [currentPage, perPage]);
 
   const handlePageChange = (page) => setCurrentPage(page);
@@ -121,7 +122,12 @@ const Index = () => {
       if (newSelected.length === moneyCodes.length) setSelectAll(true);
     }
   };
-
+const handleSearch=(formData)=>{
+   console.log("🔍 Filters received:", formData);
+    setFilters(formData); // save filters
+    setCurrentPage(1); // reset to first page
+    fetchMoneyCodes(1, perPage, formData); // fetch new data immediately
+}
   // Delete selected rows
   const handleDeleteSelected = () => {
     if (selectedRows.length === 0) return alert("No rows selected!");
@@ -241,7 +247,7 @@ const Index = () => {
               <Card>
                 <HeaderCard title="Filter" />
                 <CardBody>
-                  <MoneyCodeListForm btntitle="Search Data" btnTitle1="Reset" />
+                  <MoneyCodeListForm btntitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
                 </CardBody>
               </Card>
             </Col>

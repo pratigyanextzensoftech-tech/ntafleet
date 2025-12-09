@@ -32,7 +32,7 @@ import { toast } from "react-toastify";
 import { discount_list as APINAME } from "../../../api"; // ✅ Your API endpoint
 import { useCountry } from "../../../Hooks/Dropdowns";
 import { supplierById } from "../../../api";
-const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
+const ViewForm = ({ title, btnTitle, btnTitle1,onSearch }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
   const {data:country}=useCountry()
     const[supplierData,setSupplierData]=useState([])
@@ -72,14 +72,14 @@ const ViewForm = ({ title, btnTitle, btnTitle1,onDataAdded }) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
-      company_id:formData.company.value,
-      company_name:formData.company.label,
+      company_id:formData?.company?.value?formData?.company.value:"",
+      company_name:formData?.company?.label?formData?.company?.label:"",
    end_date: formatDate(formData.endDate),
     start_date:formatDate(formData.startDate),
-    country:formData.country.label,
-supplier_id:formData.supplier.value,
-supplier_name:formData.supplier.label,
-discount_amt_us:formData.discount,
+    country:formData?.country?.label?formData?.country?.label:"",
+supplier_id:formData?.supplier?.value?formData?.supplier?.value:"",
+supplier_name:formData?.supplier?.label?formData?.supplier?.label:"",
+discount_amt_us:formData?.discount?formData?.discount:"",
 // discount_amt_us:0,
 discount_ca:0,
 total_ca:0,
@@ -95,23 +95,7 @@ fuel_unit_us_disc_free:0,
 added_by:localStorage.getItem("userId"),
 added_on:new Date()
      }
-    axios.post(APINAME,payload)
-    .then((res)=>{
-        console.log(res);
-       
-          toast.success("Add successfully!");
- reset();
-
-    // ✅ Immediately update UI
-    if (onDataAdded) onDataAdded(res.data);
-   reset();
-
-        // if (onDataAdded) onDataAdded();
-    })
-    .catch((err)=>{
-        console.log(err);
-          toast.error(err.message);
-    })
+     if (onSearch) onSearch(payload);
         };
 
   return (
@@ -123,8 +107,6 @@ added_on:new Date()
               name="company"
               label="Company"
               control={control}
-              errors={errors}
-              rules={{ required: "Company is required" }}
               placeholder="Select Company"
               // loading={companyLoading}
               options={companyOptions}
@@ -136,8 +118,7 @@ added_on:new Date()
               control={control} // ✅ make sure this is passed
               label="Start Date"
               placeholder="Select start date" // ✅ fixed spelling
-              errors={errors}
-              required="start Date is required"
+             
             />
           </Col>
           <Col sm="4">
@@ -146,8 +127,7 @@ added_on:new Date()
               control={control} // ✅ make sure this is passed
               label="End Date"
               placeholder="Select end date" // ✅ fixed spelling
-              errors={errors}
-              required="End Date is required"
+             
             />
           </Col>
         </Row>
@@ -156,10 +136,9 @@ added_on:new Date()
             <DropDown
               name="country"
               label="Country"
-              errors={errors}
               control={control}
               setValue={setValue}
-              rules={{ required: "Country is required" }}
+            
               placeholder="Select Country"
               // loading={companyLoading}
               options={country}
@@ -170,10 +149,8 @@ added_on:new Date()
             <DropDown
               name="supplier"
               label="Supplier"
-              errors={errors}
               control={control}
               setValue={setValue}
-              rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
               // loading={companyLoading}
               options={supplierData}
@@ -192,7 +169,7 @@ added_on:new Date()
                 {btnTitle}
                 
               </Btn>
-              <button className="btn btn-secondary">{btnTitle1}</button>
+              <button type="button" onClick={reset} className="btn btn-secondary">{btnTitle1}</button>
             </div>
           </Col>
         </Row>

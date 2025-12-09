@@ -74,7 +74,7 @@ const Index = () => {
       
           setData(normalized);
         }
-      }, [data]);
+      }, []);
       
   return (
     <Fragment>
@@ -85,7 +85,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Filters" />
               <CardBody>
-                <PetroForm btnTitle="Search Data" btnTitle1="Reset" />
+                <PetroForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
               </CardBody>
             </Card>
           </Col>

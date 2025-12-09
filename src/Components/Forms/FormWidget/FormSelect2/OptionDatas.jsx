@@ -314,7 +314,7 @@ export const InvoiceStatus = [
     { value: '1', label: 'Not Invoiced' },
 ]
 export const invoiceType = [
-    { label: 'All Type', label: 'All Type' },
+    { label: 'All Type', value: 'All' },
     { value: 'Rack Invoice', label: 'Rack Invoice' },
     { value: 'Retail Invoice', label: 'Retail Invoice' },
 ]

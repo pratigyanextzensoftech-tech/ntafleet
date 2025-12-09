@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
-import {  chooseSupplierCheckBox, optionscompany, invoiceType,  currency } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Card, CardBody } from 'reactstrap';
+import {   invoiceType,Reportcurrency } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { Row, Col, Form, FormGroup, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
@@ -9,16 +9,13 @@ import { supplierById } from '../../../api';
 import { toast } from "react-toastify";
 import { useCompany,useItems } from '../../../Hooks/Dropdowns';
 import axios from 'axios';
-const ViewEfs = ({btnTitle,btnTitle1}) => {
+import InputText from '../../Forms/FormControl/formInput/InputText';
+const ViewEfs = ({btnTitle,btnTitle1,onSearch}) => {
     const[supplierData,setSupplierData]=useState([])
     const {data:company}=useCompany()
     const {data:items}=useItems()
-    const [selectedValues, setSelectedValues] = useState([]);
-    const [showMessage, setShowMessage] = useState(true);
-
     const {
         register,
-
         control,
         reset,
         setValue,
@@ -39,7 +36,7 @@ useEffect(() => {
 
       // ⭐ Automatically set default supplier based on type
    
-        setValue("supplier", formatted); // no default for no-type
+        setValue("supplier", formatted[0]); // no default for no-type
       
     })
     .catch((err) => console.log(err));
@@ -53,26 +50,32 @@ useEffect(() => {
             "0"
         )}-${String(d.getDate()).padStart(2, "0")}`;
     };
-    const onSubmit = (data) => {
-
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-        if (isValid) {
-            setShowMessage(false); // hide only when form is completely valid
-        }
+ const onSubmit = (data) => {
+      const fullData = {
+        // ...data,
+        from: data.from ? formatDate(data.from): "",
+        to: data.to ? formatDate(data.to) : "",
+        state_prov:data.stateProv?data.stateProv:"",
+        unit:data.unitNo?data?.unitNo:"",
+        card_no:data?.cardNo?data.cardNo:"",
+        company_id: data?.company?.value || "",
+        currency: data?.currency?.value || "",
+        item: data?.items?.value ,
+        invoice_type: data?.type?.value || "",
+        supplier_id:data.supplier?.value || "" 
+      };
+      console.log("✅ Full Form Data:", data);
+      if (onSearch) onSearch(fullData); // ✅ trigger parent to refresh table
     };
 
 
     return (
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-         
-
                     <Row>
                         <Col sm="3">
                             <Row>
                                 <FormGroup className="m-form__group">
                                     <InputGroup>
-
                                         <Col sm="3">
                                             <InputGroupText>
                                                 From
@@ -82,7 +85,6 @@ useEffect(() => {
                                             <Controller
                                                 name="from"
                                                 control={control}
-                                                rules={{ required: " Required" }}
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         className={`form-control `}
@@ -93,15 +95,7 @@ useEffect(() => {
                                                     />
                                                 )}
                                             /></Col>
-
-
-
-
                                     </InputGroup>
-
-                                    {errors.from && (
-                                        <span className="text-danger">{errors.from.message}</span>
-                                    )}
                                 </FormGroup>
                             </Row>
                         </Col>
@@ -120,7 +114,6 @@ useEffect(() => {
                                             <Controller
                                                 name="to"
                                                 control={control}
-                                                rules={{ required: "Required" }}
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         className={`form-control digits`}
@@ -133,47 +126,41 @@ useEffect(() => {
                                             />
                                         </Col>
                                     </InputGroup>
-
-                                    {errors.to && (
-                                        <span className="text-danger">{errors.to.message}</span>
-                                    )}
                                 </FormGroup>
                             </Row>
                         </Col>
                            <Col sm="3">
-                            <FormGroup className=" m-form__group">
-                                <InputGroup>
-                                    <InputGroupText>State Prov </InputGroupText>
-                                    <Input className="form-control" type="text" />
-                                </InputGroup>
-                            </FormGroup>
+                             <InputText
+                                                      name="stateProv"
+                                                      label="State Prov"
+                                                      type="text"
+                                                      register={register}
+                                                  />
                         </Col>
                              <Col sm="3">
-                            <FormGroup className=" m-form__group">
-                                <InputGroup>
-                                    <InputGroupText>Unit </InputGroupText>
-                                    <Input className="form-control" type="text" />
-                                </InputGroup>
-                            </FormGroup>
+                               <InputText
+                            name="unitNo"
+                            label="Unit"
+                            type="text"
+                            register={register}
+                        />
                         </Col>
                      
                     </Row>
 <Row>
  <Col sm="3">
-                            <FormGroup className=" m-form__group">
-                                <InputGroup>
-                                    <InputGroupText> Card No.</InputGroupText>
-                                    <Input className="form-control" type="text" />
-                                </InputGroup>
-                            </FormGroup>
+                         <InputText
+                            name="cardNo"
+                            label="Card No."
+                            type="text"
+                            register={register}
+                        />
                         </Col>
    <Col sm="3">
                             <FormGroup className="m-form__group">
                                 <InputGroup >
                                     <InputGroupText>Company</InputGroupText>
                                     <Controller name="company"
-                                        rules={{ required: "company Name is required" }}
-
                                         control={control}
                                         render={({ field }) => (
                                             <Select
@@ -185,10 +172,6 @@ useEffect(() => {
                                         )}
                                     />
                                 </InputGroup>
-
-                                {errors.company && (
-                                    <span className="text-danger">{errors.company?.message}</span>
-                                )}
                             </FormGroup>
                         </Col>
                          <Col sm="3">
@@ -196,23 +179,17 @@ useEffect(() => {
                                 <InputGroup >
                                     <InputGroupText>Currency</InputGroupText>
                                     <Controller name="currency"
-                                        rules={{ required: "currency is required" }}
-
                                         control={control}
                                         render={({ field }) => (
                                             <Select
                                                 {...field}
-                                                options={currency}
+                                                options={Reportcurrency}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Currency"
                                             />
                                         )}
                                     />
                                 </InputGroup>
-
-                                {errors.currency && (
-                                    <span className="text-danger">{errors.currency?.message}</span>
-                                )}
                             </FormGroup>
                         </Col>
                          <Col sm="3">
@@ -220,8 +197,6 @@ useEffect(() => {
                                 <InputGroup >
                                     <InputGroupText>Items</InputGroupText>
                                     <Controller name="items"
-                                        rules={{ required: "Items is required" }}
-
                                         control={control}
                                         render={({ field }) => (
                                             <Select
@@ -233,10 +208,6 @@ useEffect(() => {
                                         )}
                                     />
                                 </InputGroup>
-
-                                {errors.items && (
-                                    <span className="text-danger">{errors.items?.message}</span>
-                                )}
                             </FormGroup>
                         </Col>
 </Row>
@@ -247,8 +218,6 @@ useEffect(() => {
                                 <InputGroup >
                                     <InputGroupText>Invoice Type</InputGroupText>
                                     <Controller name="type"
-                                        rules={{ required: "type is required" }}
-
                                         control={control}
                                         render={({ field }) => (
                                             <Select
@@ -260,10 +229,6 @@ useEffect(() => {
                                         )}
                                     />
                                 </InputGroup>
-
-                                {errors.type && (
-                                    <span className="text-danger">{errors.type?.message}</span>
-                                )}
                             </FormGroup>
                         </Col>
                               <Col sm="3">
@@ -274,7 +239,6 @@ useEffect(() => {
                                              <Controller
                           name="supplier"
                           control={control}
-                          rules={{ required: "supplier is required" }}
                           defaultValue={null}
                           render={({ field }) => (
                             <Select
@@ -288,12 +252,6 @@ useEffect(() => {
                           )}
                         />
                                             </InputGroup>
-                        
-                                            {errors.supplier && (
-                                              <span className="text-danger">
-                                                {errors.supplier?.message}
-                                              </span>
-                                            )}
                                           </FormGroup>
                                         </Col>
                           <Col sm="6">

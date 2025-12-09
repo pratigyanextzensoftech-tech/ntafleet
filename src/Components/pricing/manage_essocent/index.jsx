@@ -45,6 +45,7 @@ const Index = () => {
                 recordsFiltered: json.recordsFiltered || json.total || 0,
                 data: json.data || [],
               });
+              
             })
             .catch(() => {
               callback({
@@ -80,6 +81,7 @@ const Index = () => {
   orderable: false,
   searchable: false,
   render: function (data) {
+    
     return `
       <div class="position-relative action-dropdown" style="display:inline-block;">
         <button

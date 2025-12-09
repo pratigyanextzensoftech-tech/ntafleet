@@ -242,7 +242,7 @@ const refreshTable=()=>{
               <CardBody>
                 <UnknownTransaction btnTitle="Search Data" btnTitle1="Reset" Edit={Edit}
   selectedRow={selectedRow}
-  setEdit={setEdit} onDataAdded={refreshTable}/>
+  setEdit={setEdit} onDataAdded={refreshTable} onSearch={handleSearch}/>
               </CardBody>
             </Card>
           </Col>

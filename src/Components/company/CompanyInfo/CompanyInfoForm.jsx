@@ -20,19 +20,25 @@ import DatePicker from "react-datepicker";
 import Select from "react-select";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { useCompany } from "../../../Hooks/Dropdowns";
-const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
+const CompanyInfoForm = ({  btnTtitle, btnTtitle1,onSearch }) => {
   const {data:companyData}=useCompany()
   const {
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+ const onSubmit = (data) => {
+const payload={
+    company_id:data?.company?.value?data.company?.value:"",
+    company_name:data?.company?.label?data?.company?.label:"",
+    status:data.status?data?.status:"",
+}
+        console.log("Form Data:", data);  // ✅ This will print your inputs
+                 if (onSearch) onSearch(payload);
+    };
   return (
     <Fragment>
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +49,6 @@ const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
                 <InputGroupText>Company</InputGroupText>
                 <Controller
                   name="company"
-                  rules={{ required: "company Name is required" }}
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -56,9 +61,7 @@ const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
                 />
               </InputGroup>
 
-              {errors.company && (
-                <span className="text-danger">{errors.company?.message}</span>
-              )}
+            
             </FormGroup>
           </Col>
           <Col sm="4">
@@ -67,7 +70,6 @@ const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
                 <InputGroupText>Company Status</InputGroupText>
                 <Controller
                   name="status"
-                  rules={{ required: "Status is required" }}
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -80,9 +82,7 @@ const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
                 />
               </InputGroup>
 
-              {errors.status && (
-                <span className="text-danger">{errors.status?.message}</span>
-              )}
+          
             </FormGroup>
           </Col>
 
@@ -97,7 +97,7 @@ const CompanyInfoForm = ({ title, btnTtitle, btnTtitle1 }) => {
               >
                 {btnTtitle}
               </Btn>
-              <button className="btn btn-secondary">{btnTtitle1}</button>
+              <button type="reset" onClick={reset} className="btn btn-secondary">{btnTtitle1}</button>
             </div>
           </Col>
         </Row>

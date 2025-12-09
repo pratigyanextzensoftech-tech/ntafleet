@@ -159,7 +159,9 @@ added_on: new Date()
                   <input
                     className="form-control"
                     type="text"
-                    {...register("Name", { required: true })}
+                   {...register("Name", {
+        required: !Edit ? "Name is required" : false, // ⬅️ only validate when !Edit
+      })}
                   />
                 </InputGroup>
 
@@ -169,55 +171,65 @@ added_on: new Date()
               </FormGroup>
             </Col>
             <Col sm="3">
-              <FormGroup className="m-form__group">
-                <InputGroup>
-                  <InputGroupText>
-                    <MdEmail className="mx-1" /> Email
-                  </InputGroupText>
-                  <input
-                    className="form-control"
-                    style={{ border: "1px solid #ccc" }}
-                    type="text"
-                    aria-invalid={errors.email ? "true" : "false"}
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email address",
-                      },
-                    })}
-                  />
-                </InputGroup>
-                {errors.email && (
-                  <span className="text-danger">{errors.email?.message}</span>
-                )}
-              </FormGroup>
+             <FormGroup className="m-form__group">
+  <InputGroup>
+    <InputGroupText>
+      <MdEmail className="mx-1" /> Email
+    </InputGroupText>
+
+    <input
+      className="form-control"
+      style={{ border: "1px solid #ccc" }}
+      type="text"
+      aria-invalid={errors.email ? "true" : "false"}
+      {...register("email", {
+        required: !Edit ? "Email is required" : false,
+        pattern:
+          !Edit
+            ? {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email address",
+              }
+            : undefined,
+      })}
+    />
+  </InputGroup>
+
+  {!Edit && errors.email && (
+    <span className="text-danger">{errors.email.message}</span>
+  )}
+</FormGroup>
+
             </Col>
             <Col sm="3">
-              <FormGroup className=" m-form__group">
-                <InputGroup>
-                  <InputGroupText>
-                    {" "}
-                    <MdEmail className="mx-1 " /> Otp Email{" "}
-                  </InputGroupText>
-                  <input
-                    style={{ border: "1px solid #ccc" }}
-                    name="otpEmail"
-                    className="form-control"
-                    type="text"
-                    {...register("otpEmail", {
-                      required: "Otp Email is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email format",
-                      },
-                    })}
-                  />
-                </InputGroup>
-                {errors.otpEmail && (
-                  <p className="text-danger">{errors.otpEmail?.message}</p>
-                )}
-              </FormGroup>
+         <FormGroup className="m-form__group">
+  <InputGroup>
+    <InputGroupText>
+      <MdEmail className="mx-1" /> Otp Email
+    </InputGroupText>
+
+    <input
+      style={{ border: "1px solid #ccc" }}
+      name="otpEmail"
+      className="form-control"
+      type="text"
+      {...register("otpEmail", {
+        required: !Edit ? "Otp Email is required" : false,
+        pattern: !Edit
+          ? {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Invalid email format",
+            }
+          : undefined,
+      })}
+    />
+  </InputGroup>
+
+  {!Edit && errors.otpEmail && (
+    <p className="text-danger">{errors.otpEmail.message}</p>
+  )}
+</FormGroup>
+
             </Col>
             <Col sm="3">
               <FormGroup className="m-form__group">
@@ -225,7 +237,7 @@ added_on: new Date()
                   <InputGroupText>Card Discount Sheet Menu</InputGroupText>
                   <Controller
                     name="card"
-                    rules={{ required: " required" }}
+                    rules={!Edit &&{ required: " required" }}
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -241,7 +253,7 @@ added_on: new Date()
                   />
                 </InputGroup>
 
-                {errors.card && (
+                {!Edit && errors.card && (
                   <span className="text-danger">{errors.card?.message}</span>
                 )}
               </FormGroup>
@@ -254,7 +266,7 @@ added_on: new Date()
                   <InputGroupText>Company</InputGroupText>
                   <Controller
                     name="company"
-                    rules={{ required: "company Name is required" }}
+                    rules={!Edit &&{ required: "company Name is required" }}
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -268,63 +280,72 @@ added_on: new Date()
                     )}
                   />
                 </InputGroup>
-                {errors.company && (
+                {!Edit && errors.company && (
                   <span className="text-danger">{errors.company?.message}</span>
                 )}
               </FormGroup>
             </Col>
             <Col sm="3">
-              <FormGroup className=" m-form__group">
-                <InputGroup>
-                  <InputGroupText>
-                    {" "}
-                    <FaUser className="mx-1 " /> Username{" "}
-                    <span className="text-danger fw-bold  mx-1">*</span>
-                  </InputGroupText>
-                  <input
-                    style={{ border: "1px solid #ccc" }}
-                    className="form-control"
-                    type="text"
-                    {...register("userName", { required: true })}
-                  />
-                </InputGroup>
-                {errors.userName && (
-                  <span className="text-danger">UserName is required</span>
-                )}
-              </FormGroup>
+              <FormGroup className="m-form__group">
+  <InputGroup>
+    <InputGroupText>
+      <FaUser className="mx-1" /> Username
+      <span className="text-danger fw-bold mx-1">*</span>
+    </InputGroupText>
+
+    <input
+      style={{ border: "1px solid #ccc" }}
+      className="form-control"
+      type="text"
+      {...register("userName", {
+        required: !Edit ? "UserName is required" : false,
+      })}
+    />
+  </InputGroup>
+
+  {!Edit && errors.userName && (
+    <span className="text-danger">{errors.userName.message}</span>
+  )}
+</FormGroup>
+
             </Col>
             <Col sm="3">
-              <FormGroup className=" m-form__group">
-                <InputGroup>
-                  <InputGroupText>
-                    {" "}
-                    <RiLockPasswordFill className="mx-1 " /> Password{" "}
-                    <span className="text-danger fw-bold  mx-1">*</span>{" "}
-                  </InputGroupText>
-                  <input
-                    style={{ border: "1px solid #ccc" }}
-                    className="form-control"
-                    type="password"
-                    {...register("password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 8,
-                        message: "Password must be at least 8 characters",
-                      },
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                        message:
-                          "Must include uppercase, lowercase, number & special character",
-                      },
-                    })}
-                  />
-                </InputGroup>
+             <FormGroup className="m-form__group">
+  <InputGroup>
+    <InputGroupText>
+      <RiLockPasswordFill className="mx-1" /> Password{" "}
+      <span className="text-danger fw-bold mx-1">*</span>
+    </InputGroupText>
 
-                {errors.password && (
-                  <span className="text-danger">{errors.password.message}</span>
-                )}
-              </FormGroup>
+    <input
+      style={{ border: "1px solid #ccc" }}
+      className="form-control"
+      type="password"
+      {...register("password", {
+        required: !Edit ? "Password is required" : false,
+        minLength: !Edit
+          ? {
+              value: 8,
+              message: "Password must be at least 8 characters",
+            }
+          : undefined,
+        pattern: !Edit
+          ? {
+              value:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              message:
+                "Must include uppercase, lowercase, number & special character",
+            }
+          : undefined,
+      })}
+    />
+  </InputGroup>
+
+  {!Edit && errors.password && (
+    <span className="text-danger">{errors.password.message}</span>
+  )}
+</FormGroup>
+
             </Col>
 
             <Col sm="3">

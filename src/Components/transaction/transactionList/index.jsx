@@ -131,12 +131,12 @@ const Index = () => {
       const start = (page - 1) * perPage;
       const length = perPage;
 
-      const params = {
-        draw,
-        start,
-        length,
-        ...filtersData, // include filters
-      };
+      // const params = {
+      //   draw,
+      //   start,
+      //   length,
+      //   ...filtersData, // include filters
+      // };
 
       const response = await axios.get(esso_transactions, {
       params: {

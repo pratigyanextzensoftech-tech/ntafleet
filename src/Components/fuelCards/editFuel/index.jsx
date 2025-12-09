@@ -104,31 +104,6 @@ const Index = () => {
 
         toast.success("Update successfully!");
 
-        reset({
-          cardNo: "",
-          policyNo: "",
-          unitNo: "",
-          pinNo: "",
-          driverName: "",
-          driverMobile: "",
-          driverMobile2: "",
-
-          company: {
-            value: "",
-            label: "",
-          },
-          supplier: {
-            value: "",
-            label: "",
-          },
-          cardStatus: {
-            value: "",
-            label: "",
-          },
-
-          // SELECT needs full object
-        });
-
         // if (onDataAdded) onDataAdded();
       })
       .catch((err) => {

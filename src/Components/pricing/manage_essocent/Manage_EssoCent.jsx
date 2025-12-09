@@ -99,7 +99,7 @@ const onSubmit = async (formData) => {
               type="text"
               register={register}
               errors={errors}
-              rules={{ required: "Name is required" }}
+              rules={!Edit &&{ required: "Name is required" }}
             />
           </Col>
           <Col sm="2">
@@ -109,7 +109,7 @@ const onSubmit = async (formData) => {
               type="text"
               register={register}
               errors={errors}
-              rules={{ required: "Required" }}
+              rules={!Edit && { required: "Required" }}
             />
           </Col>
           <Col sm="2">
@@ -119,7 +119,7 @@ const onSubmit = async (formData) => {
               type="text"
               register={register}
               errors={errors}
-              rules={{ required: "Required" }}
+              rules={!Edit &&{ required: "Required" }}
             />
           </Col>
           <Col sm="2">
@@ -129,7 +129,7 @@ const onSubmit = async (formData) => {
               type="text"
               register={register}
               errors={errors}
-              rules={{ required: "Required" }}
+              rules={!Edit &&{ required: "Required" }}
             />
           </Col>
           <Col sm="2">

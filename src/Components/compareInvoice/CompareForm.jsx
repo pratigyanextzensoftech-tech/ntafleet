@@ -6,7 +6,7 @@ import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import { useCountry } from '../../Hooks/Dropdowns';
-const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
+const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
   const {data:country}=useCountry()
   console.log(type, '++++++++++++++')
   const [selectedValues, setSelectedValues] = useState([]);
@@ -27,11 +27,23 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
   const onSubmit = (data) => {
+      const fullData = {
+        // ...data,
+        from: data.from ? formatDate(data.from): "",
+        to: data.to ? formatDate(data.to) : "",
+        state_prov:data.stateProv?data.stateProv:"",
+        unit:data.unitNo?data?.unitNo:"",
+        card_no:data?.cardNo?data.cardNo:"",
+        company_id: data.company?.value || "",
+        currency: data.currency?.value || "",
+        item: data.items?.value ,
+        invoiced: data.status?.value || "",
+        supplier_id:data.supplier.value || ""
+      };
+      console.log("✅ Full Form Data:", data);
+      if (onSearch) onSearch(fullData); // ✅ trigger parent to refresh table
+    };
 
-    console.log("Form Data:", data);  // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-
-  };
   const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
@@ -50,7 +62,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                   </Col>
                   <Col sm="8">
                     <Controller
-                      name="fromDate"
+                      name="from"
                       control={control}
                       render={({ field }) => (
                         <DatePicker
@@ -80,7 +92,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1 }) => {
                <Col sm="4"> 
                 <InputGroupText>To Date</InputGroupText></Col><Col sm="8">
                 <Controller
-                  name="ToDate"
+                  name="to"
                   control={control}
                   render={({ field }) => (
                     <DatePicker

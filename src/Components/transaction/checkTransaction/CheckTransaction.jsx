@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import { optionscompany, Upload_Supplier, currency, invoiceType } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
+import {  invoiceType,InvoiceStatus,Reportcurrency } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { Row, Col, Form, FormGroup, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
-
+import InputText from '../../Forms/FormControl/formInput/InputText';
+import { useSupplier,useItems,useCompany } from '../../../Hooks/Dropdowns';
+const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
+    const {data:supplier}=useSupplier("")
+    const {data:items}=useItems("")
+    const {data:company}=useCompany("")
     const {
         register,
-
         control,
         reset,
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
-    } = useForm();
+    } = useForm({
+  defaultValues: {
+    from: null,
+    to: null,
+    stateProv: "",
+    unitNo: "",
+    cardNo: "",
+    company: null,
+    currency: null,
+    items: null,
+    type: null,
+    status: null,
+    supplier: null,
+  },
+});
 
     const formatDate = (date) => {
         if (!date) return "";
@@ -26,13 +43,23 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
     };
 
     const onSubmit = (data) => {
-
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-
-    };
-
-
+        const fullData = {
+          // ...data,
+          from: data.from ? formatDate(data.from): "",
+          to: data.to ? formatDate(data.to) : "",
+          state_prov:data.stateProv?data.stateProv:"",
+          unit:data.unitNo?data?.unitNo:"",
+          card_no:data?.cardNo?data.cardNo:"",
+          company_id: data.company?.value || "",
+          currency: data.currency?.value || "",
+          item: data.items?.value ,
+          invoice_status: data.status?.value || "",
+          invoice_type: data.type?.value || "",
+          supplier_id:data.supplier.value || ""
+        };
+        console.log("✅ Full Form Data:", data);
+        if (onSearch) onSearch(fullData); // ✅ trigger parent to refresh table
+      };
 
     return (
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
@@ -50,7 +77,6 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                                     <Controller
                                         name="from"
                                         control={control}
-                                        rules={{ required: " Required" }}
                                         render={({ field }) => (
                                             <DatePicker
                                                 className={`form-control `}
@@ -63,9 +89,6 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                                     /></Col>
                             </InputGroup>
 
-                            {errors.from && (
-                                <span className="text-danger">{errors.from.message}</span>
-                            )}
                         </FormGroup>
                     </Row>
                 </Col>
@@ -105,44 +128,44 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                     </Row>
                 </Col>
                 <Col sm="3">
-                    <FormGroup className=" m-form__group">
-                        <InputGroup>
-                            <InputGroupText>Start Prov </InputGroupText>
-                            <Input className="form-control" type="text" />
-                        </InputGroup>
-                    </FormGroup>
+                    <InputText
+                            name="stateProv"
+                            label="State Prov"
+                            type="text"
+                            register={register}
+                        />
+     
                 </Col>
                 <Col sm="3">
-                    <FormGroup className=" m-form__group">
-                        <InputGroup>
-                            <InputGroupText>Unit </InputGroupText>
-                            <Input className="form-control" type="text" />
-                        </InputGroup>
-                    </FormGroup>
+                   <InputText
+                            name="unitNo"
+                            label="Unit"
+                            type="text"
+                            register={register}
+                        />
                 </Col>
 
             </Row>
             <Row>
                 <Col sm="3">
-                    <FormGroup className=" m-form__group">
-                        <InputGroup>
-                            <InputGroupText> Card No.</InputGroupText>
-                            <Input className="form-control" type="text" />
-                        </InputGroup>
-                    </FormGroup>
+                        <InputText
+                            name="cardNo"
+                            label="Card No."
+                            type="text"
+                            register={register}
+                        />
                 </Col>
                 <Col sm="3">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Company</InputGroupText>
                             <Controller name="company"
-                                rules={{ required: "company Name is required" }}
 
                                 control={control}
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={optionscompany}
+                                        options={company}
                                         className="form-control p-0 border-0"
                                         placeholder="Select Company Name"
                                     />
@@ -160,13 +183,12 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                         <InputGroup >
                             <InputGroupText>Currency</InputGroupText>
                             <Controller name="currency"
-                                rules={{ required: "currency is required" }}
 
                                 control={control}
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={currency}
+                                        options={Reportcurrency}
                                         className="form-control p-0 border-0"
                                         placeholder="Select Currency"
                                     />
@@ -174,9 +196,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                             />
                         </InputGroup>
 
-                        {errors.currency && (
-                            <span className="text-danger">{errors.currency?.message}</span>
-                        )}
+                    
                     </FormGroup>
                 </Col>
                 <Col sm="3">
@@ -184,13 +204,12 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                         <InputGroup >
                             <InputGroupText>Items</InputGroupText>
                             <Controller name="items"
-                                rules={{ required: "Items is required" }}
 
                                 control={control}
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={optionscompany}
+                                        options={items}
                                         className="form-control p-0 border-0"
                                         placeholder="Select Items"
                                     />
@@ -198,9 +217,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                             />
                         </InputGroup>
 
-                        {errors.items && (
-                            <span className="text-danger">{errors.items?.message}</span>
-                        )}
+                       
                     </FormGroup>
                 </Col>
             </Row>
@@ -210,13 +227,12 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                         <InputGroup >
                             <InputGroupText>Invoice Type</InputGroupText>
                             <Controller name="type"
-                                rules={{ required: "type is required" }}
 
                                 control={control}
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={invoiceType}
+                                        options={invoiceType.filter((val,i)=>val.value!=="All")}
                                         className="form-control p-0 border-0"
                                         placeholder="Select type"
                                     />
@@ -224,9 +240,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                             />
                         </InputGroup>
 
-                        {errors.type && (
-                            <span className="text-danger">{errors.type?.message}</span>
-                        )}
+                    
                     </FormGroup>
                 </Col>
                 <Col sm="3">
@@ -234,13 +248,12 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                         <InputGroup >
                             <InputGroupText>Invoice Status</InputGroupText>
                             <Controller name="status"
-                                rules={{ required: "status is required" }}
 
                                 control={control}
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={optionscompany}
+                                        options={InvoiceStatus}
                                         className="form-control p-0 border-0"
                                         placeholder="Select status"
                                     />
@@ -248,9 +261,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                             />
                         </InputGroup>
 
-                        {errors.status && (
-                            <span className="text-danger">{errors.status?.message}</span>
-                        )}
+                     
                     </FormGroup>
                 </Col>
                 <Col sm="3">
@@ -260,16 +271,12 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
                             <Controller
                                 name="supplier"
                                 control={control}
-                                rules={{ required: "Supplier is required" }}
-                                defaultValue={
-                                    Upload_Supplier[2]
-
-                                }
                                 render={({ field }) => (
                                     <Select
                                         {...field}
                                         className="form-control p-0 border-0"
                                         placeholder="Select supplier"
+                                         options={supplier}
                                         onChange={(selectedOption) => field.onChange(selectedOption)}
                                         value={field.value}
                                     />
@@ -278,15 +285,13 @@ const CheckTransaction = ({ btnTitle, btnTitle1 }) => {
 
                         </InputGroup>
 
-                        {errors.supplier && (
-                            <span className="text-danger">{errors.supplier?.message}</span>
-                        )}
+                      
                     </FormGroup>
                 </Col>
                 <Col sm="3">
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
-                        <button className='btn btn-secondary'>{btnTitle1}</button>
+                        <button type='reset' onClick={reset} className='btn btn-secondary'>{btnTitle1}</button>
 
                     </div>
                 </Col>

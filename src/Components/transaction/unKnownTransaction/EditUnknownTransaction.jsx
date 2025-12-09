@@ -142,7 +142,7 @@ const onSubmit = (formData) => {
   supplier_id: formData.supplier.value,
   company_id: formData.company?.value,
   company_name: formData.company?.label,
-  rackInvoice: formData.rackInvoice.label,
+  rackInvoice: formData.rackInvoice?formData.rackInvoice.label:"",
 
   rate: formData.rate,
   status: formData.status,
@@ -152,37 +152,7 @@ console.log(payload)
           axios.put(`${transactions}/${rowData.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
-        reset( {
-  card1: "",
-  card2: "",
-  transDate: "",
-  transTime: "",
-  invoice: "",
-  unit: "",
-  drierName: "",
-  odometer: "",
-  loc: "",
-  city: "",
-  stateProv: "",
-  country: "",
-  fee: "",
-  item: "",
-  efs: "",
-  tax: "",
-  unitPrice: "",
-  rackPrice: "",
-  qty: "",
-  discountCent: "",
-  amount: "",
-  taxAmt: "",
-  db: "",
-  currency: "",
-  supplier: "",
-  company: "",
-  rackInvoice: "",
-  conversationRate: "",
-  status: "",
-})
+        
         })
         .catch((err) => {
           toast.error("Update failed!");
