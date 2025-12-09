@@ -7,6 +7,9 @@ import { tableColumns, dummytabledata } from "../../../Data/Table/Defaultdata";
 import TransactionList from "../transactionList/TransactionList";
 import CheckTransaction from "./CheckTransaction";
 const index = () => {
+  const handleSearch=()=>{
+    
+  }
   return (
     <Fragment>
       <Breadcrumbs parent="Transaction" title=" Check Transactions" />
@@ -16,7 +19,7 @@ const index = () => {
             <Card>
               <HeaderCard title="Filters" />
               <CardBody>
-                <CheckTransaction btnTitle="Search Data" btnTitle1="Reset" />
+                <CheckTransaction btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
               </CardBody>
             </Card>
           </Col>

@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent"; 
-import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa"; 
+import { FaEdit, FaTrashAlt } from "react-icons/fa"; 
 import { transactions_efs } from "../../../api";
 import axios from "axios";
 import qs from "qs"; // npm install qs
@@ -66,7 +66,7 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
- 
+
   // ✅ Column mapping between UI and API
   const columnsMap = {
     CARD: "card_no",
@@ -124,22 +124,13 @@ const Index = () => {
   const fetchData = async (page = 1, perPage = 10, filtersData = filters) => {
     setLoading(true);
     try {
-      const start = (page - 1) * perPage;
-      const length = perPage;
-
-      const params = {
-        draw,
-        start,
-        length,
-        ...filtersData, // include filters
-      };
-
+     
       const response = await axios.get(transactions_efs, {
       params: {
         draw: page,
         start: (page - 1) * perPage,
         length: perPage,
-        ...filters, // this includes supplier_id: [...]
+        ...filtersData, // this includes supplier_id: [...]
       },
       paramsSerializer: (params) =>
         qs.stringify(params, {
@@ -265,7 +256,7 @@ const Index = () => {
             <Card>
               <HeaderCard title="Filters" />
               <CardBody>
-                <ViewEfs btnTitle="Search Data" btnTitle1="Reset" />
+                <ViewEfs btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
               </CardBody>
             </Card>
           </Col>

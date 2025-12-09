@@ -73,7 +73,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const handleReset = () => {
     reset();
     setSelectedValues([]);
-    if (onSearch) onSearch({}); // ✅ reload all data
+    // if (onSearch) onSearch({}); // ✅ reload all data
   };
 
  
@@ -84,11 +84,11 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
  <Controller
    name="supplier"
    control={control}
-   rules={{
-     validate: (value) =>
-       (value && value.length > 0) ||
-       "Please select at least one supplier",
-   }}
+  //  rules={{
+  //    validate: (value) =>
+  //      (value && value.length > 0) ||
+  //      "Please select at least one supplier",
+  //  }}
    render={({ field }) => {
      const { value, onChange } = field;
  
@@ -222,7 +222,6 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                   <Controller
                     name="to"
                     control={control}
-                    rules={{ required: "Required" }}
                     render={({ field }) => (
                       <DatePicker
                         className={`form-control digits`}

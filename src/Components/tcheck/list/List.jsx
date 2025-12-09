@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import useCompany from '../../../Hooks/useCompany';
-const List = ({ btnTitle1 }) => {
+const List = ({ btnTitle1,onSearch }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const { companies: companyOptions, loading: companyLoading } = useCompany();
 
@@ -29,27 +29,23 @@ const List = ({ btnTitle1 }) => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-    const onSubmit = (data) => {
+    const onSubmit = (formData) => {
 
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
+        console.log("Form Data:", formData); 
+        const payload = {
+      from: formData?.from ? formatDate(formData.from) : "",
+      to: formData?.to ? formatDate(formData.to) : "",
+      company_id: formData?.company ? formatDate(formData?.company.value) : ""
+    }
+
+         if (onSearch) onSearch(payload);
 
     };
     const handleReset = () => {
         reset(); // reset all fields back to defaultValues (or empty if none given)
     };
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
+    
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
@@ -70,7 +66,7 @@ const List = ({ btnTitle1 }) => {
                 </Col>
                 <Col sm="3">
                     <DatePickerInput
-                        name=" to"
+                        name="to"
                         control={control}              // ✅ make sure this is passed
                         label="To"
                         required="Required"
@@ -99,7 +95,7 @@ const List = ({ btnTitle1 }) => {
 
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>
-                        <button className='btn btn-secondary'>{btnTitle1}</button>
+                        <button type='reset' onClick={handleReset}  className='btn btn-secondary'>{btnTitle1}</button>
 
                     </div>
                 </Col>

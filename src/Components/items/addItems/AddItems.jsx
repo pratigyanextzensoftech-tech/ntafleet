@@ -59,10 +59,9 @@ console.log(formData)
     };
 
     if (Edit && selectedRow) {
-      console.log("Form Data:", payload); // ✅ This will print your inputs
-
+     
       axios
-        .put(`${APINAME}/${selectedRow.id}`, payload)
+        .put(`${APINAME}/${selectedRow.item_id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
           if (onDataAdded) onDataAdded();
@@ -101,17 +100,7 @@ console.log(formData)
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-
-    setSelectedValues((prev) => {
-      if (checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter((item) => item !== value);
-      }
-    });
-  };
+ 
   return (
     <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
       <Row className="mt-3">
@@ -123,10 +112,12 @@ console.log(formData)
                 style={{ border: "1px solid #ccc" }}
                 className="form-control "
                 type="text"
-                {...register("Name", { required: true })}
+               {...register("Name", {
+    required: !Edit ? "Required" : false,   // ⬅️ validation only when !Edit
+  })}
               />
             </InputGroup>
-            {errors.name && <span className="text-danger"> Required</span>}
+            {errors.Name && <span className="text-danger"> Required</span>}
           </FormGroup>
         </Col>
         <Col sm="3">
@@ -135,7 +126,7 @@ console.log(formData)
               <InputGroupText>Discount Applied</InputGroupText>
               <Controller
                 name="discount"
-                rules={{ required: " Required" }}
+                rules={!Edit &&{ required: " Required" }}
                 control={control}
                 render={({ field }) => (
                   <Select
@@ -162,7 +153,7 @@ console.log(formData)
               <InputGroupText>Tax Applied</InputGroupText>
               <Controller
                 name="tax"
-                rules={{ required: " Required" }}
+                rules={!Edit &&{ required: " Required" }}
                 control={control}
                 render={({ field }) => (
                   <Select
