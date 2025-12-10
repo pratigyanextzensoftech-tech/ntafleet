@@ -70,7 +70,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
       invoice_type: data.invoice_type?.value || "",
     };
 
-    if (onSearch) onSearch(fullData); 
+    if (onSearch) onSearch(fullData);
   };
 
   const handleReset = () => {
@@ -130,7 +130,9 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                     checked={allSelected}
                     onChange={handleSupplierChange}
                   />
-                  <Label for="supplier-all" className="ms-1">Select All</Label>
+                  <Label for="supplier-all" className="ms-1">
+                    Select All
+                  </Label>
                 </span>
               </legend>
 
@@ -145,7 +147,10 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                         checked={selectedValues.includes(String(item.value))}
                         onChange={handleSupplierChange}
                       />
-                      <Label for={`supplier-checkbox-${index}`} className="ms-2">
+                      <Label
+                        for={`supplier-checkbox-${index}`}
+                        className="ms-2"
+                      >
                         {item.label}
                       </Label>
                     </div>
@@ -166,7 +171,9 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         <Col sm="3">
           <FormGroup>
             <InputGroup>
-              <Col sm="3"><InputGroupText>From</InputGroupText></Col>
+              <Col sm="3">
+                <InputGroupText>From</InputGroupText>
+              </Col>
               <Col sm="9">
                 <Controller
                   name="from"
@@ -188,7 +195,9 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         <Col sm="3">
           <FormGroup>
             <InputGroup>
-              <Col sm="3"><InputGroupText>To</InputGroupText></Col>
+              <Col sm="3">
+                <InputGroupText>To</InputGroupText>
+              </Col>
               <Col sm="9">
                 <Controller
                   name="to"
@@ -250,7 +259,12 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         </Col>
 
         <Col sm="3">
-          <DropDown name="company" label="Company" control={control} options={companyOptions} />
+          <DropDown
+            name="company"
+            label="Company"
+            control={control}
+            options={companyOptions}
+          />
         </Col>
 
         <Col sm="3">
@@ -261,7 +275,11 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                 name="currency"
                 control={control}
                 render={({ field }) => (
-                  <Select {...field} options={currency} placeholder="Select Currency" />
+                  <Select
+                    {...field}
+                    options={currency}
+                    placeholder="Select Currency"
+                  />
                 )}
               />
             </InputGroup>
@@ -269,23 +287,42 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         </Col>
 
         <Col sm="3">
-          <DropDown name="items" label="Items" control={control} options={items} />
+          <DropDown
+            name="items"
+            label="Items"
+            control={control}
+            options={items}
+          />
         </Col>
       </Row>
 
       {/* Row 3 */}
       <Row>
         <Col sm="3">
-          <DropDown name="status" label="Invoice Status" control={control} options={InvoiceStatus} />
+          <DropDown
+            name="status"
+            label="Invoice Status"
+            control={control}
+            options={InvoiceStatus}
+          />
         </Col>
 
         <Col sm="3">
-          <DropDown name="invoice_type" label="Invoice Type" control={control} options={invoiceType} />
+          <DropDown
+            name="invoice_type"
+            label="Invoice Type"
+            control={control}
+            options={invoiceType}
+          />
         </Col>
 
         <Col sm="6" className="text-end">
           <Btn attrBtn={{ color: "primary", type: "submit" }}>{btnTitle}</Btn>
-          <button type="button" className="btn btn-secondary ms-2" onClick={handleReset}>
+          <button
+            type="button"
+            className="btn btn-secondary ms-2"
+            onClick={handleReset}
+          >
             {btnTitle1}
           </button>
         </Col>
