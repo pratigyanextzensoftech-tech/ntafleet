@@ -38,6 +38,8 @@ const CreateInvoiceCommon = ({
   invoice_creation,
   ta_retail_invoice,
   suplier_list,
+  onSearch,
+  validation,
   country_list,
   defaultSupplierValue,
   api_name,
@@ -72,6 +74,8 @@ const CreateInvoiceCommon = ({
   };
 
   const onSubmit = (data) => {
+    console.log(companies);
+    
      let companyValue = "";
    if (Array.isArray(data.selectedCompanies)) {
   if (data.selectedCompanies.includes("All Company")) {
@@ -82,15 +86,16 @@ const CreateInvoiceCommon = ({
 }
     setLoading(true);
     const basePayload = {
-      company_id:company_list==="checkbox"? companyValue : data.company.value.toString() ,
+      company_id:company_list==="checkbox"? companyValue : data?.company?.value.toString()?data?.company?.value.toString():"" ,
       invoice_creation: invoice_creation ? invoice_creation : "",
-      supplier_id: data.supplier.value,
+      supplier_id: data?.supplier?.value ||"",
       country_id: data.country.value,
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
       invoice_type: data.invoice_type ? data.invoice_type.value : invoice_type,
+      inv_cat: data.invCateory ? data.invCateory.value : "",
     };
-
+ if (onSearch) onSearch(basePayload);
     // axios
     //   .post(api_name, basePayload, {
     //     headers: { "Content-Type": "application/json" },
@@ -163,7 +168,7 @@ const CreateInvoiceCommon = ({
                         <Controller
                           name="company"
                           control={control}
-                          rules={{ required: "company is required" }}
+                          rules={validation!==false &&{ required: "company is required" }}
                           render={({ field }) => (
                             <Select
                               {...field}
@@ -175,7 +180,7 @@ const CreateInvoiceCommon = ({
                         />
                       </InputGroup>
 
-                      {errors.company && (
+                      {validation!==false && errors.company && (
                         <span className="text-danger">
                           {errors.company.message}
                         </span>
@@ -195,7 +200,7 @@ const CreateInvoiceCommon = ({
                           <Controller
                             name="startDate"
                             control={control}
-                            rules={{ required: "Start Date is required" }}
+                            rules={validation!==false &&{ required: "Start Date is required" }}
                             render={({ field }) => (
                               <DatePicker
                                 placeholderText="Select start date"
@@ -209,7 +214,7 @@ const CreateInvoiceCommon = ({
                           />
                         </Col>
                       </InputGroup>
-                      {errors.startDate && (
+                      {validation!==false &&errors.startDate && (
                         <span className="text-danger">
                           {errors.startDate.message}
                         </span>
@@ -229,7 +234,7 @@ const CreateInvoiceCommon = ({
                           <Controller
                             name="endDate"
                             control={control}
-                            rules={{ required: "End Date is required" }}
+                            rules={validation!==false &&{ required: "End Date is required" }}
                             render={({ field }) => (
                               <DatePicker
                                 placeholderText="Select end date"
@@ -243,7 +248,7 @@ const CreateInvoiceCommon = ({
                           />
                         </Col>
                       </InputGroup>
-                      {errors.endDate && (
+                      {validation!==false && errors.endDate && (
                         <span className="text-danger">
                           {errors.endDate.message}
                         </span>
@@ -260,7 +265,7 @@ const CreateInvoiceCommon = ({
                       <Controller
                         name="supplier"
                         control={control}
-                        rules={{ required: "Supplier is required" }}
+                        rules={validation!==false &&{ required: "Supplier is required" }}
                         defaultValue={null}
                         render={({ field }) => {
                           // Auto select if only one option exists
@@ -285,7 +290,7 @@ const CreateInvoiceCommon = ({
                       />
                     </InputGroup>
 
-                    {errors.supplier && (
+                    {validation!==false && errors.supplier && (
                       <span className="text-danger">
                         {errors.supplier.message}
                       </span>
@@ -339,7 +344,7 @@ const CreateInvoiceCommon = ({
                         <InputGroupText>Invoice Type</InputGroupText>
                         <Controller
                           name="invoiceType"
-                          rules={{ required: "Invoice Type is required" }}
+                          rules={validation!==false &&{ required: "Invoice Type is required" }}
                           control={control}
                           defaultValue={null}
                           render={({ field }) => {
@@ -362,7 +367,7 @@ const CreateInvoiceCommon = ({
                         />
                       </InputGroup>
 
-                      {errors.invoiceType && (
+                      {validation!==false && errors.invoiceType && (
                         <span className="text-danger">
                           {errors.invoiceType?.message}
                         </span>
@@ -377,7 +382,7 @@ const CreateInvoiceCommon = ({
                         <InputGroupText>Invoice Category</InputGroupText>
                         <Controller
                           name="invCateory"
-                          rules={{ required: "Invoice Category is required" }}
+                          rules={validation!==false &&{ required: "Invoice Category is required" }}
                           control={control}
                           defaultValue={null}
                           render={({ field }) => {
@@ -397,7 +402,7 @@ const CreateInvoiceCommon = ({
                         />
                       </InputGroup>
 
-                      {errors.invoiceType && (
+                      {validation!==false &&errors.invoiceType && (
                         <span className="text-danger">
                           {errors.invoiceType?.message}
                         </span>
@@ -412,7 +417,7 @@ const CreateInvoiceCommon = ({
                         <InputGroupText>Customized Type</InputGroupText>
                         <Controller
                           name="invCateory"
-                          rules={{ required: "Customized Type is required" }}
+                          rules={validation!==false && { required: "Customized Type is required" }}
                           control={control}
                           defaultValue={null}
                           render={({ field }) => {
@@ -432,7 +437,7 @@ const CreateInvoiceCommon = ({
                         />
                       </InputGroup>
 
-                      {errors.invoiceType && (
+                      {validation!==false && errors.invoiceType && (
                         <span className="text-danger">
                           {errors.invoiceType?.message}
                         </span>

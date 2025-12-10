@@ -23,7 +23,7 @@ import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 
-const CustomizedInvoice = ({ title }) => {
+const CustomizedInvoice = ({ title,onSearch }) => {
    const{data:country}=useCountry()
     const {data:supplier}=useSupplier("3,6")
     const invoiceTypes=InvoiceType("")
@@ -44,10 +44,24 @@ const CustomizedInvoice = ({ title }) => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+   const onSubmit = (data) => {
+      const payload={
+                supplier_id:data?.supplier?.value || "",
+                  from: data.from ? formatDate(data.from): "",
+                        to: data.to ? formatDate(data.to) : "",
+                          company_id: data?.company?.value || "",
+                          country:data?.country?.label ||"",
+                           invoice_type: data?.invType?.value || "",
+                        invcat:data?.invCat?.value||"",
+                        show_hide:data?.show?.value?data?.show?.value:"",
+                        cust_inv_type:data?.customised?.value?data?.customised?.value:"",
+  
+  
+      }
+      console.log("payload:", payload);
+      if (onSearch) onSearch(payload );
+      // here you can trigger API call and show table data
+    };
 
   return (
     <Fragment>
@@ -252,7 +266,7 @@ const CustomizedInvoice = ({ title }) => {
                     <InputGroup>
                       <InputGroupText>Invoice Category</InputGroupText>
                       <Controller
-                        name="company"
+                        name="invCat"
                         control={control}
                         render={({ field }) => (
                           <Select

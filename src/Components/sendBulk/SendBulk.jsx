@@ -185,13 +185,13 @@ const SendBulkTab = [
   {
     id: '1',
     label:"Send Invoice",
-    component: <SingleEssoForm btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch}/>,
+    component: <SingleEssoForm company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} />,
   },
   {
     id: '2',
     label:"Send Owner Operator Invoice",
-    component: <CreateInvoiceCommon  company_list="list"
- supplier_ids="6" invoice_category_dropdown={true}   country_id="1" invoice_type_dropdown={true} invoice_creation={true} invoice_type="RG" btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
+    component: <CreateInvoiceCommon validation={false}  company_list="list"
+ supplier_ids="6"  cust_inv_dropdown={true}   country_id="1" owner_operator_invoice="Yes" invoice_type_dropdown={true}  invoice_type="RG" btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
   },
   
   {

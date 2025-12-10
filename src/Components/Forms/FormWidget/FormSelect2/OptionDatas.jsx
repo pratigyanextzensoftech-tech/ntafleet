@@ -271,13 +271,13 @@ export const exportType = [
 ]
 export const InvoiceShow = [
     { label: 'All Types ', value:"All" },
-    { value: 'Show', label: 'Show' },
-    { value: 'Hide', label: 'Hide' },
+    { value: '1', label: 'Show' },
+    { value: '0', label: 'Hide' },
 ]
 export const InvoiceCategory = [
     { value: 'All Invoice', label: 'All Invoice' },
-    { value: 'Total Not Zero (0)', label: 'Total Not Zero (0)' },
-    { value: 'Total Only Zero (0)', label: 'Total Only Zero (0)' },
+    { value: '1', label: 'Total Not Zero (0)' },
+    { value: '2', label: 'Total Only Zero (0)' },
 
 ]
 export const Units = [

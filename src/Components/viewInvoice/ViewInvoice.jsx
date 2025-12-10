@@ -76,17 +76,17 @@ const ViewInvoice = () => {
     {
       id: "1",
       label: "View Invoices",
-      component: <ViewInvoiceForm title="Invoice Filters" />,
+      component: <ViewInvoiceForm title="Invoice Filters" onSearch={handleSearch}/>,
     },
     {
       id: "2",
       label: "View Owner Operator Invoices",
-      component: <OwnerOperator title="Owner Operator Invoice Filters" />,
+      component: <OwnerOperator title="Owner Operator Invoice Filters" onSearch={ownerHandleSearch}/>,
     },
     {
       id: "3",
       label: "View Customised Invoices",
-      component: <CustomizedInvoice title="Customised Invoice Filters" />,
+      component: <CustomizedInvoice title="Customised Invoice Filters" onSearch={customizedHandleSearch}/>,
     },
   ];
   const View_Invoice_Table = [

@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
-import { transactions } from "../../../api";
+import { transactions,tranaction_total } from "../../../api";
 import ViewForm from "./ViewForm";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
@@ -103,10 +103,9 @@ const columnsMap = {
     Currency: "currency",
   };
 
-  const fetchTotals = async () => {
+  const fetchTotals = async (formData) => {
     try {
-      const response = await axios.get(
-        `https://api.ntafleetsolutions.com/api/transactions/totals`
+      const response = await axios.get( tranaction_total,formData
       );
       setTotals({
         taxamt: Number(response.data.taxamt || 0),
@@ -200,7 +199,7 @@ const columnsMap = {
   // ✅ Initial load
   useEffect(() => {
     fetchData(currentPage, perPage, filters);
-    fetchTotals();
+    fetchTotals(filters);
   }, [currentPage,perPage]);
 
   // ✅ Page change
@@ -264,6 +263,7 @@ const handleDelete = (e, row) => {
     setFilters(formData); // save filters
     setCurrentPage(1); // reset to first page
     fetchData(1, perPage, formData); // fetch new data immediately
+    fetchTotals(formData)
   };
 
   

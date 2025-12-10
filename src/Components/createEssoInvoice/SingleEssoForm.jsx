@@ -1,14 +1,10 @@
 import React, { Fragment,useState,useEffect } from "react";
 import Select from "react-select";
 import {
-  checkBoxData,
-  optionscountry,
-  optionscompany,
-  customizedTypeType,
+ 
   invoiceType1,
-  InvoiceCategory,
-  InvoiceShow,
-  InVoiceSupplier,
+  InvoiceCategory
+  
 } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import {
   Row,
@@ -27,7 +23,7 @@ import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { supplierById } from "../../api";
-const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type,onSearch }) => {
+const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type,onSearch,company_list }) => {
      const[supplierData,setSupplierData]=useState([])
   
   const{data:company}=useCompany()
@@ -107,11 +103,13 @@ useEffect(() => {
     console.log("Form Data:", data); 
     const payload={
 company_id:data.company?.value,
-country:data.country?.value,
+country:data.country?.label,
 invoice_type:data.invoice?.value,
-to1:data.endDate? formatDate(data.endDate) : "",
-from1:data.startDate? formatDate(data.startDate) : "",
-supplier_id:data.supplier?.value
+to:data.endDate? formatDate(data.endDate) : "",
+from:data.startDate? formatDate(data.startDate) : "",
+supplier_id:data.supplier?.value,
+invcat:data?.invCat?.value?data?.invCat?.value:"",
+
 
     }
      if (onSearch) onSearch(payload);// ✅ This will print your inputs
@@ -121,17 +119,7 @@ supplier_id:data.supplier?.value
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
 
-    setSelectedValues((prev) => {
-      if (checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter((item) => item !== value);
-      }
-    });
-  };
   return (
    <Fragment>
 <Row>
@@ -140,6 +128,7 @@ supplier_id:data.supplier?.value
 <legend>{title}</legend>
  <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
           <Row className="mt-3">
+            {company_list==!false &&(
             <Col sm="3">
               <FormGroup className="m-form__group">
                 <InputGroup>
@@ -161,42 +150,8 @@ supplier_id:data.supplier?.value
           
               </FormGroup>
             </Col>
-            <Col sm="3">
-              <FormGroup className="m-form__group">
-                <InputGroup>
-                  <InputGroupText>Invoice Type</InputGroupText>
-                  <Controller
-                    name="invoice"
-                    defaultValue={
-                      type === "owner_operator" ||
-                      type === "single_owner_ultramar"
-                        ? invoiceType1[3]
-                        : type === "repeat_ultramar"
-                        ? invoiceType1
-                        : null
-                    }
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        options={
-                          type === "owner_operator" ||
-                          type === "single_owner_ultramar"
-                            ? [invoiceType1[3]]
-                            : type === "repeat_ultramar"
-                            ? invoiceType1
-                            : invoiceType1
-                        }
-                        className="form-control p-0 border-0"
-                      />
-                    )}
-                  />
-                </InputGroup>
-             
-              </FormGroup>
-            </Col>
-
-            <Col sm="3">
+              )}
+                 <Col sm="3">
               <FormGroup className="m-form__group">
                 <Row>
                   <InputGroup>
@@ -254,9 +209,7 @@ supplier_id:data.supplier?.value
                 </Row>
               </FormGroup>
             </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col sm="3">
+              <Col sm="3">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Supplier</InputGroupText>
@@ -302,6 +255,63 @@ supplier_id:data.supplier?.value
                
               </FormGroup>
             </Col>
+            <Col sm="3">
+              <FormGroup className="m-form__group">
+                <InputGroup>
+                  <InputGroupText>Invoice Type</InputGroupText>
+                  <Controller
+                    name="invoice"
+                    defaultValue={
+                      type === "owner_operator" ||
+                      type === "single_owner_ultramar"
+                        ? invoiceType1[3]
+                        : type === "repeat_ultramar"
+                        ? invoiceType1
+                        : null
+                    }
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={
+                          type === "owner_operator" ||
+                          type === "single_owner_ultramar"
+                            ? [invoiceType1[3]]
+                            : type === "repeat_ultramar"
+                            ? invoiceType1
+                            : invoiceType1
+                        }
+                        className="form-control p-0 border-0"
+                      />
+                    )}
+                  />
+                </InputGroup>
+             
+              </FormGroup>
+            </Col>
+ <Col sm="3">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Invoice Category</InputGroupText>
+                      <Controller
+                        name="invCat"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={InvoiceCategory}
+                            className="form-control p-0 border-0"
+                          />
+                        )}
+                      />
+                    </InputGroup>
+
+                  
+                  </FormGroup>
+                </Col>
+         
+          
+          
 
             <Col sm="6">
               <div className="text-end">
@@ -316,7 +326,7 @@ supplier_id:data.supplier?.value
                 </Btn>
               </div>
             </Col>
-          </Row>
+            </Row>
         </Form>
 </fieldset>
 </Col>

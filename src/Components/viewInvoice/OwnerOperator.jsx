@@ -16,7 +16,7 @@ import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import { InvoiceType, useCompany,useCountry,useSupplier } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
-const OwnerOperator = ({ title }) => {
+const OwnerOperator = ({ title,onSearch }) => {
   const{data:country}=useCountry("1")
   const {data:supplier}=useSupplier("6,10")
   const invoiceTypes=InvoiceType("RG")
@@ -39,8 +39,19 @@ const OwnerOperator = ({ title }) => {
  
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+     const payload={
+                  supplier_id:data.supplier.value || "",
+                    from: data.from ? formatDate(data.from): "",
+                          to: data.to ? formatDate(data.to) : "",
+                            company_id: data.company?.value || "",
+                            country:data.country.label ||"",
+                             invoice_type: data.invType.value?data.invType.value : "",
+                          invcat:data?.category?.value||"",
+                          show_hide:data?.show?.value?data?.show.value:"",
+  
+        }
+        console.log(payload)
+          if (onSearch) onSearch( payload );
   };
 
   
@@ -190,7 +201,7 @@ const OwnerOperator = ({ title }) => {
                                                    invoiceTypes?.length === 1   &&
                                                    field.value === null
                                                  ) {
-                                                   field.onChange(invoiceTypes);
+                                                   field.onChange(invoiceTypes[0]);
                                                  }
                                                   
                                                  return ( 
@@ -198,6 +209,7 @@ const OwnerOperator = ({ title }) => {
                             {...field}
                             options={invoiceTypes}
                             className="form-control p-0 border-0"
+                            
                           />
                         )}
                       }
@@ -241,6 +253,8 @@ const OwnerOperator = ({ title }) => {
                             {...field}
                             options={InvoiceCategory}
                             className="form-control p-0 border-0"
+                                   value={field.value}              // IMPORTANT for controlled select
+        onChange={(val) => field.onChange(val)}
                           />
                         )}
                       />
@@ -262,6 +276,8 @@ const OwnerOperator = ({ title }) => {
                             {...field}
                             options={InvoiceShow}
                             className="form-control p-0 border-0"
+                                   value={field.value}              // IMPORTANT for controlled select
+        onChange={(val) => field.onChange(val)}
                           />
                         )}
                       />
@@ -285,7 +301,7 @@ const OwnerOperator = ({ title }) => {
                   attrBtn={{
                     color: "primary",
                     className: "m-r-15",
-                    type: "submit",
+                    type: "reset",
                   }}
                 >
                   Reset

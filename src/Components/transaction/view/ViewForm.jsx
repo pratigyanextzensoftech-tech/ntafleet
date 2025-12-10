@@ -268,22 +268,13 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         </Col>
 
         <Col sm="3">
-          <FormGroup>
-            <InputGroup>
-              <InputGroupText>Currency</InputGroupText>
-              <Controller
-                name="currency"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    options={currency}
-                    placeholder="Select Currency"
-                  />
-                )}
-              />
-            </InputGroup>
-          </FormGroup>
+          <DropDown
+            name="currency"
+            label="Currency"
+            control={control}
+            options={currency}
+          />
+       
         </Col>
 
         <Col sm="3">

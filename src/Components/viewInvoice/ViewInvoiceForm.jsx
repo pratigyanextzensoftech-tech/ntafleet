@@ -17,13 +17,12 @@ import {
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
 import { useCountry } from "../../Hooks/Dropdowns";
-import useSupplier from "../../Hooks/useSupplier";
+import { useSupplier,formatDate } from "../../Hooks/Dropdowns";
 import useCompany from "../../Hooks/useCompany";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-
 const ViewInvoiceForm = ({ title, onSearch }) => {
-  const { supplier } = useSupplier();
+  const { data:supplier } = useSupplier("");
   const { companies } = useCompany();
 
   const [selectedValues, setSelectedValues] = useState([]);
@@ -34,48 +33,45 @@ const{data:country}=useCountry()
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm(
+{
+  defaultValues: {
+    supplier: [],             // supplier default (we will populate after load)
+    from: null,               // date
+    to: null,                 // date
+    company: null,            // react-select
+    country: null,            // react-select
+    invoiceType: invoiceType[0] || null,
+    category: InvoiceCategory[0] || null,
+    invoiceShow: InvoiceShow[0] || null,
+  },
+}
+  );
 
-  // ✅ When suppliers load, mark all as checked by default
   useEffect(() => {
     if (supplier.length > 0) {
       setSelectedValues(supplier.map((item) => item.value));
     }
   }, [supplier]);
 
-  // ✅ Handle individual checkbox change
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-
-    setSelectedValues((prev) => {
-      if (checked) {
-        const newSelected = [...prev, value];
-        if (newSelected.length === supplier.length) {
-          setSelectAll(true);
-        }
-        return newSelected;
-      } else {
-        setSelectAll(false);
-        return prev.filter((item) => item !== value);
-      }
-    });
-  };
-
-  // ✅ Handle "Select All" checkbox
-  const handleSelectAll = (e) => {
-    const checked = e.target.checked;
-    setSelectAll(checked);
-    if (checked) {
-      setSelectedValues(supplier.map((item) => item.value));
-    } else {
-      setSelectedValues([]);
-    }
-  };
+ 
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    const payload={
+              supplier_id:selectedValues.join(",") || "",
+                from: data.from ? formatDate(data.from): "",
+                      to: data.to ? formatDate(data.to) : "",
+                        company_id: data?.company?.value || "",
+                        country:data?.country?.label ||"",
+                         invoice_type: data?.invoiceType?.value || "",
+                      invcat:data?.category?.value||"",
+                      show_hide:data?.invoiceShow?.value?data?.invoiceShow?.value:"",
+
+
+    }
+    console.log("payload:", payload);
     console.log("Selected Suppliers:", selectedValues);
-    if (onSearch) onSearch({ ...data, suppliers: selectedValues });
+    if (onSearch) onSearch(payload );
     // here you can trigger API call and show table data
   };
 
@@ -89,43 +85,93 @@ const{data:country}=useCountry()
     <Fragment>
       <Row>
         <Col>
-          <fieldset>
-            <legend>{title}</legend>
+         
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row>
                 <Col sm="12">
-                  <fieldset>
-                    <legend>
-                      Choose Supplier{" "}
-                      <input
-                        id="selectAll"
-                        type="checkbox"
-                        checked={selectAll}
-                        onChange={handleSelectAll}
-                      />
-                      <Label for="selectAll" className="ms-1">
-                        Select All
-                      </Label>
-                    </legend>
-                    <Row>
-                      {supplier.map((item, index) => (
-                        <Col sm="2" key={index}>
-                          <div className="checkbox checkbox-dark">
-                            <input
-                              id={`checkbox-${index}`}
-                              type="checkbox"
-                              value={item.value}
-                              checked={selectedValues.includes(item.value)}
-                              onChange={handleCheckboxChange}
-                            />
-                            <Label for={`checkbox-${index}`} className="ms-2">
-                              {item.label}
-                            </Label>
-                          </div>
-                        </Col>
-                      ))}
-                    </Row>
-                  </fieldset>
+                     <Controller
+                         name="supplier"
+                         control={control}
+                         render={({ field }) => {
+                           const { onChange } = field;
+                 
+                           const handleSupplierChange = (e) => {
+                             const val = String(e.target.value);
+                             const checked = e.target.checked;
+                 
+                             // Select ALL
+                             if (val === "All") {
+                               if (checked) {
+                                 const allValues = supplier.map((s) => String(s.value));
+                                 setSelectedValues(allValues);
+                                 onChange(allValues);
+                               } else {
+                                 setSelectedValues([]);
+                                 onChange([]);
+                               }
+                               return;
+                             }
+                 
+                             // Individual toggle
+                             setSelectedValues((prev) => {
+                               const updated = prev.includes(val)
+                                 ? prev.filter((v) => v !== val)
+                                 : [...prev, val];
+                 
+                               onChange(updated);
+                               return updated;
+                             });
+                           };
+                 
+                           const allSelected = selectedValues.length === supplier.length;
+                 
+                           return (
+                             <fieldset className="inputField">
+                               <legend>
+                                 Choose Supplier
+                                 <span className="ms-3">
+                                   <input
+                                     id="supplier-all"
+                                     type="checkbox"
+                                     value="All"
+                                     checked={allSelected}
+                                     onChange={handleSupplierChange}
+                                   />
+                                   <Label for="supplier-all" className="ms-1">
+                                     Select All
+                                   </Label>
+                                 </span>
+                               </legend>
+                 
+                               <Row>
+                                 {supplier.map((item, index) => (
+                                   <Col key={index} sm="3">
+                                     <div className="checkbox checkbox-dark">
+                                       <input
+                                         id={`supplier-checkbox-${index}`}
+                                         type="checkbox"
+                                         value={String(item.value)}
+                                         checked={selectedValues.includes(String(item.value))}
+                                         onChange={handleSupplierChange}
+                                       />
+                                       <Label
+                                         for={`supplier-checkbox-${index}`}
+                                         className="ms-2"
+                                       >
+                                         {item.label}
+                                       </Label>
+                                     </div>
+                                   </Col>
+                                 ))}
+                               </Row>
+                 
+                               {errors.supplier && (
+                                 <span className="text-danger">{errors.supplier.message}</span>
+                               )}
+                             </fieldset>
+                           );
+                         }}
+                       />
                 </Col>
 
                 <Col sm="3">
@@ -301,7 +347,7 @@ const{data:country}=useCountry()
                 </Col>
               </Row>
             </Form>
-          </fieldset>
+        
         </Col>
       </Row>
     </Fragment>

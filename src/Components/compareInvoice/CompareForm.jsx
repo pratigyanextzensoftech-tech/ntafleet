@@ -58,6 +58,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
             <FormGroup className="m-form__group">
               <Row>
                 <InputGroup> 
+                
                   <Col sm="4">        <InputGroupText>From Date</InputGroupText>
                   </Col>
                   <Col sm="8">
