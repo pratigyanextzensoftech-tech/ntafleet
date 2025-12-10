@@ -30,7 +30,7 @@ import DatePicker from "react-datepicker";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {  useCompany,  useCountry,  useSupplier,  InvoiceType,} from "../../../Hooks/Dropdowns";
+import {  useCompany,  useCountry,  useSupplier,  InvoiceType,formatDate} from "../../../Hooks/Dropdowns";
 import Loader from "../../../Layout/Loader";
 const RetailToRack = ({
   btnTtitle, 
@@ -96,17 +96,14 @@ const RetailToRack = ({
   const onSubmit = (data) => {
     setLoading(true);
 let companyValue = "";
-if (Array.isArray(data.selectedCompanies)) {
-  if (data.selectedCompanies.includes("All Company")) {
-    companyValue = "All";   // 🔥 If ALL is selected
-  } else {
+if (Array.isArray(data.selectedCompanies)) { 
     companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
-  }
+  
 }
 console.log(companyValue)
     if (btnTtitle === "Search Company") {
-       const from_date= data.start ? data.start.toISOString().substring(0, 10) : "";
-       const to_date= data.end? data.end.toISOString().substring(0, 10) : "";
+       const from_date= data.start ?formatDate(data.start) : "";
+       const to_date= data.end? formatDate(data.end) : "";
        const invoicetype= data.invoiceType.value
       navigate(fullUrl+"&from_date="+from_date+"&to_date="+to_date+"&invoice_type="+invoicetype);
     } else {
@@ -121,12 +118,14 @@ console.log(companyValue)
           : invoice_type,
        owner_operator:  owner_operator?owner_operator :"" 
       };
+console.log("basePayload",basePayload);
 
       axios
         .post(api_name, basePayload, {
           headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
+          console.log("Response from API =>", res);
           toast.success(res.data.message);
           reset();
           setLoading(false);
