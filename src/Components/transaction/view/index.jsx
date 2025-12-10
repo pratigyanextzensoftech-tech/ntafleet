@@ -105,8 +105,17 @@ const columnsMap = {
 
   const fetchTotals = async (formData) => {
     try {
-      const response = await axios.get( tranaction_total,formData
-      );
+
+       const response = await axios.get(tranaction_total, 
+        {
+        params: {...formData,},paramsSerializer: params =>
+          qs.stringify(params, { arrayFormat: "repeat" }),
+       });
+
+
+
+      // const response = await axios.get( tranaction_total,formData
+      // );
       setTotals({
         taxamt: Number(response.data.taxamt || 0),
         amtcad: Number(response.data.amtcad || 0),
@@ -160,7 +169,7 @@ const columnsMap = {
 
   // ✅ Fetch paginated + filtered data
  const fetchData = async (page = 1, perPage = 10, filtersData = filters) => {
-    setLoading(true);
+ setLoading(true);
     try {
       const response = await axios.get(transactions, {
         params: {
@@ -221,9 +230,7 @@ const columnsMap = {
 
     setSelectedRow(response.data);
     setEdit(true);
-
     const encodedId = btoa(row.id); // encode ID
-
     navigate(`/edit-unknown/${encodedId}`, {
       state: { data: response.data }
     });
