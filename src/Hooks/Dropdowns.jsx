@@ -70,7 +70,7 @@ export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_
           break;
         case "6":
          
-           if (owner_operator_invoice){params.append("owner_operator_invoice", owner_operator_invoice);} 
+           if (owner_operator_invoice==="Yes"){params.append("owner_operator_invoice", owner_operator_invoice);} 
            else{ params.append("esso_inv_type", ta_retail_invoice);}
             
           break;
@@ -79,7 +79,7 @@ export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_
           break;
         case "10":
 
-         if (owner_operator_invoice){params.append("ul_owner_operator_invoice", owner_operator_invoice);} 
+         if (owner_operator_invoice==="Yes"){params.append("ul_owner_operator_invoice", owner_operator_invoice);} 
            else{ params.append("ul_inv_type", ta_retail_invoice);} 
            
           break;
