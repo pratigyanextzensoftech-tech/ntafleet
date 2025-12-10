@@ -154,18 +154,18 @@ const SendBulk = () => {
   {
     id: '1',
     label:"Send Invoice",
-    component: <DataTableComponent tableColumns={tableColumns}  tableData={data}/>,
+    component: <DataTableComponent loading={loading} tableColumns={tableColumns}  tableData={data} />,
   },
   {
     id: '2',
     label:"Sender Owner Operator Invoice",
-    component: <DataTableComponent tableColumns={tableColumns}  tableData={data}/>,
+    component: <DataTableComponent loading={ownerLoading} tableColumns={tableColumns}  tableData={data}/>,
   },
   
   {
     id: '3',
     label: "Send MoneyCode Invoice",
-    component:<DataTableComponent tableColumns={tableColumns}  tableData={data}/>,
+    component:<DataTableComponent loading={customizedLoading} tableColumns={tableColumns}  tableData={data}/>,
   },
    {
     id: '4',
@@ -185,31 +185,31 @@ const SendBulkTab = [
   {
     id: '1',
     label:"Send Invoice",
-    component: <SingleEssoForm company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} />,
+    component: <SingleEssoForm loading={loading} company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} />,
   },
   {
     id: '2',
     label:"Send Owner Operator Invoice",
-    component: <CreateInvoiceCommon validation={false}  company_list="list"
+    component: <CreateInvoiceCommon validation={false}  company_list="list" loading={ownerLoading}
  supplier_ids="6"  cust_inv_dropdown={true}   country_id="1" owner_operator_invoice="Yes" invoice_type_dropdown={true}  invoice_type="RG" btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
   },
   
   {
     id: '3',
     label: "Send MoneyCode Invoice",
-    component: <CreateInvoiceCommon company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={ownerHandleSearch}/>,
+    component: <CreateInvoiceCommon validation={false}  loading={customizedLoading} company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={ownerHandleSearch}/>,
   },
    {
     id: '4',
     label:"Send Customized Invoice",
-    component:  <CreateInvoiceCommon company_list="list" cust_inv_dropdown={true}
- supplier_ids="6,3" invoice_category_dropdown={true}   country_id="" invoice_type_dropdown={true} invoice_creation={true}  btnTtitle="Search Data" btn1Title="Reset"  title="Search Customized Invoice" onSearch={customizedHandleSearch}/>,
+    component:  <CreateInvoiceCommon invoice_creation="" invoice_type="" cust_inv_type="RG" validation={false} company_list="list" cust_inv_dropdown={true}
+ supplier_ids="6,3" invoice_category_dropdown={true}   country_id="" invoice_type_dropdown={true}   btnTtitle="Search Data" btn1Title="Reset"  title="Search Customized Invoice" onSearch={customizedHandleSearch}/>,
   },
  
    {
     id: '5',
     label:"Send T-check Invoice",
-    component: <CreateInvoiceCommon company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={ownerHandleSearch}/>,
+    component: <CreateInvoiceCommon validation={false} company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={ownerHandleSearch}/>,
   },
   
 ];

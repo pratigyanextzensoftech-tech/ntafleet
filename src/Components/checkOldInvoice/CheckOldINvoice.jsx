@@ -7,6 +7,9 @@ import Form from './CheckInvoiceForm';
 import DataTableComponent from '../Tables/DataTable/DataTableComponent';
 import { dummytabledata, tableColumns } from '../../Data/Table/checkInvoiceTableData';
 const CheckOldINvoice = () => {
+  const handleSearch=()=>{
+
+  }
   return (
     <Fragment>
       <Breadcrumbs parent='Invoice' title='check old Invoices' />
@@ -21,7 +24,7 @@ const CheckOldINvoice = () => {
             </Card>
           </Col>
         </Row> 
-        <DataTableComponent title="Invoices List" tableColumns={tableColumns} tableData={dummytabledata} />
+        <DataTableComponent onSearch={handleSearch} title="Invoices List" tableColumns={tableColumns} tableData={dummytabledata} />
       </Container>
     </Fragment>
   )

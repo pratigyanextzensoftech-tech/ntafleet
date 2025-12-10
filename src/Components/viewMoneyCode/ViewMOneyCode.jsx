@@ -190,7 +190,7 @@ const ViewMoneyCode = () => {
             <Card>
               <HeaderCard title="MoneyCode Invoices List" />
               <CardBody>
-                <ViewMoneyCodeForm />
+                <ViewMoneyCodeForm onSearch={handleSearch}/>
               </CardBody>
             </Card>
           </Col>

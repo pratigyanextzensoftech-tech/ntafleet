@@ -6,7 +6,7 @@ import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import { useCompany } from '../../Hooks/Dropdowns';
-const ViewMoneyCodeForm = () => {
+const ViewMoneyCodeForm = ({onSearch}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const{data:company}=useCompany()
     const {
@@ -26,12 +26,37 @@ const ViewMoneyCodeForm = () => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-    const onSubmit = (data) => {
-
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-
+      const onSubmit = (data) => {
+    
+   
+    const basePayload = {
+      company_id:data?.company?.value ||"" ,
+      from: data.from ? formatDate(data.from) : "",
+      to: data.to ? formatDate(data.to) : "",
+     
     };
+ if (onSearch){
+onSearch(basePayload)
+
+ }   ;
+         // setLoading(true);
+    // axios
+    //   .post(api_name, basePayload, {
+    //     headers: { "Content-Type": "application/json" },
+    //   })
+
+    //   .then((res) => {
+    //     toast.success(res.data.message);
+    //     reset();
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err);
+    //     setLoading(false);
+    //   });
+
+    console.log("Final Payload Sent =>", basePayload);
+  };
   
 
     

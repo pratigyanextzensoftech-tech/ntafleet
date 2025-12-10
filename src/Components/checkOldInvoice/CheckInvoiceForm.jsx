@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Select from 'react-select'
-import { checkBoxData, optionscountry, optionscompany,customizedTypeType,invoiceType,InvoiceCategory,InvoiceShow, supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
+import { checkBoxData, optionscountry, supplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../AbstractElements';
+import { formatDate } from '../../Hooks/Dropdowns';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-const CheckInvoiceForm = () => {
+const CheckInvoiceForm = ({onSearch}) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const {
         register,
@@ -14,34 +15,54 @@ const CheckInvoiceForm = () => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
-
-    const onSubmit = (data) => {
-
-        console.log("Form Data:", data);  // ✅ This will print your inputs
-        // alert("Form submitted successfully!");
-
+ const onSubmit = (data) => {
+    console.log(data);
+    
+     let companyValue = "";
+   if (Array.isArray(data.selectedCompanies)) {
+  if (data.selectedCompanies.includes("All Company")) {
+    companyValue = "All";   // 🔥 If ALL is selected
+  } else {
+    companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
+  }
+}
+    const basePayload = {
+     
+      supplier_id: data?.supplier?.value ||"",
+      country_id: data?.country?.value ||"",
+      from: data.from ? formatDate(data.from) : "",
+      to: data.to ? formatDate(data.to) : "",
+     
     };
+ if (onSearch){onSearch(basePayload)
+
+ }   ;
+         // setLoading(true);
+    // axios
+    //   .post(api_name, basePayload, {
+    //     headers: { "Content-Type": "application/json" },
+    //   })
+
+    //   .then((res) => {
+    //     toast.success(res.data.message);
+    //     reset();
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err);
+    //     setLoading(false);
+    //   });
+
+    console.log("Final Payload Sent =>", basePayload);
+  };
     const handleReset = () => {
     reset(); // reset all fields back to defaultValues (or empty if none given)
   };
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
+   
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-
-           
-             
                 <Row className="mt-3">
                     <Col sm="2">
                         <Row>

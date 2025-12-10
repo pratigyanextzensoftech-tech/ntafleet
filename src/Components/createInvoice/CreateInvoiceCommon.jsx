@@ -84,22 +84,27 @@ const CreateInvoiceCommon = ({
     companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
   }
 }
-    setLoading(true);
     const basePayload = {
       company_id:company_list==="checkbox"? companyValue : data?.company?.value.toString()?data?.company?.value.toString():"" ,
       invoice_creation: invoice_creation ? invoice_creation : "",
       supplier_id: data?.supplier?.value ||"",
-      country_id: data.country.value,
+      country_id: data?.country?.value ||"",
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
       invoice_type: data.invoice_type ? data.invoice_type.value : invoice_type,
       inv_cat: data.invCateory ? data.invCateory.value : "",
+      cust_inv_type: data.cust_inv_type ? data.cust_inv_type.value : ""
     };
- if (onSearch) onSearch(basePayload);
+ if (onSearch){
+onSearch(basePayload)
+
+ }   ;
+         // setLoading(true);
     // axios
     //   .post(api_name, basePayload, {
     //     headers: { "Content-Type": "application/json" },
     //   })
+
     //   .then((res) => {
     //     toast.success(res.data.message);
     //     reset();
@@ -174,7 +179,7 @@ const CreateInvoiceCommon = ({
                               {...field}
                               options={companies}
                               className="form-control p-0 border-0"
-                              placeholder="Select a country"
+                              placeholder="Select Company"
                             />
                           )}
                         />
@@ -306,7 +311,7 @@ const CreateInvoiceCommon = ({
 
                       <Controller
                         name="country"
-                        rules={{ required: "Country is required" }}
+                        rules={validation!==false &&{ required: "Country is required" }}
                         control={control}
                         defaultValue={null}
                         render={({ field }) => {
@@ -329,7 +334,7 @@ const CreateInvoiceCommon = ({
                       />
                     </InputGroup>
 
-                    {errors.country && (
+                    {validation!==false && errors.country && (
                       <span className="text-danger">
                         {errors.country?.message}
                       </span>
@@ -343,7 +348,7 @@ const CreateInvoiceCommon = ({
                       <InputGroup>
                         <InputGroupText>Invoice Type</InputGroupText>
                         <Controller
-                          name="invoiceType"
+                          name="invoice_type"
                           rules={validation!==false &&{ required: "Invoice Type is required" }}
                           control={control}
                           defaultValue={null}
@@ -416,7 +421,7 @@ const CreateInvoiceCommon = ({
                       <InputGroup>
                         <InputGroupText>Customized Type</InputGroupText>
                         <Controller
-                          name="invCateory"
+                          name="cust_inv_type"
                           rules={validation!==false && { required: "Customized Type is required" }}
                           control={control}
                           defaultValue={null}
