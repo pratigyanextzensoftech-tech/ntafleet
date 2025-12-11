@@ -77,7 +77,7 @@ const PricingCommon = ({
       supplier:data.supplier.label,
       testing_email :testingEmail?data.testingEmail:"",
       tax: tax? tax:"No",
-      pricing_date:data.pricingDate? formatDate(data.pricingDate):"",
+      pricing_date:data?.pricingDate? formatDate(data.pricingDate):"",
       invoice_type:discountType?data.DiscountType.value:"",
       added_by:userId
     };

@@ -1,5 +1,5 @@
 import PricingCommon from '../../Components/pricing/PricingCommon';
-import { create_pricing_pdf } from '../../api';
+import { create_pricing_pdf,esso_pricing_pdf } from '../../api';
 
 export const EssoBulkTab = [
   {

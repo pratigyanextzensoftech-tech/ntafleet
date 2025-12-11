@@ -99,8 +99,6 @@ export const CreateTcheckInvoice = `${baseurl}/api/invoice/create_tcheck_invoice
 export const retail_to_rack_Api = `${baseurl}/api/transactions/retailtorack`;
 export const create_pricing_pdf = `${baseurl}/api/pricing/create_pricing_pdf`;
 
-
-
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;
 export const love_cent = `${baseurl}/api/love_cent`;

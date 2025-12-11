@@ -99,21 +99,21 @@ const CreateInvoiceCommon = ({
 onSearch(basePayload)
 
  }   ;
-         // setLoading(true);
-    // axios
-    //   .post(api_name, basePayload, {
-    //     headers: { "Content-Type": "application/json" },
-    //   })
+         setLoading(true);
+    axios
+      .post(api_name, basePayload, {
+        headers: { "Content-Type": "application/json" },
+      })
 
-    //   .then((res) => {
-    //     toast.success(res.data.message);
-    //     reset();
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err);
-    //     setLoading(false);
-    //   });
+      .then((res) => {
+        toast.success(res.data.message);
+        reset();
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.error(err);
+        setLoading(false);
+      });
 
     console.log("Final Payload Sent =>", basePayload);
   };

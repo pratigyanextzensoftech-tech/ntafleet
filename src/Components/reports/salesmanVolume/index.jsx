@@ -13,7 +13,6 @@ import { FaEdit, FaTrashAlt, FaFilePdf, FaFileExcel, FaEnvelope } from 'react-ic
 
 const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
-  
   const [tableColumns, setTableColumns] = useState([]);
   const columnsMap = {
     "ID #": "id",
