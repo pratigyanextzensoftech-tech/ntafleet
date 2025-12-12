@@ -1,4 +1,4 @@
-import React, { Fragment,useState } from 'react'
+import React, { Fragment,useState,useEffect } from 'react'
 import {
   Col,
   Row,
@@ -20,6 +20,11 @@ import InputText from '../Forms/FormControl/formInput/InputText';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import Loader from '../../Layout/Loader';
+import usePaginatedTable from '../../Hooks/usePagination';
+import { FaEnvelope,FaTrashAlt,FaFileExcel,FaFilePdf,FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import DataTableComponent from '../Tables/DataTable/DataTableComponent';
 const PricingCommon = ({
   title,
   btnTitle,
@@ -30,19 +35,20 @@ const PricingCommon = ({
   company_list,
   testingEmail,
   apiName,
+  listapi,
   supplier,
   discountType,
   supplier_ids,
   tax,
   validation, rackus,
-  rackca
+  rackca,table,invoiceType
 }) => {
-
+ const [selectedRows, setSelectedRows] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
   const { data: companies } = useCompany();
   const { data: supplierData } = useSupplier(supplier_ids);
-  const [loading, setLoading] = useState(false);
   const [selectedValues, setSelectedValues] = useState([]);
-
+const[loading,setLoading]=useState(false)
   const {
     register,
     control,
@@ -69,7 +75,7 @@ const PricingCommon = ({
     companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
   }
 }
-  console.log(data)
+  // console.log(data)
     setLoading(true);
     const basePayload = {
       company_id: company_list==="checkbox"? companyValue : "",
@@ -84,8 +90,7 @@ const PricingCommon = ({
 
     axios
       .post(apiName, basePayload, {
-        headers: { "Content-Type": "application/json" },
-      })
+  params: basePayload})
       .then((res) => {  
         res.data.success?toast.success(res.data.message):toast.error(res.data.message);
         setLoading(false);
@@ -131,9 +136,246 @@ const PricingCommon = ({
       }
     }
 
+    
     setSelectedValues(updated);
     field.onChange(updated);
   };
+const handleSelectAll = (checked, data) => {
+  setSelectAll(checked);
+
+  if (!checked) {
+    setSelectedRows([]);
+    return;
+  }
+const handleDelete=()=>{
+
+}
+  // 1️⃣ Create comma-separated string
+  const ids = data.map(row => row["ID #"]);
+  const idString = ids.join(",");   // <-- THIS YOU WANT
+  console.log("Final String:", idString);
+
+  setSelectedRows(idString); // store comma string if needed
+
+  // 2️⃣ SWAL Confirmation
+  Swal.fire({
+    title: "Are you sure?",
+    text: `Do you want to delete all ${ids.length} selected records?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete all!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      // 3️⃣ API CALL — send comma string
+      axios
+        .post(`${listapi}/bulk-delete`, { ids: idString })
+        .then(() => {
+          
+          // remove deleted rows
+          setData(prev => prev.filter(row => !ids.includes(row["ID #"])));
+
+          setSelectedRows("");
+          setSelectAll(false);
+
+          Swal.fire("Deleted!", "All selected records have been deleted.", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete selected records.", "error");
+        });
+
+    } else {
+      // ❌ Cancel → uncheck all
+      setSelectedRows("");
+      setSelectAll(false);
+    }
+  });
+};
+
+
+
+
+ const handleSelectRow = (id) => {
+  // 1️⃣ Toggle checkbox first
+  const alreadySelected = selectedRows.includes(id);
+
+  // Update selection immediately
+  const newSelection = alreadySelected
+    ? selectedRows.filter((rowId) => rowId !== id)
+    : [...selectedRows, id];
+
+  setSelectedRows(newSelection);
+
+  // 2️⃣ Now show confirmation popup
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+      // 3️⃣ Delete the item
+      axios
+        .delete(`${listapi}/${id}`)
+        .then(() => {
+          setData((prev) => prev.filter((item) => item["ID #"] !== id));
+          setSelectedRows([]); // or remove only that ID
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+
+    } else {
+      // 4️⃣ User canceled → revert checkbox state
+      setSelectedRows((prev) =>
+        alreadySelected
+          ? [...prev, id] // user unchecked but canceled → re-check
+          : prev.filter((rowId) => rowId !== id) // user checked but canceled → un-check
+      );
+    }
+  });
+};
+
+  const [openRowId, setOpenRowId] = useState(null);
+      const [tableColumns, setTableColumns] = useState([]);
+      const columnsMap = {
+        "ID #": "id",
+        "Company": "company_id",
+        "Pricing Date": "pricing_date",
+        "Supplier": "supplier",
+        "Entry_Count": "entry_count",
+        "Added_By": "idby",
+        "Added_On": "added_on",
+        "Mailed_By": "mailby",
+        "Mailed_On": "mail_on",
+      };
+    
+      const {
+        data,
+        totalRows,
+        loading:essoLoading,
+        handlePageChange,
+        handlePerRowsChange,
+        handleSearch, // ✅ Added
+        setData,
+      } = usePaginatedTable({ apiUrl: listapi, columnsMap,tax,invoiceType });
+      useEffect(() => {
+        console.log(data,"list")
+        const cols = Object.keys(columnsMap).map((key) => ({
+          name: key,
+          selector: (row) => row[key],
+          sortable: true,
+          wrap: true,
+        }));
+      cols.push({
+        name: (
+          <div className="d-flex align-items-center">
+            <span className="me-2 fw-bold">Delete</span>
+            <input
+              type="checkbox"
+              checked={selectAll}
+              onChange={(e) => handleSelectAll(e.target.checked, data)}
+            />
+          </div>
+        ),
+        cell: (row) => (
+          <input
+            type="checkbox"
+            checked={selectedRows.includes(row["ID #"])}
+            onChange={() => handleSelectRow(row["ID #"])}
+          />
+        ),
+        width: "120px",
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+      });
+        cols.push({
+          name: "Action",
+          cell: (row) => (
+            <div className="position-relative dropdown-action">
+              <button
+                className="btn btn-sm btn-primary px-2"
+                onClick={() => setOpenRowId(openRowId === row["ID #"] ? null : row["ID #"])}
+              >
+                Action
+              </button>
+    
+              {openRowId === row["ID #"] && (
+                <div
+                  className="position-absolute bg-white border rounded shadow"
+                  style={{
+                    zIndex: 1000,
+                    right: 0,
+                    marginTop: 5,
+                    minWidth: 160,
+                    padding: "5px 0",
+                  }}
+                >
+                  <Link
+                    to={`/download_pdf/${btoa(row.id)}`}
+                    className="dropdown-item d-flex align-items-center text-danger"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+                  >
+                    <FaFilePdf /> View Pdf
+                  </Link>
+    
+                  <Link
+                    to={`/download_excel/${btoa(row.id)}`}
+                    className="dropdown-item d-flex align-items-center text-success"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+                  >
+                    <FaFileExcel /> View Admin Pdf
+                  </Link>
+    
+                  <button
+                    className="dropdown-item d-flex align-items-center text-primary"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+    
+                  >
+                    <FaEnvelope />Email Pricing Pdf
+                  </button>
+    
+                  <button
+                    className="dropdown-item d-flex align-items-center text-danger"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+                  >
+                    <FaTrashAlt /> Testing Email Pricing Pdf
+                  </button>
+                </div>
+              )}
+    
+            </div>
+          ),
+        });
+        
+    
+        setTableColumns(cols);
+      }, [openRowId,data, selectedRows, selectAll]);
+    
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (!event.target.closest(".dropdown-action")) {
+            setOpenRowId(null);
+          }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+      }, []);
+    
+      const handleDelete = (row) => {
+     
+      };
   return (
     <Fragment>
             {loading && <Loader loading={true} />}
@@ -529,6 +771,24 @@ const PricingCommon = ({
           </fieldset>
         </Col>
       </Row>
+
+        {table===true &&(
+          <>
+          <div className='my-3 text-end'>
+          <button onClick={handleDelete} className='btn btn-secondary px-3 '>Delete Pricing</button>
+          </div>
+ <DataTableComponent
+          title="Pricing PDF List (Without Tax) "
+          tableColumns={tableColumns}
+          tableData={data}
+          loading={essoLoading}
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
+        />
+        </>)}
     </Fragment>
   );
 };
