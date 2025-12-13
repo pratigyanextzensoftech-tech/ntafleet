@@ -270,12 +270,12 @@ export const exportType = [
 
 ]
 export const InvoiceShow = [
-    { label: 'All Types ', value:"All" },
+    { label: 'All ', value:"" },
     { value: '1', label: 'Show' },
     { value: '0', label: 'Hide' },
 ]
 export const InvoiceCategory = [
-    { value: 'All Invoice', label: 'All Invoice' },
+    { value: ' ', label: 'All Invoice' },
     { value: '1', label: 'Total Not Zero (0)' },
     { value: '2', label: 'Total Only Zero (0)' },
 
@@ -315,9 +315,9 @@ export const InvoiceStatus = [
     { value: '0', label: 'Not Invoiced' },
 ]
 export const invoiceType = [
-    { label: 'All Type', value: 'All' },
-    { value: 'Yes', label: 'Rack Invoice' },
-    { value: 'No', label: 'Retail Invoice' },
+    { label: 'All Type', value: '' },
+    { value: 'Rack', label: 'Rack Invoice' },
+    { value: 'Retail', label: 'Retail Invoice' },
 ]
 export const customizedTypeType = [
     { label: 'Select Status', isDisabled: true },

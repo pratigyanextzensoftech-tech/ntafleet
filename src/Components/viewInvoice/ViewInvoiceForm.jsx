@@ -215,6 +215,8 @@ const{data:country}=useCountry()
                                 className={`form-control digits`}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
+                                dateFormat="yyyy-MM-dd"
+
                               />
                             )}
                           />

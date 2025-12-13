@@ -5,7 +5,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { View_Invoice_Table } from '../../Data/tab/ViewInvoiceTable'
 import ViewMoneyCodeForm from './ViewMoneyCodeForm'
 import DataTableComponent from '../Tables/DataTable/DataTableComponent'
-import {  moneycode_invoice as APINAME} from '../../api/index'
+import {  moneycode_invoice as APINAME,retail_invoice,invoice} from '../../api/index'
 import usePaginatedTable from '../../Hooks/usePagination';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -20,6 +20,48 @@ import {
 const ViewMoneyCode = () => {
  const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
+   const handleChange = (row, field, value) => {
+    console.log(row)
+    // 1️⃣ Optimistic UI update
+    setData((prevData) =>
+      prevData.map((item) =>
+        item.id === row.id
+          ? { ...item, [field]: value }
+          : item
+      )
+    );
+  
+    // 2️⃣ Prepare payload
+    const payload = {
+      id: row.id,
+      [field]: value,
+    };
+  
+    // 3️⃣ Choose API
+    const apiUrl =
+      row.tp === "Retail"
+        ? retail_invoice
+        : invoice;
+  
+    // 4️⃣ PUT API call
+    axios
+      .put(`${apiUrl}/${row.id}`, payload)
+      .then((res) => {
+        console.log("Updated successfully:", res.data);
+      })
+      .catch((err) => {
+        console.error("Update failed:", err);
+  
+        // 🔁 rollback on failure
+        setData((prevData) =>
+          prevData.map((item) =>
+            item["Invoice  #"] === row["Invoice  #"]
+              ? { ...item, [field]: row[field] }
+              : item
+          )
+        );
+      });
+  };
   const columnsMap = {
     "Invoice #": "invoice_id",
     "Company":"company_name",
@@ -27,7 +69,6 @@ const ViewMoneyCode = () => {
     "To Date": "to_date",
     "Due Date": "due_date",
     "Total Due": "total",
-    "Status": "status",
    
   };
 
@@ -47,6 +88,22 @@ const ViewMoneyCode = () => {
       sortable: true,
       wrap: true,
     }));
+     cols.push({
+      name: "Status",
+      cell: (row) => (
+        <select
+          className="form-select form-select-sm"
+
+            value={row.admin_status}  
+          onChange={(e) => handleChange(row, "status", e.target.value)}  >
+          <option value="Open">Open</option>
+          <option value="Entered">Entered</option>
+          <option value="Close">Close</option>
+
+        </select>
+      ),
+      width: "140px",
+    });
     cols.push({
       name: "Action",
       cell: (row) => (
