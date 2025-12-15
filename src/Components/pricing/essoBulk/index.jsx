@@ -148,12 +148,13 @@ const Index = () => {
             <Card>
               <HeaderCard title="Create ESSO Bulk Pricing PDF" />
               <CardBody>
-                <BasicTabCard tabContent={EssoBulkTab} />
+                <BasicTabCard tabContent={EssoBulkTab}  />
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <DataTableComponent
+      
+ {/* <DataTableComponent
           title="Pricing PDF List (Without Tax) "
           tableColumns={tableColumns}
           tableData={data}
@@ -163,7 +164,9 @@ const Index = () => {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
-        />
+        /> */}
+      
+       
       </Container>
     </Fragment>
   );

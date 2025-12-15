@@ -5,6 +5,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import useSelectableColumns from "../../../Hooks/useSelectableColumns";
+import {PricingTab} from '../../../Data/tab/PricingTab'
 import {
   ta_pricing_actual as TA_ACTUAL_API,
   ta_pricing as TA_CAPPED_API,
@@ -230,11 +231,24 @@ const tabs = [
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Pricing Management" />
       <Container fluid>
+         <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Create Pricing PDF" />
+              <CardBody>
+              <BasicTabCard tabContent={PricingTab} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <Row>
           <Col sm="12">
             <Card>
               <HeaderCard title="Pricing List" />
+
               <CardBody>
+                                
+
                 <BasicTabCard tabContent={pricingListTableTab} />
               </CardBody>
             </Card>

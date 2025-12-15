@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../UiKits/Tabs/BoostrapTabs/BasicTabCard";
-import { combine_invoice, owner_invoice, customized_invoice } from "../../api";
+import { combine_invoice, owner_invoice, customized_invoice,retail_invoice,invoice } from "../../api";
 import OwnerOperator from "../viewInvoice/OwnerOperator";
 import ViewInvoiceForm from "../viewInvoice/ViewInvoiceForm";
 import CustomizedInvoice from "../viewInvoice/CustomizedInvoice";
@@ -24,7 +24,7 @@ const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
   const columnsMap = {
-    "Invoice  #": "invoice_id",
+    "Invoice#": "invoice_id",
     Company: "company_name",
     "From ": "from",
     To: "to",
@@ -37,10 +37,180 @@ const ViewInvoice = () => {
     Country: "country",
     Supplier: "supplier_id",
     Mailed_By: "mailby",
-    Mailed_On: "mail_on",
-    "Show/Hide": "total_gln",
-    Status: "status",
+    Mailed_On: "mail_on", 
   };
+//  const handleChange = (fullRow, value, source) => {
+//   const oldValue = fullRow.mails;
+//   console.log(fullRow)
+//   const setTableData = getTableSetter(source);
+
+//   // 1️⃣ Optimistic UI update
+//   setTableData((prev) =>
+//     prev.map((row) =>
+//       row.fulldata.invoice_id === fullRow.invoice_id
+//         ? {
+//             ...row,
+//             fulldata: {
+//               ...row.fulldata,
+//               mails: Number(value),
+//             },
+//           }
+//         : row
+//     )
+//   );
+
+//   Swal.fire({
+//     title: "Are you sure?",
+//     text: "Change  status?",
+//     icon: "warning",
+//     showCancelButton: true,
+//   }).then((result) => {
+//     if (!result.isConfirmed) {
+//       // ❌ rollback
+//       setTableData((prev) =>
+//         prev.map((row) =>
+//           row.fulldata.invoice_id === fullRow.invoice_id
+//             ? {
+//                 ...row,
+//                 fulldata: {
+//                   ...row.fulldata,
+//                   mails: oldValue,
+//                 },
+//               }
+//             : row
+//         )
+//       );
+//       return;
+//     }
+
+//     // 2️⃣ Decide API
+//     let api;
+//     if (fullRow.tp === "Retail") api = invoice;
+//     else if (fullRow.tp === "Rack") api = retail_invoice;
+//     else if (source === owner_invoice) api = owner_invoice;
+//     else if (source === customized_invoice) api = customized_invoice;
+//     else api = invoice;
+
+//     // 3️⃣ API call
+//     axios
+//       .put(`${api}/${fullRow.invoice_id}`, {
+//         id: fullRow.invoice_id,
+//         mails: oldValue,
+//         value:value
+//       })
+//       .catch(() => {
+//         // ❌ rollback on API failure
+//         setTableData((prev) =>
+//           prev.map((row) =>
+//             row.fulldata.invoice_id === fullRow.invoice_id
+//               ? {
+//                   ...row,
+//                   fulldata: {
+//                     ...row.fulldata,
+//                     admin_status: fullRow.admin_status,
+//                   },
+//                 }
+//               : row
+//           )
+//         );
+//       });
+//   });
+// };
+
+
+const getTableSetter = (source) => {
+  if (source === combine_invoice) return setData;
+  if (source === owner_invoice) return handleSetData;
+  if (source === customized_invoice) return setCustomizedData;
+  return setData;
+};
+
+const handleShowHideChange = (fullRow, value, source) => {
+  const oldValue = fullRow.mails;
+  const setTableData = getTableSetter(source);
+
+  // 1️⃣ Optimistic UI update
+  setTableData((prev) =>
+    prev.map((row) =>
+      row.fulldata.invoice_id === fullRow.invoice_id
+        ? {
+            ...row,
+            fulldata: {
+              ...row.fulldata,
+              mails: Number(value),
+              // status:fullRow.status,
+              admin_status:fullRow.admin_status
+            },
+          }
+        : row
+    )
+  );
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Change Show / Hide status?",
+    icon: "warning",
+    showCancelButton: true,
+  }).then((result) => {
+    if (!result.isConfirmed) {
+      // ❌ rollback
+      setTableData((prev) =>
+        prev.map((row) =>
+          row.fulldata.invoice_id === fullRow.invoice_id
+            ? {
+                ...row,
+                fulldata: {
+                  ...row.fulldata,
+                  mails: oldValue,
+                  // status:fullRow.status,
+                  admin_status:fullRow.admin_status
+                },
+              }
+            : row
+        )
+      );
+      return;
+    }
+
+    // 2️⃣ Decide API
+    let api;
+    if (fullRow.tp === "Retail") api = invoice;
+    else if (fullRow.tp === "Rack") api = retail_invoice;
+    else if (source === owner_invoice) api = owner_invoice;
+    else if (source === customized_invoice) api = customized_invoice;
+    else api = invoice;
+
+    // 3️⃣ API call
+    axios
+      .put(`${api}/${fullRow.invoice_id}`, {
+        id: fullRow.invoice_id,
+        mails: Number(value),
+        // status:fullRow.status,
+        admin_status:fullRow.admin_status
+
+      })
+      .catch(() => {
+        // ❌ rollback on API failure
+        setTableData((prev) =>
+          prev.map((row) =>
+            row.fulldata.invoice_id === fullRow.invoice_id
+              ? {
+                  ...row,
+                  fulldata: {
+                    ...row.fulldata,
+                    mails: oldValue,
+                  // status:fullRow.status,
+              admin_status:fullRow.admin_status
+                  },
+                }
+              : row
+          )
+        );
+      });
+  });
+};
+
+
 
   const {
     data,
@@ -149,19 +319,51 @@ const ViewInvoice = () => {
       sortable: true,
       wrap: true,
     }));
+    cols.push({
+  name: "Show/Hide",
+  cell: (row) => (
+    <select
+      className="form-select form-select-sm"
+      value={String(row.fulldata.mails)}   // ✅ correct source
+      onChange={(e) =>
+        handleShowHideChange(row.fulldata, e.target.value, row.source)
+      }
+    >
+      <option value="1">Show</option>
+      <option value="0">Hide</option>
+    </select>
+  ),
+  width: "140px",
+});
 
+  cols.push({
+      name: "Status",
+      cell: (row) => (
+        <select
+          className="form-select form-select-sm"
+
+            value={row.fulldata.admin_status}  
+          onChange={(e) => handleShowHideChange(row.fulldata, e.target.value, row.source)}  >
+          <option value="Open">Open</option>
+          <option value="Entered">Entered</option>
+          <option value="Close">Close</option>
+
+        </select>
+      ),
+      width: "140px",
+    });
     cols.push({
       name: "Action",
       cell: (row) => (
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row["Invoice  #"] ? null : row["Invoice  #"])}
+            onClick={() => setOpenRowId(openRowId === row["Invoice#"] ? null : row["Invoice#"])}
           >
             Action
           </button>
 
-          {openRowId === row["Invoice  #"] && (
+          {openRowId === row["Invoice#"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -235,10 +437,10 @@ const ViewInvoice = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${combine_invoice}/${row["Invoice  #"]}`)
+          .delete(`${combine_invoice}/${row["Invoice#"]}`)
           .then(() => {
             setData((prevData) =>
-              prevData.filter((item) => item["Invoice  #"] !== row["Invoice  #"])
+              prevData.filter((item) => item["Invoice#"] !== row["Invoice#"])
             );
             Swal.fire("Deleted!", "Record deleted successfully.", "success");
           })
