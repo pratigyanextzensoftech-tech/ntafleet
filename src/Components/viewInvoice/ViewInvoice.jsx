@@ -12,6 +12,7 @@ import usePaginatedTable from "../../Hooks/usePagination";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import $ from "jquery";
 import {
   FaEdit,
   FaTrashAlt,
@@ -19,6 +20,7 @@ import {
   FaFileExcel,
   FaEnvelope,
 } from "react-icons/fa";
+import { Selected } from "../../Constant";
 
 const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -125,35 +127,17 @@ const getTableSetter = (source) => {
   return setData;
 };
 
-const handleShowHideChange = (fullRow, value, source) => {
-  const oldValue = fullRow.mails;
-  const setTableData = getTableSetter(source);
-
-  // 1️⃣ Optimistic UI update
-  setTableData((prev) =>
-    prev.map((row) =>
-      row.fulldata.invoice_id === fullRow.invoice_id
-        ? {
-            ...row,
-            fulldata: {
-              ...row.fulldata,
-              mails: Number(value),
-              // status:fullRow.status,
-              admin_status:fullRow.admin_status
-            },
-          }
-        : row
-    )
-  );
-
+const handleShowHideChange = (fullRow,source) => { 
+const mails = $("#mails_" + fullRow.invoice_id).val();
+const admin_status = $("#admin_status_" + fullRow.invoice_id).val(); 
+const setTableData = getTableSetter(source); 
   Swal.fire({
     title: "Are you sure?",
     text: "Change Show / Hide status?",
     icon: "warning",
     showCancelButton: true,
   }).then((result) => {
-    if (!result.isConfirmed) {
-      // ❌ rollback
+    if (result.isConfirmed) { 
       setTableData((prev) =>
         prev.map((row) =>
           row.fulldata.invoice_id === fullRow.invoice_id
@@ -161,36 +145,27 @@ const handleShowHideChange = (fullRow, value, source) => {
                 ...row,
                 fulldata: {
                   ...row.fulldata,
-                  mails: oldValue,
-                  // status:fullRow.status,
-                  admin_status:fullRow.admin_status
+                  mails: mails, 
+                  admin_status:admin_status
                 },
               }
             : row
         )
       );
-      return;
-    }
-
-    // 2️⃣ Decide API
-    let api;
+        let api;
     if (fullRow.tp === "Retail") api = invoice;
     else if (fullRow.tp === "Rack") api = retail_invoice;
     else if (source === owner_invoice) api = owner_invoice;
     else if (source === customized_invoice) api = customized_invoice;
     else api = invoice;
-
     // 3️⃣ API call
-    axios
-      .put(`${api}/${fullRow.invoice_id}`, {
-        id: fullRow.invoice_id,
-        mails: Number(value),
-        // status:fullRow.status,
-        admin_status:fullRow.admin_status
 
-      })
-      .catch(() => {
-        // ❌ rollback on API failure
+    const update_status={ id: fullRow.invoice_id,  mails: Number(mails),  admin_status:admin_status}
+    console.log("update_status : ",update_status);
+    
+    axios
+      .put(`${api}/${fullRow.invoice_id}`, update_status)
+      .catch(() => { 
         setTableData((prev) =>
           prev.map((row) =>
             row.fulldata.invoice_id === fullRow.invoice_id
@@ -198,15 +173,18 @@ const handleShowHideChange = (fullRow, value, source) => {
                   ...row,
                   fulldata: {
                     ...row.fulldata,
-                    mails: oldValue,
-                  // status:fullRow.status,
-              admin_status:fullRow.admin_status
+                    mails: mails, 
+                    admin_status:admin_status
                   },
                 }
               : row
           )
         );
       });
+    }
+
+    // 2️⃣ Decide API
+  
   });
 };
 
@@ -323,10 +301,10 @@ const handleShowHideChange = (fullRow, value, source) => {
   name: "Show/Hide",
   cell: (row) => (
     <select
-      className="form-select form-select-sm"
+      className="form-select form-select-sm" id={`mails_${row.fulldata.invoice_id}`}
       value={String(row.fulldata.mails)}   // ✅ correct source
       onChange={(e) =>
-        handleShowHideChange(row.fulldata, e.target.value, row.source)
+        handleShowHideChange(row.fulldata, row.source)
       }
     >
       <option value="1">Show</option>
@@ -340,10 +318,9 @@ const handleShowHideChange = (fullRow, value, source) => {
       name: "Status",
       cell: (row) => (
         <select
-          className="form-select form-select-sm"
-
+          className="form-select form-select-sm"   id={`admin_status_${row.fulldata.invoice_id}`}
             value={row.fulldata.admin_status}  
-          onChange={(e) => handleShowHideChange(row.fulldata, e.target.value, row.source)}  >
+          onChange={(e) => handleShowHideChange(row.fulldata, row.source)}  >
           <option value="Open">Open</option>
           <option value="Entered">Entered</option>
           <option value="Close">Close</option>
