@@ -39,47 +39,83 @@ const ViewInvoice = () => {
     Mailed_By: "mailby",
     Mailed_On: "mail_on", 
   };
-  const handleChange = (row, field, value) => {
-  // 1️⃣ Optimistic UI update
-  setData((prevData) =>
-    prevData.map((item) =>
-      item["Invoice#"] === row["Invoice#"]
-        ? { ...item, [field]: value }
-        : item
-    )
-  );
+//  const handleChange = (fullRow, value, source) => {
+//   const oldValue = fullRow.mails;
+//   console.log(fullRow)
+//   const setTableData = getTableSetter(source);
 
-  // 2️⃣ Prepare payload
-  const payload = {
-    id: row["Invoice#"],
-    [field]: value,
-  };
+//   // 1️⃣ Optimistic UI update
+//   setTableData((prev) =>
+//     prev.map((row) =>
+//       row.fulldata.invoice_id === fullRow.invoice_id
+//         ? {
+//             ...row,
+//             fulldata: {
+//               ...row.fulldata,
+//               mails: Number(value),
+//             },
+//           }
+//         : row
+//     )
+//   );
 
-  // 3️⃣ Choose API
-  const apiUrl =
-    row.tp === "Retail"
-      ? retail_invoice
-      : invoice;
+//   Swal.fire({
+//     title: "Are you sure?",
+//     text: "Change  status?",
+//     icon: "warning",
+//     showCancelButton: true,
+//   }).then((result) => {
+//     if (!result.isConfirmed) {
+//       // ❌ rollback
+//       setTableData((prev) =>
+//         prev.map((row) =>
+//           row.fulldata.invoice_id === fullRow.invoice_id
+//             ? {
+//                 ...row,
+//                 fulldata: {
+//                   ...row.fulldata,
+//                   mails: oldValue,
+//                 },
+//               }
+//             : row
+//         )
+//       );
+//       return;
+//     }
 
-  // 4️⃣ PUT API call
-  axios
-    .put(`${apiUrl}/${row["Invoice#"]}`, payload)
-    .then((res) => {
-      console.log("Updated successfully:", res.data);
-    })
-    .catch((err) => {
-      console.error("Update failed:", err);
+//     // 2️⃣ Decide API
+//     let api;
+//     if (fullRow.tp === "Retail") api = invoice;
+//     else if (fullRow.tp === "Rack") api = retail_invoice;
+//     else if (source === owner_invoice) api = owner_invoice;
+//     else if (source === customized_invoice) api = customized_invoice;
+//     else api = invoice;
 
-      // 🔁 rollback on failure
-      setData((prevData) =>
-        prevData.map((item) =>
-          item["Invoice#"] === row["Invoice#"]
-            ? { ...item, [field]: row[field] }
-            : item
-        )
-      );
-    });
-};
+//     // 3️⃣ API call
+//     axios
+//       .put(`${api}/${fullRow.invoice_id}`, {
+//         id: fullRow.invoice_id,
+//         mails: oldValue,
+//         value:value
+//       })
+//       .catch(() => {
+//         // ❌ rollback on API failure
+//         setTableData((prev) =>
+//           prev.map((row) =>
+//             row.fulldata.invoice_id === fullRow.invoice_id
+//               ? {
+//                   ...row,
+//                   fulldata: {
+//                     ...row.fulldata,
+//                     admin_status: fullRow.admin_status,
+//                   },
+//                 }
+//               : row
+//           )
+//         );
+//       });
+//   });
+// };
 
 
 const getTableSetter = (source) => {
@@ -102,6 +138,8 @@ const handleShowHideChange = (fullRow, value, source) => {
             fulldata: {
               ...row.fulldata,
               mails: Number(value),
+              // status:fullRow.status,
+              admin_status:fullRow.admin_status
             },
           }
         : row
@@ -124,6 +162,8 @@ const handleShowHideChange = (fullRow, value, source) => {
                 fulldata: {
                   ...row.fulldata,
                   mails: oldValue,
+                  // status:fullRow.status,
+                  admin_status:fullRow.admin_status
                 },
               }
             : row
@@ -145,6 +185,9 @@ const handleShowHideChange = (fullRow, value, source) => {
       .put(`${api}/${fullRow.invoice_id}`, {
         id: fullRow.invoice_id,
         mails: Number(value),
+        // status:fullRow.status,
+        admin_status:fullRow.admin_status
+
       })
       .catch(() => {
         // ❌ rollback on API failure
@@ -156,6 +199,8 @@ const handleShowHideChange = (fullRow, value, source) => {
                   fulldata: {
                     ...row.fulldata,
                     mails: oldValue,
+                  // status:fullRow.status,
+              admin_status:fullRow.admin_status
                   },
                 }
               : row
@@ -297,8 +342,8 @@ const handleShowHideChange = (fullRow, value, source) => {
         <select
           className="form-select form-select-sm"
 
-            value={row.admin_status}  
-          onChange={(e) => handleChange(row, "status", e.target.value)}  >
+            value={row.fulldata.admin_status}  
+          onChange={(e) => handleShowHideChange(row.fulldata, e.target.value, row.source)}  >
           <option value="Open">Open</option>
           <option value="Entered">Entered</option>
           <option value="Close">Close</option>

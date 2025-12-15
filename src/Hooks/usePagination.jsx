@@ -46,9 +46,6 @@ export default function usePaginatedTable({
               {
                  newRow[key] = row[columnsMap[key]];
               }
-
- 
-          
         });
         return newRow;
       });
