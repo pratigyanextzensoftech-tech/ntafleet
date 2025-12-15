@@ -4,8 +4,6 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import { EssoBulkTab } from "../../../Data/tab/EssoBulkTab";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
 import { esso_pricing_pdf,salesman_volume } from "../../../api";
 import usePaginatedTable from '../../../Hooks/usePagination';
 import axios from "axios";
@@ -34,7 +32,7 @@ const Index = () => {
       handlePerRowsChange,
       handleSearch, // ✅ Added
       setData,
-    } = usePaginatedTable({ apiUrl: salesman_volume, columnsMap });
+    } = usePaginatedTable({ apiUrl: esso_pricing_pdf, columnsMap });
     useEffect(() => {
       const cols = Object.keys(columnsMap).map((key) => ({
         name: key,
@@ -128,7 +126,7 @@ const Index = () => {
         cancelButtonText: 'Cancel'
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(`${salesman_volume}/${row["ID #"]}`)
+          axios.delete(`${esso_pricing_pdf}/${row["ID #"]}`)
             .then(() => {
               setData((prevData) => prevData.filter((item) => item["ID #"] !== row["ID #"]));
               Swal.fire('Deleted!', 'Record deleted successfully.', 'success');

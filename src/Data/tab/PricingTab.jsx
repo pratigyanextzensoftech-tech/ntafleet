@@ -12,7 +12,7 @@ export const PricingTab = [
   {
     id: '1',
     label:"Flying J"  , 
-    component: <PricingCommon apiName={pricing} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+    component: <PricingCommon table={false} apiName={pricing} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
   },
   {
     id: '2',

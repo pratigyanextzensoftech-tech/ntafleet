@@ -66,20 +66,41 @@ export default function useSelectableColumns(download_link,USEFOR="") {
     const format = withTime ? "DD-MM-YYYY HH:mm" : "YYYY-MM-DD";
     return dayjs(value).isValid() ? dayjs(value).format(format) : "-";
   };
+  
+ const handleSelectAll = (checked, data) => {
+  setSelectAll(checked);
+  if (!checked) {
+    setSelectedRows([]);
+    return;
+  }
 
-  const handleSelectAll = (checked, data) => {
-    setSelectAll(checked);
-    if (checked) setSelectedRows(data.map((row) => row.id));
-    else setSelectedRows([]);
-  };
+  // 1️⃣ Create comma-separated string
+  const ids = data.map(row => row["ID #"]);
 
-  const handleSelectRow = (id) => {
-    setSelectedRows((prev) =>
-      prev.includes(id)
-        ? prev.filter((rowId) => rowId !== id)
-        : [...prev, id]
-    );
-  };
+  setSelectedRows(ids); // store comma string if needed
+
+};
+
+ const handleSelectRow = (data) => {
+const id=data["site "]
+console.log(id)
+  console.log(data["site "])
+  console.log(selectedRows)
+  // 1️⃣ Toggle checkbox first
+  const alreadySelected = selectedRows.includes(id);
+
+  // Update selection immediately
+  const newSelection = alreadySelected
+    ? selectedRows.filter((rowId) => rowId !== id)
+    : [...selectedRows, id];
+  // const ids=newSelection.join(",")
+
+  setSelectedRows(newSelection);
+console.log(newSelection)
+  // 2️⃣ Now show confirmation popup
+ 
+};
+  
 
   const createColumns = (map, data = [], options = {},) => {
     const { withCheckbox = false, withActions = false, onDelete, onDownload } = options; 
@@ -96,7 +117,7 @@ export default function useSelectableColumns(download_link,USEFOR="") {
 
     // ✅ Checkbox Column
     if (withCheckbox) {
-      cols.push({
+           cols.push({
         name: (
           <div className="d-flex align-items-center">
             <span className="me-2 fw-bold">Delete</span>
@@ -110,8 +131,8 @@ export default function useSelectableColumns(download_link,USEFOR="") {
         cell: (row) => (
           <input
             type="checkbox"
-            checked={selectedRows.includes(row.id)}
-            onChange={() => handleSelectRow(row.id)}
+            checked={selectedRows.includes(row["ID #"])}
+            onChange={() => handleSelectRow(row)}
           />
         ),
         width: "120px",

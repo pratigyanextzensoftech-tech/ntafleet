@@ -10,10 +10,13 @@ const DataTableComponent = ({
   totalData,
   tableColumns,
   title,
+  table,
   loading,
   paginationTotalRows,
   onChangePage,
   onChangeRowsPerPage,
+  handleDelete,
+  paginationRowsPerPageOptions
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [toggleDelete, setToggleDelete] = useState(false);
@@ -56,21 +59,21 @@ const DataTableComponent = ({
   }, []);
 
   // ✅ Handle delete (local only)
-  const handleDelete = () => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete:\r ${selectedRows.map(
-          (r) => r.title || r.companyName
-        )}?`
-      )
-    ) {
-      setToggleDelete(!toggleDelete);
-      setData(
-        data.filter((item) => !selectedRows.some((row) => row.id === item.id))
-      );
-      setSelectedRows([]);
-    }
-  };
+  // const handleDelete = () => {
+  //   if (
+  //     window.confirm(
+  //       `Are you sure you want to delete:\r ${selectedRows.map(
+  //         (r) => r.title || r.companyName
+  //       )}?`
+  //     )
+  //   ) {
+  //     setToggleDelete(!toggleDelete);
+  //     setData(
+  //       data.filter((item) => !selectedRows.some((row) => row.id === item.id))
+  //     );
+  //     setSelectedRows([]);
+  //   }
+  // };
 
   // ✅ Calculate total pages
   const totalPages = Math.ceil(paginationTotalRows / perPage);
@@ -92,6 +95,13 @@ const DataTableComponent = ({
           <Card>
             {title && <HeaderCard title={title} />}
             <CardBody>
+                {table===true &&(
+                        <>
+                        <div className='mb-3 text-end'>
+                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '>Delete Pricing</button>
+                        </div>
+                        </>
+                        )}
                <div style={{ overflowX: "auto" }}>
               <DataTable
                 data={data}
@@ -101,6 +111,7 @@ const DataTableComponent = ({
                 highlightOnHover
                 pagination
                 paginationServer
+                paginationRowsPerPageOptions={paginationRowsPerPageOptions}
                 paginationTotalRows={paginationTotalRows}
                 paginationPerPage={perPage}
                 onChangePage={handlePageChange}

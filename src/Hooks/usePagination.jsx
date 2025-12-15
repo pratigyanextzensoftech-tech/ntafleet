@@ -8,10 +8,11 @@ export default function usePaginatedTable({
   initialFilters = {},
   tax,
   invoiceType,
+  perPageValue
 }) {
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState(perPageValue||10);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
@@ -85,6 +86,7 @@ export default function usePaginatedTable({
     handlePerRowsChange,
     handleSearch,
     setData,
+    
     fetchData,
   };
 }

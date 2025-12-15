@@ -6,6 +6,8 @@ import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import useSelectableColumns from "../../../Hooks/useSelectableColumns";
 import {PricingTab} from '../../../Data/tab/PricingTab'
+import Swal from "sweetalert2";
+import axios from "axios";
 import {
   ta_pricing_actual as TA_ACTUAL_API,
   ta_pricing as TA_CAPPED_API,
@@ -18,7 +20,7 @@ import {
 import usePaginatedTable from "../../../Hooks/usePagination";
 
 const Index = () => {
- const { createColumns } = useSelectableColumns();
+ const { createColumns,selectedRows } = useSelectableColumns();
   // ✅ Define individual column mappings per API
   const columnSets = {
     taActual: {
@@ -99,9 +101,6 @@ const Index = () => {
       "Disc Retail":"disc_retail",
       "Your Price":"your_price",
       "Savings Total":"savings_total",
-     
-
-
     },
    loveCapped: {
   id: "id",
@@ -164,22 +163,26 @@ ultramar: {
 }
 
   }
-    
+    const perPageValue=200
   const taActual = usePaginatedTable({
     apiUrl: TA_ACTUAL_API,
     columnsMap: columnSets.taActual,
+    perPageValue
   });
   const taCapped = usePaginatedTable({
     apiUrl: TA_CAPPED_API,
     columnsMap: columnSets.taCapped,
+    perPageValue
   });
   const esso = usePaginatedTable({
     apiUrl: esso_pricing,
     columnsMap: columnSets.esso,
+    perPageValue
   });
   const flyingJ = usePaginatedTable({
     apiUrl: pricing,
     columnsMap: columnSets.flyingJ,
+    perPageValue
   });
   const loveCapped = usePaginatedTable({
     apiUrl: LOVE_CAPPED_API,
@@ -193,17 +196,85 @@ ultramar: {
     apiUrl: ULTRAMAR_API,
     columnsMap: columnSets.ultramar,
   });
+const handleDelete = ({ id, deleteApi, refetch }) => {
+        const stringId=id.join(",")
+        console.log(stringId)
+      Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
 
+    if (result.isConfirmed) {
+              axios.delete(`${deleteApi}/${stringId}`)
+        .then(() => {
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+          refetch();  
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+    } 
+  });
+      };
  
 const tabs = [
-    { id: "1", label: "Flying J", data: flyingJ, map: columnSets.flyingJ },
-    { id: "2", label: "TA Capped", data: taCapped, map: columnSets.taCapped },
-    { id: "3", label: "TA Actual", data: taActual, map: columnSets.taActual },
-    { id: "4", label: "Esso", data: esso, map: columnSets.esso },
-    { id: "5", label: "Love Capped", data: loveCapped, map: columnSets.loveCapped },
-    { id: "6", label: "Love Actual", data: loveActual, map: columnSets.loveActual },
-    { id: "7", label: "Ultramar", data: ultramar, map: columnSets.ultramar },
-  ];
+  {
+    id: "1",
+    label: "Flying J",
+    data: flyingJ,
+    map: columnSets.flyingJ,
+    deleteApi: pricing, // ✅ DELETE API
+  },
+  {
+    id: "2",
+    label: "TA Capped",
+    data: taCapped,
+    map: columnSets.taCapped,
+    deleteApi: TA_CAPPED_API,
+  },
+  {
+    id: "3",
+    label: "TA Actual",
+    data: taActual,
+    map: columnSets.taActual,
+    deleteApi: TA_ACTUAL_API,
+  },
+  {
+    id: "4",
+    label: "Esso",
+    data: esso,
+    map: columnSets.esso,
+    deleteApi: esso_pricing,
+  },
+  {
+    id: "5",
+    label: "Love Capped",
+    data: loveCapped,
+    map: columnSets.loveCapped,
+    deleteApi: LOVE_CAPPED_API,
+  },
+  {
+    id: "6",
+    label: "Love Actual",
+    data: loveActual,
+    map: columnSets.loveActual,
+    deleteApi: LOVE_ACTUAL_API,
+  },
+  {
+    id: "7",
+    label: "Ultramar",
+    data: ultramar,
+    map: columnSets.ultramar,
+    deleteApi: ULTRAMAR_API,
+  },
+];
+
   // ✅ Define tab content dynamically
   const pricingListTableTab = tabs.map((tab) => ({
     id: tab.id,
@@ -215,15 +286,25 @@ const tabs = [
     withActions: false,          // ✅ show action column
     showDownload: false,         // ✅ conditionally show download
     showDelete: false,          // ❌ hide delete
-
         })}
         tableData={tab.data.data}
         loading={tab.data.loading}
         pagination
         paginationServer
+        table={true}
+ handleDelete={() =>
+        handleDelete({
+          ids: selectedRows,
+          deleteApi: tab.deleteApi,   // ✅ dynamic API
+          refetch: tab.data.fetchData // ✅ refresh correct tab
+        })
+      }
         paginationTotalRows={tab.data.totalRows}
         onChangeRowsPerPage={tab.data.handlePerRowsChange}
         onChangePage={tab.data.handlePageChange}
+        paginationPerPage={tab.data.perPage}
+        paginationRowsPerPageOptions={[ 200,300]}
+
       />
     ),
   }));
@@ -244,7 +325,7 @@ const tabs = [
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Pricing List" />
+              {/* <HeaderCard title="Pricing List" /> */}
 
               <CardBody>
                                 

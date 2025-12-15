@@ -358,7 +358,6 @@ const setTableData = getTableSetter(source);
               >
                 <FaFilePdf /> Download PDF
               </Link>
-
               <Link
                 to={`/download_excel/${btoa(row.id)}`}
                 className="dropdown-item d-flex align-items-center text-success"

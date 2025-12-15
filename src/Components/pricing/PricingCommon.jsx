@@ -147,56 +147,13 @@ const handleSelectAll = (checked, data) => {
     setSelectedRows([]);
     return;
   }
-const handleDelete=()=>{
 
-}
   // 1️⃣ Create comma-separated string
   const ids = data.map(row => row["ID #"]);
-  const idString = ids.join(",");   // <-- THIS YOU WANT
-  console.log("Final String:", idString);
 
-  setSelectedRows(idString); // store comma string if needed
+  setSelectedRows(ids); // store comma string if needed
 
-  // 2️⃣ SWAL Confirmation
-  Swal.fire({
-    title: "Are you sure?",
-    text: `Do you want to delete all ${ids.length} selected records?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete all!",
-    cancelButtonText: "Cancel",
-  }).then((result) => {
-
-    if (result.isConfirmed) {
-
-      // 3️⃣ API CALL — send comma string
-      axios
-        .post(`${listapi}/bulk-delete`, { ids: idString })
-        .then(() => {
-          
-          // remove deleted rows
-          setData(prev => prev.filter(row => !ids.includes(row["ID #"])));
-
-          setSelectedRows("");
-          setSelectAll(false);
-
-          Swal.fire("Deleted!", "All selected records have been deleted.", "success");
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Failed to delete selected records.", "error");
-        });
-
-    } else {
-      // ❌ Cancel → uncheck all
-      setSelectedRows("");
-      setSelectAll(false);
-    }
-  });
 };
-
-
 
 
  const handleSelectRow = (id) => {
@@ -207,43 +164,12 @@ const handleDelete=()=>{
   const newSelection = alreadySelected
     ? selectedRows.filter((rowId) => rowId !== id)
     : [...selectedRows, id];
+  // const ids=newSelection.join(",")
 
   setSelectedRows(newSelection);
-
+console.log(newSelection)
   // 2️⃣ Now show confirmation popup
-  Swal.fire({
-    title: "Are you sure?",
-    text: "Do you really want to delete this record?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "Cancel",
-  }).then((result) => {
-
-    if (result.isConfirmed) {
-      // 3️⃣ Delete the item
-      axios
-        .delete(`${listapi}/${id}`)
-        .then(() => {
-          setData((prev) => prev.filter((item) => item["ID #"] !== id));
-          setSelectedRows([]); // or remove only that ID
-          Swal.fire("Deleted!", "Record deleted successfully.", "success");
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Failed to delete record.", "error");
-        });
-
-    } else {
-      // 4️⃣ User canceled → revert checkbox state
-      setSelectedRows((prev) =>
-        alreadySelected
-          ? [...prev, id] // user unchecked but canceled → re-check
-          : prev.filter((rowId) => rowId !== id) // user checked but canceled → un-check
-      );
-    }
-  });
+ 
 };
 
   const [openRowId, setOpenRowId] = useState(null);
@@ -259,7 +185,7 @@ const handleDelete=()=>{
         "Mailed_By": "mailby",
         "Mailed_On": "mail_on",
       };
-    
+    const perPageValue=200
       const {
         data,
         totalRows,
@@ -268,7 +194,7 @@ const handleDelete=()=>{
         handlePerRowsChange,
         handleSearch, // ✅ Added
         setData,
-      } = usePaginatedTable({ apiUrl: listapi, columnsMap,tax,invoiceType });
+      } = usePaginatedTable({ apiUrl: listapi, columnsMap,tax,invoiceType,perPageValue });
       useEffect(() => {
         console.log(data,"list")
         const cols = Object.keys(columnsMap).map((key) => ({
@@ -373,8 +299,33 @@ const handleDelete=()=>{
         return () => document.removeEventListener("mousedown", handleClickOutside);
       }, []);
     
-      const handleDelete = (row) => {
-     
+      const handleDelete = (id) => {
+        console.log(data)
+        const stringId=id.join(",")
+        console.log(stringId)
+      Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+              axios.delete(`${listapi}/${stringId}`)
+        .then(() => {
+          setData((prev) => prev.filter((item) => item["ID #"] !== Number(stringId)));
+          setSelectedRows([]); // or remove only that ID
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+    } 
+  });
       };
   return (
     <Fragment>
@@ -771,24 +722,26 @@ const handleDelete=()=>{
           </fieldset>
         </Col>
       </Row>
-
-        {table===true &&(
-          <>
-          <div className='my-3 text-end'>
-          <button onClick={handleDelete} className='btn btn-secondary px-3 '>Delete Pricing</button>
-          </div>
- <DataTableComponent
+      {table!==false &&(
+        <>
+        <DataTableComponent
           title="Pricing PDF List (Without Tax) "
           tableColumns={tableColumns}
           tableData={data}
           loading={essoLoading}
+          table={true}
+          handleDelete={()=>handleDelete(selectedRows)}
           pagination
           paginationServer
+         paginationRowsPerPageOptions={[ 200,300]}
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
         />
-        </>)}
+        </>
+      )
+    }
+        
     </Fragment>
   );
 };
