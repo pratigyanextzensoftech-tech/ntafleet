@@ -23,9 +23,73 @@ import {
 const SendBulk = () => {
    const [openRowId, setOpenRowId] = useState(null);
     const [tableColumns, setTableColumns] = useState([]);
+     const [selectedRows, setSelectedRows] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+  const handleSelectAll = (checked, data) => {
+  console.log(data)
+  setSelectAll(checked);
+  if (!checked) {
+    setSelectedRows([]);
+    return;
+  }
+  // 1️⃣ Create comma-separated string
+  const ids = data?.map(row => row["Invoice#"]);
+  setSelectedRows(ids); // store comma string if needed
+
+};
+
+ const handleSelectRow = (data) => {
+  console.log(data)
+const id=data["Invoice#"]
+console.log(id)
+  // console.log(data.id)
+  // console.log(selectedRows)
+  // 1️⃣ Toggle checkbox first
+  const alreadySelected = selectedRows.includes(id);
+
+  // Update selection immediately
+  const newSelection = alreadySelected
+    ? selectedRows.filter((rowId) => rowId != id)
+    : [...selectedRows, id];
+  // const ids=newSelection.join(",")
+
+  setSelectedRows(newSelection);
+console.log(newSelection)
+  // 2️⃣ Now show confirmation popup
  
+};
+const handleMail = ({ ids = [], Api }) => {
+  if (!ids.length) {
+    Swal.fire("Warning", "Please select at least one record.", "warning");
+    return;
+  }
+  const stringId = ids.join(",");
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Are you sure want to send  mail ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Send Mail!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+     
+      axios
+        .delete(`${Api}/${stringId}`)
+        .then(() => {
+          Swal.fire("Mail Succesfully Send", "success");
+          // refetch(); // ✅ refresh correct tab
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+    }
+  });
+};
     const columnsMap = {
-      "Invoice # #": "invoice_id",
+      "Invoice#": "invoice_id",
       Company: "company_name",
       "From ": "from",
       To: "to",
@@ -42,7 +106,8 @@ const SendBulk = () => {
       "Show/Hide": "total_gln",
       Status: "status",
     };
-  
+      const perPageValue=200
+      
     const {
       data,
       totalRows,
@@ -51,7 +116,7 @@ const SendBulk = () => {
       handlePerRowsChange,
       handleSearch, // ✅ Added
       setData,
-    } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap });
+    } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap,perPageValue });
   
     const {
       data: ownerdata,
@@ -61,7 +126,7 @@ const SendBulk = () => {
       handlePerRowsChange: ownerHandlePerROwChange,
       handleSearch: ownerHandleSearch, // ✅ Added
       setData: handleSetData,
-    } = usePaginatedTable({ apiUrl: owner_invoice, columnsMap });
+    } = usePaginatedTable({ apiUrl: owner_invoice, columnsMap,perPageValue });
   
     const {
       data: customizedData,
@@ -71,7 +136,7 @@ const SendBulk = () => {
       handlePerRowsChange: customizedHandlePerRowsChange,
       handleSearch: customizedHandleSearch,
       setData: setCustomizedData,
-    } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap });
+    } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap,perPageValue });
    useEffect(() => {
     const cols = Object.keys(columnsMap).map((key) => ({
       name: key,
@@ -80,66 +145,32 @@ const SendBulk = () => {
       wrap: true,
     }));
 
-    cols.push({
-      name: "Action",
-      cell: (row) => (
-        <div className="position-relative dropdown-action">
-          <button
-            className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
-          >
-            Action
-          </button>
-
-          {openRowId === row.id && (
-            <div
-              className="position-absolute bg-white border rounded shadow"
-              style={{
-                zIndex: 1000,
-                right: 0,
-                marginTop: 5,
-                minWidth: 160,
-                padding: "5px 0",
-              }}
-            >
-              <Link
-                to={`/download_pdf/${btoa(row.id)}`}
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaFilePdf /> Download PDF
-              </Link>
-
-              <Link
-                to={`/download_excel/${btoa(row.id)}`}
-                className="dropdown-item d-flex align-items-center text-success"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaFileExcel /> Download Excel
-              </Link>
-
-              <button
-                className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaEnvelope /> Send Email
-              </button>
-
-              <button
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
-              >
-                <FaTrashAlt /> Delete
-              </button>
-            </div>
-          )}
-        </div>
-      ),
-    });
+        cols.push({
+        name: (
+          <div className="d-flex align-items-center">
+            <span className="me-2 fw-bold">Action</span>
+            <input
+              type="checkbox"
+              checked={selectAll}
+              onChange={(e) => handleSelectAll(e.target.checked, data)}
+            />
+          </div>
+        ),
+        cell: (row) => (
+          <input
+            type="checkbox"
+            checked={selectedRows.includes(row["Invoice#"])}
+            onChange={() => handleSelectRow(row)}
+          />
+        ),
+        width: "120px",
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+      });
 
     setTableColumns(cols);
-  }, [openRowId]);
+  }, [openRowId,selectedRows, selectAll, data]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -154,23 +185,69 @@ const SendBulk = () => {
   {
     id: '1',
     label:"Send Invoice",
-    component: <DataTableComponent loading={loading} tableColumns={tableColumns}  tableData={data} />,
+    component: <DataTableComponent 
+    handleMail={() =>
+        handleMail({
+          ids: selectedRows,
+          mail_type:"INVOICE",
+          Api: combine_invoice,
+          invoice_type:"",
+          supplier:"ESSO"
+          
+          // ✅ dynamic API
+           // ✅ refresh correct tab
+        })
+      }
+       paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail" loading={loading} tableColumns={tableColumns}  tableData={data} />,
   },
   {
     id: '2',
     label:"Sender Owner Operator Invoice",
-    component: <DataTableComponent loading={ownerLoading} tableColumns={tableColumns}  tableData={data}/>,
+    component: <DataTableComponent  handleMail={() =>
+        handleMail({
+          ids: selectedRows,
+          mail_type:"INVOICE",
+          Api: owner_invoice,
+          invoice_type:"owner",
+          supplier:"ESSO"
+          
+          // ✅ dynamic API
+           // ✅ refresh correct tab
+        })
+      } loading={ownerLoading} tableColumns={tableColumns}  tableData={data}/>,
   },
-  
+
   {
     id: '3',
     label: "Send MoneyCode Invoice",
-    component:<DataTableComponent loading={customizedLoading} tableColumns={tableColumns}  tableData={data}/>,
+    component:<DataTableComponent  handleMail={() =>
+        handleMail({
+          ids: selectedRows,
+          mail_type:"INVOICE",
+          Api: combine_invoice,
+          invoice_type:"MONEYCODE",
+          supplier:"ESSO"
+          
+          // ✅ dynamic API
+           // ✅ refresh correct tab
+        })
+      } loading={customizedLoading} tableColumns={tableColumns}  tableData={data}/>,
   },
    {
     id: '4',
     label:"Send Customized Invoice",
-    component: <DataTableComponent tableColumns={tableColumns}  tableData={data}/>,
+    component: <DataTableComponent handleMail={() =>
+        handleMail({
+          ids: selectedRows,
+          mail_type:"INVOICE",
+          Api: combine_invoice,
+          invoice_type:"CUSTUM",
+          supplier:"ESSO"
+          
+          // ✅ dynamic API
+           // ✅ refresh correct tab
+        })
+      }  tableColumns={tableColumns}  tableData={data}/>,
   },
  
   
@@ -213,32 +290,7 @@ const SendBulkTab = [
   },
   
 ];
-  const handleDelete = (row) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `Do you really want to delete ?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`${combine_invoice}/${row.id}`)
-          .then(() => {
-            setData((prevData) =>
-              prevData.filter((item) => item.id !== row.id)
-            );
-            Swal.fire("Deleted!", "Record deleted successfully.", "success");
-          })
-          .catch(() => {
-            Swal.fire("Error!", "Failed to delete record.", "error");
-          });
-      }
-    });
-  };
+
   return (
     <Fragment>
       <Breadcrumbs parent="Invoice" title="Send Bulk Invoice" />

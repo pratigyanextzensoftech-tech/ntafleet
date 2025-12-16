@@ -68,23 +68,23 @@ export default function useSelectableColumns(download_link,USEFOR="") {
   };
   
  const handleSelectAll = (checked, data) => {
+  console.log(data)
   setSelectAll(checked);
   if (!checked) {
     setSelectedRows([]);
     return;
   }
-
   // 1️⃣ Create comma-separated string
-  const ids = data.map(row => row["ID #"]);
-
+  const ids = data?.map(row => row.id);
   setSelectedRows(ids); // store comma string if needed
 
 };
 
  const handleSelectRow = (data) => {
-const id=data["site "]
+  console.log(data)
+const id=data.id
 console.log(id)
-  console.log(data["site "])
+  console.log(data.id)
   console.log(selectedRows)
   // 1️⃣ Toggle checkbox first
   const alreadySelected = selectedRows.includes(id);
@@ -101,7 +101,6 @@ console.log(newSelection)
  
 };
   
-
   const createColumns = (map, data = [], options = {},) => {
     const { withCheckbox = false, withActions = false, onDelete, onDownload } = options; 
  
@@ -131,7 +130,7 @@ console.log(newSelection)
         cell: (row) => (
           <input
             type="checkbox"
-            checked={selectedRows.includes(row["ID #"])}
+            checked={selectedRows.includes(row.id)}
             onChange={() => handleSelectRow(row)}
           />
         ),

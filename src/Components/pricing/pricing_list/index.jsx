@@ -196,10 +196,15 @@ ultramar: {
     apiUrl: ULTRAMAR_API,
     columnsMap: columnSets.ultramar,
   });
-const handleDelete = ({ id, deleteApi, refetch }) => {
-        const stringId=id.join(",")
-        console.log(stringId)
-      Swal.fire({
+const handleDelete = ({ ids = [], deleteApi, refetch }) => {
+  if (!ids.length) {
+    Swal.fire("Warning", "Please select at least one record.", "warning");
+    return;
+  }
+
+  const stringId = ids.join(",");
+
+  Swal.fire({
     title: "Are you sure?",
     text: "Do you really want to delete this record?",
     icon: "warning",
@@ -209,20 +214,20 @@ const handleDelete = ({ id, deleteApi, refetch }) => {
     confirmButtonText: "Yes, delete it!",
     cancelButtonText: "Cancel",
   }).then((result) => {
-
     if (result.isConfirmed) {
-              axios.delete(`${deleteApi}/${stringId}`)
+      axios
+        .delete(`${deleteApi}/${stringId}`)
         .then(() => {
           Swal.fire("Deleted!", "Record deleted successfully.", "success");
-          refetch();  
+          refetch(); // ✅ refresh correct tab
         })
         .catch(() => {
           Swal.fire("Error!", "Failed to delete record.", "error");
         });
-    } 
+    }
   });
-      };
- 
+};
+
 const tabs = [
   {
     id: "1",

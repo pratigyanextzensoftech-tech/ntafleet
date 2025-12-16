@@ -16,6 +16,8 @@ const DataTableComponent = ({
   onChangePage,
   onChangeRowsPerPage,
   handleDelete,
+  handleMail,
+  buttonTitle,
   paginationRowsPerPageOptions
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -98,7 +100,7 @@ const DataTableComponent = ({
                 {table===true &&(
                         <>
                         <div className='mb-3 text-end'>
-                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '>Delete Pricing</button>
+                        <button onClick={buttonTitle?()=>handleMail(selectedRows):()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> {buttonTitle ? buttonTitle:"Delete Pricing"}</button>
                         </div>
                         </>
                         )}
