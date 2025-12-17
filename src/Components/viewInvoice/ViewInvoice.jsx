@@ -404,7 +404,7 @@ invoiceType:
   target="_blank"
   className="dropdown-item d-flex align-items-center text-danger"
   style={{ padding: "8px 12px", gap: "8px" }}
-  download
+  // download
 >
   <FaFilePdf /> Download PDF
 </a>

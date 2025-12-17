@@ -125,7 +125,7 @@ const DataTableComponent = ({
                           <>
                           <Row>
                             <Col sm="12" className='mb-3 text-end'>
-                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> Send Mail</button>
+                        <button onClick={()=>handleMail(selectedRows)} className='btn btn-secondary px-3 '> Send Mail</button>
                         </Col>
                        
                         </Row>

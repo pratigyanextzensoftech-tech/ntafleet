@@ -164,7 +164,8 @@ console.log(supplier);
       handleSearch: tcheckHandleSearch, // ✅ Added
       setData: settcheckData,
     } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap,perPageValue });
-   useEffect(() => {
+  
+    const getTableColumns = (tableData) => {
     const cols = Object.keys(columnsMap).map((key) => ({
       name: key,
       selector: (row) => row[key],
@@ -179,7 +180,7 @@ console.log(supplier);
             <input
               type="checkbox"
               checked={selectAll}
-              onChange={(e) => handleSelectAll(e.target.checked, data)}
+              onChange={(e) => handleSelectAll(e.target.checked, tableData)}
             />
           </div>
         ),
@@ -195,9 +196,12 @@ console.log(supplier);
         allowOverflow: true,
         button: true,
       });
-
-    setTableColumns(cols);
-  }, [openRowId,selectedRows, selectAll, data]);
+      return cols
+    }
+useEffect(() => {
+  setSelectedRows([]);
+  setSelectAll(false);
+}, [data, ownerdata, moneyCodedata, customizedData, tcheckdata]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -228,8 +232,8 @@ console.log(supplier);
        buttonTitle="Send Mail"
         loading={loading} 
        totalRows= {totalRows}
-        tableColumns={tableColumns} 
-        setData={setData}
+  tableColumns={getTableColumns(data)}
+       setData={setData}
         handlePageChange={handlePageChange}
         handlePerRowsChange={handlePerRowsChange}
          tableData={data} />,
@@ -244,14 +248,13 @@ console.log(supplier);
           Api: owner_invoice,
           defaultInvoiceType:"owner",
           supplier:"ESSO"
-          
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
       } loading={ownerLoading}
       handlePageChange={ownerHandlePerChange}
       setData={handleSetData}
-      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow} tableColumns={tableColumns}  tableData={ownerdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
+      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow}   tableColumns={getTableColumns(ownerdata)}  tableData={ownerdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
 
   {
@@ -272,7 +275,7 @@ console.log(supplier);
       handlePageChange={moneycodeHandlePerChange}
       setData={setmoneycodeData}
       handlePerRowsChange={moneyHandlePerROwChange}
-      totalRows={moneycodeTotalRow} tableColumns={tableColumns}  tableData={moneyCodedata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
+      totalRows={moneycodeTotalRow}   tableColumns={getTableColumns(moneyCodedata)}  tableData={moneyCodedata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
    {
     id: '4',
@@ -290,8 +293,7 @@ console.log(supplier);
            // ✅ refresh correct tab
         })
       }  
-      tableColumns={tableColumns} 
-      setData={setmoneycodeData}
+ tableColumns={getTableColumns(customizedData)}      setData={setmoneycodeData}
       handlePerRowsChange={customizedHandlePageChange}
       handlePageChange={customizedHandlePageChange}
       loading={customizedLoading} totalRows={customizedTotalRow}  tableData={customizedData} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
@@ -312,8 +314,7 @@ console.log(supplier);
            // ✅ refresh correct tab
         })
       }   
-     tableColumns={tableColumns}
-     handlePerRowsChange={tcheckHandlePerROwChange}
+  tableColumns={getTableColumns(tcheckdata)}     handlePerRowsChange={tcheckHandlePerROwChange}
      setData={settcheckData}
      handlePageChange={tcheckHandlePerChange}
      loading={tcheckLoading} totalRows={tcheckTotalRow} tableData={tcheckdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
