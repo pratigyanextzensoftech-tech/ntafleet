@@ -37,11 +37,11 @@ const ViewInvoice = () => {
     Fees: "fees",
     "Tr Count": "tr_count",
     Country: "country",
-    Supplier: "supplier_id",
+    Supplier: "supplier_name",
     Mailed_By: "mailby",
     Mailed_On: "mail_on", 
   };
-//  const handleChange = (fullRow, value, source) => {
+
 //   const oldValue = fullRow.mails;
 //   console.log(fullRow)
 //   const setTableData = getTableSetter(source);
@@ -187,7 +187,54 @@ const setTableData = getTableSetter(source);
   
   });
 };
+const getActiveTabFromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("tab") || "1";
+};
 
+ const handleMail = (row) => {
+  console.log(row)
+  const activeTab = getActiveTabFromUrl();
+
+  let api;
+  if (activeTab === "1") api = combine_invoice;
+  else if (activeTab === "2") api = owner_invoice;
+  else if (activeTab === "3") api = customized_invoice;
+  else api = combine_invoice;
+
+  const payload = {
+    mail_type: "INVOICE",
+    supplier: row.fulldata.supplier_id,
+invoiceType:
+  api === combine_invoice
+    ? row?.fulldata?.tp
+    : api === owner_invoice
+    ? "OWNER"
+    : api === customized_invoice
+    ? "CUSTUM"
+    : null,
+
+    ids: row["Invoice#"],
+  };
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to send the mail?",
+    icon: "warning",
+    showCancelButton: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axios
+        .post(`${api}/send-mail`, payload)
+        .then(() => {
+          Swal.fire("Successfully sent the mail", "", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to send the mail.", "error");
+        });
+    }
+  });
+};
 
 
   const {
@@ -351,13 +398,17 @@ const setTableData = getTableSetter(source);
                 padding: "5px 0",
               }}
             >
-              <Link
-                to={`/download_pdf/${btoa(row.id)}`}
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaFilePdf /> Download PDF
-              </Link>
+           <a
+  href={row.fulldata.download_link}
+  
+  target="_blank"
+  className="dropdown-item d-flex align-items-center text-danger"
+  style={{ padding: "8px 12px", gap: "8px" }}
+  download
+>
+  <FaFilePdf /> Download PDF
+</a>
+
               <Link
                 to={`/download_excel/${btoa(row.id)}`}
                 className="dropdown-item d-flex align-items-center text-success"
@@ -369,6 +420,7 @@ const setTableData = getTableSetter(source);
               <button
                 className="dropdown-item d-flex align-items-center text-primary"
                 style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={()=>handleMail(row)}
               >
                 <FaEnvelope /> Send Email
               </button>
