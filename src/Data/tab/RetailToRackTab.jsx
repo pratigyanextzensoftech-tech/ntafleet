@@ -13,7 +13,6 @@ export const RetailToRackTab = [
         title="Create Single Rack Invoice (Capped)"
         api_name={retail_to_rack_Api}
         owner_operator="NO"
-
       />
     ),
   },
@@ -45,7 +44,7 @@ export const RetailToRackTab = [
         title="Create Single Rack Invoice (Actual)"
         btnTtitle="Search Company"
         api_name={retail_to_rack_Api}
-                owner_operator="NO"
+        owner_operator="NO"
 
       />
     ),
@@ -81,7 +80,7 @@ export const RetailToRackTab = [
         title="Update Single Rack Invoice (Capped)"
         btnTtitle="Create Rack Transaction"
         api_name={retail_to_rack_Api}
-                owner_operator="NO"
+        owner_operator="NO"
 
       />
     ),
@@ -98,8 +97,7 @@ export const RetailToRackTab = [
         title="Update Single Rack Invoice (Actual)"
         btnTtitle="Create Rack Transaction"
         api_name={retail_to_rack_Api}
-                owner_operator="NO"
-
+        owner_operator="NO"
       />
     ),
   },
@@ -115,7 +113,7 @@ export const RetailToRackTab = [
         title="Create Single Rack Invoice (Actual)"
         btnTtitle="Search Company" 
         api_name={retail_to_rack_Api}
-                owner_operator="NO"
+        owner_operator="NO"
 
       />
     ),

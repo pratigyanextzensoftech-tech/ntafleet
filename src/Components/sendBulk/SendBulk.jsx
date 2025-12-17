@@ -4,22 +4,12 @@ import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard'
 import { Breadcrumbs } from '../../AbstractElements'
 import HeaderCard from '../Common/Component/HeaderCard'
 import DataTableComponent from '../../Components/Tables/DataTable/DataTableComponent';
-
-import BulkRetailInvoice from '../../Components/createInvoice/BulkRetailInvoice';
 import SingleEssoForm from '../../Components/createEssoInvoice/SingleEssoForm';
 import usePaginatedTable from "../../Hooks/usePagination";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import CreateInvoiceCommon from '../createInvoice/CreateInvoiceCommon';
-import { combine_invoice, owner_invoice, customized_invoice } from "../../api";
-import {
-  FaEdit,
-  FaTrashAlt,
-  FaFilePdf,
-  FaFileExcel,
-  FaEnvelope,
-} from "react-icons/fa";
+import { combine_invoice, owner_invoice, customized_invoice,moneycode_invoice,tcheck_invoice,invoice } from "../../api";
 const SendBulk = () => {
    const [openRowId, setOpenRowId] = useState(null);
     const [tableColumns, setTableColumns] = useState([]);
@@ -58,41 +48,61 @@ console.log(newSelection)
   // 2️⃣ Now show confirmation popup
  
 };
-const handleMail = ({ ids = [], Api }) => {
-  if (!ids.length) {
+const handleMail = ({
+  rows = [],
+  Api,
+  defaultInvoiceType,
+  supplier
+}) => {
+  console.log(rows);
+console.log(defaultInvoiceType);
+console.log(Api)
+console.log(supplier);
+  if (!rows.length) {
     Swal.fire("Warning", "Please select at least one record.", "warning");
     return;
   }
-  const stringId = ids.join(",");
+
+  const ids = rows.map(r => r["Invoice#"]);
+
+  // ✅ FIRST TAB → derive invoice_type from tp
+  let invoice_type = defaultInvoiceType;
+  if (!defaultInvoiceType) {
+    // assume same tp for selected rows
+    invoice_type = rows[0]?.fulldata?.tp; // "Retail" | "Rack"
+  }
+
+
   Swal.fire({
     title: "Are you sure?",
-    text: "Are you sure want to send  mail ?",
+    text: "Are you sure want to send mail?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
     confirmButtonText: "Yes, Send Mail!",
-    cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
-     
-      axios
-        .delete(`${Api}/${stringId}`)
-        .then(() => {
-          Swal.fire("Mail Succesfully Send", "success");
-          // refetch(); // ✅ refresh correct tab
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Failed to delete record.", "error");
-        });
+      axios.post(Api, {
+        ids,
+        invoice_type,
+        supplier
+      })
+      .then(() => {
+        Swal.fire("Success", "Mail sent successfully", "success");
+        setSelectedRows([]);
+        setSelectAll(false);
+      })
+      .catch(() => {
+        Swal.fire("Error", "Failed to send mail", "error");
+      });
     }
   });
 };
+
     const columnsMap = {
       "Invoice#": "invoice_id",
       Company: "company_name",
-      "From ": "from",
-      To: "to",
+      "From ": "from_date",
+      To: "to_date",
       "Due Date": "due_date",
       Total: "total",
       "Retail Total": "retail_price",
@@ -101,9 +111,9 @@ const handleMail = ({ ids = [], Api }) => {
       "Tr Count": "tr_count",
       Country: "country",
       Supplier: "supplier_id",
-      Mailed_By: "mailby",
-      Mailed_On: "mail_on",
-      "Show/Hide": "total_gln",
+      // Mailed_By: "mailby",
+      // Mailed_On: "mail_on",
+      // "Show/Hide": "total_gln",
       Status: "status",
     };
       const perPageValue=200
@@ -116,7 +126,7 @@ const handleMail = ({ ids = [], Api }) => {
       handlePerRowsChange,
       handleSearch, // ✅ Added
       setData,
-    } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap,perPageValue });
+    } = usePaginatedTable({ apiUrl: invoice, columnsMap,perPageValue });
   
     const {
       data: ownerdata,
@@ -127,7 +137,15 @@ const handleMail = ({ ids = [], Api }) => {
       handleSearch: ownerHandleSearch, // ✅ Added
       setData: handleSetData,
     } = usePaginatedTable({ apiUrl: owner_invoice, columnsMap,perPageValue });
-  
+   const {
+      data: moneyCodedata,
+      totalRows: moneycodeTotalRow,
+      loading: moneycodeLoading,
+      handlePageChange: moneycodeHandlePerChange,
+      handlePerRowsChange: moneyHandlePerROwChange,
+      handleSearch: moneycodeHandleSearch, // ✅ Added
+      setData: setmoneycodeData,
+    } = usePaginatedTable({ apiUrl: moneycode_invoice, columnsMap,perPageValue });
     const {
       data: customizedData,
       totalRows: customizedTotalRow,
@@ -137,6 +155,15 @@ const handleMail = ({ ids = [], Api }) => {
       handleSearch: customizedHandleSearch,
       setData: setCustomizedData,
     } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap,perPageValue });
+     const {
+      data: tcheckdata,
+      totalRows: tcheckTotalRow,
+      loading: tcheckLoading,
+      handlePageChange: tcheckHandlePerChange,
+      handlePerRowsChange: tcheckHandlePerROwChange,
+      handleSearch: tcheckHandleSearch, // ✅ Added
+      setData: settcheckData,
+    } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap,perPageValue });
    useEffect(() => {
     const cols = Object.keys(columnsMap).map((key) => ({
       name: key,
@@ -191,14 +218,21 @@ const handleMail = ({ ids = [], Api }) => {
           ids: selectedRows,
           mail_type:"INVOICE",
           Api: combine_invoice,
-          invoice_type:"",
+        defaultInvoiceType: null,
           supplier:"ESSO"
-          
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
       }
-       paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail" loading={loading} tableColumns={tableColumns}  tableData={data} />,
+       paginationRowsPerPageOptions={[ 200,300]} table={true} 
+       buttonTitle="Send Mail"
+        loading={loading} 
+       totalRows= {totalRows}
+        tableColumns={tableColumns} 
+        setData={setData}
+        handlePageChange={handlePageChange}
+        handlePerRowsChange={handlePerRowsChange}
+         tableData={data} />,
   },
   {
     id: '2',
@@ -208,13 +242,16 @@ const handleMail = ({ ids = [], Api }) => {
           ids: selectedRows,
           mail_type:"INVOICE",
           Api: owner_invoice,
-          invoice_type:"owner",
+          defaultInvoiceType:"owner",
           supplier:"ESSO"
           
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
-      } loading={ownerLoading} tableColumns={tableColumns}  tableData={data}/>,
+      } loading={ownerLoading}
+      handlePageChange={ownerHandlePerChange}
+      setData={handleSetData}
+      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow} tableColumns={tableColumns}  tableData={ownerdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
 
   {
@@ -225,36 +262,61 @@ const handleMail = ({ ids = [], Api }) => {
           ids: selectedRows,
           mail_type:"INVOICE",
           Api: combine_invoice,
-          invoice_type:"MONEYCODE",
+          defaultInvoiceType:"MONEYCODE",
           supplier:"ESSO"
           
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
-      } loading={customizedLoading} tableColumns={tableColumns}  tableData={data}/>,
+      } loading={moneycodeLoading} 
+      handlePageChange={moneycodeHandlePerChange}
+      setData={setmoneycodeData}
+      handlePerRowsChange={moneyHandlePerROwChange}
+      totalRows={moneycodeTotalRow} tableColumns={tableColumns}  tableData={moneyCodedata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
    {
     id: '4',
     label:"Send Customized Invoice",
-    component: <DataTableComponent handleMail={() =>
+    component: <DataTableComponent 
+    handleMail={() =>
         handleMail({
           ids: selectedRows,
           mail_type:"INVOICE",
           Api: combine_invoice,
-          invoice_type:"CUSTUM",
+          defaultInvoiceType:"CUSTUM",
           supplier:"ESSO"
           
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
-      }  tableColumns={tableColumns}  tableData={data}/>,
+      }  
+      tableColumns={tableColumns} 
+      setData={setmoneycodeData}
+      handlePerRowsChange={customizedHandlePageChange}
+      handlePageChange={customizedHandlePageChange}
+      loading={customizedLoading} totalRows={customizedTotalRow}  tableData={customizedData} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
  
   
    {
     id: '5',
     label:"Send T-check Invoice",
-    component:<DataTableComponent tableColumns={tableColumns}  tableData={data}/>,
+    component:<DataTableComponent   handleMail={() =>
+        handleMail({
+          ids: selectedRows,
+          mail_type:"INVOICE",
+          Api: combine_invoice,
+          defaultInvoiceType:"TCHECK",
+          supplier:"ESSO"
+          // ✅ dynamic API
+           // ✅ refresh correct tab
+        })
+      }   
+     tableColumns={tableColumns}
+     handlePerRowsChange={tcheckHandlePerROwChange}
+     setData={settcheckData}
+     handlePageChange={tcheckHandlePerChange}
+     loading={tcheckLoading} totalRows={tcheckTotalRow} tableData={tcheckdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
   
 ];

@@ -57,9 +57,9 @@ const getParamsByType = () => {
   }
 };
 useEffect(() => {
-  const params = getParamsByType();
+  // const params = getParamsByType();
   axios
-    .get(`${supplierById}/${params}`)
+    .get(`${supplierById}/${""}`)
     .then((res) => {
       const formatted = res.data.map((s) => ({
         value: s.id,
