@@ -176,7 +176,7 @@ console.log(newSelection)
       const [tableColumns, setTableColumns] = useState([]);
       const columnsMap = {
         "ID #": "id",
-        "Company": "company_id",
+        "Company": "company_name",
         "Pricing Date": "pricing_date",
         "Supplier": "supplier",
         "Entry_Count": "entry_count",
@@ -733,6 +733,7 @@ console.log(newSelection)
           handleDelete={()=>handleDelete(selectedRows)}
           pagination
           paginationServer
+          buttonTitle="Delete Pricing"
          paginationRowsPerPageOptions={[ 200,300]}
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

@@ -2,6 +2,7 @@ import CreateLoveBulk from '../../Components/pricing/loveBulk/CreateLoveBulk';
 import MailLoveBulk from '../../Components/pricing/loveBulk/MailLoveBulk';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,love_pricing_pdf } from '../../api';
+import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
 
 export const LovePricingTab = [
   {
@@ -17,7 +18,7 @@ export const LovePricingTab = [
        Mail Love Bulk Pricing PDF - <strong> [Capped]</strong>
       </>
     ), 
-    component: <PricingCommon pricingDate={true} supplier={true} supplier_ids="7" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon supplier="LOVE" listapi={love_pricing_pdf} invoiceType="Capped" supplier_ids="7" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
   {
     id: '3',
@@ -28,7 +29,7 @@ export const LovePricingTab = [
       </>
     )
    ,
-    component: <MailLoveBulk title="Mail Bulk Pricing PDF" btnTtitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon supplier="LOVE" listapi={love_pricing_pdf} supplier_ids="7" invoiceType="Actual" title="Mail Bulk Pricing PDF" btnTtitle="Search pricing Pdf"/>,
   }
  
   

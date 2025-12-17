@@ -2,6 +2,7 @@
 // import CreateBulkPrice from '../../Components/pricing/bulk_price/CreateBulkPrice';
 // import MailBulkPrice from '../../Components/pricing/bulk_price/MailBulkPrice';
 import { create_pricing_pdf,pricing_pdf } from '../../api';
+import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 export const BulkPricingTab = [
   {
@@ -12,8 +13,7 @@ export const BulkPricingTab = [
   {
     id: '2',
     label:"Mail Bulk Pricing PDF",
-    component: <PricingCommon supplier={true} invoiceType="" apiName={create_pricing_pdf} pricingDate={true} btnTitle="Search Pricing Pdf"   title="Mail Bulk Pricing PDF"/>,
+    component: <MailPricingCommon supplier="FJ" invoiceType="" listapi={pricing_pdf} pricingDate={true} btnTitle="Search Pricing Pdf"   title="Mail Bulk Pricing PDF"/>,
   },
-  
 
 ];

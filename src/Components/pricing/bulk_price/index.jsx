@@ -1,13 +1,10 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
-import { SinglepricingTableTab } from "../../../Data/tab/SinglePricingTableTab";
 import { BulkPricingTab } from "../../../Data/tab/BulkPricingTab";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
-const index = () => {
+const Index = () => {
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title=" Manage Bulk Pricing PDF" />
@@ -22,14 +19,10 @@ const index = () => {
             </Card>
           </Col>
         </Row>   
-        <DataTableComponent
-          title="Pricing PDF List "
-          tableData={dummytabledata}
-          tableColumns={tableColumns}
-        />
+       
       </Container>
     </Fragment>
   );
 };
 
-export default index;
+export default Index;

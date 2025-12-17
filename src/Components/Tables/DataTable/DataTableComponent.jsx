@@ -97,11 +97,40 @@ const DataTableComponent = ({
           <Card>
             {title && <HeaderCard title={title} />}
             <CardBody>
-                {table===true &&(
+                {table===true  && (
                         <>
-                        <div className='mb-3 text-end'>
-                        <button onClick={buttonTitle?()=>handleMail(selectedRows):()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> {buttonTitle ? buttonTitle:"Delete Pricing"}</button>
-                        </div>
+                        {buttonTitle==="Both" &&(
+                          <>
+                          <Row>
+                            <Col sm="6" className='mb-3 text-start'>
+                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> Delete Pricing</button>
+                        </Col>
+                         <Col sm="6" className='mb-3 text-end'>
+                        <button onClick={()=>handleMail(selectedRows)} className='btn btn-secondary px-3 '> Send Mail</button>
+                        </Col>
+                        </Row>
+                          </>
+                        )}
+                         {buttonTitle==="Delete Pricing" &&(
+                          <>
+                          <Row>
+                            <Col sm="12" className='mb-3 text-end'>
+                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> Delete Pricing</button>
+                        </Col>
+                       
+                        </Row>
+                          </>
+                        )}
+                         {buttonTitle==="Send Mail" &&(
+                          <>
+                          <Row>
+                            <Col sm="12" className='mb-3 text-end'>
+                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> Send Mail</button>
+                        </Col>
+                       
+                        </Row>
+                          </>
+                        )}
                         </>
                         )}
                <div style={{ overflowX: "auto" }}>

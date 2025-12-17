@@ -21,17 +21,13 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Loader from '../../Layout/Loader';
 import usePaginatedTable from '../../Hooks/usePagination';
-import { FaEnvelope,FaTrashAlt,FaFileExcel,FaFilePdf,FaTrash } from "react-icons/fa";
+import { FaEnvelope,FaTrashAlt,FaFileExcel,FaDownload } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import DataTableComponent from '../Tables/DataTable/DataTableComponent';
 const MailPricingCommon = ({
   title,
   btnTitle,
-  csvFile,
-  fromUpto,
-  pricingDate,
-  company,
   company_list,
   testingEmail,
   apiName,
@@ -40,8 +36,7 @@ const MailPricingCommon = ({
   discountType,
   supplier_ids,
   tax,
-  validation, rackus,
-  rackca,table,invoiceType
+table,invoiceType
 }) => {
  const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -102,44 +97,7 @@ const[loading,setLoading]=useState(false)
 
     console.log("Final Payload Sent =>", basePayload);
   };
-    const handleCheckboxChange = (value, field) => {
-    
-    const allValues = companies.map((c) => c.value); // all possible
-    const companyValues = allValues.filter((v) => v !== "All Company"); // only companies
-    let updated = [...selectedValues];
-
-    if (value === "All Company") {
-      // ✅ Clicked ALL → toggle everything
-      if (updated.includes("All Company")) {
-        updated = []; // unselect all
-      } else {
-        updated = ["All Company", ...companyValues]; // select all
-      }
-    } else {
-      // ✅ Clicked a normal company
-      if (updated.includes(value)) {
-        updated = updated.filter((v) => v !== value);
-      } else {
-        updated.push(value);
-      }
-
-      // If all companies are selected, add ALL
-      const onlyCompanies = updated.filter((v) => v !== "All Company");
-      const isAllSelected = companyValues.every((v) =>
-        onlyCompanies.includes(v)
-      );
-
-      if (isAllSelected) {
-        updated = ["All Company", ...companyValues];
-      } else {
-        updated = updated.filter((v) => v !== "All Company");
-      }
-    }
-
-    
-    setSelectedValues(updated);
-    field.onChange(updated);
-  };
+  
 const handleSelectAll = (checked, data) => {
   setSelectAll(checked);
 
@@ -171,12 +129,11 @@ console.log(newSelection)
   // 2️⃣ Now show confirmation popup
  
 };
-
   const [openRowId, setOpenRowId] = useState(null);
       const [tableColumns, setTableColumns] = useState([]);
       const columnsMap = {
         "ID #": "id",
-        "Company": "company_id",
+        "Company": "company_name",
         "Pricing Date": "pricing_date",
         "Supplier": "supplier",
         "Entry_Count": "entry_count",
@@ -203,10 +160,24 @@ console.log(newSelection)
           sortable: true,
           wrap: true,
         }));
+             cols.push({
+  name: "View Pdf",
+  cell: (row) => (
+    <Link
+      to={`/download_pdf/${btoa(row.id)}`}
+      className="d-flex align-items-center text-primary"
+      style={{ gap: "6px", textDecoration: "none" }}
+      title="View PDF"
+    >
+      <FaDownload />
+      <span>View PDF</span>
+    </Link>
+  ),
+});
       cols.push({
         name: (
           <div className="d-flex align-items-center">
-            <span className="me-2 fw-bold">Delete</span>
+            <span className="me-2 fw-bold">Action</span>
             <input
               type="checkbox"
               checked={selectAll}
@@ -226,64 +197,7 @@ console.log(newSelection)
         allowOverflow: true,
         button: true,
       });
-        cols.push({
-          name: "Action",
-          cell: (row) => (
-            <div className="position-relative dropdown-action">
-              <button
-                className="btn btn-sm btn-primary px-2"
-                onClick={() => setOpenRowId(openRowId === row["ID #"] ? null : row["ID #"])}
-              >
-                Action
-              </button>
-    
-              {openRowId === row["ID #"] && (
-                <div
-                  className="position-absolute bg-white border rounded shadow"
-                  style={{
-                    zIndex: 1000,
-                    right: 0,
-                    marginTop: 5,
-                    minWidth: 160,
-                    padding: "5px 0",
-                  }}
-                >
-                  <Link
-                    to={`/download_pdf/${btoa(row.id)}`}
-                    className="dropdown-item d-flex align-items-center text-danger"
-                    style={{ padding: "8px 12px", gap: "8px" }}
-                  >
-                    <FaFilePdf /> View Pdf
-                  </Link>
-    
-                  <Link
-                    to={`/download_excel/${btoa(row.id)}`}
-                    className="dropdown-item d-flex align-items-center text-success"
-                    style={{ padding: "8px 12px", gap: "8px" }}
-                  >
-                    <FaFileExcel /> View Admin Pdf
-                  </Link>
-    
-                  <button
-                    className="dropdown-item d-flex align-items-center text-primary"
-                    style={{ padding: "8px 12px", gap: "8px" }}
-    
-                  >
-                    <FaEnvelope />Email Pricing Pdf
-                  </button>
-    
-                  <button
-                    className="dropdown-item d-flex align-items-center text-danger"
-                    style={{ padding: "8px 12px", gap: "8px" }}
-                  >
-                    <FaTrashAlt /> Testing Email Pricing Pdf
-                  </button>
-                </div>
-              )}
-    
-            </div>
-          ),
-        });
+  
         
     
         setTableColumns(cols);
@@ -327,10 +241,53 @@ console.log(newSelection)
     } 
   });
       };
+      const handleMail = (id) => {
+        console.log(data)
+        const stringId=id.join(",")
+        console.log(stringId)
+        const payload={
+          mail_type:"PRICING",
+          supplier:supplier,
+          invoiceType:invoiceType,
+          ids:stringId
+
+        }
+        console.log(payload)
+      Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to Send the mail?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+
+   if (result.isConfirmed) {
+  axios
+    .post(listapi, payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(() => {
+      setData((prev) =>
+        prev.filter((item) => item["ID #"] !== Number(stringId))
+      );
+      setSelectedRows([]);
+      Swal.fire("Successfully sent the mail", "", "success");
+    })
+    .catch(() => {
+      Swal.fire("Error!", "Failed to send the mail.", "error");
+    });
+}
+
+  });
+      };
   return (
     <Fragment>
             {loading && <Loader loading={true} />}
-      
       <Row>
         <Col>
           <fieldset>
@@ -338,9 +295,6 @@ console.log(newSelection)
 
             <Form className="px-2" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
-
-                {/* PRICING DATE */}
-                {pricingDate === true && (
                   <Col sm="4">
                     <Row>
                       <FormGroup className="m-form__group">
@@ -353,11 +307,7 @@ console.log(newSelection)
                             <Controller
                               name="pricingDate"
                               control={control}
-                              rules={
-                                validation
-                                  ? { required: "Required" }
-                                  : {}
-                              }
+                            
                               render={({ field }) => (
                                 <DatePicker
                                   className="form-control"
@@ -370,45 +320,10 @@ console.log(newSelection)
                           </Col>
                         </InputGroup>
 
-                        {validation && errors.pricingDate && (
-                          <span className="text-danger">
-                            {errors.pricingDate.message}
-                          </span>
-                        )}
+                      
                       </FormGroup>
                     </Row>
                   </Col>
-                )}
-{rackus==true &&(
-      <Col sm="4">
-      <InputText
-            name="rackus"
-            label="Rack US"
-            type="text"
-            register={register}
-            errors={errors}
-            rules={ validation
-                              ?{ required: "Required" }:{}}
-            
-          />
-          </Col>
-)}
-{rackca==true &&(
-      <Col sm="4">
-      <InputText
-            name="rackca"
-            label="Rack CA"
-            type="text"
-            register={register}
-            errors={errors}
-            rules={ validation
-                              ?{ required: "Required" }:{}}
-            
-          />
-          </Col>
-)}
-                {/* SUPPLIER */}
-                {supplier === true && (
                   <Col sm="4">
                     <FormGroup className="m-form__group">
                       <InputGroup>
@@ -417,11 +332,7 @@ console.log(newSelection)
                         <Controller
                           name="supplier"
                           control={control}
-                          rules={
-                            validation
-                              ? { required: "Supplier is required" }
-                              : {}
-                          }
+                       
                           render={({ field }) => {
 
                             // Auto select supplier when only 1 option
@@ -445,266 +356,9 @@ console.log(newSelection)
                         />
                       </InputGroup>
 
-                      {validation && errors.supplier && (
-                        <span className="text-danger">
-                          {errors.supplier.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col>
-                )}
-
-                {/* DISCOUNT TYPE */}
-                {discountType === true && (
-                  <Col sm="4">
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <InputGroupText>Discount Type</InputGroupText>
-
-                        <Controller
-                          name="DiscountType"
-                          control={control}
-                          rules={
-                            validation
-                              ? { required: "Required" }
-                              : {}
-                          }
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              className="form-control p-0 border-0"
-                              options={DiscountType}
-                              placeholder="Select Discount Type"
-                              onChange={field.onChange}
-                              value={field.value}
-                            />
-                          )}
-                        />
-                      </InputGroup>
-
-                      {validation && errors.DiscountType && (
-                        <span className="text-danger">
-                          {errors.DiscountType.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col>
-                )}
-
-                {testingEmail === true && (
-                  <Col sm="4">
                   
-                    <InputText
-            name="testingEmail"
-            label="Testing Email"
-            type="text"
-            register={register}
-            errors={errors}
-            rules={ validation
-                              ?{ required: "Required" }:{}}
-            
-          />
-                            </Col>
-
-                )}
-
-                {/* CSV FILE */}
-                {csvFile === true && (
-                  <Col sm="4">
-                    <Row>
-                      <Col sm="3" className="pe-0">
-                        <InputGroupText>CSV File</InputGroupText>
-                      </Col>
-
-                      <Col sm="9" className="px-0">
-                        <Input
-                          style={{ border: "1px solid #ccc" }}
-                          className="form-control"
-                          type="file"
-                          {...register("csvFile")}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                )}
-
-                {/* COMPANY */}
-                {company === true && (
-                  <Col sm="4">
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <InputGroupText>Company</InputGroupText>
-
-                        <Controller
-                          name="company"
-                          control={control}
-                          rules={
-                            validation
-                              ? { required: "Company is required" }
-                              : {}
-                          }
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={companies}
-                              className="form-control p-0 border-0"
-                              placeholder="Select company"
-                            />
-                          )}
-                        />
-                      </InputGroup>
-
-                      {validation && errors.company && (
-                        <span className="text-danger">
-                          {errors.company.message}
-                        </span>
-                      )}
                     </FormGroup>
                   </Col>
-                )}
-
-                {/* PRICING FROM / UPTO */}
-                {fromUpto === true && (
-                  <>
-                    {/* FROM DATE */}
-                    <Col sm="4">
-                      <Row>
-                        <FormGroup className="m-form__group">
-                          <InputGroup>
-                            <Col sm="4">
-                              <InputGroupText>Pricing From</InputGroupText>
-                            </Col>
-
-                            <Col sm="8">
-                              <Controller
-                                name="pricingFrom"
-                                control={control}
-                                rules={
-                                  validation
-                                    ? { required: "Required" }
-                                    : {}
-                                }
-                                render={({ field }) => (
-                                  <DatePicker
-                                    className="form-control"
-                                    selected={field.value}
-                                    onChange={field.onChange}
-                                  />
-                                )}
-                              />
-                            </Col>
-                          </InputGroup>
-
-                          {validation && errors.pricingFrom && (
-                            <span className="text-danger">
-                              {errors.pricingFrom.message}
-                            </span>
-                          )}
-                        </FormGroup>
-                      </Row>
-                    </Col>
-
-                    <Col sm="4">
-                      <Row>
-                        <FormGroup className="m-form__group">
-                          <InputGroup>
-                            <Col sm="4">
-                              <InputGroupText>Pricing Upto</InputGroupText>
-                            </Col>
-
-                            <Col sm="8">
-                              <Controller
-                                name="pricingUpto"
-                                control={control}
-                                rules={
-                                  validation
-                                    ? { required: "Required" }
-                                    : {}
-                                }
-                                render={({ field }) => (
-                                  <DatePicker
-                                    className="form-control"
-                                    selected={field.value}
-                                    onChange={field.onChange}
-                                  />
-                                )}
-                              />
-                            </Col>
-                          </InputGroup>
-
-                          {validation && errors.pricingUpto && (
-                            <span className="text-danger">
-                              {errors.pricingUpto.message}
-                            </span>
-                          )}
-                        </FormGroup>
-                      </Row>
-                    </Col>
-                     
-                  </>
-                )}
- {company_list === "checkbox" && (
-                  <Col sm="12">
-                    <fieldset>
-                      <legend>Choose Company </legend>
-                      {
-                        <Controller
-                          name="selectedCompanies"
-                          control={control}
-                          rules={{ required: "Select at least one company" }}
-                          render={({ field }) => (
-                            <Row>
-                              <Col sm="4">
-                                <div className="checkbox checkbox-dark">
-                                  <input
-                                    type="checkbox"
-                                    id="checkbox-0"
-                                    value="All Company"
-                                    
-                                    checked={selectedValues.includes(
-                                      "All Company"
-                                    )}
-                                    onChange={() =>
-                                      handleCheckboxChange("All Company", field)
-                                    }
-                                  />
-                                  <Label for={`checkbox-0`} className="ms-2 ">
-                                    All Company
-                                  </Label>
-                                </div>
-                              </Col>
-
-                              {companies.map((item, index) => (
-                                <Col sm="4" key={index}>
-                                  <div className="checkbox checkbox-dark">
-                                    <input
-                                      type="checkbox"
-                                      id={`checkbox-${index}`}
-                                      value={item.value}
-                                      checked={selectedValues.includes(
-                                        item.value
-                                      )}
-                                      onChange={() =>
-                                        handleCheckboxChange(item.value, field)
-                                      }
-                                    />
-                                    <Label
-                                      for={`checkbox-${index}`}
-                                      className="ms-2 "
-                                    >
-                                      {item.label}
-                                    </Label>
-                                  </div>
-                                </Col>
-                              ))}
-                            </Row>
-                          )}
-                        />
-                      }
-                    </fieldset>
-                  </Col>
-                )}
-                {/* SUBMIT BUTTON */}
                 <Col className="text-end">
                   <Btn
                     attrBtn={{
@@ -722,8 +376,7 @@ console.log(newSelection)
           </fieldset>
         </Col>
       </Row>
-      {table!==false &&(
-        <>
+     
         <DataTableComponent
           title="Pricing PDF List (Without Tax) "
           tableColumns={tableColumns}
@@ -731,17 +384,15 @@ console.log(newSelection)
           loading={essoLoading}
           table={true}
           handleDelete={()=>handleDelete(selectedRows)}
+          handleMail={()=>handleMail(selectedRows)}
           pagination
           paginationServer
          paginationRowsPerPageOptions={[ 200,300]}
           paginationTotalRows={totalRows}
+          buttonTitle="Both"
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
-        />
-        </>
-      )
-    }
-        
+        />  
     </Fragment>
   );
 };
