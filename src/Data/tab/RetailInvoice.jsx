@@ -10,7 +10,7 @@ export const RetailInvoiceTab = [
     ),
     component: (
       <CreateInvoiceCommon
-        supplier_ids="1,5,7,4,10"
+        supplier_ids="1,5,7,4,3"
         company_list="list"
         country_id=""
         invoice_type="R"
@@ -31,7 +31,7 @@ export const RetailInvoiceTab = [
     ),
     component: (
       <CreateInvoiceCommon
-        supplier_ids="1,5,7,4,10"
+        supplier_ids="1,5,7,4,3"
         company_list=""
         country_id=""
         invoice_type="R"
@@ -99,7 +99,7 @@ export const RetailInvoiceTab = [
         supplier_ids="1,5,7,4,10"
         company_list="list"
         country_id=""
-       invoice_type="R"
+        invoice_type="R"
         ta_retail_invoice="Capped"
         invoice_creation="many_times"
         api_name={CreateRackInvoice}

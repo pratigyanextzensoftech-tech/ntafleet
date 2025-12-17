@@ -152,17 +152,7 @@ const Index = () => {
           </Col>
         </Row>
       
- {/* <DataTableComponent
-          title="Pricing PDF List (Without Tax) "
-          tableColumns={tableColumns}
-          tableData={data}
-          loading={loading}
-          pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          onChangeRowsPerPage={handlePerRowsChange}
-          onChangePage={handlePageChange}
-        /> */}
+ 
       
        
       </Container>

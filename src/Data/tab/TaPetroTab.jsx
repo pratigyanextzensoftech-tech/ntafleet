@@ -3,6 +3,7 @@ import CreateTaPetro from '../../Components/pricing/taPetroBulk/CreateTaPetro';
 import MailTaPetro from '../../Components/pricing/taPetroBulk/MailTaPetro';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,ta_pricing_pdf } from '../../api';
+import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
 export const TaPetroTab = [
   {
     id: '1',
@@ -17,7 +18,7 @@ export const TaPetroTab = [
        Mail Bulk Pricing PDF - <strong> [Capped]</strong>
       </>
     ), 
-    component: <PricingCommon apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf} invoiceType="Capped" supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
   {
     id: '3',
@@ -28,12 +29,12 @@ export const TaPetroTab = [
       </>
     )
    ,
-    component: <PricingCommon  apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf} invoiceType="Actual"   supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
  {
     id: '4',
     label:" Mail Ta-Petro Bulk Pricing (Non-Customer) ", 
-    component: <PricingCommon apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
+    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf}  supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
   },
    {
     id: '5',
@@ -45,7 +46,7 @@ export const TaPetroTab = [
     label: " Mail Retail Ta-Petro Bulk Pricing "
      
     , 
-    component: <PricingCommon apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
+    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
   },
  
   

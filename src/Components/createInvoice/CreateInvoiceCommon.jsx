@@ -91,7 +91,7 @@ const CreateInvoiceCommon = ({
       country_id: data?.country?.value ||"",
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
-      invoice_type: data.invoice_type ? data.invoice_type.value : invoice_type,
+      invoice_type: data.invoice_type ? data.invoice_type.value : ta_retail_invoice?ta_retail_invoice: invoice_type,
       inv_cat: data.invCateory ? data.invCateory.value : "",
       cust_inv_type: data.cust_inv_type ? data.cust_inv_type.value : ""
     };

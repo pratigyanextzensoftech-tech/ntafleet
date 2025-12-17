@@ -1,3 +1,4 @@
+import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,esso_pricing_pdf } from '../../api';
 
@@ -10,7 +11,7 @@ export const EssoBulkTab = [
   {
     id: '2',
     label:"Mail ESSO PDF (Without Tax)",
-    component: <PricingCommon  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)"   title="Mail Bulk Pricing PDF (Without Tax)"/>,
+    component: <MailPricingCommon supplier="ESSO" listapi={esso_pricing_pdf}  tax= "No" supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)"   title="Mail Bulk Pricing PDF (Without Tax)"/>,
   },
   
   {
@@ -22,18 +23,18 @@ export const EssoBulkTab = [
    {
     id: '4',
     label:"Mail ESSO PDF (With Tax)",
-    component:  <PricingCommon  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)"   title="Mail Bulk Pricing PDF (With Tax)"/>,
+    component:  <MailPricingCommon supplier="ESSO" listapi={esso_pricing_pdf} tax= "Yes"  supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)"   title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
  
   
-   {
+   { 
     id: '5',
     label:"Mail ESSO PDF (Without Tax)",
-    component: <PricingCommon  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)" title="Mail Bulk Pricing PDF (Without Tax)"/>,
+    component: <MailPricingCommon supplier="ESSO" listapi={esso_pricing_pdf} tax= "No"  supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)" title="Mail Bulk Pricing PDF (Without Tax)"/>,
   },
     {
     id: '6',
     label:"Mail ESSO PDF (With Tax)",
-    component: <PricingCommon  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
+    component: <PricingCommon listapi={esso_pricing_pdf} tax= "Yes"  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
 ];

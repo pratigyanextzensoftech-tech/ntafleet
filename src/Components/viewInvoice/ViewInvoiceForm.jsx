@@ -96,13 +96,13 @@ const{data:country}=useCountry()
                            const { onChange } = field;
                  
                            const handleSupplierChange = (e) => {
-                             const val = String(e.target.value);
+                             const val = Number(e.target.value);
                              const checked = e.target.checked;
                  
                              // Select ALL
-                             if (val === "All") {
+                             if (val === 0) {
                                if (checked) {
-                                 const allValues = supplier.map((s) => String(s.value));
+                                 const allValues = supplier.map((s) => s.value);
                                  setSelectedValues(allValues);
                                  onChange(allValues);
                                } else {
@@ -133,7 +133,7 @@ const{data:country}=useCountry()
                                    <input
                                      id="supplier-all"
                                      type="checkbox"
-                                     value="All"
+                                     value={0}
                                      checked={allSelected}
                                      onChange={handleSupplierChange}
                                    />
@@ -150,8 +150,8 @@ const{data:country}=useCountry()
                                        <input
                                          id={`supplier-checkbox-${index}`}
                                          type="checkbox"
-                                         value={String(item.value)}
-                                         checked={selectedValues.includes(String(item.value))}
+                                         value={item.value}
+                                         checked={selectedValues.includes((item.value))}
                                          onChange={handleSupplierChange}
                                        />
                                        <Label

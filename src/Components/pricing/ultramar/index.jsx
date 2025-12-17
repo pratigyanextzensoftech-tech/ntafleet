@@ -3,8 +3,6 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
 import { UltramarBulkTab } from "../../../Data/tab/UltramarBulkTab";
 const index = () => {
   return (
@@ -21,12 +19,6 @@ const index = () => {
             </Card>
           </Col>
         </Row>
-
-        <DataTableComponent
-          title="Pricing PDF List"
-          tableData={dummytabledata}
-          tableColumns={tableColumns}
-        />
       </Container>
     </Fragment>
   );
