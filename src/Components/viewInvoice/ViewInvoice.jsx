@@ -38,7 +38,7 @@ const ViewInvoice = () => {
     "Tr Count": "tr_count",
     Country: "country",
     Supplier: "supplier_name",
-    Mailed_By: "mailby",
+    Mailed_By: "mail_by",
     Mailed_On: "mail_on", 
   };
 

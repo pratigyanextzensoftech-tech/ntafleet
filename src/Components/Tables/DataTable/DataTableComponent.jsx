@@ -121,6 +121,16 @@ const DataTableComponent = ({
                         </Row>
                           </>
                         )}
+                         {buttonTitle==="Delete Rack Cent" &&(
+                          <>
+                          <Row>
+                            <Col sm="12" className='mb-3 text-end'>
+                        <button onClick={()=>handleDelete(selectedRows)} className='btn btn-secondary px-3 '> Delete Rack Cent</button>
+                        </Col>
+                       
+                        </Row>
+                          </>
+                        )}
                          {buttonTitle==="Send Mail" &&(
                           <>
                           <Row>

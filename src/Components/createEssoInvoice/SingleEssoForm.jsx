@@ -1,7 +1,7 @@
 import React, { Fragment,useState,useEffect } from "react";
 import Select from "react-select";
 import {
- 
+ invoiceType,
   invoiceType1,
   InvoiceCategory
   
@@ -262,25 +262,13 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                   <Controller
                     name="invoice"
                     defaultValue={
-                      type === "owner_operator" ||
-                      type === "single_owner_ultramar"
-                        ? invoiceType1[3]
-                        : type === "repeat_ultramar"
-                        ? invoiceType1
-                        : null
+                     invoiceType[0]
                     }
                     control={control}
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={
-                          type === "owner_operator" ||
-                          type === "single_owner_ultramar"
-                            ? [invoiceType1[3]]
-                            : type === "repeat_ultramar"
-                            ? invoiceType1
-                            : invoiceType1
-                        }
+                       options={invoiceType.filter((_, index) => index !== 0)}
                         className="form-control p-0 border-0"
                       />
                     )}

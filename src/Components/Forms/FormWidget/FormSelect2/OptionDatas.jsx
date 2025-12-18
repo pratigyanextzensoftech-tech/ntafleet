@@ -316,8 +316,8 @@ export const InvoiceStatus = [
 ]
 export const invoiceType = [
     { label: 'All Type', value: '' },
-    { value: 'Rack', label: 'Rack Invoice' },
     { value: 'Retail', label: 'Retail Invoice' },
+    { value: 'Rack', label: 'Rack Invoice' },
 ]
 export const customizedTypeType = [
     { label: 'Select Status', isDisabled: true },

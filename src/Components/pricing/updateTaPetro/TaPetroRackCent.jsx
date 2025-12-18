@@ -27,7 +27,7 @@ import {
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
-const LoveRackCentList = ({ title, btnTitle }) => {
+const TaPetroRackCent = ({ title, btnTitle }) => {
  const [companyId, setCompnyId] = useState("");
    const [startDate, setStatrtDate] = useState("");
    const [endDate, setEndDate] = useState("");
@@ -343,4 +343,4 @@ useEffect(() => {
   );
 };
 
-export default LoveRackCentList;
+export default TaPetroRackCent;

@@ -129,6 +129,7 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
       <DataTableComponent
         title={tab.label}
         table={true}
+        buttonTitle="Delete Pricing"
          handleDelete={() =>
         handleDelete({
           ids: selectedRows,
@@ -136,8 +137,8 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
           refetch: tab.data.fetchData // ✅ refresh correct tab
         })
       }
-        tableColumns={createColumns(tab.map, tab.data,{
-      withCheckbox: true,         // ✅ show checkboxes
+    tableColumns={createColumns(tab.map, tab.data,{
+    withCheckbox: true,         // ✅ show checkboxes
     withActions: true,          // ✅ show action column
     showDownload: false,         // ✅ conditionally show download
     showDelete: false,          // ❌ hide delete

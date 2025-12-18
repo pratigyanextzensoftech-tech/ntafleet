@@ -14,6 +14,7 @@ const SendBulk = () => {
    const [openRowId, setOpenRowId] = useState(null);
     const [tableColumns, setTableColumns] = useState([]);
      const [selectedRows, setSelectedRows] = useState([]);
+     const[selectedData,setSelectdData]=useState([])
   const [selectAll, setSelectAll] = useState(false);
   const handleSelectAll = (checked, data) => {
   console.log(data)
@@ -30,6 +31,7 @@ const SendBulk = () => {
 
  const handleSelectRow = (data) => {
   console.log(data)
+  setSelectdData(data)
 const id=data["Invoice#"]
 console.log(id)
   // console.log(data.id)
@@ -52,12 +54,14 @@ const handleMail = ({
   rows = [],
   Api,
   defaultInvoiceType,
-  supplier
+  supplier,mail_type,data
 }) => {
-  console.log(rows);
-console.log(defaultInvoiceType);
-console.log(Api)
-console.log(supplier);
+  console.log(rows,"id");
+console.log(defaultInvoiceType,"invoice type");
+console.log(Api,"api")
+console.log(supplier,"supplier")
+console.log(mail_type,"mail type")
+console.log(data.fulldata.tp,"tp")
   if (!rows.length) {
     Swal.fire("Warning", "Please select at least one record.", "warning");
     return;
@@ -84,7 +88,7 @@ console.log(supplier);
       axios.post(Api, {
         ids,
         invoice_type,
-        supplier
+        supplier,mail_type
       })
       .then(() => {
         Swal.fire("Success", "Mail sent successfully", "success");
@@ -220,10 +224,11 @@ useEffect(() => {
     handleMail={() =>
         handleMail({
           ids: selectedRows,
-          mail_type:"INVOICE",
           Api: combine_invoice,
-        defaultInvoiceType: null,
-          supplier:"ESSO"
+          defaultInvoiceType: null,
+          supplier:"ESSO",
+          mail_type:"INVOICE",
+          data:selectedData
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
@@ -244,10 +249,11 @@ useEffect(() => {
     component: <DataTableComponent  handleMail={() =>
         handleMail({
           ids: selectedRows,
-          mail_type:"INVOICE",
           Api: owner_invoice,
           defaultInvoiceType:"owner",
-          supplier:"ESSO"
+          supplier:"ESSO",
+          mail_type:"INVOICE",
+
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
@@ -263,11 +269,10 @@ useEffect(() => {
     component:<DataTableComponent  handleMail={() =>
         handleMail({
           ids: selectedRows,
-          mail_type:"INVOICE",
           Api: combine_invoice,
           defaultInvoiceType:"MONEYCODE",
-          supplier:"ESSO"
-          
+          supplier:"ESSO",
+          mail_type:"INVOICE",
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
@@ -284,10 +289,10 @@ useEffect(() => {
     handleMail={() =>
         handleMail({
           ids: selectedRows,
-          mail_type:"INVOICE",
           Api: combine_invoice,
           defaultInvoiceType:"CUSTUM",
-          supplier:"ESSO"
+          supplier:"ESSO",
+          mail_type:"INVOICE",
           
           // ✅ dynamic API
            // ✅ refresh correct tab
@@ -306,10 +311,10 @@ useEffect(() => {
     component:<DataTableComponent   handleMail={() =>
         handleMail({
           ids: selectedRows,
-          mail_type:"INVOICE",
           Api: combine_invoice,
           defaultInvoiceType:"TCHECK",
-          supplier:"ESSO"
+          supplier:"ESSO",
+          mail_type:"INVOICE",
           // ✅ dynamic API
            // ✅ refresh correct tab
         })

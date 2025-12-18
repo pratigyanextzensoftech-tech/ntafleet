@@ -13,12 +13,7 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import {
-  pricigSupplier,
-  optionscompany,
-} from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { tableColumns,dummytabledata } from "../../../Data/Table/Defaultdata";
 import DatePicker from "react-datepicker";
 import { useCompany } from "../../../Hooks/Dropdowns";
 import usePaginatedTable from "../../../Hooks/usePagination";
@@ -47,8 +42,7 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
         "Rack-QC,PQ": "rack_qc",
         "	Rack-Other": "rack_us",
         "Added_By": "idby",
-        "Added_On": "dated",
-       
+        "Added_On": "dated", 
       };
     
       const {
