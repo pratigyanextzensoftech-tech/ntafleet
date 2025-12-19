@@ -36,7 +36,7 @@ const Index = () => {
   const handleChange = (id, field, value) => {
     setData((prevData) =>
       prevData.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
+        item["Invoice #"] === id ? { ...item, [field]: value } : item
       )
     );
 
@@ -62,17 +62,7 @@ const Index = () => {
     setData,
   } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap });
 
- useEffect(() => {
-       if (data?.length) {
-         const normalized = data.map((item) => ({
-           ...item,
-           id: item["Invoice #"], 
-          
-         }));
-     
-         setData(normalized);
-       }
-     }, [data]);
+ 
 
   // ✅ Build column definitions for DataTable
   useEffect(() => {
@@ -98,7 +88,7 @@ const Index = () => {
                 : "Close"
           }
 
-          onChange={(e) => handleChange(row.id, "status", e.target.value)}
+          onChange={(e) => handleChange(row["Invoice #"], "status", e.target.value)}
         >
           <option value="Active">Open</option>
           <option value="Blocked">Entered</option>
@@ -116,12 +106,12 @@ const Index = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row["Invoice #"] ? null : row["Invoice #"])}
           >
             Action
           </button>
 
-          {openRowId === row.id && (
+          {openRowId === row["Invoice #"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -134,7 +124,7 @@ const Index = () => {
             >
               {/* Download */}
               <Link
-                to={`/manage_user/${btoa(row.id)}`}
+                to={`/manage_user/${btoa(row["Invoice #"])}`}
                 className="dropdown-item d-flex align-items-center text-primary"
                 style={{ padding: "8px 12px", gap: "8px" }}
               >
@@ -202,14 +192,14 @@ const Index = () => {
       confirmButtonText: 'Yes, delete it!',
       
       cancelButtonText: 'Cancel'
+      
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${tcheck_invoice}/${row.id}`)
+        axios.delete(`${tcheck_invoice}/${row["Invoice #"]}`)
           .then((res) => {
-            setData((prevData) => {
-  prevData.forEach((item) => console.log("Existing item id:", item.id)); // ✅ print each item id
-  return  prevData.filter((item) => item.id !== row.id);
-});
+    setData((prevData) =>
+            prevData.filter((item) => item["Invoice #"] !== row["Invoice #"])
+          );
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
               console.log(res.data)
 
@@ -221,9 +211,9 @@ const Index = () => {
       }
     });
   };  
-  const handleEmail = (row) => alert("Delete " + row.id);
-  const handleRegenerateInvoice = (row) => alert("Delete " + row.id);
-  const handleView = (row) => alert("Delete " + row.id);
+  const handleEmail = (row) => alert("Delete " + row["Invoice #"]);
+  const handleRegenerateInvoice = (row) => alert("Delete " + row["Invoice #"]);
+  const handleView = (row) => alert("Delete " + row["Invoice #"]);
 
 
 

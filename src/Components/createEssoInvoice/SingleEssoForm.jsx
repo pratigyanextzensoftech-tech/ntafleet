@@ -262,7 +262,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                   <Controller
                     name="invoice"
                     defaultValue={
-                     invoiceType[0]
+                     invoiceType[1]
                     }
                     control={control}
                     render={({ field }) => (

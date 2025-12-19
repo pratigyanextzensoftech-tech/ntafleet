@@ -25,7 +25,7 @@ const ViewMoneyCode = () => {
     // 1️⃣ Optimistic UI update
     setData((prevData) =>
       prevData.map((item) =>
-        item.id === row.id
+        item["Invoice #"] === row["Invoice #"]
           ? { ...item, [field]: value }
           : item
       )
@@ -33,7 +33,7 @@ const ViewMoneyCode = () => {
   
     // 2️⃣ Prepare payload
     const payload = {
-      id: row.id,
+      id: row["Invoice #"],
       [field]: value,
     };
   
@@ -45,7 +45,7 @@ const ViewMoneyCode = () => {
   
     // 4️⃣ PUT API call
     axios
-      .put(`${apiUrl}/${row.id}`, payload)
+      .put(`${apiUrl}/${row["Invoice #"]}`, payload)
       .then((res) => {
         console.log("Updated successfully:", res.data);
       })
@@ -198,22 +198,12 @@ const ViewMoneyCode = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  useEffect(() => {
-       if (data?.length) {
-         const normalized = data.map((item) => ({
-           ...item,
-           id: item["Invoice #"], 
-          
-         }));
-     
-         setData(normalized);
-       }
-     }, [data]);
+ 
   const handleDelete = (e,row) => {
     e.preventDefault();
-    console.log(row.id);
+    console.log(row["Invoice #"]);
 
-    console.log(data.find((item)=>item.id==row.id));
+    console.log(data.find((item)=>item["Invoice #"]==row["Invoice #"]));
     Swal.fire({
       title: 'Are you sure?',
       text: `Do you really want to delete ?`,
@@ -225,9 +215,9 @@ const ViewMoneyCode = () => {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${APINAME}/${row.id}`)
+        axios.delete(`${APINAME}/${row["Invoice #"]}`)
           .then(() => {
-                setData(prev => prev.filter(item => item.id !== row.id));
+                setData(prev => prev.filter(item => item["Invoice #"] !== row["Invoice #"]));
 
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })

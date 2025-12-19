@@ -167,22 +167,22 @@ ultramar: {
   const taActual = usePaginatedTable({
     apiUrl: TA_ACTUAL_API,
     columnsMap: columnSets.taActual,
-    perPageValue
+    
   });
   const taCapped = usePaginatedTable({
     apiUrl: TA_CAPPED_API,
     columnsMap: columnSets.taCapped,
-    perPageValue
+    
   });
   const esso = usePaginatedTable({
     apiUrl: esso_pricing,
     columnsMap: columnSets.esso,
-    perPageValue
+    
   });
   const flyingJ = usePaginatedTable({
     apiUrl: pricing,
     columnsMap: columnSets.flyingJ,
-    perPageValue
+    
   });
   const loveCapped = usePaginatedTable({
     apiUrl: LOVE_CAPPED_API,
@@ -297,6 +297,7 @@ const tabs = [
         pagination
         paginationServer
         table={true}
+        buttonTitle="Delete Pricing"
  handleDelete={() =>
         handleDelete({
           ids: selectedRows,
@@ -307,8 +308,6 @@ const tabs = [
         paginationTotalRows={tab.data.totalRows}
         onChangeRowsPerPage={tab.data.handlePerRowsChange}
         onChangePage={tab.data.handlePageChange}
-        paginationPerPage={tab.data.perPage}
-        paginationRowsPerPageOptions={[ 200,300]}
 
       />
     ),

@@ -13,69 +13,62 @@ import { combine_invoice, owner_invoice, customized_invoice,moneycode_invoice,tc
 const SendBulk = () => {
    const [openRowId, setOpenRowId] = useState(null);
     const [tableColumns, setTableColumns] = useState([]);
-     const [selectedRows, setSelectedRows] = useState([]);
+    const [selectedIds, setSelectedIds] = useState([]);
+const [selectedRows, setSelectedRows] = useState([]);
+
      const[selectedData,setSelectdData]=useState([])
   const [selectAll, setSelectAll] = useState(false);
-  const handleSelectAll = (checked, data) => {
-  console.log(data)
+const handleSelectAll = (checked, data) => {
   setSelectAll(checked);
+
   if (!checked) {
+    setSelectedIds([]);
     setSelectedRows([]);
     return;
   }
-  // 1️⃣ Create comma-separated string
-  const ids = data?.map(row => row["Invoice#"]);
-  setSelectedRows(ids); // store comma string if needed
 
+  setSelectedIds(data.map((row) => row["Invoice#"]));
+  setSelectedRows(data);
 };
 
- const handleSelectRow = (data) => {
-  console.log(data)
-  setSelectdData(data)
-const id=data["Invoice#"]
-console.log(id)
-  // console.log(data.id)
-  // console.log(selectedRows)
-  // 1️⃣ Toggle checkbox first
-  const alreadySelected = selectedRows.includes(id);
 
-  // Update selection immediately
-  const newSelection = alreadySelected
-    ? selectedRows.filter((rowId) => rowId != id)
-    : [...selectedRows, id];
-  // const ids=newSelection.join(",")
+const handleSelectRow = (row) => {
+  const id = row["Invoice#"];
 
-  setSelectedRows(newSelection);
-console.log(newSelection)
-  // 2️⃣ Now show confirmation popup
- 
+  const alreadySelected = selectedIds.includes(id);
+
+  if (alreadySelected) {
+    setSelectedIds((prev) => prev.filter((i) => i !== id));
+    setSelectedRows((prev) =>
+      prev.filter((r) => r["Invoice#"] !== id)
+    );
+  } else {
+    setSelectedIds((prev) => [...prev, id]);
+    setSelectedRows((prev) => [...prev, row]);
+  }
 };
+
 const handleMail = ({
   rows = [],
   Api,
   defaultInvoiceType,
-  supplier,mail_type,data
+  supplier,
+  mail_type,
 }) => {
-  console.log(rows,"id");
-console.log(defaultInvoiceType,"invoice type");
-console.log(Api,"api")
-console.log(supplier,"supplier")
-console.log(mail_type,"mail type")
-console.log(data.fulldata.tp,"tp")
   if (!rows.length) {
     Swal.fire("Warning", "Please select at least one record.", "warning");
     return;
   }
+console.log(rows)
+  const ids = rows.map((r) => r["Invoice#"]);
 
-  const ids = rows.map(r => r["Invoice#"]);
-
-  // ✅ FIRST TAB → derive invoice_type from tp
   let invoice_type = defaultInvoiceType;
-  if (!defaultInvoiceType) {
-    // assume same tp for selected rows
-    invoice_type = rows[0]?.fulldata?.tp; // "Retail" | "Rack"
-  }
 
+  if (invoice_type==null) {
+    invoice_type = rows[0]?.fulldata?.tp;
+    console.log(invoice_type)
+  }
+ 
 
   Swal.fire({
     title: "Are you sure?",
@@ -88,19 +81,19 @@ console.log(data.fulldata.tp,"tp")
       axios.post(Api, {
         ids,
         invoice_type,
-        supplier,mail_type
+        supplier,
+        mail_type,
       })
       .then(() => {
         Swal.fire("Success", "Mail sent successfully", "success");
+        setSelectedIds([]);
         setSelectedRows([]);
         setSelectAll(false);
-      })
-      .catch(() => {
-        Swal.fire("Error", "Failed to send mail", "error");
       });
     }
   });
 };
+
 
     const columnsMap = {
       "Invoice#": "invoice_id",
@@ -130,7 +123,7 @@ console.log(data.fulldata.tp,"tp")
       handlePerRowsChange,
       handleSearch, // ✅ Added
       setData,
-    } = usePaginatedTable({ apiUrl: invoice, columnsMap,perPageValue });
+    } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap,perPageValue });
   
     const {
       data: ownerdata,
@@ -189,11 +182,12 @@ console.log(data.fulldata.tp,"tp")
           </div>
         ),
         cell: (row) => (
-          <input
-            type="checkbox"
-            checked={selectedRows.includes(row["Invoice#"])}
-            onChange={() => handleSelectRow(row)}
-          />
+        <input
+  type="checkbox"
+  checked={selectedIds.includes(row["Invoice#"])}
+  onChange={() => handleSelectRow(row)}
+/>
+
         ),
         width: "120px",
         ignoreRowClick: true,
@@ -222,16 +216,13 @@ useEffect(() => {
     label:"Send Invoice",
     component: <DataTableComponent 
     handleMail={() =>
-        handleMail({
-          ids: selectedRows,
-          Api: combine_invoice,
-          defaultInvoiceType: null,
-          supplier:"ESSO",
-          mail_type:"INVOICE",
-          data:selectedData
-          // ✅ dynamic API
-           // ✅ refresh correct tab
-        })
+      handleMail({
+  rows: selectedRows,
+  Api: combine_invoice,
+  defaultInvoiceType: null,
+  supplier: "",
+  mail_type: "INVOICE",
+})
       }
        paginationRowsPerPageOptions={[ 200,300]} table={true} 
        buttonTitle="Send Mail"
@@ -251,7 +242,7 @@ useEffect(() => {
           ids: selectedRows,
           Api: owner_invoice,
           defaultInvoiceType:"owner",
-          supplier:"ESSO",
+          supplier:"",
           mail_type:"INVOICE",
 
           // ✅ dynamic API
@@ -271,7 +262,7 @@ useEffect(() => {
           ids: selectedRows,
           Api: combine_invoice,
           defaultInvoiceType:"MONEYCODE",
-          supplier:"ESSO",
+          supplier:"",
           mail_type:"INVOICE",
           // ✅ dynamic API
            // ✅ refresh correct tab
@@ -291,7 +282,7 @@ useEffect(() => {
           ids: selectedRows,
           Api: combine_invoice,
           defaultInvoiceType:"CUSTUM",
-          supplier:"ESSO",
+          supplier:"",
           mail_type:"INVOICE",
           
           // ✅ dynamic API
@@ -303,8 +294,6 @@ useEffect(() => {
       handlePageChange={customizedHandlePageChange}
       loading={customizedLoading} totalRows={customizedTotalRow}  tableData={customizedData} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
   },
- 
-  
    {
     id: '5',
     label:"Send T-check Invoice",
@@ -313,7 +302,7 @@ useEffect(() => {
           ids: selectedRows,
           Api: combine_invoice,
           defaultInvoiceType:"TCHECK",
-          supplier:"ESSO",
+          supplier:"",
           mail_type:"INVOICE",
           // ✅ dynamic API
            // ✅ refresh correct tab
