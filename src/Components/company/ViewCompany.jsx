@@ -7,7 +7,6 @@ import { Container } from "reactstrap";
 import { company } from "../../api";
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
 import { Navigate, useNavigate } from "react-router";
-import { use } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 const ViewCompany = () => {
@@ -15,8 +14,6 @@ const ViewCompany = () => {
   const [loading, setLoading] = useState(true);
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
-
-  // ✅ Pagination states
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +21,6 @@ const ViewCompany = () => {
 
   const edit=useNavigate();
 
-  // ✅ Build column definitions
   useEffect(() => {
     const columns = [
       { key: "company_id", label: "Sr.No." },
@@ -62,13 +58,14 @@ const ViewCompany = () => {
                   padding: "5px 0",
                 }}
               >
-                
               <Link to={`/edit_company/${btoa(row.company_id)}`} className="dropdown-item d-flex align-items-center text-success" style={{ padding: "8px 12px", gap: "8px" }}
 >
                   <FaEdit /> Edit
              </Link>
                 <button
                   className="dropdown-item d-flex align-items-center"
+
+                  
                   style={{ padding: "8px 12px", gap: "8px" }}
                   onClick={() => handleLogin(row)}
                 >

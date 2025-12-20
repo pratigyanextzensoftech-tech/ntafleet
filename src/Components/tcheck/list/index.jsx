@@ -150,10 +150,7 @@ useEffect(() => {
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Filter" download="Download" 
-              
-              
-              />
+              <HeaderCard title="Filter" />
               <CardBody>
                  <List btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch} />
               </CardBody>

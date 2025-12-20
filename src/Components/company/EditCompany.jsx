@@ -62,129 +62,23 @@ const Index = () => {
   const { data: countries, loading: countryLoading } = useCountry();
   const [showMessage, setShowMessage] = useState(true);
  const [FullData, setFullData] = useState([]);
-  const {
+       const {
     reset,
     register,
     control,
     setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  } =useForm({
+ 
+
+  });
   useEffect(() => {
     axios
       .get(`${company}/${company_id}`)
       .then((res) => {
         setFullData(res.data);
         console.log(res.data);
-        // reset({
-        //   company_name: res.data.company_name || "",
-        //   email: res.data.email || "",
-        //   email2: res.data.email2 || "",
-        //   other_email: res.data.other_email || "",
-        //   otp_email: res.data.otp_email || "",
-        //   otp_email2: res.data.otp_email2 || "",
-        //   otp_phone: res.data.otp_phone || "",
-        //   logo: res.data.logo || "",
-        //   address: res.data.address || "",
-        //   street: res.data.street || "",
-        //   city: res.data.city || "",
-        //   location: res.data.location || "",
-        //   auth_location: res.data.auth_location || "",
-        //   province: res.data.province || "",
-        //   postal_code: res.data.postal_code || "",
-        //   country_name: res.data.country_name || "",
-        //   phone: res.data.phone || "",
-        //   fax: res.data.fax || "",
-        //   mobile: res.data.mobile || "",
-        //   company_type: res.data.company_type?.value || "0",
-        //   website: res.data.website || "",
-        //   country_id: res.data.country_id?.value || "0",
-        //   country: res.data.country || "",
-        //   salesman_id: res.data.salesman_id?.value || "0",
-        //   policy_number: res.data.policy_number || "",
-        //   company_status: res.data.company_status?.value || "",
-        //   susp_comp: res.data.susp_comp?.value || "",
-        //   defd_mark_up: res.data.defd_mark_up || "",
-        //   daily_report: res.data.daily_report || "",
-        //   identifier: res.data.identifier || "",
-        //   irving: res.data.irving || "",
-        //   fees: res.data.fees || "",
-        //   shell_pricing: res.data.shell_pricing || "0",
-        //   pilot_pricing: res.data.pilot_pricing || "0",
-        //   discount_canada: res.data.discount_canada || "0",
-        //   discount_usa: res.data.discount_usa || "0",
-        //   rack_ca: res.data.rack_ca || "0",
-        //   rack_us: res.data.rack_us || "0",
-        //   aoi: res.data.aoi || "",
-        //   drivers_license: res.data.drivers_license || "",
-        //   signed_agreement: res.data.signed_agreement || "",
-        //   void_cheque: res.data.void_cheque || "",
-        //   check_rebate: res.data.check_rebate || "",
-        //   retail_invoice: res.data.retail_invoice || "",
-        //   ta_retail_invoice: res.data.ta_retail_invoice || "",
-        //   esso_retail_invoice: res.data.esso_retail_invoice || "",
-        //   esso_inv_type: res.data.esso_inv_type?.value || "",
-        //   cust_inv_type: res.data.cust_inv_type?.value || "",
-        //   ul_cust_inv_type: res.data.ul_cust_inv_type?.value || "",
-        //   ul_inv_type: res.data.ul_inv_type?.value || "",
-        //   esso_rcent: res.data.esso_rcent || "0",
-        //   ul_rcent: res.data.ul_rcent || "0",
-        //   esso_rack: res.data.esso_rack || "0",
-        //   esso_rack_on: res.data.esso_rack_on || "0",
-        //   esso_rack_oon: res.data.esso_rack_oon || "0",
-        //   fee: res.data.fee || "",
-        //   owner_operator_invoice: res.data.owner_operator_invoice?.value || "",
-        //   ul_owner_operator_invoice:
-        //     res.data.ul_owner_operator_invoice?.value || "",
-        //   sw_owner_invoice: res.data.sw_owner_invoice?.value || "",
-        //   self_owner_invoice: res.data.self_owner_invoice?.value || "",
-        //   sw_customised_inv: res.data.sw_customised_inv?.value || "",
-        //   default_unit: res.data.default_unit || "",
-        //   default_driver: res.data.default_driver || "",
-        //   love_retail_invoice: res.data.love_retail_invoice || "",
-        //   supplier_fee: res.data.supplier_fee || "",
-        //   ibp_adjustment: res.data.ibp_adjustment || "",
-        //   pumping_fee: res.data.pumping_fee || "",
-        //   net_price: res.data.net_price || "",
-        //   daily_pricing: res.data.daily_pricing || "",
-        //   ta_daily_pricing: res.data.ta_daily_pricing || "",
-        //   esso_daily_pricing: res.data.esso_daily_pricing || "",
-        //   esso_daily_pricing_wtax: res.data.esso_daily_pricing_wtax || "",
-        //   love_daily_pricing: res.data.love_daily_pricing || "",
-        //   ul_daily_pricing: res.data.ul_daily_pricing || "",
-        //   ul_daily_pricing_wtax: res.data.ul_daily_pricing_wtax || "",
-        //   invoice_creation:
-        //     invoiceCreation.find(
-        //       (opt) => opt.value === res.data.invoice_creation
-        //     ) || null,
-        //   invoice_day:
-        //     invoiceDay.find((opt) => opt.value === res.data.invoice_day) ||
-        //     null,
-
-        //   invoice_week:
-        //     invoiceWeek.find((opt) => opt.value === res.data.invoice_week) ||
-        //     null,
-        //   customer_type:
-        //     customerType.find((opt) => opt.value === res.data.customer_type) ||
-        //     null,
-
-        //   special_instructions: res.data.special_instructions || "",
-        //   first_name: res.data.first_name || "",
-        //   last_name: res.data.last_name || "",
-        //   card_discount: res.data.card_discount || "",
-        //   username: res.data.username || "",
-        //   password: res.data.password || "",
-        //   date: res.data.date || "1970-01-01 00:00:00",
-        //   esso_live: res.data.esso_live || "",
-        //   remarks: res.data.remarks || "",
-        //   rest_OTP: res.data.rest_OTP || "",
-        //   last_login: res.data.last_login || "1970-01-01 00:00:00",
-        //   lang: res.data.lang || "",
-        //   lat: res.data.lat || "",
-        //   login_failed: res.data.login_failed || "0",
-        //   last_failed: res.data.last_failed || "1970-01-01 00:00:00",
-        //   added_on: new Date().toISOString().slice(0, 19).replace("T", " "),
-        // });
       })
       .catch((err) => {
         console.log(err);
@@ -361,6 +255,8 @@ const Index = () => {
                               className="form-control"
                               name="email2"
                               type="email"
+                              defaultValue={FullData.email2}
+
                               disabled
                               {...register("email2", {
                                 pattern: {
@@ -388,6 +284,8 @@ const Index = () => {
                             <input
                               className="form-control"
                               name="other_email"
+                               defaultValue={FullData.other_email}
+
                               disabled
                               type="email"
                               {...register("other_email", {
@@ -418,6 +316,7 @@ const Index = () => {
                             <input
                               className="form-control"
                               name="otp_email"
+                              defaultValue={FullData.otp_email}
                               disabled
                               type="email"
                               {...register("otp_email", {
@@ -447,6 +346,8 @@ const Index = () => {
                               name="otp_email2"
                               disabled
                               className="form-control"
+                              defaultValue={FullData.otp_email2}
+
                               type="email"
                               {...register("otp_email2", {
                                 pattern: {
@@ -472,6 +373,7 @@ const Index = () => {
                             <input
                               className="form-control"
                               type="text"
+                              defaultValue={FullData.otp_phone}
                               name="otp_phone"
                               {...register("otp_phone", {
                                 pattern: {
@@ -499,6 +401,8 @@ const Index = () => {
                             <input
                               className="form-control"
                               type="text"
+                               defaultValue={FullData.address}
+
                               name="address"
                             />
                           </InputGroup>
@@ -514,6 +418,7 @@ const Index = () => {
                             <Input
                               className="form-control"
                               type="text"
+                              defaultValue={FullData.auth_location}
                               name="auth_location"
                             />
                           </InputGroup>
@@ -538,19 +443,21 @@ const Index = () => {
                           control={control}
                           setValue={setValue}
                           placeholder="Select Country"
-                        defaultValueId={FullData.country}
+                        defaultValueId={FullData.country_id }
                         options={countries} 
                         />
                       </Col>
                       <Col sm="3">
-                        <InputGroup className="mb-3">
-                          <InputGroupText>Company Type</InputGroupText>
-                          <Select
-                            options={optionscompany}
-                            className="form-control p-0 border-0"
-                            name="company_type"
-                          />
-                        </InputGroup>
+                        <DropDown
+                          name="company_type"
+                          label="Company Type" 
+                          control={control}
+                          setValue={setValue}
+                          placeholder="Select Company Type"
+                        defaultValueId={FullData.company_type}
+                        options={optionscompany} 
+                        />
+                      
                       </Col>
                       <Col sm="3">
                         <InputGroup>
@@ -561,6 +468,7 @@ const Index = () => {
                             className="form-control"
                             type="text"
                             name="phone"
+                            defaultValue={FullData.phone}
                             placeholder="+1 (999) 999-9999"
                           />
                         </InputGroup>
@@ -573,6 +481,7 @@ const Index = () => {
                           <Input
                             className="form-control"
                             type="text"
+                            defaultValue={FullData.mobile}
                             name="mobile"
                             placeholder="+1 (999) 999-9999"
                           />
@@ -590,6 +499,7 @@ const Index = () => {
                               className="form-control"
                               type="text"
                               name="fax"
+                              defaultValue={FullData.fax}
                               placeholder="+1 (999) 999-9999"
                             />
                           </InputGroup>
@@ -614,19 +524,22 @@ const Index = () => {
                               className="form-control"
                               type="text"
                               name="policy_number"
+                              defaultValue={FullData.policy_number}
                             />
                           </InputGroup>
                         </FormGroup>
                       </Col>
                       <Col sm="3">
-                        <InputGroup>
-                          <InputGroupText>Company Status</InputGroupText>
-                          <Select
-                            options={companyStatus}
-                            className="form-control p-0 border-0"
-                            name="company_status"
-                          />
-                        </InputGroup>
+                         <DropDown
+                          name="company_status"
+                          label="Company Status" 
+                          control={control}
+                          setValue={setValue}
+                          placeholder="Select Company Status"
+                          defaultValueId={FullData.company_status}
+                          options={companyStatus} 
+                        />
+                       
                       </Col>
                     </Row>
                     <Row>
@@ -640,6 +553,7 @@ const Index = () => {
                             <Input
                               className="form-control"
                               type="text"
+                              defaultValue={FullData.identifier}
                               name="identifier"
                             />
                           </InputGroup>
@@ -655,18 +569,22 @@ const Index = () => {
                             <Input
                               className="form-control"
                               type="text"
+                               defaultValue={FullData.irving}
+
                               name="irving"
                             />
                           </InputGroup>
                         </FormGroup>
                       </Col>
                       <Col sm="3">
+                      
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText> Rack-Canada</InputGroupText>
                             <Input
                               className="form-control"
                               type="text"
+                               defaultValue={FullData.rack_ca}
                               name="rack_ca"
                             />
                           </InputGroup>
@@ -678,6 +596,8 @@ const Index = () => {
                             <InputGroupText>Rack-USA</InputGroupText>
                             <Input
                               className="form-control"
+                               defaultValue={FullData.rack_us}
+
                               type="text"
                               name="rack_us"
                             />
@@ -687,182 +607,165 @@ const Index = () => {
                     </Row>
                     <Row>
                       <Col sm="3">
-                        <InputGroup>
-                          <InputGroupText>AOI</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="aoi"
-                          />
-                        </InputGroup>
+                        <DropDown
+                          name="aoi"
+                          label="AOI"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.aoi}
+                          options={YesNo}
+                        />
+                    
                       </Col>
                       <Col sm="3">
-                        <InputGroup>
-                          <InputGroupText>Drivers License</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="drivers_license"
-                          />
-                        </InputGroup>
+                         <DropDown
+                          name="drivers_license"
+                          label="Drivers License"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.signed_agreement}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                       <Col sm="3">
-                        <InputGroup>
-                          <InputGroupText>Signed Agreement</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="signed_agreement"
-                          />
-                        </InputGroup>
+                            <DropDown
+                          name="signed_agreement"
+                          label="Signed Agreement"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.signed_agreement}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                       <Col sm="3">
-                        <InputGroup>
-                          <InputGroupText>Void Cheque</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="void_cheque"
-                          />
-                        </InputGroup>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Check Rebate</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="check_rebate"
-                            />
-                          </InputGroup>
-                        </FormGroup>
-                      </Col>
-                      <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>FJ Rack Invoice</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="retail_invoice"
-                            />
-                          </InputGroup>
-                        </FormGroup>
-                      </Col>
-                      <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              TA Petro Rack Invoice
-                            </InputGroupText>
-                            <Select
-                              options={TaretailInvoice}
-                              className="form-control p-0 border-0"
-                              name="ta_retail_invoice"
-                            />
-                          </InputGroup>
-                        </FormGroup>
-                      </Col>
-                      <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Esso Rack Invoice</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="esso_retail_invoice"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                               <DropDown
+                          name="void_cheque"
+                          label="Void Cheque"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.void_cheque}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                     </Row>
-                    <Row>
+                    <Row >
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Loves Rack Invoice</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="love_retail_invoice"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="check_rebate"
+                          label="Check Rebate"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.check_rebate}
+                          options={YesNo}
+                        />
+                        
+                       
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show Supplier Fee (FJ)
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="supplier_fee"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                           <DropDown
+                          name="retail_invoice"
+                          label="FJ Rack Invoice"
+                          control={control}
+                        setValue={setValue}
+                          defaultValueId={FullData.retail_invoice}
+                          options={YesNo}
+                        />
+                      
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show IBP Adjustment (TA)
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="ibp_adjustment"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                          <DropDown
+                          name="ta_retail_invoice"
+                          label="TA Petro Rack Invoice"
+                             setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ta_retail_invoice}
+                          options={TaretailInvoice}
+                        />
+                      
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show Pumping Fee(LOVES)
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="pumping_fee"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                            <DropDown
+                          name="esso_retail_invoice"
+                          label="Esso Rack Invoice"
+                             setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.esso_retail_invoice}
+                          options={YesNo}
+                        />
+                     
                       </Col>
                     </Row>
                     <Row>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show Net Price (ESSO)
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="net_price"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                       <DropDown
+                          name="love_retail_invoice"
+                          label="Loves Rack Invoice"
+                             setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ta_retail_invoice}
+                          options={YesNo}
+                        />
+                      
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show (ESSO) Live Data
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="esso_live"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="supplier_fee"
+                          label=" Show Supplier Fee (FJ)"
+                          control={control}
+                             setValue={setValue}
+                          defaultValueId={FullData.supplier_fee}
+                          options={YesNo}
+                        />
+                       
+                      </Col>
+                      <Col sm="3">
+                       <DropDown
+                          name="ibp_adjustment"
+                             setValue={setValue}
+                          label="Show IBP Adjustment (TA)"
+                          control={control}
+                          defaultValueId={FullData.ibp_adjustment}
+                          options={YesNo}
+                        />
+                      
+                      </Col>
+                      <Col sm="3">
+                          <DropDown
+                          name="pumping_fee"
+                          label="Show Pumping Fee(LOVES)"
+                             setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.pumping_fee}
+                          options={YesNo}
+                        />
+                     
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm="3">
+                       <DropDown
+                          name="net_price"
+                          label="Show Net Price (ESSO)"
+                             setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.net_price}
+                          options={YesNo}
+                        />
+                   
+                      </Col>
+                      <Col sm="3">
+                       <DropDown
+                          name="esso_live"
+                          label="Show (ESSO) Live Data"
+                             setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.esso_live}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                       <Col sm="3">
                         <DropDown
@@ -870,149 +773,143 @@ const Index = () => {
                           label="ESSO Rack"
                           control={control}
                           placeholder="Select ESSO Rack"
-                          defaultValueId={0}
+                          defaultValueId={FullData.esso_rack}
                           options={essoRacks}
                         />
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>CADV FEE</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="fee"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="fee"
+                          label="CADV FEE"
+                             setValue={setValue}
+                          control={control}
+                          // placeholder="Select  Unit"
+                          defaultValueId={FullData.fee}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                     </Row>
                     <Row>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show Owner Operator Invoice
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="sw_owner_invoice"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                         <DropDown
+                          name="sw_owner_invoice"
+                          label="Show Owner Operator Invoice"
+                             setValue={setValue}
+                          control={control}
+                          // placeholder="Select  Unit"
+                          defaultValueId={FullData.sw_owner_invoice}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Self Owner Operator Report
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="self_owner_invoice"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="self_owner_invoice"
+                          label="Self Owner Operator Report"
+                             setValue={setValue}
+                          control={control}
+                          // placeholder="Select  Unit"
+                          defaultValueId={FullData.self_owner_invoice}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>
-                              Show Customised Invoices
-                            </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="sw_customised_inv"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="sw_customised_inv"
+                          label=" Show Customised Invoices"
+                          control={control}
+                             setValue={setValue}
+                          placeholder="Select  Unit"
+                          defaultValueId={FullData.sw_customised_inv}
+                          options={YesNo}
+                        />
+                     
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Default Unit</InputGroupText>
-                            <Select
-                              options={DefaultUnits}
-                              className="form-control p-0 border-0"
-                              name="default_unit"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                       <DropDown
+                          name="default_unit"
+                          label="Default Unit"
+                          control={control}
+                             setValue={setValue}
+                          placeholder="Select Default Unit"
+                          defaultValueId={FullData.default_unit}
+                          options={DefaultUnits}
+                        />
+                       
                       </Col>
                     </Row>
                     <Row>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Default Driver</InputGroupText>
-                            <Select
-                              options={DefaultUnits}
-                              className="form-control p-0 border-0"
-                              name="default_driver"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="default_driver"
+                          label="Default Driver"
+                          control={control}
+                             setValue={setValue}
+                          placeholder="Select Default Driver"
+                          defaultValueId={FullData.default_driver}
+                          options={DefaultUnits}
+                        />
+                    
                       </Col>
                       <Col sm="3">
                         <DropDown
                           name="esso_rack_on"
-                          label="ESSO Rack"
+                          label="ESSO Rack ON"
                           control={control}
+                             setValue={setValue}
                           placeholder="Select ESSO Rack"
-                          defaultValueId={0}
+                          defaultValueId={FullData.esso_rack_on}
                           options={essoRacks}
                         />
                       </Col>
                       <Col sm="3">
                         <DropDown
                           name="esso_rack_oon"
-                          label="ESSO Rack"
+                          label="ESSO Rack OON"
                           control={control}
+                             setValue={setValue}
                           placeholder="Select ESSO Rack"
-                          defaultValueId={0}
+                          defaultValueId={FullData.esso_rack_oon}
                           options={essoRacks}
                         />
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Suspicious Company</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="susp_comp"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="susp_comp"
+                          label="Suspicious Company"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.susp_comp}
+                          options={YesNo}
+                        />
+                       
+                       
                       </Col>
                     </Row>
                     <Row>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>DEFD Mark Up</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="defd_mark_up"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                        <DropDown
+                          name="defd_mark_up"
+                          label="DEFD Mark Up"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.defd_mark_up}
+                          options={YesNo}
+                        />
+                       
                       </Col>
                       <Col sm="3">
-                        <FormGroup className=" m-form__group">
-                          <InputGroup>
-                            <InputGroupText>Daily Volume Report</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="daily_report"
-                            />
-                          </InputGroup>
-                        </FormGroup>
+                         <DropDown
+                          name="daily_report"
+                          label="Daily Volume Report"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.daily_report}
+                          options={YesNo}
+                        />
+                        
                       </Col>
                     </Row>{" "}
                   </fieldset>
@@ -1023,47 +920,38 @@ const Index = () => {
                         <legend>Ultramar INVOICE TYPE</legend>
                         <Row className="mt-3">
                           <Col sm="6">
-                            <FormGroup className=" m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Ultramar INVOICE TYPE
-                                </InputGroupText>
-                                <Select
-                                  options={invoiceType1}
-                                  className="form-control p-0 border-0"
-                                  name="ul_inv_type"
-                                />
-                              </InputGroup>
-                            </FormGroup>
+                           <DropDown
+                          name="ul_inv_type"
+                          label="Ultramar INVOICE TYPE"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ul_inv_type}
+                          options={YesNo}
+                        />
+                           
                           </Col>
                          
                           <Col sm="6">
-                            <FormGroup className=" m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Owner Operator Invoice
-                                </InputGroupText>
-                                <Select
-                                  options={YesNo}
-                                  className="form-control p-0 border-0"
-                                  name="ul_owner_operator_invoice"
-                                />
-                              </InputGroup>
-                            </FormGroup>
+                              <DropDown
+                          name="ul_owner_operator_invoice"
+                          label="Owner Operator Invoice"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ul_owner_operator_invoice}
+                          options={YesNo}
+                        />
+                        
                           </Col>
                           <Col sm="6">
-                            <FormGroup className=" m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Customized Invoice Type
-                                </InputGroupText>
-                                <Select
-                                  options={customizedTypeType}
-                                  className="form-control p-0 border-0"
-                                  name="ul_cust_inv_type"
-                                />
-                              </InputGroup>
-                            </FormGroup>
+                             <DropDown
+                          name="ul_cust_inv_type"
+                          label="Customized Invoice Type"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ul_cust_inv_type}
+                          options={customizedTypeType}
+                        />
+                           
                           </Col>
                         </Row>
                       </fieldset>
@@ -1073,49 +961,37 @@ const Index = () => {
                         <legend>ESSO INVOICE TYPE</legend>
                         <Row className="my-3">
                           <Col sm="6">
-                            <FormGroup className=" m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  ESSO INVOICE TYPE
-                                </InputGroupText>
-
-                                <Select
-                                  options={invoiceType1}
-                                  className="form-control p-0 border-0"
-                                  name="esso_inv_type"
-                                />
-                              </InputGroup>
-                            </FormGroup>
+                           <DropDown
+                          name="esso_inv_type"
+                          label="ESSO INVOICE TYPE"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.esso_inv_type}
+                          options={invoiceType1}
+                        />
+                          
                           </Col>
                         
                           <Col sm="6">
-                            <FormGroup className=" m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Owner Operator Invoice
-                                </InputGroupText>
-
-                                <Select
-                                  options={YesNo}
-                                  className="form-control p-0 border-0"
-                                  name="owner_operator_invoice"
-                                />
-                              </InputGroup>
-                            </FormGroup>
+                               <DropDown
+                          name="owner_operator_invoice"
+                          label="Owner Operator Invoice"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.owner_operator_invoice}
+                          options={YesNo}
+                        />
+                          
                           </Col>
                           <Col sm="6">
-                            <FormGroup className=" m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Customized Invoice Type
-                                </InputGroupText>
-                                <Select
-                                  options={customizedTypeType}
-                                  className="form-control p-0 border-0"
-                                  name="cust_inv_type"
-                                />
-                              </InputGroup>
-                            </FormGroup>
+                             <DropDown
+                          name="cust_inv_type"
+                          label="Customized Invoice Type"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.cust_inv_type}
+                          options={customizedTypeType}
+                        />
                           </Col>
                         </Row>
                       </fieldset>
@@ -1131,22 +1007,13 @@ const Index = () => {
                               control={control}
                               placeholder="Select Country"
                           setValue={setValue}
-                            defaultValue={countries?.find(opt => opt.value === FullData.country) || null}
+                          defaultValueId={FullData.country_id}
                               options={countries}
                             />
                           </Col>
+                         
                           <Col sm="3">
-                            <div className="checkbox checkbox-dark">
-                              <Input
-                                id="checkbox1"
-                                type="checkbox"
-                                name="fees"
-                                value="1"
-                              />
-                              <Label for="checkbox1">Fees</Label>
-                            </div>
-                          </Col>
-                          <Col sm="3">
+                          
                             <FormGroup className="m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1159,6 +1026,18 @@ const Index = () => {
                                 />
                               </InputGroup>
                             </FormGroup>
+                          </Col>
+                           <Col sm="3">
+                            <div className="checkbox checkbox-dark">
+                              <Input
+                                id="checkbox1"
+                                type="checkbox"
+                                name="fees"
+                                checked={FullData.fees}
+                                value="1"
+                              />
+                              <Label for="checkbox1">Fees</Label>
+                            </div>
                           </Col>
                           {/* <Col sm="12">
                             <FormGroup className="m-form__group">
@@ -1239,7 +1118,8 @@ const Index = () => {
                             id="checkbox1"
                             type="checkbox"
                             name="daily_pricing"
-                            value="1"
+                             checked={FullData.daily_pricing}
+                            value="Yes"
                           />
                           <Label for="checkbox1">FJ Daily Pricing PDF</Label>
                         </div>
@@ -1250,7 +1130,8 @@ const Index = () => {
                             id="checkbox2"
                             type="checkbox"
                             name="ta_daily_pricing"
-                            value="1"
+                            checked={FullData.ta_daily_pricing}
+                            value="Yes"
                           />
                           <Label for="checkbox2">
                             Ta-Petro Daily Pricing PDF
@@ -1263,7 +1144,9 @@ const Index = () => {
                             id="checkbox3"
                             type="checkbox"
                             name="esso_daily_pricing"
-                            value="1"
+                            checked={FullData.esso_daily_pricing}
+
+                            value="Yes"
                           />
                           <Label for="checkbox3">
                             ESSO Daily Pricing PDF (With Tax)
@@ -1276,8 +1159,10 @@ const Index = () => {
                           <Input
                             id="checkbox4"
                             type="checkbox"
+                             checked={FullData.esso_daily_pricing_wtax}
+                            value="Yes"
                             name="esso_daily_pricing_wtax"
-                            value="1"
+                      
                           />
                           <Label for="checkbox4">
                             ESSO Daily Pricing PDF (Without Tax)
@@ -1291,6 +1176,7 @@ const Index = () => {
                             id="checkbox5"
                             type="checkbox"
                             name="pilot_pricing"
+                        checked={FullData.pilot_pricing}
                             value="1"
                           />
                           <Label for="checkbox5">Pilot Flying J</Label>
@@ -1302,6 +1188,7 @@ const Index = () => {
                             id="checkbox6"
                             type="checkbox"
                             name="shell_pricing"
+                            checked={FullData.shell_pricing}
                             value="1"
                           />
                           <Label for="checkbox6">Shell Flying J</Label>
@@ -1314,7 +1201,8 @@ const Index = () => {
                             id="checkbox7"
                             type="checkbox"
                             name="ul_daily_pricing"
-                            value="1"
+                            checked={FullData.ul_daily_pricing}
+                            value="Yes"
                           />
                           <Label for="checkbox7">
                             Ultramar Daily Pricing PDF (With Tax)
@@ -1328,7 +1216,7 @@ const Index = () => {
                             id="checkbox8"
                             type="checkbox"
                             name="ul_daily_pricing_wtax"
-                            value="1"
+                            value="Yes"
                           />
                           <Label for="checkbox8">
                             Ultramar Daily Pricing PDF (Without Tax)
@@ -1342,7 +1230,7 @@ const Index = () => {
                             id="checkbox9"
                             type="checkbox"
                             name="love_daily_pricing"
-                            value="1"
+                            value="Yes"
                           />
                           <Label for="checkbox9">Loves Daily Pricing PDF</Label>
                         </div>
@@ -1355,7 +1243,15 @@ const Index = () => {
                     <Row className="mt-3 py-3">
                       {/* Invoice Creation */}
                       <Col sm="3">
-                      
+                        {/* <DropDown
+                          name="country_name"
+                          label="Invoice Creation" 
+                          control={control}
+                          setValue={setValue}
+                          placeholder="Select Country"
+                        defaultValueId={FullData.country_id }
+                        options={countries} 
+                        /> */}
                         <FormGroup>
                           <InputGroup>
                             <InputGroupText>
@@ -1369,9 +1265,9 @@ const Index = () => {
                               name="invoice_creation"
                               control={control}
                                defaultValue={invoiceCreation?.find(opt => opt.value === FullData.invoice_creation) || null}
+
                               rules={{required: "Invoice creation is required",
                               }}
-                             
                               render={({ field }) => (
                                 <Select
                                   {...field}

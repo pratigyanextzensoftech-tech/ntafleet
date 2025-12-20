@@ -203,8 +203,8 @@ export const customerType = [
 ];
 export const optionscompany = [
     { label: 'Select Company.', isDisabled: true },
-    { value: '0', label: 'Customer' },
-    { value: '1', label: 'Non customer' }
+    { value: 0, label: 'Customer' },
+    { value: 1, label: 'Non customer' }
 ];
 export const optionsSearch = [
     { label: 'select Type.', isDisabled: true },

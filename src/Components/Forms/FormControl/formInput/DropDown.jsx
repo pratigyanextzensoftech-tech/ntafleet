@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FormGroup, InputGroup, InputGroupText } from "reactstrap";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import Select from "react-select";
 
 const DropDown = ({
@@ -8,23 +8,28 @@ const DropDown = ({
   name,
   label = "Select Option",
   placeholder = "Select option",
-  loading = false,
   options = [],
   rules = {},
   errors = {},
   defaultValueId = null,
-  setValue
+  setValue,
 }) => {
 
-  // Set default value safely
-  useEffect(() => {
-    if (defaultValueId && options.length > 0) {
-      const option = options.find(o => o.value === defaultValueId);
-      if (option) {
-        setValue(name, option, { shouldValidate: true });
-      }
-    }
-  }, [defaultValueId, options, name, setValue]);
+  // 👇 watch current value safely
+  const currentValue = useWatch({ control, name });
+
+useEffect(() => {
+  if (defaultValueId === null || defaultValueId === undefined) return;
+  if (!options.length) return;
+
+  const option = options.find(o => o.value === defaultValueId);
+
+  if (!option) return;
+
+  setValue(name, option, { shouldValidate: false });
+
+}, [defaultValueId, options]);
+
 
   return (
     <FormGroup>
@@ -41,7 +46,7 @@ const DropDown = ({
               options={options}
               placeholder={placeholder}
               value={field.value || null}
-              onChange={(val) => field.onChange(val)}
+              onChange={field.onChange}
               className={`form-control p-0 border-0 ${
                 fieldState.error ? "is-invalid" : ""
               }`}

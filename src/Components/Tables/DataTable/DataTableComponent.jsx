@@ -95,7 +95,7 @@ const DataTableComponent = ({
       <Row>
         <Col sm="12">
           <Card>
-            {title && <HeaderCard title={title} />}
+            {title && <HeaderCard title={title} downloadHeading="Download" download={true}/>}
             <CardBody>
                 {table===true  && (
                         <>
