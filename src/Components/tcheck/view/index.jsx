@@ -233,9 +233,11 @@ const Index = () => {
             </Card>
           </Col>
         </Row>
-        <DataTableComponent title="T Check Invoice List  " tableColumns={tableColumns} tableData={data} loading={loading}
+        <DataTableComponent title="T Check Invoice List" tableColumns={tableColumns} tableData={data} loading={loading}
           pagination
           paginationServer
+             downloadHeading="Download"
+          download={true}
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange} />

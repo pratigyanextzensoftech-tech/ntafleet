@@ -242,9 +242,14 @@ console.log(newSelection)
   });
       };
       const handleMail = (id) => {
+        console.log(id)
         console.log(data)
         const stringId=id.join(",")
         console.log(stringId)
+        if(invoiceType===null){
+        invoiceType = data.fulldata?.tp;
+          console.log(invoiceType)
+        }
         const payload={
           mail_type:"PRICING",
           supplier:supplier,

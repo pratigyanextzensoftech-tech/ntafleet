@@ -7,17 +7,26 @@ import { Row, Col, Card, CardBody } from "reactstrap";
 
 const DataTableComponent = ({
   tableData,
+  showTable,
   totalData,
   tableColumns,
   title,
-  table,
+  table=true,
   loading,
   paginationTotalRows,
   onChangePage,
   onChangeRowsPerPage,
   handleDelete,
+  downloadHeading,
+  fileHeading,
+  file,
+  download,
   handleMail,
   buttonTitle,
+  downloadCsv,
+   ShowdwonloadCsv,
+    ShowloadData,
+  loadData,
   paginationRowsPerPageOptions
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -92,12 +101,13 @@ const DataTableComponent = ({
 
   return (
     <Fragment>
-      <Row>
+      {table &&(
+ <Row>
         <Col sm="12">
           <Card>
-            {title && <HeaderCard title={title} downloadHeading="Download" download={true}/>}
+            {title && <HeaderCard title={title} downloadHeading={downloadHeading} download={download} fileHeading={fileHeading} file={file} downloadCsv={downloadCsv} ShowdwonloadCsv={ShowdwonloadCsv} loadData={loadData} ShowloadData={ShowloadData}/>}
             <CardBody>
-                {table===true  && (
+                {table  && (
                         <>
                         {buttonTitle==="Both" &&(
                           <>
@@ -227,6 +237,8 @@ const DataTableComponent = ({
           </Card>
         </Col>
       </Row>
+      )}
+     
     </Fragment>
   );
 };

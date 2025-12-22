@@ -308,7 +308,6 @@ const tabs = [
         paginationTotalRows={tab.data.totalRows}
         onChangeRowsPerPage={tab.data.handlePerRowsChange}
         onChangePage={tab.data.handlePageChange}
-
       />
     ),
   }));

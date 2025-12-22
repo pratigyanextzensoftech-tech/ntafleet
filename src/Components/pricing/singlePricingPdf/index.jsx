@@ -3,7 +3,6 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
-import { SinglepricingTableTab } from "../../../Data/tab/SinglePricingTableTab";
 import { SinglepricingTab } from "../../../Data/tab/SinglePricingTab";
 import useSelectableColumns from "../../../Hooks/useSelectableColumns";
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
@@ -32,7 +31,6 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
     Swal.fire("Warning", "Please select at least one record.", "warning");
     return;
   }
-
   const stringId = ids.join(",");
 
   Swal.fire({

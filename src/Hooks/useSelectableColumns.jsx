@@ -77,7 +77,6 @@ export default function useSelectableColumns(download_link,USEFOR="") {
   // 1️⃣ Create comma-separated string
   const ids = data?.map(row => row.id);
   setSelectedRows(ids); // store comma string if needed
-
 };
 
  const handleSelectRow = (data) => {
@@ -123,7 +122,7 @@ console.log(newSelection)
             <input
               type="checkbox"
               checked={selectAll}
-              onChange={(e) => handleSelectAll(e.target.checked, data)}
+              onChange={(e) => handleSelectAll(e.target.checked, data?.data || data)}
             />
           </div>
         ),

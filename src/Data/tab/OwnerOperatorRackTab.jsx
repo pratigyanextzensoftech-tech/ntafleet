@@ -7,7 +7,7 @@ export const OwnerOperatorRackTab = [
     id: '1',
     label: 'Update ESSO Owner Operator Rack Cent',
     // component: <UpdateFgRack title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" />
-    component: <PricingCommon pricingDate={true} title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" apiname={owner_rack_cent}/>
+    component: <PricingCommon  pricingDate={true} title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" apiname={owner_rack_cent} />
 ,
   },
   {

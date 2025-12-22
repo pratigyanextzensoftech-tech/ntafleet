@@ -41,11 +41,12 @@ const PricingCommon = ({
   supplier_ids,
   tax,
   validation, rackus,
-  rackca,table,invoiceType
+  rackca,invoiceType
 }) => {
  const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const { data: companies } = useCompany();
+  const[showTable,setShowTable]=useState(false)
   const { data: supplierData } = useSupplier(supplier_ids);
   const [selectedValues, setSelectedValues] = useState([]);
 const[loading,setLoading]=useState(false)
@@ -67,6 +68,7 @@ const[loading,setLoading]=useState(false)
  const userId=localStorage.getItem("userId")
 
  const onSubmit = (data) => {
+  setShowTable(true)
   let companyValue = "";
    if (Array.isArray(data.selectedCompanies)) {
   if (data.selectedCompanies.includes("All Company")) {
@@ -79,13 +81,13 @@ const[loading,setLoading]=useState(false)
     setLoading(true);
     const basePayload = {
       company_id: company_list==="checkbox"? companyValue : "",
-      supplier_id:  data.supplier.value,
-      supplier:data.supplier.label,
+      supplier_id:  data?.supplier?.value||"",
+      supplier:data?.supplier?.label || "",
       testing_email :testingEmail?data.testingEmail:"",
-      tax: tax? tax:"No",
+      tax: tax? tax:"No"||"",
       pricing_date:data?.pricingDate? formatDate(data.pricingDate):"",
       invoice_type:discountType?data.DiscountType.value:"",
-      added_by:userId
+      added_by:userId||""
     };
 
     axios
@@ -722,14 +724,14 @@ console.log(newSelection)
           </fieldset>
         </Col>
       </Row>
-      {table!==false &&(
+      {/* {table!==false &&( */}
         <>
         <DataTableComponent
           title="Pricing PDF List (Without Tax) "
           tableColumns={tableColumns}
           tableData={data}
           loading={essoLoading}
-          table={true}
+          table={showTable}
           handleDelete={()=>handleDelete(selectedRows)}
           pagination
           paginationServer
@@ -740,8 +742,8 @@ console.log(newSelection)
           onChangePage={handlePageChange}
         />
         </>
-      )
-    }
+      {/* )
+    } */}
         
     </Fragment>
   );

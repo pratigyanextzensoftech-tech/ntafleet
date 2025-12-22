@@ -325,7 +325,6 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
             
           />
 </Col>
-                  <Col sm="3">
                     <div className="text-end">
                       <Btn
                         attrBtn={{
@@ -337,7 +336,6 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                         {btnTitle}
                       </Btn>
                     </div>
-                  </Col>
                 </Row>
             </Form>
           </fieldset>

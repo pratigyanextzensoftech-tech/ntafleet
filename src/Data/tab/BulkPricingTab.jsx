@@ -13,7 +13,7 @@ export const BulkPricingTab = [
   {
     id: '2',
     label:"Mail Bulk Pricing PDF",
-    component: <MailPricingCommon supplier="FJ" invoiceType="" listapi={pricing_pdf} pricingDate={true} btnTitle="Search Pricing Pdf"   title="Mail Bulk Pricing PDF"/>,
+    component: <MailPricingCommon supplier="FJ" invoiceType={null} listapi={pricing_pdf} pricingDate={true} btnTitle="Search Pricing Pdf"   title="Mail Bulk Pricing PDF"/>,
   },
 
 ];

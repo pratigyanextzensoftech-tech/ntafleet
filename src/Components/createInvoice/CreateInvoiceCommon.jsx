@@ -43,6 +43,7 @@ const CreateInvoiceCommon = ({
   country_list,
   defaultSupplierValue,
   api_name,
+  setShowTable
 }) => {
   // const [supplierData, setSupplierData] = useState([]);
 
@@ -97,6 +98,8 @@ const CreateInvoiceCommon = ({
     };
  if (onSearch){
 onSearch(basePayload)
+setShowTable(true)
+
 
  }   ;
          setLoading(true);

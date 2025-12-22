@@ -6,23 +6,23 @@ export const ManageLocTable = [
   {
     id: '1',
     label: 'Flying J location',
-    component: <DataTableComponent title="Flying J Location List " tableColumns={tableColumns}  tableData={dummytabledata}/>
+    component: <DataTableComponent title="Flying J Location List " tableColumns={tableColumns}  tableData={dummytabledata} downloadHeading="Download" download={true}/>
 ,
   },
   {
     id: '2',
     label: 'Ta Petro Location',
-    component: <DataTableComponent title="Ta Petro Location List" tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent title="Ta Petro Location List" tableColumns={tableColumns}  tableData={dummytabledata} downloadHeading="Download" download={true}/>,
   },
   {
     id: '3',
     label:'Esso Location',
-    component: <DataTableComponent title="Esso Location List" tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent title="Esso Location List" tableColumns={tableColumns}  tableData={dummytabledata} downloadHeading="Download" download={true}/>,
   },
   {
     id: '4',
     label:'Love Location',
-    component: <DataTableComponent  title="Love Location List"  tableColumns={tableColumns}  tableData={dummytabledata}/>,
+    component: <DataTableComponent  title="Love Location List"  tableColumns={tableColumns}  tableData={dummytabledata} downloadHeading="Download" download={true}/>,
   },
   {
     id: '5',

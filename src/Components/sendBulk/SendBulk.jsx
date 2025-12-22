@@ -13,12 +13,13 @@ import { combine_invoice, owner_invoice, customized_invoice,moneycode_invoice,tc
 const SendBulk = () => {
    const [openRowId, setOpenRowId] = useState(null);
     const [tableColumns, setTableColumns] = useState([]);
+    const [showTable,setShowTable]=useState(false)
     const [selectedIds, setSelectedIds] = useState([]);
-const [selectedRows, setSelectedRows] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const[selectedData,setSelectdData]=useState([])
+    const [selectAll, setSelectAll] = useState(false);
 
-     const[selectedData,setSelectdData]=useState([])
-  const [selectAll, setSelectAll] = useState(false);
-const handleSelectAll = (checked, data) => {
+   const handleSelectAll = (checked, data) => {
   setSelectAll(checked);
 
   if (!checked) {
@@ -30,7 +31,6 @@ const handleSelectAll = (checked, data) => {
   setSelectedIds(data.map((row) => row["Invoice#"]));
   setSelectedRows(data);
 };
-
 
 const handleSelectRow = (row) => {
   const id = row["Invoice#"];
@@ -60,11 +60,12 @@ const handleMail = ({
     return;
   }
 console.log(rows)
-  const ids = rows.map((r) => r["Invoice#"]);
+  // const ids = rows[0]?.fulldata.invoice_id;
+  const ids = rows.map(row => row?.fulldata?.invoice_id).join(",");
 
   let invoice_type = defaultInvoiceType;
 
-  if (invoice_type==null) {
+  if (invoice_type===null) {
     invoice_type = rows[0]?.fulldata?.tp;
     console.log(invoice_type)
   }
@@ -224,7 +225,7 @@ useEffect(() => {
   mail_type: "INVOICE",
 })
       }
-       paginationRowsPerPageOptions={[ 200,300]} table={true} 
+       paginationRowsPerPageOptions={[ 200,300]} table={showTable} 
        buttonTitle="Send Mail"
         loading={loading} 
        totalRows= {totalRows}
@@ -239,7 +240,7 @@ useEffect(() => {
     label:"Sender Owner Operator Invoice",
     component: <DataTableComponent  handleMail={() =>
         handleMail({
-          ids: selectedRows,
+          rows: selectedRows,
           Api: owner_invoice,
           defaultInvoiceType:"owner",
           supplier:"",
@@ -251,7 +252,7 @@ useEffect(() => {
       } loading={ownerLoading}
       handlePageChange={ownerHandlePerChange}
       setData={handleSetData}
-      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow}   tableColumns={getTableColumns(ownerdata)}  tableData={ownerdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
+      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow}   tableColumns={getTableColumns(ownerdata)}  tableData={ownerdata} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
 
   {
@@ -259,7 +260,7 @@ useEffect(() => {
     label: "Send MoneyCode Invoice",
     component:<DataTableComponent  handleMail={() =>
         handleMail({
-          ids: selectedRows,
+          rows: selectedRows,
           Api: combine_invoice,
           defaultInvoiceType:"MONEYCODE",
           supplier:"",
@@ -267,11 +268,12 @@ useEffect(() => {
           // ✅ dynamic API
            // ✅ refresh correct tab
         })
-      } loading={moneycodeLoading} 
+      } 
+      loading={moneycodeLoading} 
       handlePageChange={moneycodeHandlePerChange}
       setData={setmoneycodeData}
       handlePerRowsChange={moneyHandlePerROwChange}
-      totalRows={moneycodeTotalRow}   tableColumns={getTableColumns(moneyCodedata)}  tableData={moneyCodedata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
+      totalRows={moneycodeTotalRow}   tableColumns={getTableColumns(moneyCodedata)}  tableData={moneyCodedata} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
    {
     id: '4',
@@ -279,7 +281,7 @@ useEffect(() => {
     component: <DataTableComponent 
     handleMail={() =>
         handleMail({
-          ids: selectedRows,
+          rows: selectedRows,
           Api: combine_invoice,
           defaultInvoiceType:"CUSTUM",
           supplier:"",
@@ -292,14 +294,14 @@ useEffect(() => {
  tableColumns={getTableColumns(customizedData)}      setData={setmoneycodeData}
       handlePerRowsChange={customizedHandlePageChange}
       handlePageChange={customizedHandlePageChange}
-      loading={customizedLoading} totalRows={customizedTotalRow}  tableData={customizedData} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
+      loading={customizedLoading} totalRows={customizedTotalRow}  tableData={customizedData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
    {
     id: '5',
     label:"Send T-check Invoice",
     component:<DataTableComponent   handleMail={() =>
         handleMail({
-          ids: selectedRows,
+          rows: selectedRows,
           Api: combine_invoice,
           defaultInvoiceType:"TCHECK",
           supplier:"",
@@ -308,10 +310,10 @@ useEffect(() => {
            // ✅ refresh correct tab
         })
       }   
-  tableColumns={getTableColumns(tcheckdata)}     handlePerRowsChange={tcheckHandlePerROwChange}
+  tableColumns={getTableColumns(tcheckdata)} showTable={showTable}    handlePerRowsChange={tcheckHandlePerROwChange}
      setData={settcheckData}
      handlePageChange={tcheckHandlePerChange}
-     loading={tcheckLoading} totalRows={tcheckTotalRow} tableData={tcheckdata} paginationRowsPerPageOptions={[ 200,300]} table={true} buttonTitle="Send Mail"/>,
+     loading={tcheckLoading} totalRows={tcheckTotalRow} tableData={tcheckdata} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
   
 ];
@@ -319,31 +321,31 @@ const SendBulkTab = [
   {
     id: '1',
     label:"Send Invoice",
-    component: <SingleEssoForm loading={loading} company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} />,
+    component: <SingleEssoForm loading={loading} company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} setShowTable={setShowTable} />,
   },
   {
     id: '2',
     label:"Send Owner Operator Invoice",
-    component: <CreateInvoiceCommon validation={false}  company_list="list" loading={ownerLoading}
+    component: <CreateInvoiceCommon setShowTable={setShowTable}  validation={false}  company_list="list" loading={ownerLoading}
  supplier_ids="6"  cust_inv_dropdown={true}   country_id="1" owner_operator_invoice="Yes" invoice_type_dropdown={true}  invoice_type="RG" btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={ownerHandleSearch}/>,
   },
   
   {
     id: '3',
     label: "Send MoneyCode Invoice",
-    component: <CreateInvoiceCommon validation={false}  loading={customizedLoading} company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={ownerHandleSearch}/>,
+    component: <CreateInvoiceCommon setShowTable={setShowTable} validation={false}  loading={customizedLoading} company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={ownerHandleSearch}/>,
   },
    {
     id: '4',
     label:"Send Customized Invoice",
-    component:  <CreateInvoiceCommon invoice_creation="" invoice_type="" cust_inv_type="RG" validation={false} company_list="list" cust_inv_dropdown={true}
+    component:  <CreateInvoiceCommon setShowTable={setShowTable} invoice_creation="" invoice_type="" cust_inv_type="RG" validation={false} company_list="list" cust_inv_dropdown={true}
  supplier_ids="6,3" invoice_category_dropdown={true}   country_id="" invoice_type_dropdown={true}   btnTtitle="Search Data" btn1Title="Reset"  title="Search Customized Invoice" onSearch={customizedHandleSearch}/>,
   },
  
    {
     id: '5',
     label:"Send T-check Invoice",
-    component: <CreateInvoiceCommon validation={false} company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={ownerHandleSearch}/>,
+    component: <CreateInvoiceCommon setShowTable={setShowTable} validation={false} company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={ownerHandleSearch}/>,
   },
   
 ];

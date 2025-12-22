@@ -44,7 +44,7 @@ const handleSearch=()=>{
 
                           <Col sm="12">
                               <Card>
-                                   <HeaderCard title="Missing MoneyCode List" />
+                                   <HeaderCard title="Missing MoneyCode List" downloadHeading="Download" download={true}/>
                                    <CardBody>
                                          <DataTableComponent tableColumns={tableColumns} tableData={dummytabledata} />
                                    </CardBody>

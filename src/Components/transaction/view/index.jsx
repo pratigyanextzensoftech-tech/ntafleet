@@ -300,6 +300,8 @@ const handleDelete = (e, row) => {
           tableData={data}
           tableColumns={tableColumns}
           loading={loading}
+          downloadHeading="Download"
+          download={true}
           pagination
           paginationServer
           paginationTotalRows={totalRows}

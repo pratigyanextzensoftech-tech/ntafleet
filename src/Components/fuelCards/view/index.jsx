@@ -224,6 +224,8 @@ const navigate=useNavigate()
           loading={loading}
           tableColumns={tableColumns}
           tableData={fuelCards}
+          downloadHeading="Download"
+          download={true}
           pagination
           paginationServer
           paginationTotalRows={totalRows}

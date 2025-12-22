@@ -97,7 +97,9 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent='Fuel Cards' title=' View EFS Fual Cards'  />
       <Container fluid={true}> 
-       <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={data}/>    
+       <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={data}   downloadHeading="Download"
+          download={true}
+          pagination/>    
       </Container>
     </Fragment>
   );

@@ -248,6 +248,8 @@ const ViewMoneyCode = () => {
           tableData={data}
           loading={loading}
           pagination
+          downloadHeading="download"
+          download={true}
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

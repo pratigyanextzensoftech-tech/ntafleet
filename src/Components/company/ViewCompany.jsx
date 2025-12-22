@@ -218,6 +218,8 @@ const ViewCompany = () => {
           loading={loading}
           tableColumns={tableColumns}
           tableData={companyData}
+            downloadHeading="Download"
+          download={true}
           pagination
           paginationServer
           paginationTotalRows={totalRows}

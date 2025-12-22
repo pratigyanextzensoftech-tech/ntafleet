@@ -127,6 +127,7 @@ const ManageMacro = () => {
         <DataTableComponent title="Transaction List" tableColumns={tableColumns} tableData={data}   progressPending={loading}
           pagination
                     loading={loading}
+                    fileHeading="Wait for File" file={true}
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

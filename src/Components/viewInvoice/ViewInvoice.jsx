@@ -294,6 +294,8 @@ invoiceType:
           tableColumns={tableColumns}
           tableData={data}
           loading={loading}
+          downloadHeading="Download"
+          download={true}
           pagination
           paginationServer
           paginationTotalRows={totalRows}
@@ -309,6 +311,8 @@ invoiceType:
         <DataTableComponent
           title="Invoices List "
           tableColumns={tableColumns}
+           downloadHeading="Download"
+          download={true}
           tableData={ownerdata}
           loading={ownerLoading}
           pagination
@@ -325,6 +329,8 @@ invoiceType:
       component: (
         <DataTableComponent
           title="Invoices List "
+             downloadHeading="Download"
+          download={true}
           tableColumns={tableColumns}
           tableData={customizedData}
           loading={customizedLoading}
@@ -496,7 +502,6 @@ invoiceType:
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Invoice List" />
               <CardBody>
                 <BasicTabCard tabContent={View_Invoice_Table} />
               </CardBody>

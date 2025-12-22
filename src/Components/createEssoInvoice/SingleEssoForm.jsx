@@ -23,7 +23,7 @@ import { useCompany,useCountry } from "../../Hooks/Dropdowns";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { supplierById } from "../../api";
-const SingleEssoForm = ({ title, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type,onSearch,company_list,loading }) => {
+const SingleEssoForm = ({ title,setShowTable, btnTtitle, type, supplier_ids, supplier_name, invoice_creation, invoice_type,onSearch,company_list,loading }) => {
      const[supplierData,setSupplierData]=useState([])
   
   const{data:company}=useCompany()
@@ -109,10 +109,12 @@ to:data.endDate? formatDate(data.endDate) : "",
 from:data.startDate? formatDate(data.startDate) : "",
 supplier_id:data.supplier?.value,
 invcat:data?.invCat?.value?data?.invCat?.value:"",
-
-
     }
-     if (onSearch) onSearch(payload);// ✅ This will print your inputs
+     if (onSearch){ 
+
+      onSearch(payload)
+    setShowTable(true)
+     };// ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
   const handleReset = () => {
@@ -215,7 +217,6 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                   <InputGroupText>Supplier</InputGroupText>
                   <Controller
                     name="supplier"
-                    rules={{ required: "supplier is required" }}
                    
                     control={control}
                     render={({ field }) => (

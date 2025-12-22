@@ -282,6 +282,8 @@ console.log(response.data)
           title="Transactions List" 
           tableData={data}
           tableColumns={tableColumns}
+            downloadHeading="Download"
+          download={true}
           loading={loading}
           pagination
           paginationServer

@@ -162,6 +162,8 @@ useEffect(() => {
           tableColumns={tableColumns}
           tableData={data}
           loading={loading}
+          downloadHeading="Download"
+          download={true}
           pagination
           paginationServer
           paginationTotalRows={totalRows}

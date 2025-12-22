@@ -255,14 +255,16 @@ const handleSearch=(formData)=>{
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="MoneyCode List" />
+              <HeaderCard title="MoneyCode List" onClick={handleDeleteSelected}   downloadHeading="Download"
+          download={true}/>
               <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger", onClick: handleDeleteSelected }}>Delete Selected</Btn>
-                  <Btn attrBtn={{ color: "secondary", className: "ms-2" }}>Download Money Code</Btn>
+                  <Btn attrBtn={{ color: "danger", onClick: handleDeleteSelected }}>Delete Money Code</Btn>
+                  {/* <Btn attrBtn={{ color: "secondary", className: "ms-2" }}>Download Money Code</Btn> */}
                 </div>
                 <DataTableComponent
                   tableColumns={tableColumns}
+                 
                   tableData={moneyCodes}
                   loading={loading}
                   pagination

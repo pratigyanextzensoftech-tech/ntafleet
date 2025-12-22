@@ -28,10 +28,9 @@ const Index = () => {
         "State": "Site_State",
         "Country": "Site_Country",
         "Price": "Site_Price",
-        "Added_Date": "city",
+        "Added_Date": "timestamp",
       
       };
-       
          const {
            data,
            totalRows,
@@ -93,11 +92,15 @@ const Index = () => {
 
         <DataTableComponent
           title="Petro Retail List "
-        tableColumns={tableColumns}
-         tableData={data}
+          tableColumns={tableColumns}
+          tableData={data}
           progressPending={loading}
           pagination
            loading={loading}
+           downloadCsv="Download CSV"
+           ShowdwonloadCsv={true}
+           ShowloadData={true}
+            loadData="Load Data"
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

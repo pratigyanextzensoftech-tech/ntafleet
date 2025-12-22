@@ -24,7 +24,7 @@ const CheckOldINvoice = () => {
             </Card>
           </Col>
         </Row> 
-        <DataTableComponent onSearch={handleSearch} title="Invoices List" tableColumns={tableColumns} tableData={dummytabledata} />
+        <DataTableComponent onSearch={handleSearch} title="Invoices List" tableColumns={tableColumns} tableData={dummytabledata} downloadHeading="Download" download={true}/>
       </Container>
     </Fragment>
   )

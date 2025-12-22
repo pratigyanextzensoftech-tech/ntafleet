@@ -19,7 +19,7 @@ const index = () => {
           </Card>
         </Col>
       </Row>
-        <DataTableComponent title="Compare Invoice List" tableColumns={tableColumns} tableData={dummytabledata} />
+        <DataTableComponent title="Compare Invoice List" tableColumns={tableColumns} tableData={dummytabledata} downloadHeading="Download" download={true}/>
       </Container>
     </Fragment>
   )

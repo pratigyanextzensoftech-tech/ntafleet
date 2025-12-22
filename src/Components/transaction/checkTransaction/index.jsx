@@ -44,6 +44,8 @@ const index = () => {
         <Row className="mt-3">
           <DataTableComponent
             title="Missing Transactions List "
+            downloadHeading="Download"
+          download={true}
             tableData={dummytabledata}
             tableColumns={tableColumns}
           />
