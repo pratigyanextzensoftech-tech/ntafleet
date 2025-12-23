@@ -19,7 +19,10 @@ const SubLOgin = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
+    const [filters, setFilters] = useState({});
+
     const[Edit,setEdit]=useState(false)
+
   const columnsMap = {
     "Id #": "id",
     "Company": "company_name",
@@ -41,9 +44,49 @@ const SubLOgin = () => {
     setData,
     fetchData
   } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+
+      const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
   useEffect(() => {
     const cols = Object.keys(columnsMap).filter((key) => key !== "Id").map((key) => ({
-      name: key,
+     name: (
+        <div>
+          <div
+            className="d-flex align-items-end justify-content-start"
+            style={{ height: "40px" }}
+          >
+            {columnsMap[key]}
+          </div>
+
+          {/* ✅ show search only if searchable !== false */}
+          {columnsMap[key].searchable !== false && (
+            <input
+              type="text"
+              className="form-control mt-2"
+              placeholder="Search here"
+              style={{ borderRadius: "5px" }}
+               onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onChange={(e) =>
+                handleFilterChange(key, e.target.value)
+              }
+            />
+          )}
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,
@@ -51,6 +94,7 @@ const SubLOgin = () => {
 
     cols.push({
       name: "Action",
+      searchable: false,
       cell: (row) => (
         <div className="position-relative dropdown-action">
           <button
@@ -71,10 +115,6 @@ const SubLOgin = () => {
                 padding: "5px 0",
               }}
             >
-
-
-
-
               <button
                 className="dropdown-item d-flex align-items-center text-primary"
                 style={{ padding: "8px 12px", gap: "8px" }} 
@@ -184,7 +224,7 @@ const SubLOgin = () => {
         </Row>
         <DataTableComponent
           title="Sub-Login List  "
-          tableColumns={tableColumns} tableData={data}
+          tableColumns={tableColumns} tableData={filteredData}
           progressPending={loading}
           pagination
           loading={loading}

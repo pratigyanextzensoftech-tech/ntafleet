@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
-import HeaderCard from "../Common/Component/HeaderCard";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
 import axios from "axios";
 import { Container } from "reactstrap";
@@ -12,6 +11,8 @@ import Swal from "sweetalert2";
 const ViewCompany = () => {
   const [companyData, setCompanyData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({});
+
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
   const [totalRows, setTotalRows] = useState(0);
@@ -20,6 +21,23 @@ const ViewCompany = () => {
   const [draw, setDraw] = useState(1);
 
   const edit=useNavigate();
+  const filteredData = companyData.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
+
+const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+
 
   useEffect(() => {
     const columns = [
@@ -36,6 +54,7 @@ const ViewCompany = () => {
       {
         key: "Action",
         label: "Action",
+         searchable: false,
         cell: (row) => (
           <div className="position-relative dropdown-action">
             <button
@@ -87,7 +106,27 @@ const ViewCompany = () => {
         button: true,
       },
     ].map((col) => ({
-      name: col.label,
+     name: (
+    <div>
+      <div className="d-flex align-items-end justify-content-start" style={{height:"40px"}}>{col.label}</div>
+       {col.searchable !== false && (
+      <input
+        type="text"
+        className="form-control mt-2"
+        placeholder="Search here"
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        style={{
+          borderRadius:"5px"
+        }}
+        onChange={(e) =>
+          handleFilterChange(col.key, e.target.value)
+        }
+      />
+       )}
+    </div>
+  ),
+      
       selector: (row) => row[col.key],
       sortable: true,
       wrap: true,
@@ -217,7 +256,7 @@ const ViewCompany = () => {
           title="Company List"
           loading={loading}
           tableColumns={tableColumns}
-          tableData={companyData}
+          tableData={filteredData}
             downloadHeading="Download"
           download={true}
           pagination

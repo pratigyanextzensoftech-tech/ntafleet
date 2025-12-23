@@ -1,23 +1,17 @@
 import React, { Fragment,useState,useEffect } from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
 import { Container } from 'reactstrap';
-import HeaderCard from '../../Common/Component/HeaderCard';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import {  efs_fual_card1 as APINAME} from '../../../api/index'
 import usePaginatedTable from '../../../Hooks/usePagination';
-import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import {
-  FaFilePdf,
-  FaFileExcel,
-  FaEnvelope,
-  FaRedoAlt,
-  FaTrashAlt,
-} from "react-icons/fa";
+
 const Index = () => {
    const [openRowId, setOpenRowId] = useState(null);
     const [tableColumns, setTableColumns] = useState([]);
+    const [filters, setFilters] = useState({});
+    
     const columnsMap = {
       "Card Number #": "cardNumber",
       "Policy Number ": "policyNumber",
@@ -47,16 +41,53 @@ const Index = () => {
       handleSearch, // ✅ Added
       setData,
     } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+     const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
     useEffect(() => {
       const cols = Object.keys(columnsMap).map((key) => ({
-        name: key,
+          name: (
+        <div>
+          <div
+            className="d-flex align-items-end justify-content-start"
+            style={{ height: "40px" }}
+          >
+            {columnsMap[key]}
+          </div>
+
+          {/* ✅ show search only if searchable !== false */}
+          {columnsMap[key].searchable !== false && (
+            <input
+              type="text"
+              className="form-control mt-2"
+              placeholder="Search here"
+              style={{ borderRadius: "5px" }}
+               onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onChange={(e) =>
+                handleFilterChange(key, e.target.value)
+              }
+            />
+          )}
+        </div>
+      ),
         selector: (row) => row[key],
         sortable: true,
         wrap: true,
       }));
   console.log(data)
-     
-  
       setTableColumns(cols);
     }, [openRowId]);
   
@@ -70,34 +101,12 @@ const Index = () => {
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
   
-    const handleDelete = (row) => {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: `Do you really want to delete ?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios.delete(`${APINAME}/${row["Invoice #"]}`)
-            .then(() => {
-              setData((prevData) => prevData.filter((item) => item["Invoice #"] !== row["Invoice #"]));
-              Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
-            })
-            .catch(() => {
-              Swal.fire('Error!', 'Failed to delete record.', 'error');
-            });
-        }
-      });
-    };
+    
   return (
     <Fragment>
       <Breadcrumbs parent='Fuel Cards' title=' View EFS Fual Cards'  />
       <Container fluid={true}> 
-       <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={data}   downloadHeading="Download"
+       <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={filteredData}   downloadHeading="Download"
           download={true}
           pagination/>    
       </Container>

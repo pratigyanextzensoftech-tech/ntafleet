@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 const ViewFuelCards = () => {
   const [fuelCards, setFuelCards] = useState([]);
+    const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(true);
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
@@ -22,6 +23,23 @@ const ViewFuelCards = () => {
   const [draw, setDraw] = useState(1);
 const navigate=useNavigate()
   // Build column definitions
+
+const filteredData = fuelCards.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
+
+const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
   useEffect(() => {
     const columns = [
       { key: "card", label: "Card" },
@@ -37,6 +55,7 @@ const navigate=useNavigate()
       { key: "status", label: "Status" },
       {
         key: "Action",
+         searchable: false,
         label: "Action",
         cell: (row) => (
           <div className="position-relative dropdown-action">
@@ -83,7 +102,31 @@ const navigate=useNavigate()
         button: true,
       },
     ].map((col) => ({
-      name: col.label,
+      name: (
+        <div>
+          <div
+            className="d-flex align-items-end justify-content-start"
+            style={{ height: "40px" }}
+          >
+            {col.label}
+          </div>
+
+          {/* ✅ show search only if searchable !== false */}
+       {col.searchable !== false && (
+            <input
+              type="text"
+              className="form-control mt-2"
+              placeholder="Search here"
+              style={{ borderRadius: "5px" }}
+               onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onChange={(e) =>
+              handleFilterChange(col.key, e.target.value)
+              }
+            />
+          )}
+        </div>
+      ),
       selector: (row) => row[col.key],
       sortable: true,
       wrap: true,
@@ -223,7 +266,7 @@ const navigate=useNavigate()
           title="Fuel Card List"
           loading={loading}
           tableColumns={tableColumns}
-          tableData={fuelCards}
+          tableData={filteredData}
           downloadHeading="Download"
           download={true}
           pagination

@@ -18,6 +18,24 @@ const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const[Edit,setEdit]=useState(false)
+  const [filters, setFilters] = useState({});
+
+const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+
+const filteredItems = Items.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
   // Fetch Items API with server-side pagination
   const fetchItems = async (page = 1, limit = 10) => {
     setLoading(true);
@@ -87,62 +105,125 @@ const Index = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Table columns
-  const tableColumns = [
-    { name: "Item ID", selector: (row) => row.item_id, sortable: true },
-    { name: "Item Name", selector: (row) => row.item_name, sortable: true },
-    {
-      name: "Discount Applied",
-      selector: (row) => row.discount==0?"yes":"No",
-      sortable: true,
-    },
-    { name: "Tax Applied", selector: (row) => row.tax==0?"yes":"No", sortable: true },
-    {
-      name: "Action",
-      cell: (row) => (
-        <div className="position-relative dropdown-action">
-          <button
-            className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.item_id ? null : row.item_id)}
-          >
-            Action
-          </button>
+ const tableColumns = [
+  {
+    name: (
+      <div>
+        <div>Item ID</div>
+        <input
+          className="form-control mt-1"
+          style={{borderRadius:"5px"}}
+          placeholder="Search"
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => handleFilterChange("item_id", e.target.value)}
+        />
+      </div>
+    ),
+    selector: (row) => row.item_id,
+    sortable: true,
+  },
+  {
+    name: (
+      <div>
+        <div>Item Name</div>
+        <input
+          className="form-control mt-1"
+          placeholder="Search"
+           style={{borderRadius:"5px"}}
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => handleFilterChange("item_name", e.target.value)}
+        />
+      </div>
+    ),
+    selector: (row) => row.item_name,
+    sortable: true,
+  },
+  {
+    name: (
+      <div>
+        <div>Discount Applied</div>
+        <input
+          className="form-control mt-1"
+          placeholder="Search"
+           style={{borderRadius:"5px"}}
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => handleFilterChange("discount", e.target.value)}
+        />
+      </div>
+    ),
+    selector: (row) => (row.discount == 0 ? "yes" : "no"),
+    sortable: true,
+  },
+  {
+    name: (
+      <div>
+        <div>Tax Applied</div>
+        <input
+          className="form-control mt-1"
+          placeholder="Search"
+           style={{borderRadius:"5px"}}
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => handleFilterChange("tax", e.target.value)}
+        />
+      </div>
+    ),
+    selector: (row) => (row.tax == 0 ? "yes" : "no"),
+    sortable: true,
+  },
 
-          {openRowId === row.item_id && (
-            <div
-              className="position-absolute bg-white border rounded shadow"
-              style={{
-                zIndex: 1000,
-                right: 0,
-                marginTop: 5,
-                minWidth: 120,
-                padding: "5px 0",
-              }}
+  // 🚫 NO SEARCH FOR ACTION
+  {
+    name: "Action",
+    cell: (row) => (
+      <div className="position-relative dropdown-action">
+        <button
+          className="btn btn-sm btn-primary px-2"
+          onClick={() =>
+            setOpenRowId(openRowId === row.item_id ? null : row.item_id)
+          }
+        >
+          Action
+        </button>
+
+        {openRowId === row.item_id && (
+          <div
+            className="position-absolute bg-white border rounded shadow"
+            style={{
+              zIndex: 1000,
+              right: 0,
+              marginTop: 5,
+              minWidth: 120,
+              padding: "5px 0",
+            }}
+          >
+            <button
+              className="dropdown-item d-flex align-items-center"
+              onClick={() => handleEdit(row)}
             >
-              <button
-                className="dropdown-item d-flex align-items-center"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleEdit(row)}
-              >
-                <FaEdit /> Edit  
-              </button>
-              <button
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
-              >
-                <FaTrashAlt /> Delete
-              </button>
-            </div>
-          )}
-        </div>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      width: "160px",
-    },
-  ];
+              <FaEdit /> Edit
+            </button>
+            <button
+              className="dropdown-item d-flex align-items-center text-danger"
+              onClick={() => handleDelete(row)}
+            >
+              <FaTrashAlt /> Delete
+            </button>
+          </div>
+        )}
+      </div>
+    ),
+    sortable: false,
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+    width: "160px",
+  },
+];
+
 const refreshTable=()=>{
   fetchItems()
 }
@@ -165,7 +246,7 @@ const refreshTable=()=>{
         <DataTableComponent
           title="Items List"
           tableColumns={tableColumns}
-          tableData={Items}
+          tableData={filteredItems}
           loading={loading}
           pagination
           paginationServer
