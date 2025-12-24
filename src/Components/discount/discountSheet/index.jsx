@@ -11,12 +11,27 @@ import { FaFileAlt, FaClipboardList, FaEnvelope } from "react-icons/fa";
 const DiscountSheetPage = () => {
   const [sheetData, setSheetData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({});
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
   const [draw, setDraw] = useState(1);
-
+   const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = sheetData.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
   // ✅ Fetch Discount Sheet data dynamically
   const fetchDiscountSheets = async (page = 1, limit = 10) => {
     setLoading(true);

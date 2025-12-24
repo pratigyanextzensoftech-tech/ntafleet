@@ -215,10 +215,6 @@ const Index = () => {
   const handleRegenerateInvoice = (row) => alert("Delete " + row["Invoice #"]);
   const handleView = (row) => alert("Delete " + row["Invoice #"]);
 
-
-
-
-
   return (
     <Fragment>
       <Breadcrumbs parent='Tcheck' title='T-Check Invoices List ' />

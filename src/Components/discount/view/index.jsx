@@ -59,7 +59,7 @@ const Index = () => {
 
   useEffect(() => {
     fetchDiscountData(currentPage, perPage,filters);
-  }, [currentPage, perPage]);
+  }, [currentPage, perPage,filters]);
 
   // ✅ Dropdown actions
   const handleDownload = (row) => {
@@ -143,136 +143,165 @@ const Index = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+const ColumnHeader = ({ label, columnKey }) => (
 
-  // ✅ Grouped Table Columns like Screenshot
-  const tableColumns = [
-    { name: "ID#", selector: (row) => row.id, sortable: true, width: "100px" },
-    {
-      name: "Company",
-      selector: (row) => row.company_name,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "Start_Date",
-      selector: (row) => row.start_date,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "End_Date",
-      selector: (row) => row.end_date,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "Country",
-      selector: (row) => row.country,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "Supplier",
-      selector: (row) => row.supplier,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
 
-    // === Discount Cent ===
-    {
-      name: "Discount Cent (CA)",
-      selector: (row) => row.cent_ca,
-      sortable: true,
-      wrap: true,
-      width: "200px",
-    },
-    {
-      name: "Discount Cent (US)",
-      selector: (row) => row.cent_us,
-      sortable: true,
-      wrap: true,
-      width: "200px",
-    },
 
-    // === Total ===
-    {
-      name: "Total (CA)",
-      selector: (row) => row.total_ca,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "Total (US)",
-      selector: (row) => row.total_us,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
 
-    // === Retail ===
-    {
-      name: "Retail Total (CA)",
-      selector: (row) => row.retail_ca,
-      sortable: true,
-      wrap: true,
-      width: "200px",
-    },
-    {
-      name: "Retail Total (US)",
-      selector: (row) => row.retail_us,
-      sortable: true,
-      wrap: true,
-      width: "200px",
-    },
 
-    // === Quantity ===
-    {
-      name: "Qty (CA)",
-      selector: (row) => row.qty_ca,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "Qty (US)",
-      selector: (row) => row.qty_us,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
+  
+  <div>
+    <div className="fw-bold">{label}</div>
+    <input
+      type="text"
+      className="form-control mt-1"
+      placeholder="Search"
+      onClick={(e) => e.stopPropagation()}
+       value={filters[columnKey] || ""}
+      // onMouseDown={(e) => e.stopPropagation()}
+      onChange={(e) => handleFilterChange(columnKey, e.target.value)}
+      style={{ borderRadius:"5px",
+        // height:"24px"
+      }}
 
-    // === Discount ===
-    {
-      name: "Discount (CA)",
-      selector: (row) => row.disc_ca,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
-    {
-      name: "Discount (US)",
-      selector: (row) => row.disc_us,
-      sortable: true,
-      wrap: true,
-      width: "150px",
-    },
 
-    // === Action ===
+
+    />
+  </div>
+);
+const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+const filteredData = discountData.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
+
+  const tableColumns =React.useMemo(() =>
+     [
+  {
+    name: <ColumnHeader label="ID#" columnKey="id" />,
+    selector: (row) => row.id,
+    sortable: true,
+    width: "100px",
+  },
+  {
+    name: <ColumnHeader label="Company" columnKey="company_name" />,
+    selector: (row) => row.company_name,
+    sortable: true,
+    wrap: true,
+    width: "150px",
+  },
+  {
+    name: <ColumnHeader label="Start Date" columnKey="start_date" />,
+    selector: (row) => row.start_date,
+    sortable: true,
+    width: "150px",
+  },
+  {
+    name: <ColumnHeader label="End Date" columnKey="end_date" />,
+    selector: (row) => row.end_date,
+    sortable: true,
+    width: "150px",
+  },
+  {
+    name: <ColumnHeader label="Country" columnKey="country" />,
+    selector: (row) => row.country,
+    sortable: true,
+    width: "150px",
+  },
+  {
+    name: <ColumnHeader label="Supplier" columnKey="supplier" />,
+    selector: (row) => row.supplier,
+    sortable: true,
+    width: "150px",
+  },
+  {
+    name: <ColumnHeader label="Discount Cent (CA)" columnKey="cent_ca" />,
+    selector: (row) => row.cent_ca,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: <ColumnHeader label="Discount Cent (US)" columnKey="cent_us" />,
+    selector: (row) => row.cent_us,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: <ColumnHeader label="Total (CA)" columnKey="total_ca" />,
+    selector: (row) => row.total_ca,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: <ColumnHeader label="Total (US)" columnKey="total_us" />,
+    selector: (row) => row.total_us,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: <ColumnHeader label="Retail Total (CA)" columnKey="retail_ca" />,
+    selector: (row) => row.retail_ca,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: <ColumnHeader label="Retail Total (US)" columnKey="retail_us" />,
+    selector: (row) => row.retail_us,
+    sortable: true,
+    width: "200px",
+  },
+  {
+    name: <ColumnHeader label="Qty (CA)" columnKey="qty_ca" />,
+    selector: (row) => row.qty_ca,
+    sortable: true,
+    width: "200px",
+  },
     {
-      name: "Action",
-      cell: (row) => <ActionDropdown row={row} />,
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      width: "100px",
-    },
-  ];
+    name: <ColumnHeader label="Qty (US)" columnKey="qty_us" />,
+    selector: (row) => row.qty_us,
+    sortable: true,
+    width: "200px",
+  },
+    {
+    name: <ColumnHeader label="Discount (CA)" columnKey="disc_ca" />,
+    selector: (row) => row.disc_ca,
+    sortable: true,
+    width: "200px",
+  },
+    {
+    name: <ColumnHeader label="Qty (CA)" columnKey="qty_ca" />,
+    selector: (row) => row.qty_ca,
+    sortable: true,
+    width: "200px",
+  },
+    {
+    name: <ColumnHeader label="Discount (US)" columnKey="disc_us" />,
+    selector: (row) => row.disc_us,
+    sortable: true,
+    width: "200px",
+  },
+
+  // ❌ No search for Action
+  {
+    name: "Action",
+    cell: (row) => <ActionDropdown row={row} />,
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+    width: "100px",
+  },
+]);
+
 
  const handleSearch = (formData) => {
     console.log("🔍 Filters received:", formData);
@@ -298,7 +327,7 @@ const Index = () => {
         <DataTableComponent
           title="Discount List"
           tableColumns={tableColumns}
-          tableData={discountData}
+          tableData={filteredData}
           loading={loading}
           pagination
           paginationServer

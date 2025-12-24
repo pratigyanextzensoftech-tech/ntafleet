@@ -30,7 +30,7 @@ const SubLOgin = () => {
     "Email": "email",
     "OTP Email": "otp_email",
     "Discount_Sheet_Menu": "card_discount",
-    "Added_By": "user_name",
+    "Added_By": "added_by",
     "Added_On": "added_on",
   };
 

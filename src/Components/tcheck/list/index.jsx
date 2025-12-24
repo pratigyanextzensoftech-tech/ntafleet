@@ -14,6 +14,7 @@ import usePaginatedTable from '../../../Hooks/usePagination'; // ✅ Correct imp
 const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]); // ✅ Un-commented
+    const [filters, setFilters] = useState({});
 
   const columnsMap = {
     "Id":"id",
@@ -26,8 +27,8 @@ const Index = () => {
     "Generation_Type": "generation_type",
     "Payee": "payee",
     "Driver_ID": "driver_id",
-    "Tractor#": "trip",
-    "Trip#": "fees",
+    "Tractor#": "tractor",
+    "Trip#": "trip",
     "Driver_CDL": "driver_cdl",
     "Trailer#": "trailer",
     "Memo": "memo",
@@ -42,21 +43,58 @@ const Index = () => {
     handleSearch, // ✅ Added
     setData,
   } = usePaginatedTable({ apiUrl: tcheck, columnsMap });
- 
-useEffect(() => {
-       if (data?.length) {
-         const normalized = data.map((item) => ({
-           ...item,
-           id: item["Id"], 
+  const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
+// useEffect(() => {
+//        if (data?.length) {
+//          const normalized = data.map((item) => ({
+//            ...item,
+//            id: item["Id"], 
           
-         }));
+//          }));
      
-         setData(normalized);
-       }
-     }, [data]);
+//          setData(normalized);
+//        }
+//      }, [data]);
   useEffect(() => {
     const cols = Object.keys(columnsMap).filter((key) => key !== "Id").map((key) => ({
-      name: key,
+      name: (
+        <div>
+          <div
+            className="d-flex align-items-end justify-content-start"
+            style={{ height: "40px" }}
+          >
+            {columnsMap[key]}
+          </div>
+          {/* ✅ show search only if searchable !== false */}
+          {columnsMap[key].searchable !== false && (
+            <input
+              type="text"
+              className="form-control mt-2"
+              placeholder="Search here"
+              style={{ borderRadius: "5px" }}
+               onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onChange={(e) =>
+                handleFilterChange(key, e.target.value)
+              }
+            />
+          )}
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,
@@ -64,6 +102,7 @@ useEffect(() => {
 
     cols.push({
       name: "Action",
+      searchable: false,
       cell: (row) => (
         <div className="position-relative dropdown-action">
           <button
@@ -72,7 +111,6 @@ useEffect(() => {
           >
             Action
           </button>
-
           {openRowId === row.id && (
             <div
               className="position-absolute bg-white border rounded shadow"
@@ -160,7 +198,7 @@ useEffect(() => {
         <DataTableComponent
           title="T Check List"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           loading={loading}
           downloadHeading="Download"
           download={true}
