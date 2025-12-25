@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 const Index = () => {
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
+  const [filters, setFilters] = useState({});
 const [selectedRow, setSelectedRow] = useState(null);
     const[Edit,setEdit]=useState(false)
   // Format date for table display
@@ -33,6 +34,15 @@ const [selectedRow, setSelectedRow] = useState(null);
     "Added_By": "added_by_name",
     "Added_On": "created",
   };
+const columnWidths = {
+  "ID #": "80px",
+  "Name": "200px",
+  "Email": "260px",
+  "Phone": "140px",
+  "Address": "300px",
+  "Added_By": "180px",
+  "Added_On": "160px",
+};
 
   // Custom pagination hook
   const {
@@ -45,6 +55,21 @@ const [selectedRow, setSelectedRow] = useState(null);
     fetchData,
   } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
 
+     const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
   // ✅ Refresh function
   const refreshTable = () => {
     fetchData();
@@ -72,19 +97,65 @@ const [selectedRow, setSelectedRow] = useState(null);
 
   // ✅ Build column definitions
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+   const cols = Object.keys(columnsMap).map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: (row) => {
         if (key === "Added_On" && row[key]) return formatDate(row[key]);
         return row[key];
       },
       sortable: true,
       wrap: true,
-    }));
+    }
+});
 
     // Status Column
     cols.push({
-      name: "Status",
+        name: (
+        <div style={{ width: "100%",                    
+               }}>
+          <div className="d-flex align-items-end justify-content-start">
+           Status
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                  
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange("status", e.target.value)}
+          />
+        </div>
+      ),
       cell: (row) => (
         <select
           className="form-select form-select-sm"
@@ -216,7 +287,7 @@ const [selectedRow, setSelectedRow] = useState(null);
         <DataTableComponent
           title="Sales Man List"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           progressPending={loading}
           pagination
           paginationServer

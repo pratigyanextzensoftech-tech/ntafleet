@@ -4,17 +4,9 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import StateForm from "./StateForm";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import qs from "qs";
 import axios from "axios";
 import { state as APINAME } from "../../../api";
-import {
-  FaDownload,
-  FaEye,
-  FaEnvelope,
-  FaFileInvoice,
-  FaTrashAlt,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaEye,FaTrashAlt} from "react-icons/fa";
 import usePaginatedTable from "../../../Hooks/usePagination";
 import Swal from "sweetalert2";
 //end Table
@@ -22,8 +14,8 @@ const Index = () => {
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
  const [selectedRow, setSelectedRow] = useState(null);
-         const[Edit,setEdit]=useState(false)
-  
+  const[Edit,setEdit]=useState(false)
+   const [filters, setFilters] = useState({});
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".dropdown-action")) {
@@ -33,13 +25,7 @@ const Index = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const handleChange = (id, field, value) => {
-    setData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
-    );
-  };
+ 
   // ✅ Column mapping between UI and API
   const columnsMap = {
     "State ID": "state_id",
@@ -63,14 +49,53 @@ const Index = () => {
     fetchData
   } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
 
+   const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
+  
   // ✅ Build column definitions for DataTable
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+         const cols = Object.keys(columnsMap).map((key) => {
+
+    return {
+      name: (
+        <div style={{ width: "100%",                    
+            }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,
-    }));
+   } });
 
     // Add Status column
 
@@ -179,7 +204,7 @@ const handleDelete = (row) => {
         <DataTableComponent
           title="State List"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           loading={loading}
           pagination
           paginationServer

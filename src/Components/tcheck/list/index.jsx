@@ -17,8 +17,8 @@ const Index = () => {
     const [filters, setFilters] = useState({});
 
   const columnsMap = {
-    "Id":"id",
-    "CreateId": "card_no",
+    // "Id":"id",
+    "Id #":"id",
     "Company": "company_name",
     "Create Date": "create_date",
     "Express Code": "express_code",
@@ -69,36 +69,59 @@ const Index = () => {
 //          setData(normalized);
 //        }
 //      }, [data]);
+const columnWidths = {
+  "Id#":"60px",
+  Company:"250px",
+  "Create Date": "140px",
+  "Express Code": "220px",
+  Dollar_Amt: "130px",
+  Fees: "200px",
+  Generation_Type: "160px",
+  Payee: "120px",
+  Driver_ID: "120px",
+  "Tractor#": "120px",
+  "Trip#": "100px",
+  Driver_CDL: "120px",
+  "Trailer#": "100px",
+  Memo: "250px"
+};
+
   useEffect(() => {
-    const cols = Object.keys(columnsMap).filter((key) => key !== "Id").map((key) => ({
+  const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+
+    return {
       name: (
-        <div>
-          <div
-            className="d-flex align-items-end justify-content-start"
-            style={{ height: "40px" }}
-          >
-            {columnsMap[key]}
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
           </div>
-          {/* ✅ show search only if searchable !== false */}
-          {columnsMap[key].searchable !== false && (
-            <input
-              type="text"
-              className="form-control mt-2"
-              placeholder="Search here"
-              style={{ borderRadius: "5px" }}
-               onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-              onChange={(e) =>
-                handleFilterChange(key, e.target.value)
-              }
-            />
-          )}
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
         </div>
       ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,
-    }));
+      width: colWidth, // ✅ THIS sets the actual table column width
+    };
+  });
 
     cols.push({
       name: "Action",
@@ -107,11 +130,11 @@ const Index = () => {
         <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
+            onClick={() => setOpenRowId(openRowId === row["Id #"] ? null : row["Id #"])}
           >
             Action
           </button>
-          {openRowId === row.id && (
+          {openRowId === row["Id #"] && (
             <div
               className="position-absolute bg-white border rounded shadow"
               style={{
@@ -123,7 +146,7 @@ const Index = () => {
               }}
             >
               <Link
-                to={`/tcheck_list/${btoa(row.id)}`}
+                to={`/tcheck_list/${btoa(row["Id #"])}`}
                 className="dropdown-item d-flex align-items-center text-success"
                 style={{ padding: "8px 12px", gap: "8px" }}
               >
@@ -168,9 +191,9 @@ const Index = () => {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${tcheck}/${row.id}`)
+        axios.delete(`${tcheck}/${row["Id #"]}`)
           .then(() => {
-            setData((prevData) => prevData.filter((item) => item.id !== row.id));
+            setData((prevData) => prevData.filter((item) => item["Id #"] !== row["Id #"]));
             Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
           })
           .catch(() => {
@@ -179,7 +202,6 @@ const Index = () => {
       }
     });
   };
-
   return (
 
     <Fragment>

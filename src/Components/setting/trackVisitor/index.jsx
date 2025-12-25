@@ -1,29 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import { Container } from "reactstrap"; 
-import HeaderCard from "../../Common/Component/HeaderCard";
-//Table
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';  
-import qs from 'qs'
-import axios from 'axios';
+
 import { user_tracking as APINAME } from '../../../api';
-import {
-  FaDownload,
-  FaEye,
-  FaEnvelope,
-  FaFileInvoice,
-  FaTrashAlt,
-} from "react-icons/fa";
-import { Link } from 'react-router-dom';
 import dayjs from "dayjs"; 
 import usePaginatedTable from '../../../Hooks/usePagination';  
-//end Table
 
 
 const Index = () => {
     const [tableColumns, setTableColumns] = useState([]);
     const [openRowId, setOpenRowId] = useState(null);
-  
+    const [filters, setFilters] = useState({});
     const formatDate = (value, withTime = true) => {
     if (!value) return "-";
     const format = withTime ? "DD-MM-YYYY HH:MM" : "DD-MM-YYYY";
@@ -61,7 +49,16 @@ const Index = () => {
       "Dated":"dated"
       
     };
-  
+  const columnWidths = {
+  "Sr.No": "130px",
+  "User Name": "250px",
+  "Login_IP": "360px",
+  "Menu": "290px",
+  "Link": "290px",
+  "Type": "190px",
+  "Dated": "290px",
+};
+
     const {
       data,
       totalRows,
@@ -72,24 +69,65 @@ const Index = () => {
       setData,
     } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
   
-  
+     const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
   
     // ✅ Build column definitions for DataTable
     useEffect(() => {
-      const cols = Object.keys(columnsMap).map((key) => ({
-        name: key,
+     const cols = Object.keys(columnsMap).map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+
+    return {
+      name: (
+        <div style={{ width: "100%",                    
+              maxWidth: colWidthPx - 10 + "px", }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
          selector: (row) => { 
         if (key === "Dated" && row[key]) return formatDate(row[key]);
         return row[key];
       },
         sortable: true,
+         width:colWidth,
         wrap: true,
-      }));
+    
   
       // Add Status column
     
   
- 
+    }})
   
       setTableColumns(cols);
     }, [openRowId]);
@@ -104,7 +142,7 @@ const Index = () => {
         <DataTableComponent
           title="Track Visitors"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           progressPending={loading}
           pagination
           paginationServer

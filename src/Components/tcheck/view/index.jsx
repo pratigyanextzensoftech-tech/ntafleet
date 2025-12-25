@@ -4,7 +4,6 @@ import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import View from './View';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent'; 
-import qs from 'qs'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { tcheck_invoice } from '../../../api';
@@ -22,7 +21,9 @@ const Index = () => {
 
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
+      const [filters, setFilters] = useState({});
 
+   
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -51,6 +52,15 @@ const Index = () => {
     "	Due Date": "due_date",
     "	Total Due": "total",
   };
+const columnWidths = {
+  "Invoice #": "120px",
+  "Company": "450px",
+  "From Date": "250px",   // increased
+  "To Date": "250px",     // increased
+  "Due Date": "60px",    // small
+  "Total Due": "60px",   // small
+};
+
 
   const {
     data,
@@ -61,21 +71,86 @@ const Index = () => {
     handleSearch, // ✅ Added
     setData,
   } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap });
-
+  
+  const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
  
 
   // ✅ Build column definitions for DataTable
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+   const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,
-    }));
+      width: colWidth, // ✅ THIS sets the actual table column width
+    };
+  });
 
     // Add Status column
     cols.push({
-      name: "Status",
+       name: (
+    <div style={{ width: "100%" }}>
+      <div className="d-flex align-items-end justify-content-start">
+        Status
+      </div>
+      <input
+        type="text"
+        className="mt-2"
+        style={{
+          width: "100%",
+          border:"none",
+          maxWidth: "120px",  // adjust width as needed
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "5px"
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("Status", e.target.value)}
+      />
+    </div>
+  ),
       cell: (row) => (
         <select
           className="form-select form-select-sm"
@@ -229,7 +304,7 @@ const Index = () => {
             </Card>
           </Col>
         </Row>
-        <DataTableComponent title="T Check Invoice List" tableColumns={tableColumns} tableData={data} loading={loading}
+        <DataTableComponent title="T Check Invoice List" tableColumns={tableColumns} tableData={filteredData} loading={loading}
           pagination
           paginationServer
              downloadHeading="Download"

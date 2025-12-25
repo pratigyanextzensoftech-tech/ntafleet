@@ -19,9 +19,25 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [selectedRows, setSelectedRows] = useState([]);
   const [filters,setFilters]=useState({})
+   const [Formfilters, setformFilters] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [openRowId, setOpenRowId] = useState(null);
 
+    const handleFilterChange = (column, value) => {
+  setformFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = moneyCodes.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
   // Fetch API data
   const fetchMoneyCodes = async (page = 1, limit = 10,filtersData = filters) => {
     setLoading(true);
@@ -265,7 +281,7 @@ const handleSearch=(formData)=>{
                 <DataTableComponent
                   tableColumns={tableColumns}
                  
-                  tableData={moneyCodes}
+                  tableData={filteredData}
                   loading={loading}
                   pagination
                   paginationServer

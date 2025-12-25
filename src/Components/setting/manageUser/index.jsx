@@ -17,6 +17,7 @@ const Index = () => {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const[validation,setValidation]=useState(true)
+ const [filters, setFilters] = useState({});
   const [draw, setDraw] = useState(1);
   const [openRowId, setOpenRowId] = useState(null);
   const [editUser, setEditUser] = useState(null);
@@ -78,7 +79,21 @@ console.log("Decoded ID:", Edit_id);
   useEffect(() => {
     fetchUsers(currentPage, perPage);
   }, [perPage]);
-
+  const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
   // ✅ Pagination handlers
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -167,15 +182,143 @@ const refreshTable=()=>{
   // ✅ Build columns
   useEffect(() => {
     const columns = [
-      { name: "ID", selector: (row) => row.id, sortable: true },
-      { name: "Name", selector: (row) => row.name, sortable: true, wrap: true },
-      { name: "Email", selector: (row) => row.email, sortable: true, wrap: true },
-      { name: "Phone", selector: (row) => row.phone, sortable: true, wrap: true },
-      { name: "Company", selector: (row) => row.company, sortable: true, wrap: true },
-      { name: "Added By", selector: (row) => row.added_by, sortable: true, wrap: true },
+      {  name: (
+    <div style={{ width: "100%" }}>
+      <div>ID</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "70px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("id", e.target.value)}
+      />
+    </div>
+  ), width:"120px", selector: (row) => row.id, sortable: true },
 
-      {
-        name: "Company Login",
+      { name: (
+    <div style={{ width: "100%" }}>
+      <div>Name</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "250px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("name", e.target.value)}
+      />
+    </div>
+  ), selector: (row) => row.name, sortable: true, wrap: true,width:"250px" },
+      { name: (
+    <div style={{ width: "100%" }}>
+      <div>Email</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "250px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("email", e.target.value)}
+      />
+    </div>
+  ), selector: (row) => row.email, sortable: true, wrap: true,width:"250px" },
+
+       { name: (
+    <div style={{ width: "100%" }}>
+      <div>Phone</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "200px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("phone", e.target.value)}
+      />
+    </div>
+  ), selector: (row) => row.phone, sortable: true, wrap: true,width:"200px" },
+       { name: (
+    <div style={{ width: "100%" }}>
+      <div>Company</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "250px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("company", e.target.value)}
+      />
+    </div>
+  ),
+        selector: (row) => row.company, sortable: true, wrap: true,width:"250px" },
+       { name: (
+    <div style={{ width: "100%" }}>
+      <div>Added By</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "200px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("added_by", e.target.value)}
+      />
+    </div>
+  ), selector: (row) => row.added_by, sortable: true, wrap: true,width:"200px" },
+       { name: (
+    <div style={{ width: "100%" }}>
+      <div>Company Login</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "200px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("company_login", e.target.value)}
+      />
+    </div>
+  ),
+
         cell: (row) => (
           <select
             className="form-select form-select-sm"
@@ -186,10 +329,27 @@ const refreshTable=()=>{
             <option value="No">No</option>
           </select>
         ),
-        width: "140px",
+        width: "200px",
       },
-      {
-        name: "Status",
+       { name: (
+    <div style={{ width: "100%" }}>
+      <div>Status</div>
+      <input
+        type="text"
+        style={{
+          width: "100%",
+          maxWidth: "180px",
+          height: "28px",
+          boxSizing: "border-box",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => handleFilterChange("status", e.target.value)}
+      />
+    </div>
+  ),
         cell: (row) => (
           <select
             className="form-select form-select-sm"
@@ -200,7 +360,7 @@ const refreshTable=()=>{
             <option value="Blocked">Blocked</option>
           </select>
         ),
-        width: "140px",
+        width: "180px",
       },
       {
         name: "Action",
@@ -281,10 +441,10 @@ const refreshTable=()=>{
         <DataTableComponent
           title="User List"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           progressPending={loading}
           pagination
-                    loading={loading}
+          loading={loading}
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

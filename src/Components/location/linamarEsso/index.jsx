@@ -5,22 +5,15 @@ import HeaderCard from '../../Common/Component/HeaderCard';
 import LinamarForm from './LinamarForm';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import axios from 'axios';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import {  FaTrashAlt, FaEnvelope } from 'react-icons/fa';
 import usePaginatedTable from '../../../Hooks/usePagination';
-import qs from 'qs'
 import { linamar_esso_loc as APINAME } from '../../../api';
-import {
-  FaDownload,
-  FaEye,
-  FaEnvelope,
-  FaFileInvoice,
-} from "react-icons/fa";
-import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 const Index = () => {
      const [openRowId, setOpenRowId] = useState(null);
      const [tableColumns, setTableColumns] = useState([]);
      const [selectedRow, setSelectedRow] = useState(null);
+      const [filters, setFilters] = useState({});
        const[Edit,setEdit]=useState(false)
     const columnsMap = {
     "ID": "id",
@@ -30,23 +23,62 @@ const Index = () => {
     "Flying J Location ID": "loc_id",
   };
    
+  
      const {
        data,
        totalRows,
        loading,
        handlePageChange,
        handlePerRowsChange,
-       handleSearch, // ✅ Added
        setData,
         fetchData,
      } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+
+      const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
      useEffect(() => {
-       const cols = Object.keys(columnsMap).map((key) => ({
-         name: key,
+       const cols = Object.keys(columnsMap).map((key) => {
+    return {
+      name: (
+        <div style={{ width: "100%",                    
+            }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              // maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
          selector: (row) => row[key],
          sortable: true,
          wrap: true,
-       }));
+       }});
    
        cols.push({
          name: "Action",
@@ -159,7 +191,7 @@ const Index = () => {
         <DataTableComponent
           title="Linamar Esso Location List"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           progressPending={loading}
           pagination
           paginationServer
