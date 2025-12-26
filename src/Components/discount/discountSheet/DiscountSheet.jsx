@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import { discount_sheet as APINAME } from '../../../api';
 const DiscountSheet = ({ title, btnTitle, onDataAdded}) => {
   const [selectedValues, setSelectedValues] = useState([]);
+  
   const { companies: companyOptions, loading: companyLoading } = useCompany();
 
   const {

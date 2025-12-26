@@ -23,21 +23,6 @@ const Index = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [openRowId, setOpenRowId] = useState(null);
 
-    const handleFilterChange = (column, value) => {
-  setformFilters((prev) => ({
-    ...prev,
-    [column]: value.toLowerCase(),
-  }));
-};
-  const filteredData = moneyCodes.filter((row) =>
-  Object.keys(filters).every((key) => {
-    if (!filters[key]) return true;
-    return (
-      row[key] &&
-      row[key].toString().toLowerCase().includes(filters[key])
-    );
-  })
-); 
   // Fetch API data
   const fetchMoneyCodes = async (page = 1, limit = 10,filtersData = filters) => {
     setLoading(true);
@@ -81,7 +66,21 @@ const Index = () => {
   useEffect(() => {
     fetchMoneyCodes(currentPage, perPage,filters);
   }, [currentPage, perPage]);
-
+    const handleFilterChange = (column, value) => {
+         setformFilters((prev) => ({
+         ...prev,
+        [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = moneyCodes.filter((row) =>
+  Object.keys(Formfilters).every((key) => {
+    if (!Formfilters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(Formfilters[key])
+    );
+  })
+);
   const handlePageChange = (page) => setCurrentPage(page);
   const handlePerRowsChange = (newPerPage, page) => {
     setPerPage(newPerPage);
@@ -169,21 +168,46 @@ const handleSearch=(formData)=>{
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+const HeaderWithFilter = (label, key) => (
+  <div style={{ width: "100%" }}>
+    <div className="d-flex align-items-end">
+      {label}
+    </div>
+
+    <input
+      type="text"
+      className="mt-2"
+      style={{
+        width: "100%",
+        height: "28px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        padding: "2px 6px",
+        fontSize: "12px",
+        boxSizing: "border-box",
+      }}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onChange={(e) => handleFilterChange(key, e.target.value)}
+    />
+  </div>
+);
+
   // Table columns
   const tableColumns = [
-    { name: "Ref#", selector: row => row.ref_no, sortable: true, width: "120px" },
-    { name: "Company", selector: row => row.company, sortable: true, width: "150px" },
-    { name: "Name", selector: row => row.name, sortable: true, width: "150px" },
-    { name: "Voided", selector: row => row.voided, sortable: true, width: "100px" },
-    { name: "Issued To", selector: row => row.issued_to, sortable: true, width: "150px" },
-    { name: "Issued Date", selector: row => row.issued_date, sortable: true, width: "150px" },
-    { name: "Original Amt", selector: row => row.original_amt, sortable: true, width: "150px" },
-    { name: "Bill Date", selector: row => row.bill_date, sortable: true, width: "150px" },
-    { name: "Check Num", selector: row => row.check_num, sortable: true, width: "150px" },
-    { name: "Date Used", selector: row => row.date_used, sortable: true, width: "150px" },
-    { name: "Currency", selector: row => row.currency, sortable: true, width: "100px" },
-    { name: "Status", selector: row => row.status, sortable: true, width: "120px" },
-    { name: "Notes", selector: row => row.notes, sortable: true, width: "200px" },
+    {  name:HeaderWithFilter("Ref#","ref_no"), selector: row => row.ref_no, sortable: true, width: "120px" },
+    { name: HeaderWithFilter("Company","company"), selector: row => row.company, sortable: true, width: "150px" },
+    { name:HeaderWithFilter("Name","name") , selector: row => row.name, sortable: true, width: "150px" },
+    { name:HeaderWithFilter( "Voided","voided"), selector: row => row.voided, sortable: true, width: "100px" },
+    { name:HeaderWithFilter("Issued To","issued_to") , selector: row => row.issued_to, sortable: true, width: "150px" },
+    { name:HeaderWithFilter("Issued Date","issued_date") , selector: row => row.issued_date, sortable: true, width: "150px" },
+    { name:HeaderWithFilter("Original Amt","original_amt") , selector: row => row.original_amt, sortable: true, width: "150px" },
+    { name:HeaderWithFilter( "Bill Date","bill_date"), selector: row => row.bill_date, sortable: true, width: "150px" },
+    { name:HeaderWithFilter( "Check Num","check_num"), selector: row => row.check_num, sortable: true, width: "150px" },
+    { name:HeaderWithFilter("Date Used","date_used") , selector: row => row.date_used, sortable: true, width: "150px" },
+    { name:HeaderWithFilter( "Currency","currency"), selector: row => row.currency, sortable: true, width: "100px" },
+    { name:HeaderWithFilter("Status","status") , selector: row => row.status, sortable: true, width: "120px" },
+    { name:HeaderWithFilter( "Notes","notes"), selector: row => row.notes, sortable: true, width: "200px" },
     {
       name: (
         <div>

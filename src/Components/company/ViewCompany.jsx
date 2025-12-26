@@ -37,20 +37,18 @@ const handleFilterChange = (column, value) => {
     [column]: value.toLowerCase(),
   }));
 };
-
-
   useEffect(() => {
     const columns = [
-      { key: "company_id", label: "Sr.No." },
-      { key: "companyName", label: "Company Name" },
-      { key: "firstName", label: "First Name" },
-      { key: "lastName", label: "Last Name" },
-      { key: "address", label: "Address" },
-      { key: "suspicious", label: "Suspicious Company" },
-      { key: "lastLogin", label: "Last Login" },
-      { key: "loginBefore", label: "Login Before" },
-      { key: "latitude", label: "Latitude" },
-      { key: "Status", label: "Status" },
+      { key: "company_id", label: "Sr.No.", width: "80px" },
+    { key: "companyName", label: "Company Name", width: "180px" },
+    { key: "firstName", label: "First Name", width: "150px" },
+    { key: "lastName", label: "Last Name", width: "150px" },
+    { key: "address", label: "Address", width: "250px" },
+    { key: "suspicious", label: "Suspicious Company", width: "200px" },
+    { key: "lastLogin", label: "Last Login", width: "170px" },
+    { key: "loginBefore", label: "Login Before", width: "170px" },
+    { key: "latitude", label: "Latitude", width: "120px" },
+    { key: "Status", label: "Status", width: "120px" },
       {
         key: "Action",
         label: "Action",
@@ -65,7 +63,6 @@ const handleFilterChange = (column, value) => {
             >
               Action
             </button>
-
             {openRowId === row.company_id && (
               <div
                 className="position-absolute bg-white border rounded shadow"
@@ -107,7 +104,7 @@ const handleFilterChange = (column, value) => {
       },
     ].map((col) => ({
      name: (
-    <div>
+    <div style={{ width: col.width }}>
       <div className="d-flex align-items-end justify-content-start" style={{height:"40px"}}>{col.label}</div>
        {col.searchable !== false && (
       <input
@@ -126,7 +123,6 @@ const handleFilterChange = (column, value) => {
        )}
     </div>
   ),
-      
       selector: (row) => row[col.key],
       sortable: true,
       wrap: true,

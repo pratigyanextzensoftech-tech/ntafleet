@@ -13,11 +13,51 @@ const RetailPrice = () => {
   const [loading, setLoading] = useState(false);
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
+  const [filters, setFilters] = useState({});
 
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
+
+ const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
+const HeaderWithFilter = (label, key) => (
+  <div style={{ width: "100%" }}>
+    <div className="d-flex align-items-end">
+      {label}
+    </div>
+
+    <input
+      type="text"
+      className="mt-1"
+      style={{
+        width: "100%",
+        height: "28px",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        padding: "2px 6px",
+        fontSize: "12px",
+      }}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onChange={(e) => handleFilterChange(key, e.target.value)}
+    />
+  </div>
+);
 
   // ✅ Define columns like working Company file
   useEffect(() => {
@@ -30,7 +70,7 @@ const RetailPrice = () => {
       { key: "date", label: "Upload Date" },
     
     ].map((col) => ({
-      name: col.label,
+     name: HeaderWithFilter(col.label, col.key),
       selector: (row) => row[col.key],
       sortable: true,
       wrap: true,
@@ -130,7 +170,7 @@ const RetailPrice = () => {
           title="Retail Price List"
           loading={loading}
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           pagination
           paginationServer
           paginationTotalRows={totalRows}

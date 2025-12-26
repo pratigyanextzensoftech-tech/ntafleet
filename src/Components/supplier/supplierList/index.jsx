@@ -116,15 +116,53 @@ const handleDataAdded = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
   // Table Columns
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map(key => ({
-      name: key,
+   const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: row => row[key],
       sortable: true,
       wrap: true,
       style: { padding: '8px 12px', fontWeight: 500 },
-    }));
+    }});
 
     cols.push({
       name: "Actions",
@@ -196,7 +234,7 @@ const handleDataAdded = () => {
         </Row>
         <DataTableComponent
           title="Supplier List"
-          tableData={data}
+          tableData={filteredData}
           tableColumns={tableColumns}
           loading={loading}
           pagination

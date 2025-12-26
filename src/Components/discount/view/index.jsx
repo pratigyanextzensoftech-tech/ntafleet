@@ -143,29 +143,25 @@ const Index = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-const ColumnHeader = ({ label, columnKey }) => (
-
-
-
-
-
-  
-  <div>
-    <div className="fw-bold">{label}</div>
+const columnHeader = ( label, columnKey ) => (
+<div style={{ width: "100%" }}>
+    <div className="d-flex align-items-end">
+      {label}
+    </div>
     <input
       type="text"
-      className="form-control mt-1"
-      placeholder="Search"
-      onClick={(e) => e.stopPropagation()}
-       value={filters[columnKey] || ""}
-      // onMouseDown={(e) => e.stopPropagation()}
-      onChange={(e) => handleFilterChange(columnKey, e.target.value)}
-      style={{ borderRadius:"5px",
-        // height:"24px"
+      className="mt-1"
+      style={{
+        width: "100%",
+        height: "28px",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        padding: "2px 6px",
+        fontSize: "12px",
       }}
-
-
-
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onChange={(e) => handleFilterChange(columnKey, e.target.value)}
     />
   </div>
 );
@@ -185,113 +181,104 @@ const filteredData = discountData.filter((row) =>
   })
 );
 
-  const tableColumns =React.useMemo(() =>
-     [
+ const tableColumns = [
   {
-    name: <ColumnHeader label="ID#" columnKey="id" />,
+    name: columnHeader("ID#", "id"),
     selector: (row) => row.id,
     sortable: true,
-    width: "100px",
+    width: "90px",
   },
   {
-    name: <ColumnHeader label="Company" columnKey="company_name" />,
+    name: columnHeader("Company", "company_name"),
     selector: (row) => row.company_name,
     sortable: true,
     wrap: true,
-    width: "150px",
+    width: "250px",
   },
   {
-    name: <ColumnHeader label="Start Date" columnKey="start_date" />,
+    name: columnHeader("Start Date", "start_date"),
     selector: (row) => row.start_date,
     sortable: true,
     width: "150px",
   },
   {
-    name: <ColumnHeader label="End Date" columnKey="end_date" />,
+    name: columnHeader("End Date", "end_date"),
     selector: (row) => row.end_date,
     sortable: true,
     width: "150px",
   },
   {
-    name: <ColumnHeader label="Country" columnKey="country" />,
+    name: columnHeader("Country", "country"),
     selector: (row) => row.country,
     sortable: true,
     width: "150px",
   },
   {
-    name: <ColumnHeader label="Supplier" columnKey="supplier" />,
+    name: columnHeader("Supplier", "supplier"),
     selector: (row) => row.supplier,
     sortable: true,
     width: "150px",
   },
   {
-    name: <ColumnHeader label="Discount Cent (CA)" columnKey="cent_ca" />,
+    name: columnHeader("Discount Cent (CA)", "cent_ca"),
     selector: (row) => row.cent_ca,
     sortable: true,
-    width: "200px",
+    width: "180px",
   },
   {
-    name: <ColumnHeader label="Discount Cent (US)" columnKey="cent_us" />,
+    name: columnHeader("Discount Cent (US)", "cent_us"),
     selector: (row) => row.cent_us,
     sortable: true,
-    width: "200px",
+    width: "180px",
   },
   {
-    name: <ColumnHeader label="Total (CA)" columnKey="total_ca" />,
+    name: columnHeader("Total (CA)", "total_ca"),
     selector: (row) => row.total_ca,
     sortable: true,
-    width: "200px",
+    width: "120px",
   },
   {
-    name: <ColumnHeader label="Total (US)" columnKey="total_us" />,
+    name: columnHeader("Total (US)", "total_us"),
     selector: (row) => row.total_us,
     sortable: true,
-    width: "200px",
+    width: "120px",
   },
   {
-    name: <ColumnHeader label="Retail Total (CA)" columnKey="retail_ca" />,
+    name: columnHeader("Retail Total (CA)", "retail_ca"),
     selector: (row) => row.retail_ca,
     sortable: true,
-    width: "200px",
+    width: "170px",
   },
   {
-    name: <ColumnHeader label="Retail Total (US)" columnKey="retail_us" />,
+    name: columnHeader("Retail Total (US)", "retail_us"),
     selector: (row) => row.retail_us,
     sortable: true,
-    width: "200px",
+    width: "170px",
   },
   {
-    name: <ColumnHeader label="Qty (CA)" columnKey="qty_ca" />,
+    name: columnHeader("Qty (CA)", "qty_ca"),
     selector: (row) => row.qty_ca,
     sortable: true,
-    width: "200px",
+    width: "110px",
   },
-    {
-    name: <ColumnHeader label="Qty (US)" columnKey="qty_us" />,
+  {
+    name: columnHeader("Qty (US)", "qty_us"),
     selector: (row) => row.qty_us,
     sortable: true,
-    width: "200px",
+    width: "110px",
   },
-    {
-    name: <ColumnHeader label="Discount (CA)" columnKey="disc_ca" />,
+  {
+    name: columnHeader("Discount (CA)", "disc_ca"),
     selector: (row) => row.disc_ca,
     sortable: true,
-    width: "200px",
+    width: "150px",
   },
-    {
-    name: <ColumnHeader label="Qty (CA)" columnKey="qty_ca" />,
-    selector: (row) => row.qty_ca,
-    sortable: true,
-    width: "200px",
-  },
-    {
-    name: <ColumnHeader label="Discount (US)" columnKey="disc_us" />,
+  {
+    name: columnHeader("Discount (US)", "disc_us"),
     selector: (row) => row.disc_us,
     sortable: true,
-    width: "200px",
+    width: "150px",
   },
-
-  // ❌ No search for Action
   {
     name: "Action",
     cell: (row) => <ActionDropdown row={row} />,
@@ -300,7 +287,8 @@ const filteredData = discountData.filter((row) =>
     button: true,
     width: "100px",
   },
-]);
+];
+
 
 
  const handleSearch = (formData) => {

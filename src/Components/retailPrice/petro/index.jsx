@@ -4,23 +4,13 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import PetroForm from "./PetroForm";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import { dummytabledata, tableColumns } from "../../../Data/Table/Defaultdata";
-import Swal from 'sweetalert2';
-import qs from "qs";
-import axios from "axios";
 import { petro_retail as APINAME } from "../../../api";
-import {
-  FaDownload,
-  FaEye,
-  FaEnvelope,
-  FaFileInvoice,
-  FaTrashAlt,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
 import usePaginatedTable from '../../../Hooks/usePagination';
 const Index = () => {
      const [openRowId, setOpenRowId] = useState(null);
          const [tableColumns, setTableColumns] = useState([]);
+           const [filters, setFilters] = useState({});
+         
         const columnsMap = {
         "Price_Date": "cardNumber",
         "Location Name": "Site_Name",
@@ -40,14 +30,52 @@ const Index = () => {
            handleSearch, // ✅ Added
            setData,
          } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+         
+          const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
          useEffect(() => {
-
-           const cols = Object.keys(columnsMap).map((key) => ({
-             name: key,
+  const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
              selector: (row) => row[key],
              sortable: true,
              wrap: true,
-           }));
+           }});
        
          
        
@@ -93,7 +121,7 @@ const Index = () => {
         <DataTableComponent
           title="Petro Retail List "
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           progressPending={loading}
           pagination
            loading={loading}

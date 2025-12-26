@@ -21,7 +21,7 @@ const Index = () => {
 
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
-      const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({});
 
    
 
@@ -73,7 +73,7 @@ const columnWidths = {
   } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap });
   
   const handleFilterChange = (column, value) => {
-  setFilters((prev) => ({
+    setFilters((prev) => ({
     ...prev,
     [column]: value.toLowerCase(),
   }));
@@ -265,7 +265,6 @@ const columnWidths = {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-      
       cancelButtonText: 'Cancel'
       
     }).then((result) => {

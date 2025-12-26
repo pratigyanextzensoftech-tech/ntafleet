@@ -14,6 +14,8 @@ import { FaEdit, FaTrashAlt, FaFilePdf, FaFileExcel, FaEnvelope } from 'react-ic
 const Index = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
+    const [filters, setFilters] = useState({});
+  
   const columnsMap = {
     "ID #": "id",
     "Salesman": "salesman_id",
@@ -34,13 +36,52 @@ const Index = () => {
     handleSearch, // ✅ Added
     setData,
   } = usePaginatedTable({ apiUrl: salesman_volume, columnsMap });
+
+    const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+    const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,
-    }));
+    }});
 
     cols.push({
       name: "Action",
@@ -156,7 +197,7 @@ const Index = () => {
         <DataTableComponent
           title="Salesman Report List"
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           loading={loading}
           pagination
           paginationServer

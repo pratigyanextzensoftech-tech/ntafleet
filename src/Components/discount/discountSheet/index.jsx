@@ -95,68 +95,91 @@ const DiscountSheetPage = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+const HeaderWithFilter = (label, key) => (
+  <div style={{ width: "100%" }}>
+    <div className="d-flex align-items-end">
+      {label}
+    </div>
+    <input
+      type="text"
+      className="mt-1"
+      style={{
+        width: "100%",
+        height: "28px",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        padding: "2px 6px",
+        fontSize: "12px",
+      }}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onChange={(e) => handleFilterChange(key, e.target.value)}
+    />
+  </div>
+);
+
   // Table Columns
   const tableColumns = [
-    { name: "ID", selector: (row) => row.id, sortable: true, width: "100px" },
+    { name:HeaderWithFilter( "ID","id"), selector: (row) => row.id, sortable: true, width: "100px" },
     {
-      name: "Company Name",
+      name:HeaderWithFilter("Company Name","company_name") ,
       selector: (row) => row.company_name,
       sortable: true,
-      width: "200px",
+      width: "250px",
     },
     {
-      name: "Start Date",
+      name:HeaderWithFilter("Start Date","start_date") ,
       selector: (row) => row.start_date,
       sortable: true,
-      width: "200px",
+      width: "170px",
     },
     {
-      name: "End Date",
+      name:HeaderWithFilter("End Date","end_date")  ,
       selector: (row) => row.end_date,
       sortable: true,
-      width: "200px",
+      width: "170px",
     },
     {
-      name: "Discount_Cent",
+      name:HeaderWithFilter( "Discount_Cent","discount_percent"),
       selector: (row) => row.discount_percent,
       sortable: true,
-      width: "200px",
+      width: "150px",
     },
     {
-      name: "Discount_For",
+      name:HeaderWithFilter( "Discount_For","discount_for"),
       selector: (row) => row.discount_for,
       sortable: true,
-      width: "200px",
+      width: "150px",
     },
     {
-      name: "Litre",
+      name:HeaderWithFilter("Litre","litre") ,
       selector: (row) => row.litre,
       sortable: true,
-      width: "150px",
+      width: "110px",
     },
     {
-      name: "Gallons",
+      name:HeaderWithFilter("Gallons","gallons") ,
       selector: (row) => row.gallons,
       sortable: true,
-      width: "150px",
+      width: "110px",
     },
     {
-      name: "Discount (USD)",
+      name:HeaderWithFilter("Discount (USD)","discount_usd") ,
       selector: (row) => row.discount_usd,
       sortable: true,
-      width: "200px",
+      width: "150px",
     },
     {
-      name: "Discount (CAD)",
+      name:HeaderWithFilter("Discount (CAD)","discount_cad") ,
       selector: (row) => row.discount_cad,
       sortable: true,
-      width: "200px",
+      width: "150px",
     },
     {
-      name: "Added By",
+      name:HeaderWithFilter("Added By","added_by") ,
       selector: (row) => row.added_by,
       sortable: true,
-      width: "150px",
+      width: "130px",
     },
     {
       name: "Action",
@@ -230,7 +253,7 @@ const refreshTable=()=>{
         <DataTableComponent
           title="Discount Sheet List"
           tableColumns={tableColumns}
-          tableData={sheetData}
+          tableData={filteredData}
           loading={loading}
           pagination
           paginationServer
