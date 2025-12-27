@@ -39,10 +39,10 @@ const handleFilterChange = (column, value) => {
 };
   useEffect(() => {
     const columns = [
-      { key: "company_id", label: "Sr.No.", width: "80px" },
-    { key: "companyName", label: "Company Name", width: "180px" },
+      { key: "company_id", label: "Sr.No.", width: "100px" },
+    { key: "companyName", label: "Company Name", width: "280px" },
     { key: "firstName", label: "First Name", width: "150px" },
-    { key: "lastName", label: "Last Name", width: "150px" },
+    { key: "lastName", label: "Last Name", width: "130px" },
     { key: "address", label: "Address", width: "250px" },
     { key: "suspicious", label: "Suspicious Company", width: "200px" },
     { key: "lastLogin", label: "Last Login", width: "170px" },
@@ -108,14 +108,17 @@ const handleFilterChange = (column, value) => {
       <div className="d-flex align-items-end justify-content-start" style={{height:"40px"}}>{col.label}</div>
        {col.searchable !== false && (
       <input
-        type="text"
-        className="form-control mt-2"
-        placeholder="Search here"
-        onClick={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
-        style={{
-          borderRadius:"5px"
-        }}
+       type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+              onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
         onChange={(e) =>
           handleFilterChange(col.key, e.target.value)
         }
@@ -125,6 +128,7 @@ const handleFilterChange = (column, value) => {
   ),
       selector: (row) => row[col.key],
       sortable: true,
+      width:col.width,
       wrap: true,
       cell: col.cell,
       ignoreRowClick: col.ignoreRowClick,

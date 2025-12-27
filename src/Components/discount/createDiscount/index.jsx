@@ -16,6 +16,7 @@ const Index = () => {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
+  const [filters, setFilters] = useState({});
 
   // Fetch data
   const fetchDiscounts = async (page = 1, limit = 10) => {
@@ -140,31 +141,62 @@ const Index = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
+ const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = discounts.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
+const columnHeader = ( label, columnKey ) => (
+<div style={{ width: "100%" }}>
+    <div className="d-flex align-items-end">
+      {label}
+    </div>
+    <input
+      type="text"
+      className="mt-1"
+      style={{
+        width: "100%",
+        height: "28px",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        padding: "2px 6px",
+        fontSize: "12px",
+      }}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onChange={(e) => handleFilterChange(columnKey, e.target.value)}
+    />
+  </div>
+);
   // Table columns
   const tableColumns = [
-    { name: "ID#", selector: (row) => row.id, sortable: true, width: "100px" },
-    { name: "Company", selector: (row) => row.company_name, sortable: true, wrap: true, width: "150px" },
-    { name: "Start_Date", selector: (row) => row.start_date, sortable: true, wrap: true, width: "150px" },
-    { name: "End_Date", selector: (row) => row.end_date, sortable: true, wrap: true, width: "150px" },
-    { name: "Country", selector: (row) => row.country, sortable: true, wrap: true, width: "150px" },
-    { name: "Supplier", selector: (row) => row.supplier, sortable: true, wrap: true, width: "150px" },
-
-    { name: "Discount Cent (CA)", selector: (row) => row.cent_ca, sortable: true, wrap: true, width: "200px" },
-    { name: "Discount Cent (US)", selector: (row) => row.cent_us, sortable: true, wrap: true, width: "200px" },
-
-    { name: "Total (CA)", selector: (row) => row.total_ca, sortable: true, wrap: true, width: "150px" },
-    { name: "Total (US)", selector: (row) => row.total_us, sortable: true, wrap: true, width: "150px" },
-
-    { name: "Retail Total (CA)", selector: (row) => row.retail_ca, sortable: true, wrap: true, width: "200px" },
-    { name: "Retail Total (US)", selector: (row) => row.retail_us, sortable: true, wrap: true, width: "200px" },
-
-    { name: "Qty (CA)", selector: (row) => row.qty_ca, sortable: true, wrap: true, width: "150px" },
-    { name: "Qty (US)", selector: (row) => row.qty_us, sortable: true, wrap: true, width: "150px" },
-
-    { name: "Discount (CA)", selector: (row) => row.disc_ca, sortable: true, wrap: true, width: "150px" },
-    { name: "Discount (US)", selector: (row) => row.disc_us, sortable: true, wrap: true, width: "150px" },
-
+    {  
+      name: columnHeader("  ID#","id")  , selector: (row) => row.id, sortable: true, width: "100px" },
+    {name:columnHeader("Company","company_name") , selector: (row) => row.company_name, sortable: true, wrap: true, width: "250px" },
+    { name:columnHeader("Start_Date","start_date"), selector: (row) => row.start_date, sortable: true, wrap: true, width: "150px" },
+    { name:columnHeader("End_Date","end_date"), selector: (row) => row.end_date, sortable: true, wrap: true, width: "150px" },
+    {name:columnHeader("Country","country"), selector: (row) => row.country, sortable: true, wrap: true, width: "150px" },
+    { name:columnHeader("Supplier","supplier") , selector: (row) => row.supplier, sortable: true, wrap: true, width: "120px" },
+    { name: columnHeader("Cent (CA)","cent_ca")  , selector: (row) => row.cent_ca, sortable: true, wrap: true, width: "120px" },
+    { name: columnHeader("Cent (US)","cent_us")   , selector: (row) => row.cent_us, sortable: true, wrap: true, width: "120px" },
+    { name:columnHeader("Total(CA)","total_ca")  , selector: (row) => row.total_ca, sortable: true, wrap: true, width: "120px" },
+    { name:columnHeader("Total(US)","total_us")  , selector: (row) => row.total_us, sortable: true, wrap: true, width: "120px" },
+    { name:columnHeader( "Retail(CA)","retail_ca") , selector: (row) => row.retail_ca, sortable: true, wrap: true, width: "120px" },
+    { name:columnHeader("Retail(US)","retail_us")  , selector: (row) => row.retail_us, sortable: true, wrap: true, width: "120px" },
+    { name:columnHeader("Qty(CA)","qty_ca")  , selector: (row) => row.qty_ca, sortable: true, wrap: true, width: "100px" },
+    { name:columnHeader("Qty(US)","qty_us")  , selector: (row) => row.qty_us, sortable: true, wrap: true, width: "100px" },
+    { name:columnHeader( "Disc(CA)","disc_ca") , selector: (row) => row.disc_ca, sortable: true, wrap: true, width: "100px" },
+    { name:columnHeader( "Disc(US)","disc_us") , selector: (row) => row.disc_us, sortable: true, wrap: true, width: "100px" },
     { name: "Action", cell: (row) => <ActionDropdown row={row} />, ignoreRowClick: true, allowOverflow: true, button: true, width: "100px" },
   ];
 const refreshTable=()=>{
@@ -189,7 +221,7 @@ const refreshTable=()=>{
         <DataTableComponent
           title="Discount List"
           tableColumns={tableColumns}
-          tableData={discounts}
+          tableData={filteredData}
           loading={loading}
           pagination
           paginationServer

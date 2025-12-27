@@ -19,6 +19,7 @@ import {
 } from "react-icons/fa";
 const ViewMoneyCode = () => {
  const [openRowId, setOpenRowId] = useState(null);
+     const [filters, setFilters] = useState({});
   const [tableColumns, setTableColumns] = useState([]);
    const handleChange = (row, field, value) => {
     console.log(row)
@@ -69,9 +70,16 @@ const ViewMoneyCode = () => {
     "To Date": "to_date",
     "Due Date": "due_date",
     "Total Due": "total",
-   
   };
-
+const columnWidths = {
+  "Invoice #": "120px",
+  "Company": "600px",
+  "From Date": "200px",
+  "To Date": "200px",
+  "Due Date": "200px",
+  "Total Due": "200px",
+};
+  
   const {
     data,
     totalRows,
@@ -81,29 +89,101 @@ const ViewMoneyCode = () => {
     handleSearch, // ✅ Added
     setData,
   } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+   const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+       const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
+      width:colWidth,
       wrap: true,
-    }));
-     cols.push({
-      name: "Status",
-      cell: (row) => (
-        <select
-          className="form-select form-select-sm"
+    }});
 
-            value={row.admin_status}  
-          onChange={(e) => handleChange(row, "status", e.target.value)}  >
-          <option value="Open">Open</option>
-          <option value="Entered">Entered</option>
-          <option value="Close">Close</option>
+cols.push({
+  name: (
+    <div >
+      <div className="d-flex align-items-end justify-content-start fw-bold">
+        Status
+      </div>
 
-        </select>
-      ),
-      width: "140px",
-    });
+      <input
+        type="text"
+        className="mt-2"
+        style={{
+          width: "100%",
+          height: "28px",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+          boxSizing: "border-box",
+        }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) =>
+          handleFilterChange("status", e.target.value)
+        }
+      />
+    </div>
+  ),
+
+  selector: (row) => row.admin_status,
+  sortable: true,
+width:"150px",
+  cell: (row) => (
+    <select
+      className="form-select form-select-sm"
+      value={row.admin_status}
+      onChange={(e) =>
+        handleChange(row, "status", e.target.value)
+      }
+    >
+      <option value="Open">Open</option>
+      <option value="Entered">Entered</option>
+      <option value="Close">Close</option>
+    </select>
+  ),
+});
+
     cols.push({
       name: "Action",
       cell: (row) => (
@@ -245,7 +325,7 @@ const ViewMoneyCode = () => {
         
 
         <DataTableComponent title="MoneyCode Invoices List"  tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           loading={loading}
           pagination
           downloadHeading="download"

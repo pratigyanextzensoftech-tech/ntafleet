@@ -33,7 +33,17 @@ const SubLOgin = () => {
     "Added_By": "added_by",
     "Added_On": "added_on",
   };
-
+const columnWidths = {
+  "Id #":"100px",
+  "Company":"350px",
+  "Create Date": "140px",
+  "Name": "220px",
+  "Email": "200px",
+ "OTP Email": "200px",
+ "Discount_Sheet_Menu": "230px",
+  "Added_By": "200px",
+ "Added_On": "200px",
+};
   const {
     data,
     totalRows,
@@ -61,36 +71,40 @@ const SubLOgin = () => {
   })
 );
   useEffect(() => {
-    const cols = Object.keys(columnsMap).filter((key) => key !== "Id").map((key) => ({
-     name: (
-        <div>
-          <div
-            className="d-flex align-items-end justify-content-start"
-            style={{ height: "40px" }}
-          >
-            {columnsMap[key]}
-          </div>
+    const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
 
-          {/* ✅ show search only if searchable !== false */}
-          {columnsMap[key].searchable !== false && (
-            <input
-              type="text"
-              className="form-control mt-2"
-              placeholder="Search here"
-              style={{ borderRadius: "5px" }}
-               onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-              onChange={(e) =>
-                handleFilterChange(key, e.target.value)
-              }
-            />
-          )}
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
         </div>
       ),
       selector: (row) => row[key],
       sortable: true,
+       width: colWidth,
       wrap: true,
-    }));
+    }});
 
     cols.push({
       name: "Action",

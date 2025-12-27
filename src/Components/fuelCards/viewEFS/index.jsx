@@ -28,10 +28,25 @@ const Index = () => {
       "infosrc": "infosrc",
       "plicySubFleet": "policySubfleet",
       "CardSubfleet": "cardSubfleet",
-    
-     
     };
-  
+  const columnWidths = {
+  "Card Number #": "210px",
+  "Policy Number ": "150px",
+  "companyXRef": "140px",
+  "unitNumber": "110px",
+  "driverId": "100px",
+  "driverName": "120px",
+  "beingOverridden": "160px",
+  "status": "100px",
+  "PayrollStatus": "150px",
+  "PayrollUse": "110px",
+  "gpsid": "100px",
+  "Zid": "50px",
+  "infosrc": "70px",
+  "plicySubFleet": "120px",
+  "CardSubfleet": "120px",
+};
+
     const {
       data,
       totalRows,
@@ -41,6 +56,7 @@ const Index = () => {
       handleSearch, // ✅ Added
       setData,
     } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+
      const handleFilterChange = (column, value) => {
   setFilters((prev) => ({
     ...prev,
@@ -57,36 +73,40 @@ const Index = () => {
   })
 );
     useEffect(() => {
-      const cols = Object.keys(columnsMap).map((key) => ({
-          name: (
-        <div>
-          <div
-            className="d-flex align-items-end justify-content-start"
-            style={{ height: "40px" }}
-          >
-            {columnsMap[key]}
-          </div>
+      const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
 
-          {/* ✅ show search only if searchable !== false */}
-          {columnsMap[key].searchable !== false && (
-            <input
-              type="text"
-              className="form-control mt-2"
-              placeholder="Search here"
-              style={{ borderRadius: "5px" }}
-               onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-              onChange={(e) =>
-                handleFilterChange(key, e.target.value)
-              }
-            />
-          )}
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
         </div>
       ),
         selector: (row) => row[key],
         sortable: true,
+        width:colWidth,
         wrap: true,
-      }));
+      }});
   console.log(data)
       setTableColumns(cols);
     }, [openRowId]);

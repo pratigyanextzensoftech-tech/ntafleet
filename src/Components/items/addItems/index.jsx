@@ -111,11 +111,17 @@ const filteredItems = Items.filter((row) =>
       <div>
         <div>Item ID</div>
         <input
-          className="form-control mt-1"
-          style={{borderRadius:"5px"}}
-          placeholder="Search"
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
+          type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => handleFilterChange("item_id", e.target.value)}
         />
       </div>
@@ -128,11 +134,17 @@ const filteredItems = Items.filter((row) =>
       <div>
         <div>Item Name</div>
         <input
-          className="form-control mt-1"
-          placeholder="Search"
-           style={{borderRadius:"5px"}}
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
+        type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => handleFilterChange("item_name", e.target.value)}
         />
       </div>
@@ -145,11 +157,17 @@ const filteredItems = Items.filter((row) =>
       <div>
         <div>Discount Applied</div>
         <input
-          className="form-control mt-1"
-          placeholder="Search"
-           style={{borderRadius:"5px"}}
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
+          type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => handleFilterChange("discount", e.target.value)}
         />
       </div>
@@ -162,11 +180,17 @@ const filteredItems = Items.filter((row) =>
       <div>
         <div>Tax Applied</div>
         <input
-          className="form-control mt-1"
-          placeholder="Search"
-           style={{borderRadius:"5px"}}
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
+           type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => handleFilterChange("tax", e.target.value)}
         />
       </div>

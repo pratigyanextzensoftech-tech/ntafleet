@@ -42,17 +42,17 @@ const handleFilterChange = (column, value) => {
 };
   useEffect(() => {
     const columns = [
-      { key: "card", label: "Card" },
-      { key: "policy", label: "Policy" },
-      { key: "unit", label: "Unit" },
-      { key: "pin", label: "PIN" },
-      { key: "driverName", label: "Driver Name" },
-      { key: "companyName", label: "Company Name" },
-      { key: "supplierName", label: "Supplier Name" },
-      { key: "suspicious", label: "Suspicious" },
-      { key: "lastLogin", label: "Last Login" },
-      { key: "loginBefore", label: "Login Before" },
-      { key: "status", label: "Status" },
+      { key: "card", label: "Card",width:"200px" },
+      { key: "policy", label: "Policy",width:"100px" },
+      { key: "unit", label: "Unit",width:"100px" },
+      { key: "pin", label: "PIN",width:"80px" },
+      { key: "driverName", label: "Driver Name",width:"180px" },
+      { key: "companyName", label: "Company Name" ,width:"250px"},
+      { key: "supplierName", label: "Supplier Name",width:"150px" },
+      { key: "suspicious", label: "Suspicious",width:"180px" },
+      { key: "lastLogin", label: "Last Login" ,width:"180px"},
+      { key: "loginBefore", label: "Login Before",width:"180px" },
+      { key: "status", label: "Status",width:"100px" },
       {
         key: "Action",
          searchable: false,
@@ -115,11 +115,16 @@ const handleFilterChange = (column, value) => {
        {col.searchable !== false && (
             <input
               type="text"
-              className="form-control mt-2"
-              placeholder="Search here"
-              style={{ borderRadius: "5px" }}
-               onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
               onChange={(e) =>
               handleFilterChange(col.key, e.target.value)
               }
@@ -129,6 +134,7 @@ const handleFilterChange = (column, value) => {
       ),
       selector: (row) => row[col.key],
       sortable: true,
+      width:col.width,
       wrap: true,
       cell: col.cell,
       ignoreRowClick: col.ignoreRowClick,

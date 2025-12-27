@@ -78,6 +78,7 @@ const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
 const ManageMenuTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [Edit, setEdit] = useState(false);
+  const [filters, setFilters] = useState({});
 
   // 🔹 Columns mapping for your custom hook
   const columnSets = {
@@ -100,6 +101,7 @@ const ManageMenuTable = () => {
     },
   };
 
+
   // 🔹 Fetch data via custom hook
   const pmenu = usePaginatedTable({
     apiUrl: pmenuApi,
@@ -110,6 +112,18 @@ const ManageMenuTable = () => {
     apiUrl: smenuApi,
     columnsMap: columnSets.secondaryMenu,
   });
+ const filterData = (data = []) => {
+  if (!Object.keys(filters).length) return data;
+
+  return data.filter((row) =>
+    Object.entries(filters).every(([key, value]) => {
+      if (!value) return true;
+      return String(row[key] ?? "")
+        .toLowerCase()
+        .includes(value.toLowerCase());
+    })
+  );
+};
 
   // 🔹 DELETE
   const handleDelete = (row) => {
@@ -145,13 +159,138 @@ const ManageMenuTable = () => {
   // 🔹 Generate columns
   const getTableColumns = (apiUrl, includePrimary = false) => {
     const cols = [
-      { name: "ID", selector: (row) => row.Id, sortable: true },
-      { name: "Menu Name", selector: (row) => row["Menu Name"], sortable: true },
-      { name: "Menu Link", selector: (row) => row["Menu Link"], sortable: true },
-      { name: "Added By", selector: (row) => row["Added By"], sortable: true },
-      { name: "Added On", selector: (row) => row["Added On"], sortable: true },
-      {
-        name: "Menu Order",
+      {   name: (
+          <div>
+            <div className="fw-bold text-start">ID</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              // onChange={(e) =>
+              //   setFilters((prev) => ({
+              //     ...prev,
+              //     "Download": e.target.value,
+              //   }))
+              // }
+            />
+          </div>
+        ), selector: (row) => row.Id, sortable: true },
+      {   name: (
+          <div>
+            <div className="fw-bold text-start">Menu Name</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              // onChange={(e) =>
+              //   setFilters((prev) => ({
+              //     ...prev,
+              //     "Download": e.target.value,
+              //   }))
+              // }
+            />
+          </div>
+        ),  selector: (row) => row["Menu Name"], sortable: true },
+      {  name: (
+          <div>
+            <div className="fw-bold text-start">Menu Link</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              // onChange={(e) =>
+              //   setFilters((prev) => ({
+              //     ...prev,
+              //     "Download": e.target.value,
+              //   }))
+              // }
+            />
+          </div>
+        ), selector: (row) => row["Menu Link"], sortable: true },
+      {  name: (
+          <div>
+            <div className="fw-bold text-start">Added By</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              // onChange={(e) =>
+              //   setFilters((prev) => ({
+              //     ...prev,
+              //     "Download": e.target.value,
+              //   }))
+              // }
+            />
+          </div>
+        ), selector: (row) => row["Added By"], sortable: true },
+      { name: (
+          <div>
+            <div className="fw-bold text-start">Added On</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              // onChange={(e) =>
+              //   setFilters((prev) => ({
+              //     ...prev,
+              //     "Download": e.target.value,
+              //   }))
+              // }
+            />
+          </div>
+        ),  selector: (row) => row["Added On"], sortable: true },
+      { name: (
+          <div>
+            <div className="fw-bold text-start">Menu Order</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              // onChange={(e) =>
+              //   setFilters((prev) => ({
+              //     ...prev,
+              //     "Download": e.target.value,
+              //   }))
+              // }
+            />
+          </div>
+        ),
         selector: (row) => row["Menu Order"],
         sortable: true,
       },
@@ -190,7 +329,7 @@ const ManageMenuTable = () => {
       component: (
         <DataTableComponent
           tableColumns={getTableColumns(pmenuApi)}
-          tableData={pmenu.data}
+          tableData={filterData(pmenu.data)}
           loading={pmenu.loading}
           pagination
           paginationServer
@@ -206,7 +345,7 @@ const ManageMenuTable = () => {
       component: (
         <DataTableComponent
           tableColumns={getTableColumns(smenuApi, true)}
-          tableData={sMenu.data}
+          tableData={filterData(sMenu.data)}
           loading={sMenu.loading}
           pagination
           paginationServer

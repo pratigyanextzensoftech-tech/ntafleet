@@ -18,7 +18,7 @@ const Index = () => {
 
   const params = new URLSearchParams(window.location.search);
   const tab = params.get("tab");
-  const { createColumns } = useSelectableColumns(tab==='1'?report_new_downlod:owner_report_downlod,tab==='1'?"REPORT":"OWNER_REPORT");
+  const { createColumns,  getFilteredData } = useSelectableColumns(tab==='1'?report_new_downlod:owner_report_downlod,tab==='1'?"REPORT":"OWNER_REPORT");
   // ✅ Define individual column mappings per API
   const columnSets = {
     ownerReportlist: {
@@ -123,7 +123,7 @@ const Index = () => {
             });
           },
         })}
-        tableData={tab.data.data}
+        tableData={getFilteredData(tab.data.data)}
         loading={tab.data.loading}
         pagination
         paginationServer

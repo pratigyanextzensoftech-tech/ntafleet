@@ -72,7 +72,6 @@ const Index = () => {
   const [filters, setFilters] = useState({});
 const navigate = useNavigate();
 const [selectedRow, setSelectedRow] = useState(null);
-
     const[Edit,setEdit]=useState(false)
   const columnsMap = {
     CARD: "card_no",
@@ -94,16 +93,77 @@ const [selectedRow, setSelectedRow] = useState(null);
     TaxAmt: "tax_amt",
     Currency: "currency",
   };
-
+const columnWidths = {
+  CARD: "90px",
+  Company: "200px",
+  Suppliers: "110px",
+  Date: "100px",
+  Time: "90px",
+  Invoice: "100px",
+  Unit: "90px",
+  Driver_Name: "140px",
+  City: "140px",
+  State: "80px",
+  Fees: "100px",
+  Item: "90px",
+  Unit_Price: "120px",
+  Qty: "80px",
+  Amt: "90px",
+  TaxAmt: "110px",
+  Currency: "100px",
+};
+   const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
   // 🔹 Build table columns
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map(key => ({
-      name: key,
+   const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: row => row[key],
       sortable: true,
       wrap: true,
+      width:colWidth,
       style: { padding: '8px 12px', fontWeight: 500 },
-    }));
+    }});
 
     // Add Actions column
     cols.push({
@@ -118,7 +178,7 @@ const [selectedRow, setSelectedRow] = useState(null);
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "160px",
+     
     });
 
     setTableColumns(cols);
@@ -250,7 +310,7 @@ const refreshTable=()=>{
 
         <DataTableComponent
           title="Unknown Transactions List"
-          tableData={data}
+          tableData={filteredData}
           tableColumns={tableColumns}
           loading={loading}
           downloadHeading="Download"
