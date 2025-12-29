@@ -165,7 +165,24 @@ console.log(rows)
   
     const getTableColumns = (tableData) => {
     const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+       name: (
+          <div>
+            <div className="fw-bold text-start">{key}</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => handleSearch(key, e.target.value)}
+
+            />
+          </div>
+        ),
       selector: (row) => row[key],
       sortable: true,
       wrap: true,

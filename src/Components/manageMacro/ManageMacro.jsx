@@ -5,29 +5,19 @@ import HeaderCard from '../Common/Component/HeaderCard';
 import BasicTabCard from '../UiKits/Tabs/BoostrapTabs/BasicTabCard';
 import { ManageMacroTab } from '../../Data/tab/ManageMacroTab';
 import DataTableComponent from '../Tables/DataTable/DataTableComponent';
-import { dummytabledata, tableColumns } from '../../Data/Table/Defaultdata';
 import Swal from 'sweetalert2';
-import qs from "qs";
 import axios from "axios";
 import { macro_trans as APINAME } from "../../api";
-import {
-  FaDownload,
-  FaEye,
-  FaEnvelope,
-  FaFileInvoice,
-  FaTrashAlt,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
 import usePaginatedTable from '../../Hooks/usePagination';
 const ManageMacro = () => {
      const [openRowId, setOpenRowId] = useState(null);
        const [tableColumns, setTableColumns] = useState([]);
+       const[filters,setFilters]=useState({})
       const columnsMap = {
       "Card #": "cardNumber",
       "Date": "tran_date",
       "Time": "tran_time",
-          "Invoice": "invoice",
-  
+      "Invoice": "invoice",
       "Unit": "Unit",
       "Driver_Name": "country_name",
       "City": "city",
@@ -40,7 +30,7 @@ const ManageMacro = () => {
       "Currency": "currency",
     
     };
-     
+ 
        const {
          data,
          totalRows,
@@ -50,9 +40,43 @@ const ManageMacro = () => {
          handleSearch, // ✅ Added
          setData,
        } = usePaginatedTable({ apiUrl: APINAME, columnsMap });
+
+
+const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
        useEffect(() => {
          const cols = Object.keys(columnsMap).map((key) => ({
-           name: key,
+           name: (
+          <div>
+            <div className="fw-bold text-start">{key}</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => handleFilterChange(key, e.target.value)}
+
+            />
+          </div>
+        ), 
            selector: (row) => row[key],
            sortable: true,
            wrap: true,
@@ -124,7 +148,7 @@ const ManageMacro = () => {
           </Col>
         </Row>
 
-        <DataTableComponent title="Transaction List" tableColumns={tableColumns} tableData={data}   progressPending={loading}
+        <DataTableComponent title="Transaction List" tableColumns={tableColumns} tableData={filteredData}   progressPending={loading}
           pagination
                     loading={loading}
                     fileHeading="Wait for File" file={true}

@@ -155,6 +155,12 @@ const ManageMenuTable = () => {
       console.error("Error fetching full row data", error);
     }
   };
+const handleSearch = (field, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [field]: value,
+  }));
+};
 
   // 🔹 Generate columns
   const getTableColumns = (apiUrl, includePrimary = false) => {
@@ -172,12 +178,8 @@ const ManageMenuTable = () => {
                 borderRadius: "5px",
               }}
               onClick={(e) => e.stopPropagation()}
-              // onChange={(e) =>
-              //   setFilters((prev) => ({
-              //     ...prev,
-              //     "Download": e.target.value,
-              //   }))
-              // }
+              onChange={(e) => handleSearch("Id", e.target.value)}
+
             />
           </div>
         ), selector: (row) => row.Id, sortable: true },
@@ -194,12 +196,7 @@ const ManageMenuTable = () => {
                 borderRadius: "5px",
               }}
               onClick={(e) => e.stopPropagation()}
-              // onChange={(e) =>
-              //   setFilters((prev) => ({
-              //     ...prev,
-              //     "Download": e.target.value,
-              //   }))
-              // }
+             onChange={(e) => handleSearch("Menu Name", e.target.value)}
             />
           </div>
         ),  selector: (row) => row["Menu Name"], sortable: true },
@@ -216,12 +213,7 @@ const ManageMenuTable = () => {
                 borderRadius: "5px",
               }}
               onClick={(e) => e.stopPropagation()}
-              // onChange={(e) =>
-              //   setFilters((prev) => ({
-              //     ...prev,
-              //     "Download": e.target.value,
-              //   }))
-              // }
+                onChange={(e) => handleSearch("Menu Link", e.target.value)}
             />
           </div>
         ), selector: (row) => row["Menu Link"], sortable: true },
@@ -238,12 +230,8 @@ const ManageMenuTable = () => {
                 borderRadius: "5px",
               }}
               onClick={(e) => e.stopPropagation()}
-              // onChange={(e) =>
-              //   setFilters((prev) => ({
-              //     ...prev,
-              //     "Download": e.target.value,
-              //   }))
-              // }
+              onChange={(e) => handleSearch("Added By", e.target.value)}
+
             />
           </div>
         ), selector: (row) => row["Added By"], sortable: true },
@@ -260,12 +248,8 @@ const ManageMenuTable = () => {
                 borderRadius: "5px",
               }}
               onClick={(e) => e.stopPropagation()}
-              // onChange={(e) =>
-              //   setFilters((prev) => ({
-              //     ...prev,
-              //     "Download": e.target.value,
-              //   }))
-              // }
+              onChange={(e) => handleSearch("Added On", e.target.value)}
+
             />
           </div>
         ),  selector: (row) => row["Added On"], sortable: true },
@@ -282,12 +266,8 @@ const ManageMenuTable = () => {
                 borderRadius: "5px",
               }}
               onClick={(e) => e.stopPropagation()}
-              // onChange={(e) =>
-              //   setFilters((prev) => ({
-              //     ...prev,
-              //     "Download": e.target.value,
-              //   }))
-              // }
+              onChange={(e) => handleSearch("Menu Order", e.target.value)}
+
             />
           </div>
         ),
@@ -312,7 +292,24 @@ const ManageMenuTable = () => {
 
     if (includePrimary) {
       cols.splice(2, 0, {
-        name: "Primary Menu",
+        name: (
+          <div>
+            <div className="fw-bold text-start">Primary Menu</div>
+            <input
+              type="text"
+              className="mt-2"
+              style={{
+                width: "100%",
+                height: "28px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => handleSearch("Primary Menu", e.target.value)}
+
+            />
+          </div>
+        ),
         selector: (row) => row["Primary Menu"],
         sortable: true,
       });

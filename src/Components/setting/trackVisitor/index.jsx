@@ -51,7 +51,7 @@ const Index = () => {
     };
   const columnWidths = {
   "Sr.No": "130px",
-  "User Name": "250px",
+  "User Name": "260px",
   "Login_IP": "360px",
   "Menu": "290px",
   "Link": "290px",

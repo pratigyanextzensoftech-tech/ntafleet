@@ -2,11 +2,7 @@ import React, { Fragment } from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
 import { Container,Row,Col,Card,CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
-import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
-import { dummytabledata, tableColumns } from '../../../Data/Table/Defaultdata';
 import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard';
-import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab'
-import { ManageMenuTable } from '../../../Data/tab/ManageMenuTable';
 import { LocPetroLink } from '../../../Data/tab/LocPetroLink';
 import { LocPetroLinkTable } from '../../../Data/tab/LocPetroLinkTable';
 const index = () => {
@@ -14,7 +10,6 @@ const index = () => {
     <Fragment>
       <Breadcrumbs parent='Location' title='ESSO Petro Link' />
       <Container fluid={true}>
-
         <Row>
           <Col sm="12">
             <Card>

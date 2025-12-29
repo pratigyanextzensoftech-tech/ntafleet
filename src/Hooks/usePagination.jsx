@@ -77,6 +77,13 @@ export default function usePaginatedTable({
     setFilters(formData);
     setCurrentPage(1);
   };
+// const handleSearch = (field, value) => {
+//   setFilters((prev) => ({
+//     ...prev,
+//     [field]: value,
+//   }));
+//   setCurrentPage(1);
+// };
 
   return {
     data,
