@@ -53,6 +53,7 @@ export default function usePaginatedTable({
 
       setData(mapped);
       setTotalRows(res.data?.recordsTotal || mapped.length);
+      console.log("FILTERS SENT 👉", filterData);
     } catch (err) {
       console.error("❌ Fetch error:", err);
     } finally {
@@ -67,23 +68,33 @@ export default function usePaginatedTable({
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+const handleFormSearch = (formData) => {
+  setFilters(formData);     // full payload from form
+  setCurrentPage(1);
+};
 
+const handleColumnSearch = (field, value) => {
+  setFilters((prev) => {
+    if (!value) {
+      const copy = { ...prev };
+      delete copy[field];
+      return copy;
+    }
+    return {
+      ...prev,
+      [field]: value,
+    };
+  });
+  setCurrentPage(1);
+};
   const handlePerRowsChange = (newPerPage, page) => {
     setPerPage(newPerPage);
     setCurrentPage(page);
   };
 
-  const handleSearch = (formData) => {
-    setFilters(formData);
-    setCurrentPage(1);
-  };
-// const handleSearch = (field, value) => {
-//   setFilters((prev) => ({
-//     ...prev,
-//     [field]: value,
-//   }));
-//   setCurrentPage(1);
-// };
+ 
+
+
 
   return {
     data,
@@ -91,7 +102,8 @@ export default function usePaginatedTable({
     loading,
     handlePageChange,
     handlePerRowsChange,
-    handleSearch,
+ handleFormSearch,
+  handleColumnSearch,
     setData,
     
     fetchData,

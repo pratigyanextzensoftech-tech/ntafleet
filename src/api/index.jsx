@@ -1,4 +1,4 @@
-const baseurl="http://api.ntafleetsolutions.com"
+const baseurl="https://newapi.ntafleetsolutions.com"
 const api = `${process.env.PUBLIC_URL}/api`;
 export const MenuApi=`${baseurl}/api/usermenu`;
 
