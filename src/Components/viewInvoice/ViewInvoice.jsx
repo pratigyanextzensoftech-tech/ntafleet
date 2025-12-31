@@ -14,17 +14,17 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import $ from "jquery";
 import {
-  FaEdit,
   FaTrashAlt,
   FaFilePdf,
   FaFileExcel,
   FaEnvelope,
 } from "react-icons/fa";
-import { Selected } from "../../Constant";
 
 const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [tableColumns, setTableColumns] = useState([]);
+  const[filters,setFilters]=useState({})
+
   const columnsMap = {
     "Invoice#": "invoice_id",
     Company: "company_name",
@@ -41,84 +41,22 @@ const ViewInvoice = () => {
     Mailed_By: "mail_by",
     Mailed_On: "mail_on", 
   };
-
-//   const oldValue = fullRow.mails;
-//   console.log(fullRow)
-//   const setTableData = getTableSetter(source);
-
-//   // 1️⃣ Optimistic UI update
-//   setTableData((prev) =>
-//     prev.map((row) =>
-//       row.fulldata.invoice_id === fullRow.invoice_id
-//         ? {
-//             ...row,
-//             fulldata: {
-//               ...row.fulldata,
-//               mails: Number(value),
-//             },
-//           }
-//         : row
-//     )
-//   );
-
-//   Swal.fire({
-//     title: "Are you sure?",
-//     text: "Change  status?",
-//     icon: "warning",
-//     showCancelButton: true,
-//   }).then((result) => {
-//     if (!result.isConfirmed) {
-//       // ❌ rollback
-//       setTableData((prev) =>
-//         prev.map((row) =>
-//           row.fulldata.invoice_id === fullRow.invoice_id
-//             ? {
-//                 ...row,
-//                 fulldata: {
-//                   ...row.fulldata,
-//                   mails: oldValue,
-//                 },
-//               }
-//             : row
-//         )
-//       );
-//       return;
-//     }
-
-//     // 2️⃣ Decide API
-//     let api;
-//     if (fullRow.tp === "Retail") api = invoice;
-//     else if (fullRow.tp === "Rack") api = retail_invoice;
-//     else if (source === owner_invoice) api = owner_invoice;
-//     else if (source === customized_invoice) api = customized_invoice;
-//     else api = invoice;
-
-//     // 3️⃣ API call
-//     axios
-//       .put(`${api}/${fullRow.invoice_id}`, {
-//         id: fullRow.invoice_id,
-//         mails: oldValue,
-//         value:value
-//       })
-//       .catch(() => {
-//         // ❌ rollback on API failure
-//         setTableData((prev) =>
-//           prev.map((row) =>
-//             row.fulldata.invoice_id === fullRow.invoice_id
-//               ? {
-//                   ...row,
-//                   fulldata: {
-//                     ...row.fulldata,
-//                     admin_status: fullRow.admin_status,
-//                   },
-//                 }
-//               : row
-//           )
-//         );
-//       });
-//   });
-// };
-
+const columnWidths = {
+  "Invoice#": "120px",
+  Company: "200px",
+  "From ": "140px",
+  To: "140px",
+  "Due Date": "130px",
+  Total: "120px",
+  "Retail Total": "140px",
+  Saving: "120px",
+  Fees: "80px",
+  "Tr Count": "110px",
+  Country: "140px",
+  Supplier: "120px",
+  Mailed_By: "100px",
+  Mailed_On: "120px",
+};
 
 const getTableSetter = (source) => {
   if (source === combine_invoice) return setData;
@@ -236,7 +174,6 @@ invoiceType:
   });
 };
 
-
   const {
     data,
     totalRows,
@@ -266,7 +203,27 @@ invoiceType:
     handleSearch: customizedHandleSearch,
     setData: setCustomizedData,
   } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap });
+   const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+const applyFilters = (tableData, filters) => {
+  return tableData.filter((row) =>
+    Object.keys(filters).every((key) => {
+      if (!filters[key]) return true;
+      return (
+        row[key] &&
+        row[key].toString().toLowerCase().includes(filters[key])
+      );
+    })
+  );
+};
 
+ const filteredCombineData = applyFilters(data, filters);
+const filteredOwnerData = applyFilters(ownerdata, filters);
+const filteredCustomizedData = applyFilters(customizedData, filters);
   const View_Invoice = [
     {
       id: "1",
@@ -292,7 +249,7 @@ invoiceType:
         <DataTableComponent
           title="Invoices List "
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredCombineData}
           loading={loading}
           downloadHeading="Download"
           download={true}
@@ -313,7 +270,7 @@ invoiceType:
           tableColumns={tableColumns}
            downloadHeading="Download"
           download={true}
-          tableData={ownerdata}
+          tableData={filteredOwnerData}
           loading={ownerLoading}
           pagination
           paginationServer
@@ -332,7 +289,7 @@ invoiceType:
              downloadHeading="Download"
           download={true}
           tableColumns={tableColumns}
-          tableData={customizedData}
+          tableData={filteredCustomizedData}
           loading={customizedLoading}
           pagination
           paginationServer
@@ -343,15 +300,66 @@ invoiceType:
       ),
     },
   ];
+
   useEffect(() => {
-    const cols = Object.keys(columnsMap).map((key) => ({
-      name: key,
+   const cols = Object.keys(columnsMap)
+  .filter((key) => key !== "Id")
+  .map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+    return {
+      name: (
+        <div style={{ width: "100%",                    
+            }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              // maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
       selector: (row) => row[key],
       sortable: true,
+      width:colWidth,
       wrap: true,
-    }));
+    }});
     cols.push({
-  name: "Show/Hide",
+        name: (
+        <div style={{ width: "100%",                    
+            }}>
+          <div className="d-flex align-items-end justify-content-start">
+          Show/Hide
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              // maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange("Show/Hide", e.target.value)}
+          />
+        </div>
+      ),
   cell: (row) => (
     <select
       className="form-select form-select-sm" id={`mails_${row.fulldata.invoice_id}`}
@@ -364,11 +372,33 @@ invoiceType:
       <option value="0">Hide</option>
     </select>
   ),
-  width: "140px",
+  width: "100px",
 });
 
   cols.push({
-      name: "Status",
+      name: (
+        <div style={{ width: "100%",                    
+            }}>
+          <div className="d-flex align-items-end justify-content-start">
+          Status     
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              // maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange("Show/Status", e.target.value)}
+          />
+        </div>
+      ),
       cell: (row) => (
         <select
           className="form-select form-select-sm"   id={`admin_status_${row.fulldata.invoice_id}`}
@@ -380,7 +410,7 @@ invoiceType:
 
         </select>
       ),
-      width: "140px",
+      width: "120px",
     });
     cols.push({
       name: "Action",

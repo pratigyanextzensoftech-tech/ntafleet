@@ -3,7 +3,7 @@ import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard"; 
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
 import axios from "axios";
-import { transactions,totals } from "../../api";
+import { transactions,tranaction_total } from "../../api";
 import SearchForm from "./SearchForm";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa"; 
 import { Container, Row, Col, Card, CardBody } from 'reactstrap'; 
@@ -51,15 +51,15 @@ const Index = () => {
 
    const fetchTotals = async () => {
     try {
-      const response = await axios.get(totals);
+      const response = await axios.get(tranaction_total);
        setTotals({
         taxamt: Number(response.data.taxamt || 0),
         amtcad: Number(response.data.amtcad || 0),       
         qtyltr: Number(response.data.qtyltr || 0),
         qtygln: Number(response.data.qtygln || 0),
         amtusd: Number(response.data.amtusd || 0), 
-        fee: Number(response.data.fee || 0),
-        amtreal: Number(response.data.amtreal || 0),
+        fee:    Number(response.data.fee || 0),
+        amtreal:Number(response.data.amtreal || 0),
       });
     } catch (error) {
       console.error("Error fetching totals:", error);

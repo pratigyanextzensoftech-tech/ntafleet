@@ -18,6 +18,8 @@ const SendBulk = () => {
     const [selectedRows, setSelectedRows] = useState([]);
     const[selectedData,setSelectdData]=useState([])
     const [selectAll, setSelectAll] = useState(false);
+    const[filters,setFilters]=useState({})
+    
 
    const handleSelectAll = (checked, data) => {
   setSelectAll(checked);
@@ -105,8 +107,8 @@ console.log(rows)
       Total: "total",
       "Retail Total": "retail_price",
       Saving: "saving",
-      Fees: "fees",
-      "Tr Count": "tr_count",
+      // Fees: "fees",
+      // "Tr Count": "tr_count",
       Country: "country",
       Supplier: "supplier_id",
       // Mailed_By: "mailby",
@@ -114,6 +116,70 @@ console.log(rows)
       // "Show/Hide": "total_gln",
       Status: "status",
     };
+     const OwnercolumnsMap = {
+      "Invoice#": "invoice_id",
+      Company: "company_name",
+      "From ": "from_date",
+      To: "to_date",
+      "Due Date": "due_date",
+      Total: "total",
+      "Retail Total": "retail_price",
+      Saving: "saving",
+      Fees: "fees",
+      "Tr Count": "tr_count",
+      Country: "country",
+      Supplier: "supplier_id",
+      Status: "status",
+    };
+    const moneyCodecolumnsMap = {
+      "Invoice#": "invoice_id",
+      Company: "company_name",
+      "From ": "from_date",
+      To: "to_date",
+      "Due Date": "due_date",
+      Total: "total",
+      Status: "status",
+    };
+    const ownerColumnWidths  = {
+  "Invoice#": "130px",
+  Company: "250px",
+  "From ": "110px",
+  To: "110px",
+  "Due Date": "130px",
+  Total: "110px",
+  "Retail Total": "140px",
+  Saving: "100px",
+  Country: "120px",
+  Supplier: "130px",
+  Status: "110px",
+};
+
+
+
+const moneyCodeColumnWidths = {
+  "Invoice#": "140px",
+  Company: "260px",
+  "From ": "120px",
+  To: "120px",
+  "Due Date": "140px",
+  Total: "120px",
+  Status: "120px",
+};
+
+    const columnWidths = {
+  "Invoice#": "130px",
+  Company: "250px",
+  "From ": "110px",
+    To: "110px",
+  "Due Date": "170px",
+  Total: "110px",
+  "Retail Total": "140px",
+  Saving: "100px",
+  Country: "150px",
+  Supplier: "130px",
+  Status: "110px",
+};
+
       const perPageValue=200
       
     const {
@@ -123,7 +189,6 @@ console.log(rows)
       handlePageChange,
       handlePerRowsChange,
        handleFormSearch,
-  handleColumnSearch,
       setData,
     } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap,perPageValue });
   
@@ -133,9 +198,7 @@ console.log(rows)
       loading: ownerLoading,
       handlePageChange: ownerHandlePerChange,
       handlePerRowsChange: ownerHandlePerROwChange,
-       handleFormSearch:OwnerFormSearch,
-  handleColumnSearch:OwnercolumnSearch,
-      // ✅ Added
+       handleFormSearch:OwnerFormSearch,      // ✅ Added
       setData: handleSetData,
     } = usePaginatedTable({ apiUrl: owner_invoice, columnsMap,perPageValue });
    const {
@@ -145,7 +208,6 @@ console.log(rows)
       handlePageChange: moneycodeHandlePerChange,
       handlePerRowsChange: moneyHandlePerROwChange,
        handleFormSearch:moneycodeFormSearch,
-      handleColumnSearch:moneycodecolumnSearch,
       setData: setmoneycodeData,
     } = usePaginatedTable({ apiUrl: moneycode_invoice, columnsMap,perPageValue });
     const {
@@ -155,7 +217,6 @@ console.log(rows)
       handlePageChange: customizedHandlePageChange,
       handlePerRowsChange: customizedHandlePerRowsChange,
        handleFormSearch:customizedFormSearch,
-      handleColumnSearch:customizedcolumnSearch,
       setData: setCustomizedData,
     } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap,perPageValue });
      const {
@@ -165,43 +226,127 @@ console.log(rows)
       handlePageChange: tcheckHandlePerChange,
       handlePerRowsChange: tcheckHandlePerROwChange,
       handleFormSearch:tcheckFormSearch,
-      handleColumnSearch:tcheckcolumnSearch,
       setData: settcheckData,
     } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap,perPageValue });
-  
-   const getTableColumns = (tableData, handleSearchFn) => {
+
+  const applyFilters = (tableData, filters) => {
+  return tableData.filter((row) =>
+    Object.keys(filters).every((key) => {
+      if (!filters[key]) return true;
+      return (
+        row[key] &&
+        row[key].toString().toLowerCase().includes(filters[key])
+      );
+    })
+  );
+};
+
+ const filteredCombineData = applyFilters(data, filters);
+const filteredOwnerData = applyFilters(ownerdata, filters);
+const filteredmoneyCodeData = applyFilters(moneyCodedata, filters);
+const filteredCustomizedData = applyFilters(customizedData, filters);
+const filteredTcheckData = applyFilters(tcheckdata, filters);
+ const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+// const getTableColumns = (tableData, handleSearchFn, columnsMap) => {
+//   return [
+//     ...Object.keys(columnWidths).map((label) => {
+//       const apiField = columnsMap[label]; // ✅ FIXED
+
+//       return {
+//         name: (
+//           <div>
+//             <div className="fw-bold text-start">{label}</div>
+//             <input
+//               type="text"
+//               className="mt-2"
+//               style={{
+//                 width: "100%",
+//                 height: "28px",
+//                 border: "1px solid #ccc",
+//                 borderRadius: "5px",
+//               }}
+//               onClick={(e) => e.stopPropagation()}
+//               onMouseDown={(e) => e.stopPropagation()}
+//               onKeyDown={(e) => {
+//                 if (e.key === "Enter") {
+//                   e.preventDefault(); // stop form submit
+//                 }
+//               }}
+//               onChange={(e) =>
+//                 handleSearchFn(apiField, e.target.value) // ✅ SEND TYPED VALUE
+//               }
+//             />
+//           </div>
+//         ),
+//         selector: (row) => row[label],
+//         sortable: true,
+//         width: columnWidths[label],
+//         wrap: true,
+//       };
+//     }),
+
+//     {
+//       name: (
+//         <div className="d-flex align-items-center">
+//           <span className="me-2 fw-bold">Action</span>
+//           <input
+//             type="checkbox"
+//             checked={selectAll}
+//             onChange={(e) =>
+//               handleSelectAll(e.target.checked, tableData)
+//             }
+//           />
+//         </div>
+//       ),
+//       cell: (row) => (
+//         <input
+//           type="checkbox"
+//           checked={selectedIds.includes(row["Invoice#"])}
+//           onChange={() => handleSelectRow(row)}
+//         />
+//       ),
+//       width: "120px",
+//       ignoreRowClick: true,
+//       allowOverflow: true,
+//       button: true,
+//     },
+//   ];
+// };
+
+const getTableColumns = (tableData,columnmap,colWidth) => {
   return [
-    ...Object.keys(columnsMap).map((label) => {
-      const field = columnsMap[label]; // ✅ FIX
+    ...Object.keys(colWidth).map((label) => ({
+      name: (
+        <div>
+          <div className="fw-bold">{label}</div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",
+              height: "28px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) =>
+              handleFilterChange(label, e.target.value) // ✅ CLIENT SIDE
+            }
+          />
+        </div>
+      ),
+      selector: (row) => row[label],
+      sortable: true,
+      width: columnWidths[label],
+      wrap: true,
+    })),
 
-      return {
-        name: (
-          <div>
-            <div className="fw-bold text-start">{label}</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-              onChange={(e) =>
-                handleSearchFn(field, e.target.value) // ✅ CORRECT
-              }
-            />
-          </div>
-        ),
-        selector: (row) => row[label], // keep label for table
-        sortable: true,
-        wrap: true,
-      };
-    }),
-
-    // ACTION COLUMN
     {
       name: (
         <div className="d-flex align-items-center">
@@ -224,8 +369,6 @@ console.log(rows)
       ),
       width: "120px",
       ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
     },
   ];
 };
@@ -262,11 +405,11 @@ useEffect(() => {
        buttonTitle="Send Mail"
         loading={loading} 
        totalRows= {totalRows}
-  tableColumns={getTableColumns(data,handleColumnSearch)}
+  tableColumns={getTableColumns(data,columnsMap,columnWidths)}
        setData={setData}
         handlePageChange={handlePageChange}
         handlePerRowsChange={handlePerRowsChange}
-         tableData={data} />,
+         tableData={filteredCombineData} />,
   },
   {
     id: '2',
@@ -285,7 +428,8 @@ useEffect(() => {
       } loading={ownerLoading}
       handlePageChange={ownerHandlePerChange}
       setData={handleSetData}
-      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow}   tableColumns={getTableColumns(ownerdata,OwnercolumnSearch)}  tableData={ownerdata} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
+      handlePerRowsChange={ownerHandlePerROwChange} totalRows={ownerTotalRow}   tableColumns={getTableColumns(filteredCombineData,OwnercolumnsMap,ownerColumnWidths)} 
+    tableData={filteredOwnerData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
 
   {
@@ -306,7 +450,7 @@ useEffect(() => {
       handlePageChange={moneycodeHandlePerChange}
       setData={setmoneycodeData}
       handlePerRowsChange={moneyHandlePerROwChange}
-      totalRows={moneycodeTotalRow}   tableColumns={getTableColumns(moneyCodedata,moneycodecolumnSearch)}  tableData={moneyCodedata} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
+      totalRows={moneycodeTotalRow}   tableColumns={getTableColumns(filteredmoneyCodeData,moneyCodecolumnsMap,moneyCodeColumnWidths)}  tableData={filteredmoneyCodeData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
    {
     id: '4',
@@ -324,10 +468,10 @@ useEffect(() => {
            // ✅ refresh correct tab
         })
       }  
- tableColumns={getTableColumns(customizedData,customizedcolumnSearch)}      setData={setmoneycodeData}
+ tableColumns={getTableColumns(filteredCustomizedData,columnsMap,columnWidths)}      setData={setmoneycodeData}
       handlePerRowsChange={customizedHandlePageChange}
       handlePageChange={customizedHandlePageChange}
-      loading={customizedLoading} totalRows={customizedTotalRow}  tableData={customizedData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
+      loading={customizedLoading} totalRows={customizedTotalRow}  tableData={filteredCustomizedData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
    {
     id: '5',
@@ -343,10 +487,10 @@ useEffect(() => {
            // ✅ refresh correct tab
         })
       }   
-  tableColumns={getTableColumns(tcheckdata,tcheckcolumnSearch)} showTable={showTable}    handlePerRowsChange={tcheckHandlePerROwChange}
+  tableColumns={getTableColumns(filteredTcheckData,moneyCodecolumnsMap,moneyCodeColumnWidths)} showTable={showTable}    handlePerRowsChange={tcheckHandlePerROwChange}
      setData={settcheckData}
      handlePageChange={tcheckHandlePerChange}
-     loading={tcheckLoading} totalRows={tcheckTotalRow} tableData={tcheckdata} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
+     loading={tcheckLoading} totalRows={tcheckTotalRow} tableData={filteredTcheckData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
   },
   
 ];

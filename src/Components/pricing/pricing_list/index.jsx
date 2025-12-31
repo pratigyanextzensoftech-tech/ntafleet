@@ -20,7 +20,7 @@ import {
 import usePaginatedTable from "../../../Hooks/usePagination";
 
 const Index = () => {
- const { createColumns,selectedRows } = useSelectableColumns();
+ const { createColumns,selectedRows,getFilteredData } = useSelectableColumns();
   // ✅ Define individual column mappings per API
   const columnSets = {
     taActual: {
@@ -292,7 +292,7 @@ const tabs = [
     showDownload: false,         // ✅ conditionally show download
     showDelete: false,          // ❌ hide delete
         })}
-        tableData={tab.data.data}
+        tableData={getFilteredData(tab.data.data)}
         loading={tab.data.loading}
         pagination
         paginationServer

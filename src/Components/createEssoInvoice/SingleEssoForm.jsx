@@ -128,7 +128,11 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
 <Col>
 <fieldset>
 <legend>{title}</legend>
- <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
+ <Form noValidate="" onSubmit={(e)=>{
+  e.preventDefault()
+  e.stopPropagation(); 
+  handleSubmit(onSubmit)(e)}
+ }>
           <Row className="mt-3">
             {company_list==!false &&(
             <Col sm="3">

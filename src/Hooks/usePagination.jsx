@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useCallback } from "react";
 import axios from "axios";
 import qs from "qs";
-
+import { useRef } from "react";
 export default function usePaginatedTable({
   apiUrl,
   columnsMap,
@@ -16,7 +16,7 @@ export default function usePaginatedTable({
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
-
+const debounceRef = useRef(null);
   const fetchData = async (page = 1, per = perPage, filterData = filters) => {
     setLoading(true);
     try {
@@ -63,7 +63,7 @@ export default function usePaginatedTable({
 
   useEffect(() => {
     fetchData(currentPage, perPage, filters);
-  }, [currentPage, perPage, filters, tax, invoiceType]);
+  }, [currentPage, perPage, tax,filters, invoiceType]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -73,28 +73,31 @@ const handleFormSearch = (formData) => {
   setCurrentPage(1);
 };
 
-const handleColumnSearch = (field, value) => {
-  setFilters((prev) => {
-    if (!value) {
-      const copy = { ...prev };
-      delete copy[field];
-      return copy;
-    }
-    return {
-      ...prev,
-      [field]: value,
-    };
-  });
-  setCurrentPage(1);
-};
-  const handlePerRowsChange = (newPerPage, page) => {
+// const handleColumnSearch = (field, value) => {
+//   clearTimeout(debounceRef.current);
+
+//   debounceRef.current = setTimeout(() => {
+//     let finalValue = value;
+
+//     // 🔥 FIX Invoice# search
+//     if (field === "invoice_id" && value) {
+//       finalValue = value.split("-").pop(); // "NTA-123" → "123"
+//     }
+
+//     setFilters((prev) => ({
+//       ...prev,
+//       [field]: finalValue || undefined,
+//     }));
+
+//     setCurrentPage(1);
+//   }, 500);
+// };
+
+
+const handlePerRowsChange = (newPerPage, page) => {
     setPerPage(newPerPage);
     setCurrentPage(page);
   };
-
- 
-
-
 
   return {
     data,
@@ -103,9 +106,8 @@ const handleColumnSearch = (field, value) => {
     handlePageChange,
     handlePerRowsChange,
  handleFormSearch,
-  handleColumnSearch,
-    setData,
-    
+  // handleColumnSearch,
+  setData,
     fetchData,
   };
 }

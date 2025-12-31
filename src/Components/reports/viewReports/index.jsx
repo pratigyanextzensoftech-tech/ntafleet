@@ -124,12 +124,7 @@ const Index = () => {
           },
         })}
         tableData={getFilteredData(tab.data.data)}
-        loa
-        
-        
-        
-        
-        ding={tab.data.loading}
+        loading={tab.data.loading}
         pagination
         paginationServer
         paginationTotalRows={tab.data.totalRows}
