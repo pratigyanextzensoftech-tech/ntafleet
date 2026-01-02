@@ -8,7 +8,7 @@ import axios from "axios";
 import { administrator } from "../../../api/index";
 import FormComponent from "./Form";
 import Swal from "sweetalert2";
-import { Link,useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -169,16 +169,67 @@ const refreshTable=()=>{
   }, []);
 
   // ✅ Dropdown updaters (company_login, status)
-  const handleChange = (id, field, value) => {
-    setData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
-    );
+  const handleChange = async (id, field, value) => {
+   console.log("Invoice ID:", id);
+ 
+   const result = await Swal.fire({
+     title: "Are you sure?",
+     text: "Do you want to update the Status?",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonText: "Yes, Update",
+     cancelButtonText: "Cancel",
+   });
+ 
+   if (!result.isConfirmed) return;
+ 
+   try {
+     // 🔹 SHOW LOADING
+     Swal.fire({
+       title: "Updating...",
+       allowOutsideClick: false,
+       didOpen: () => Swal.showLoading(),
+     });
+ 
+     // 🔹 PUT API CALL
+     await axios.put(administrator, {
+       id,
+       [field]: value,
+     });
+ 
+     // 🔹 UPDATE STATE AFTER SUCCESS
+     setData((prevData) =>
+       prevData.map((item) =>
+         item.id === id
+           ? { ...item, [field]: value }
+           : item
+       )
+     );
+ 
+     Swal.fire("Success", "Updated successfully", "success");
+   }
+    catch (error) {
+     console.error(error);
+     Swal.fire("Error", "Failed to update data", "error");
+   }
+ };
+  const handleCompanyLogin = async (id, field, value) => {
+   console.log("Invoice ID:", id);
+ 
+   await axios.put(administrator, {
+       id,
+       [field]: value,
+     });
 
-   
-  };
-
+     // 🔹 UPDATE STATE AFTER SUCCESS
+     setData((prevData) =>
+       prevData.map((item) =>
+         item.id === id
+           ? { ...item, [field]: value }
+           : item
+       )
+     );
+ };
   // ✅ Build columns
   useEffect(() => {
     const columns = [
@@ -323,7 +374,7 @@ const refreshTable=()=>{
           <select
             className="form-select form-select-sm"
             value={row.company_login === "Yes" ? "Yes" : "No"}
-            onChange={(e) => handleChange(row.id, "company_login", e.target.value)}
+            onChange={(e) => handleCompanyLogin(row.id, "company_login", e.target.value)}
           >
             <option value="Yes">Yes</option>
             <option value="No">No</option>

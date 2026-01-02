@@ -87,13 +87,50 @@ const columnWidths = {
   }, []);
 
 
-   const handleChange = (id, field, value) => {
+  const handleChange = async (id, field, value) => {
+  console.log("Invoice ID:", id);
+
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to update the Status?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Update",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    // 🔹 SHOW LOADING
+    Swal.fire({
+      title: "Updating...",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    // 🔹 PUT API CALL
+    await axios.put(APINAME, {
+      id,
+      [field]: value,
+    });
+
+    // 🔹 UPDATE STATE AFTER SUCCESS
     setData((prevData) =>
       prevData.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
+        item.fulldata.id === id
+          ? { ...item, [field]: value }
+          : item
       )
     );
-  };
+
+    Swal.fire("Success", "Updated successfully", "success");
+  }
+   catch (error) {
+    console.error(error);
+    Swal.fire("Error", "Failed to update data", "error");
+  }
+};
 
   // ✅ Build column definitions
   useEffect(() => {
@@ -160,7 +197,7 @@ const columnWidths = {
         <select
           className="form-select form-select-sm"
           value={row.status || "Active"}
-          onChange={(e) => handleChange(row.id, "status", e.target.value)}
+          onChange={(e) => handleChange(row.fulldata.id, "status", e.target.value)}
         >
           <option value="Active">Active</option>
           <option value="Blocked">Blocked</option>

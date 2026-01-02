@@ -34,15 +34,42 @@ const Index = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const handleChange = (id, field, value) => {
+
+
+const handleChange = async (id, field, value) => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to update the status?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Update",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    // ✅ CALL PUT API
+    await axios.put(`${tcheck_invoice}/${id}`, {
+      [field]: value,
+    });
+
+    // ✅ UPDATE TABLE DATA AFTER SUCCESS
     setData((prevData) =>
       prevData.map((item) =>
-        item["Invoice #"] === id ? { ...item, [field]: value } : item
+        item["Invoice #"] === id
+          ? { ...item, [field]: value }
+          : item
       )
     );
 
+    Swal.fire("Updated!", "Status updated successfully.", "success");
+  } catch (error) {
+    console.error(error);
+    Swal.fire("Error", "Failed to update status", "error");
+  }
+};
 
-  };
   // ✅ Column mapping between UI and API
   const columnsMap = {
     "Invoice #": "invoice_id",
@@ -165,9 +192,9 @@ const columnWidths = {
 
           onChange={(e) => handleChange(row["Invoice #"], "status", e.target.value)}
         >
-          <option value="Active">Open</option>
-          <option value="Blocked">Entered</option>
-          <option value="Blocked">Close</option>
+            <option value="Open">Open</option>
+          <option value="Entered">Entered</option>
+          <option value="Close">Close</option>
 
         </select>
       ),

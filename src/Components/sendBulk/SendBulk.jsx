@@ -142,35 +142,35 @@ console.log(rows)
     };
     const ownerColumnWidths  = {
   "Invoice#": "130px",
-  Company: "250px",
+  Company: "300px",
   "From ": "110px",
   To: "110px",
   "Due Date": "130px",
-  Total: "110px",
-  "Retail Total": "140px",
+  Total: "60px",
+  "Retail Total": "160px",
   Saving: "100px",
-  Country: "120px",
-  Supplier: "130px",
+   Fees: "100px",
+  "Tr Count": "130px",
+  Country: "100px",
+  Supplier: "100px",
   Status: "110px",
 };
 
-
-
 const moneyCodeColumnWidths = {
-  "Invoice#": "140px",
-  Company: "260px",
-  "From ": "120px",
-  To: "120px",
-  "Due Date": "140px",
-  Total: "120px",
-  Status: "120px",
+  "Invoice#": "160px",
+  "Company":"450px",
+  "From ": "250px",
+  To: "270px",
+  "Due Date": "200px",
+  Total: "160px",
+  Status: "150px",
 };
 
     const columnWidths = {
   "Invoice#": "130px",
-  Company: "250px",
-  "From ": "110px",
-    To: "110px",
+  Company: "300px",
+  "From ": "150px",
+    To: "150px",
   "Due Date": "170px",
   Total: "110px",
   "Retail Total": "140px",
@@ -252,77 +252,13 @@ const filteredTcheckData = applyFilters(tcheckdata, filters);
     [column]: value.toLowerCase(),
   }));
 };
-// const getTableColumns = (tableData, handleSearchFn, columnsMap) => {
-//   return [
-//     ...Object.keys(columnWidths).map((label) => {
-//       const apiField = columnsMap[label]; // ✅ FIXED
 
-//       return {
-//         name: (
-//           <div>
-//             <div className="fw-bold text-start">{label}</div>
-//             <input
-//               type="text"
-//               className="mt-2"
-//               style={{
-//                 width: "100%",
-//                 height: "28px",
-//                 border: "1px solid #ccc",
-//                 borderRadius: "5px",
-//               }}
-//               onClick={(e) => e.stopPropagation()}
-//               onMouseDown={(e) => e.stopPropagation()}
-//               onKeyDown={(e) => {
-//                 if (e.key === "Enter") {
-//                   e.preventDefault(); // stop form submit
-//                 }
-//               }}
-//               onChange={(e) =>
-//                 handleSearchFn(apiField, e.target.value) // ✅ SEND TYPED VALUE
-//               }
-//             />
-//           </div>
-//         ),
-//         selector: (row) => row[label],
-//         sortable: true,
-//         width: columnWidths[label],
-//         wrap: true,
-//       };
-//     }),
-
-//     {
-//       name: (
-//         <div className="d-flex align-items-center">
-//           <span className="me-2 fw-bold">Action</span>
-//           <input
-//             type="checkbox"
-//             checked={selectAll}
-//             onChange={(e) =>
-//               handleSelectAll(e.target.checked, tableData)
-//             }
-//           />
-//         </div>
-//       ),
-//       cell: (row) => (
-//         <input
-//           type="checkbox"
-//           checked={selectedIds.includes(row["Invoice#"])}
-//           onChange={() => handleSelectRow(row)}
-//         />
-//       ),
-//       width: "120px",
-//       ignoreRowClick: true,
-//       allowOverflow: true,
-//       button: true,
-//     },
-//   ];
-// };
 
 const getTableColumns = (tableData,columnmap,colWidth) => {
   return [
     ...Object.keys(colWidth).map((label) => ({
       name: (
-        <div>
+        <div className='w-100'>
           <div className="fw-bold">{label}</div>
           <input
             type="text"
@@ -343,7 +279,7 @@ const getTableColumns = (tableData,columnmap,colWidth) => {
       ),
       selector: (row) => row[label],
       sortable: true,
-      width: columnWidths[label],
+      width: colWidth[label],
       wrap: true,
     })),
 
