@@ -39,6 +39,7 @@ const MailPricingCommon = ({
 table,invoiceType
 }) => {
  const [selectedRows, setSelectedRows] = useState([]);
+ const[filters,setFilters]=useState({})
   const [selectAll, setSelectAll] = useState(false);
   const { data: companies } = useCompany();
   const { data: supplierData } = useSupplier(supplier_ids);
@@ -142,6 +143,18 @@ console.log(newSelection)
         "Mailed_By": "mailby",
         "Mailed_On": "mail_on",
       };
+ const columnWidths = {
+  "ID #": "100px",
+  "Company": "300px",
+  "Pricing Date": "180px",
+  "Supplier": "150px",
+  "Entry_Count": "150px",
+  "Added_By": "120px",
+  "Added_On": "160px",
+  "Mailed_By": "150px",
+  "Mailed_On": "150px",
+};
+   
     const perPageValue=200
       const {
         data,
@@ -154,14 +167,40 @@ console.log(newSelection)
       } = usePaginatedTable({ apiUrl: listapi, columnsMap,tax,invoiceType,perPageValue });
       useEffect(() => {
         console.log(data,"list")
-        const cols = Object.keys(columnsMap).map((key) => ({
-          name: key,
+    const cols = Object.keys(columnsMap).map((key) => {
+    const colWidth = columnWidths[key]; 
+    const colWidthPx = parseInt(colWidth, 10);
+    return {
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            {key}
+          </div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",                   
+              maxWidth: colWidthPx - 10 + "px",// small padding
+              height: "28px",
+              border:"none",
+              borderRadius:"5px",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => handleFilterChange(key, e.target.value)}
+          />
+        </div>
+      ),
           selector: (row) => row[key],
           sortable: true,
+          width:colWidth,
           wrap: true,
-        }));
+        }});
              cols.push({
   name: "View Pdf",
+  width:"180px",
   cell: (row) => (
     <Link
       to={`/download_pdf/${btoa(row.id)}`}
@@ -202,7 +241,22 @@ console.log(newSelection)
     
         setTableColumns(cols);
       }, [openRowId,data, selectedRows, selectAll]);
-    
+      
+      const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+);
       useEffect(() => {
         const handleClickOutside = (event) => {
           if (!event.target.closest(".dropdown-action")) {
@@ -385,7 +439,7 @@ console.log(newSelection)
         <DataTableComponent
           title="Pricing PDF List (Without Tax) "
           tableColumns={tableColumns}
-          tableData={data}
+          tableData={filteredData}
           loading={essoLoading}
           table={true}
           handleDelete={()=>handleDelete(selectedRows)}

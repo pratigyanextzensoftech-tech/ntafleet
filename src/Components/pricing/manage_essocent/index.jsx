@@ -17,7 +17,6 @@ const Index = () => {
       if ($.fn.dataTable.isDataTable("#example")) {
         $("#example").DataTable().destroy();
       }
-
       $("#example").DataTable({
         processing: true,
         serverSide: true,
@@ -28,34 +27,32 @@ const Index = () => {
         pageLength: 10,
         order: [[0, "asc"]],
 
-        ajax: function (data, callback) {
-          const params = new URLSearchParams();
-          params.append("start", data.start);
-          params.append("length", data.length);
-          params.append("search", data.search.value || "");
-          params.append("orderColumn", data.columns[data.order[0].column].data);
-          params.append("orderDir", data.order[0].dir);
+    ajax: function (data, callback) {
+  const params = new URLSearchParams();
+  params.append("start", data.start);
+  params.append("length", data.length);
+  // params.append("search", data.search.value || "");
+  params.append("search", data.search.value || "");
+  // ✅ column-wise search
+  data.columns.forEach((col, index) => {
+params.append(`columns[${index}][search][value]`, col.search.value || "");
+  });
 
-          fetch(`${esso_rack}?${params.toString()}`)
-            .then((res) => res.json())
-            .then((json) => {
-              callback({
-                draw: data.draw,
-                recordsTotal: json.recordsTotal || json.total || 0,
-                recordsFiltered: json.recordsFiltered || json.total || 0,
-                data: json.data || [],
-              });
-              
-            })
-            .catch(() => {
-              callback({
-                draw: data.draw,
-                recordsTotal: 0,
-                recordsFiltered: 0,
-                data: [],
-              });
-            });
-        },
+ params.append("order[0][column]", data.order[0].column);
+  params.append("order[0][dir]", data.order[0].dir);
+
+  fetch(`${esso_rack}?${params.toString()}`)
+    .then(res => res.json())
+    .then(json => {
+      callback({
+        draw: data.draw,
+        recordsTotal: json.recordsTotal || json.total || 0,
+        recordsFiltered: json.recordsFiltered || json.total || 0,
+        data: json.data || [],
+      });
+    });
+}
+,
 
         columns: [
           { data: "id", title: "ID" , width: "50px",    },
@@ -76,7 +73,6 @@ const Index = () => {
           },
 {
   data: null,
-  title: "Action",
   width: "120px",
   orderable: false,
   searchable: false,
@@ -118,6 +114,27 @@ const Index = () => {
 
 ,
         ],
+        initComplete: function () {
+  const api = this.api();
+
+  api.columns().every(function (index) {
+    const column = this;
+
+    // ❌ Skip Action column
+    if (index === 5) return;
+
+    const cell = $('.filters th').eq(index);
+
+    $('<input type="text" placeholder="Search" />')
+      .appendTo(cell.empty())
+      .on('keyup change clear', function () {
+        if (column.search() !== this.value) {
+          column.search(this.value).draw();
+        }
+      });
+  });
+}
+
       });
     };
 // Handle Action dropdown toggle
@@ -140,11 +157,11 @@ $(document).on("click", function (e) {
   }
 });
 
-
 // Close dropdown if clicked outside
 $(document).on("click", function () {
   $(".dropdown-menu-custom").hide();
 });
+
 
     const timeout = setTimeout(initTable, 300);
 
@@ -209,6 +226,7 @@ console.log(data,"data")
  refreshTable();
 
 }
+
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Manage Esso Cent Type" />
@@ -236,8 +254,25 @@ console.log(data,"data")
                   className="display table table-striped table-bordered nowrap"
                   style={{ width: "100%" }}
                 >
-                  <thead></thead>
-                  <tbody></tbody>
+               <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Value</th>
+    <th>Ord</th>
+    <th>Default_Rack</th>
+    <th>Action</th>
+  </tr>
+  <tr className="filters">
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+</thead>
+
                 </table>
               </CardBody>
             </Card>
