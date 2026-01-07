@@ -30,22 +30,20 @@ const List = ({ btnTitle1,onSearch }) => {
   };
 
     const onSubmit = (formData) => {
-
-        console.log("Form Data:", formData); 
+        console.log(formData);
         const payload = {
       from: formData?.from ? formatDate(formData.from) : "",
       to: formData?.to ? formatDate(formData.to) : "",
-      company_id: formData?.company ? formatDate(formData?.company.value) : ""
+      company_id: formData?.company ? formatDate(formData?.company.value) : "",
+    company_name: formData?.company ? formatDate(formData?.company.label) : ""
     }
-
+        console.log(payload);
          if (onSearch) onSearch(payload);
 
     };
     const handleReset = () => {
         reset(); // reset all fields back to defaultValues (or empty if none given)
     };
-
-    
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
@@ -56,7 +54,7 @@ const List = ({ btnTitle1,onSearch }) => {
                 <Col sm="3">
                     <Row>
                         <DatePickerInput
-                            name=" from"
+                            name="from"
                             control={control}              // ✅ make sure this is passed
                             label="From Date"
                             required="Required"
@@ -80,7 +78,6 @@ const List = ({ btnTitle1,onSearch }) => {
                         name="company"
                         label="Company"
                         control={control}
-                        rules={{ required: "Company is required" }}
                         placeholder="Select Company"
                         setValue={setValue}
                         // loading={companyLoading}

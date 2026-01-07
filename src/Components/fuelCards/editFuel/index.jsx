@@ -41,7 +41,6 @@ const Index = () => {
   const { data } = useCompany();
   const {
     register,
-
     control,
     reset,
     handleSubmit,

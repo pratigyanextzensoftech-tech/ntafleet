@@ -34,12 +34,13 @@ const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit,o
   });
 useEffect(() => {
   if (Edit && selectedRow) {
-    console.log(selectedRow)
-    const companylogin = companyLoginAccess?.find(
-          (item) => item.value === selectedRow.company_login == '0' ? "Yes" : "No"
-        );
+    console.log(selectedRow.status)
+   const companylogin = companyLoginAccess.find(
+  (item) => item.label === selectedRow.company_login
+);
+
         const slectedStatus=manageuserStatus?.find(
-          (item) => item.value === selectedRow.status == 0 ? "Active" : "Blocked"
+          (item) => item.value === selectedRow.status
         );
 
 
@@ -244,7 +245,7 @@ const onSubmit = async (formData) => {
                       className="form-control p-0 border-0"
                       placeholder="Access is required"
                       value={field.value}
-      onChange={(val) => field.onChange(val)}
+                      onChange={(val) => field.onChange(val)}
                       />
                   
                   

@@ -68,7 +68,7 @@ const debounceRef = useRef(null);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-const handleFormSearch = (formData) => {
+const handleSearch = (formData) => {
   setFilters(formData);     // full payload from form
   setCurrentPage(1);
 };
@@ -105,7 +105,7 @@ const handlePerRowsChange = (newPerPage, page) => {
     loading,
     handlePageChange,
     handlePerRowsChange,
- handleFormSearch,
+ handleSearch,
   // handleColumnSearch,
   setData,
     fetchData,

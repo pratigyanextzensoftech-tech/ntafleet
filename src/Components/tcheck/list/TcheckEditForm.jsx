@@ -42,8 +42,10 @@ const TcheckEditForm = ({}) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
   const handleFileChange = (e) => {
-setFile(e.target.files[0])
-  };
+  const selectedFile = e.target.files[0];
+  setFile(selectedFile);
+};
+
   useEffect(() => {
     // if (decodedId) {
       axios
@@ -91,7 +93,7 @@ setFile(e.target.files[0])
         generation_type: data.genType,
         id: 2075, // static or data.id
         idby: 22, // static or data.idby
-        mail_attachment: file,
+        mail_attachment:file ? file.name : "",
         memo: data.memo,
         payee: data.payee,
         reason: data.reason,

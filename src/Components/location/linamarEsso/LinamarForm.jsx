@@ -1,8 +1,7 @@
 
 import React, { Fragment,useEffect } from 'react';
-import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
+import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
-import HeaderCard from '../../Common/Component/HeaderCard';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -17,8 +16,7 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm({
-        defaultValues:{
-            
+        defaultValues:{   
             essoLoc:"",
             flyingLoc:"",
             flyingJSite:"",
@@ -39,19 +37,19 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
       }, [Edit, selectedRow, reset]);
        const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
-
      const payload = {
     esso_location: formData.essoLoc,
     fj_location:formData.flyingLoc,
     site_id:formData.flyingJSite,
-    fj_location:formData.flyingJLOc,
-loc_id:0
+    loc_id:formData.flyingJLOc
      }
         if (Edit && selectedRow) {
             console.log(selectedRow)
+            console.log(payload)
           axios.put(`${APINAME}/${selectedRow.ID}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
+          console.log(res)
           if (onDataAdded) onDataAdded();
           setEdit(false);
           reset({

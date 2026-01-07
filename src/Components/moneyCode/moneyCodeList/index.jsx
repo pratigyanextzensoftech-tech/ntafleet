@@ -10,6 +10,7 @@ import axios from 'axios';
 import { money_code } from '../../../api';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 const Index = () => {
   const [moneyCodes, setMoneyCodes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +23,8 @@ const Index = () => {
    const [Formfilters, setformFilters] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [openRowId, setOpenRowId] = useState(null);
-
+  const[Edit,setEdit]=useState(false)
+  const navigate=useNavigate()
   // Fetch API data
   const fetchMoneyCodes = async (page = 1, limit = 10,filtersData = filters) => {
     setLoading(true);
@@ -87,7 +89,19 @@ const Index = () => {
     setCurrentPage(page);
   };
 
-  const handleEdit = (row) => console.log("Edit:", row);
+  const handleEdit = async(row) =>
+    
+    {console.log("Edit:", row)
+      try {
+        const response = await axios.get(`${money_code}/${row.id}`);
+    console.log(response.data)
+        // setSelectedRows(response.data);
+    navigate("/addMoney_code_List", { state:  { data: response.data } });
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+  };
+  
  const handleDelete = (e,row) => {
   e.preventDefault()
             

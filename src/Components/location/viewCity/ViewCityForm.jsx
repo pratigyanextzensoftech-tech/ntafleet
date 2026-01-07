@@ -172,7 +172,7 @@ const onSubmit = (formData) => {
           </Col>
           <Col md={3}>
             <div className='text-end'>
-              <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Updte":"Add City"}</Btn>
+              <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update City":"Add City"}</Btn>
             </div>
           </Col>
 

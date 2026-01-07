@@ -9,6 +9,7 @@ import axios from 'axios';
 import { salesman as APINAME } from '../../../api';
 
 const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
+  const addedBy=localStorage.getItem("userId")
         const {
             register,
             control,
@@ -46,7 +47,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                 created:new Date(),
                 status:0,
                 admin_del:0,
-                added_by:0
+                added_by:addedBy
              }
              if (Edit && selectedRow) {
       // ✅ Update existing supplier

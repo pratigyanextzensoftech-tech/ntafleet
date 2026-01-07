@@ -171,7 +171,7 @@ options={data}
 
           <Col md={8}>
             <div className='text-end'>
-              <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Linamar Esso Location"}</Btn>
+              <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update State":"Add State"}</Btn>
             </div>
           </Col>
         </Row>

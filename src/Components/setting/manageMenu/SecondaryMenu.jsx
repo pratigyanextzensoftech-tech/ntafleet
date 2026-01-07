@@ -26,7 +26,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
         reset({
             menuName: selectedRow.name,
           primaryMenu:{
-          value:  selectedRow.idmenu,
+          value:selectedRow.idmenu,
           },
           menuLink: selectedRow.link,
            type:{
