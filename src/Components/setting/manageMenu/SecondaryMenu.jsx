@@ -11,8 +11,10 @@ import usePmenu from '../../../Hooks/usePmenu';
 import { menu,smenu } from '../../../api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
+const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) => {
     const { pmenu, loading, error } = usePmenu();
+    console.log(row);
+    
     const {
         register,
         control,
@@ -52,7 +54,8 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
     "sw":0 
      }
       if (Edit && selectedRow) {
-            console.log(selectedRow)
+        
+            console.log(selectedRow,"selectedRow")
           axios.put(`${menu}/${selectedRow.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
@@ -63,7 +66,6 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit }) => {
       menuName:"",
       menuLink:"",
       type:""
-     
           });
         })
         .catch((err) => {

@@ -2,7 +2,6 @@
 import React, { Fragment,useEffect } from 'react';
 import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
-import HeaderCard from '../../Common/Component/HeaderCard';
 import { useForm } from 'react-hook-form';
 import { type } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import InputText from '../../Forms/FormControl/formInput/InputText';
@@ -35,7 +34,6 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
 }, [Edit, selectedRow]);
             const onSubmit = (formData) => {
                         console.log("Form Data:", formData);  // ✅ This will print your inputs
-
      const payload = { 
     "name":formData.name?formData.name:"",
     "link":formData.link?formData.link:'',
@@ -54,11 +52,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
         .then((res) => {
           toast.success(" updated successfully!");
           if (fetchPmenuData)  fetchPmenuData.fetchData();
-            reset({
-       name:"",
-      link:"",
-      type:"",
-          });
+           
           setEdit(false);
        
         })

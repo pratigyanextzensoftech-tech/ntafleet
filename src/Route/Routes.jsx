@@ -126,6 +126,8 @@ import How_Create_Report from '../Components/help/how_create_report';
 import How_Card_Discount from '../Components/help/how_card_discount';
 import EditUnknownTransaction from '../Components/transaction/unKnownTransaction/EditUnknownTransaction';
  import EditFuel from '../Components/fuelCards/editFuel/index'
+import EditMoneyCodeForm from '../Components/moneyCode/addMoneyCode/EditMoneyCode';
+import Notification from '../Components/notification/index';
 
 export const routes = [
     //Dashboard
@@ -222,6 +224,8 @@ export const routes = [
     //Money Code 
     { path: `/money_code_List`, Component: <MoneyCodeList /> },
     { path: `/addMoney_code_List`, Component: <AddMoneyCode /> },
+        { path: `/editMoney_code_List/:id`, Component: < EditMoneyCodeForm /> },
+
     { path: `/upload_money_code`, Component: <UploadMoney /> },
     { path: `/view_moneyCode_invoices`, Component: <ViewMoneyCode /> },
     { path: `/check_moneycode`, Component: <CheckInvoicemoneyCode /> },
@@ -256,5 +260,10 @@ export const routes = [
     { path: `/help_add_card`, Component: <Help_Add_Card /> },
     { path: `/how_create_report`, Component: <How_Create_Report /> },
     { path: `/how_card_discount`, Component: <How_Card_Discount /> },
+
+
+    //notification
+    { path: `/manage_notification`, Component: <Notification /> },
+
 
 ];

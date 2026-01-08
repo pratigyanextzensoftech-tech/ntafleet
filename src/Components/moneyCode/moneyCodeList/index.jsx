@@ -95,8 +95,12 @@ const Index = () => {
       try {
         const response = await axios.get(`${money_code}/${row.id}`);
     console.log(response.data)
+        const encodedId = btoa(row.id); // encode ID
+
         // setSelectedRows(response.data);
-    navigate("/addMoney_code_List", { state:  { data: response.data } });
+     navigate(`/editMoney_code_List/${encodedId}`, {
+      state: { data: response.data }
+    });
   } catch (error) {
     console.error("Error fetching full row data", error);
   }

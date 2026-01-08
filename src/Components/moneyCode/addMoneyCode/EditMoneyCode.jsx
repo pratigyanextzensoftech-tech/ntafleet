@@ -1,20 +1,23 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,Fragment } from 'react';
 import Select from 'react-select'
-import { optionscompany,MoneyCodeStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
+import { MoneyCodeStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { Row, Col, Form, FormGroup,Card,CardBody, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import {money_code} from '../../../api/index'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import InputText from '../../Forms/FormControl/formInput/InputText';
+import {Breadcrumbs} from '../../../AbstractElements';
+import HeaderCard from '../../Common/Component/HeaderCard';
 import { useCompany } from '../../../Hooks/Dropdowns';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
 import { useLocation } from "react-router-dom";
-const AddMoneyCodeForm = ({btntitle}) => {
-   
+const EditMoneyCodeForm = ({btntitle}) => {
+      const { state } = useLocation();
+      const editData = state?.data ?? null;
+        console.log(state.data)
     const [selectedValues, setSelectedValues] = useState([]);
-    const[Edit,setEdit]=useState(false)
     const{data}=useCompany()
     const {
         register,
@@ -24,7 +27,6 @@ const AddMoneyCodeForm = ({btntitle}) => {
         formState: { errors, isSubmitted, isValid },
     } = useForm();
    
-
  const formatDate = (date) => {
     if (!date) return "";
     const d = new Date(date);
@@ -33,6 +35,70 @@ const AddMoneyCodeForm = ({btntitle}) => {
       "0"
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
+const toDateObject = (value) => {
+  if (!value) return null;
+
+  // Handles "YYYY-MM-DD"
+  const d = new Date(value + "T00:00:00");
+  return isNaN(d.getTime()) ? null : d;
+};
+
+   useEffect(() => {
+    reset({
+      company: {
+        value: editData.company_id,
+        label: editData.company_name,
+      },
+      status: MoneyCodeStatus.find(
+        (s) => s.value === String(editData.status)
+      ),
+      ref: editData.Ref,
+      voided: editData.Voided,
+      issueType: editData.IssueType,
+      issueBy: editData.IssuedBy,
+      issueTo: editData.IssuedTo,
+      issueDate: toDateObject(editData?.IssuedDate) ,
+      Fee: editData.Fee,
+      originalAmt: editData.OriginalAmt,
+      billdate: toDateObject(editData?.BillDate) ,
+      checkNum: editData.CheckNum,
+      dateUsed: editData.DateUsed,
+      amountUsed: editData.AmountUsed,
+      currency: editData.Currency,
+      oneTime: editData.OneTime,
+      exactAmount: editData.ExactAmt,
+      expireDate: editData.ExpireDate,
+      name: editData.Name,
+      city: editData.City,
+      state: editData.State,
+      phone: editData.Phone,
+      license: editData.DriverLicense,
+      driverState: editData.DriverState,
+      driverId: editData.DriverId,
+      hubometer: editData.Hubometer,
+      refeerHours: editData.ReeferHours,
+      licenseState: editData.LicenseState,
+      LicenseNo: editData.LicenseNumber,
+      Odometer: editData.Odometer,
+      PONo: editData.PONumber,
+      TripNo: editData.TripNumber,
+      trailNo: editData.TrailerNumber,
+      unitNo: editData.UnitNumber,
+      ControlNo: editData.ControlNumber,
+      Birthday: editData.Birthday,
+      ReeferTempatur: editData.ReeferTempatur,
+      pinNo: editData.PINNumber,
+      Subfleet: editData.Subfleet,
+      Billing_Id: editData.BillingId,
+      firstInitial: editData.FirstInital,
+      LastName: editData.LastName,
+      driverName: editData.DriverName,
+      SSN: editData.SSN,
+      notes: editData.Notes,
+      mail_attachment: editData.mail_attachment,
+    });
+  
+}, [ reset]);
 
     const onSubmit = (formData) => {
     
@@ -88,18 +154,20 @@ PONumber:formData.PONo|| "",
     c: null,
     dated: new Date().toISOString().slice(0, 19).replace("T", " "),
          }
-  
-              axios.post(money_code,payload)
-        .then((res)=>{
-            console.log(res);  
-              toast.success("Add successfully!");
-       reset();
-    
+        
+          axios.put(`${money_code}/${editData.id}`, payload)
+        .then((res) => {
+          toast.success(" updated successfully!");
+        //   if (onDataAdded) onDataAdded();
+        
         })
-        .catch((err)=>{
-            console.log(err);
-              toast.error(err.message);
-        })    
+        .catch((err) => {
+          toast.error("Update failed!");
+          console.error(err);
+        });
+    
+   
+      
             };
 
     const handleReset = () => {
@@ -118,17 +186,22 @@ PONumber:formData.PONo|| "",
         });
     }
     return (
-
+ <Fragment>
+      <Breadcrumbs parent='Money Code' title=' Edit MoneyCode ' />
+      <Container fluid={true}>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Edit MoneyCode" />
+              <CardBody>
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-
-             
                 <Row className="mt-3">
                        <Col sm="3">
                         <FormGroup className="m-form__group">
                             <InputGroup >
                                 <InputGroupText>Company</InputGroupText>
                                 <Controller name="company"
-                                    rules={{ required: "company Name is required" }}
+                                    rules={!editData?{ required: "company Name is required" }:""}
 
                                     control={control}
                                     render={({ field }) => (
@@ -153,7 +226,7 @@ PONumber:formData.PONo|| "",
                             <InputGroup >
                                 <InputGroupText>Status</InputGroupText>
                                 <Controller name="status"
-                                    rules={{ required: "Status is required" }}
+                                    rules={!editData?{ required: "Status is required" }:""}
 
                                     control={control}
                                     render={({ field }) => (
@@ -623,14 +696,20 @@ PONumber:formData.PONo|| "",
                 </Col>
 <Col sm="2" >
                     <div className='text-end'>
-                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btntitle}</Btn>
+                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{!editData?btntitle:"Update Moneycode"}</Btn>
                     </div>
             </Col>
                 </Row>
                 </Row>
         </Form>
+        </CardBody>
+        </Card>
+        </Col>
+        </Row>
+        </Container>
+        </Fragment>
     )
 }
 
 
-export default AddMoneyCodeForm
+export default EditMoneyCodeForm

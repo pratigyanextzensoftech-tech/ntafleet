@@ -155,6 +155,26 @@
     }
   }
 }
+
+.notification-content p {
+  margin: 0;
+}
+
+.notification-content ul,.notification-content ol {
+ padding-left: 18px; 
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.notification-content ul li {
+  list-style: disc;
+}
+
+.notification-content ol li {
+  list-style: decimal;
+}
+
 .page-body-wrapper {
   .card {
     .sub-title {

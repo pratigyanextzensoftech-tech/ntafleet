@@ -296,6 +296,11 @@ export const companyStatus = [
     { value: 'InActive', label: 'InActive' },
     { value: 'Hold', label: 'Hold' },
 ]
+export const NotificationStatus = [
+    { label: 'Select Status', isDisabled: true },
+    { value: '0', label: 'Active' },
+    { value: '1', label: 'InActive' },
+]
 export const cardStatus = [
     { label: 'Select Status', isDisabled: true },
     { value: '0', label: 'Active' },

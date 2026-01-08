@@ -8,11 +8,11 @@ import { petro_retail as APINAME } from "../../../api";
 import usePaginatedTable from '../../../Hooks/usePagination';
 const Index = () => {
      const [openRowId, setOpenRowId] = useState(null);
-         const [tableColumns, setTableColumns] = useState([]);
-           const [filters, setFilters] = useState({});
+      const [tableColumns, setTableColumns] = useState([]);
+      const [filters, setFilters] = useState({});
          
         const columnsMap = {
-        "Price_Date": "cardNumber",
+        "Price_Date": "timestamp",
         "Location Name": "Site_Name",
         "City": "Site_City",
         "State": "Site_State",
@@ -46,6 +46,14 @@ const Index = () => {
     );
   })
 ); 
+const formatDateOnly = (value) => {
+  if (!value) return "";
+  const d = new Date(value);
+  // if (isNaN(d)) return value; // safety
+  return d.toISOString().split("T")[0]; // YYYY-MM-DD
+};
+
+
          useEffect(() => {
   const cols = Object.keys(columnsMap)
   .filter((key) => key !== "Id")
@@ -72,10 +80,15 @@ const Index = () => {
           />
         </div>
       ),
-             selector: (row) => row[key],
-             sortable: true,
-             wrap: true,
-           }});
+            selector: (row) =>
+          key === "Price_Date"
+            ? formatDateOnly(row[key])
+            : row[key],
+
+        sortable: true,
+        wrap: true,
+      };
+    });
        
          
        
@@ -91,17 +104,17 @@ const Index = () => {
            document.addEventListener("mousedown", handleClickOutside);
            return () => document.removeEventListener("mousedown", handleClickOutside);
          }, []);
-         useEffect(() => {
-        if (data?.length) {
-          const normalized = data.map((item) => ({
-            ...item,
-            id: item["City ID"], 
+      //    useEffect(() => {
+      //   if (data?.length) {
+      //     const normalized = data.map((item) => ({
+      //       ...item,
+      //       id: item["City ID"], 
            
-          }));
+      //     }));
       
-          setData(normalized);
-        }
-      }, []);
+      //     setData(normalized);
+      //   }
+      // }, []);
       
   return (
     <Fragment>

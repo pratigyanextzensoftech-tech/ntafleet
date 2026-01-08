@@ -6,7 +6,8 @@ import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard';
 import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab';
 import ManageMenuTable from '../../../Data/tab/ManageMenuTable'; 
 const Index = () => {
-const menuTabs = ManageMenuTable(); // returns array of tabs
+const menuTabs = ManageMenuTable();
+ // returns array of tabs
   return (
     <Fragment>
       <Breadcrumbs parent='Setting' title='Manage Menu' />
@@ -20,6 +21,7 @@ const menuTabs = ManageMenuTable(); // returns array of tabs
   tabContent={ManageMenuTab({
     selectedRow: menuTabs.selectedRow,
     Edit: menuTabs.Edit,
+    row:menuTabs.Row,
     fetchPmenuData:menuTabs.pmenu,
     fetchSmenuData:menuTabs.sMenu,
     setEdit: menuTabs.setEdit

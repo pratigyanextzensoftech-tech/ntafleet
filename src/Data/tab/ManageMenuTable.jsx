@@ -78,6 +78,7 @@ const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
 const ManageMenuTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [Edit, setEdit] = useState(false);
+  const[Row,setRow]=useState([])
   const [filters, setFilters] = useState({});
 
   // 🔹 Columns mapping for your custom hook
@@ -100,7 +101,6 @@ const ManageMenuTable = () => {
       "Menu Order": "ord",
     },
   };
-
 
   // 🔹 Fetch data via custom hook
   const pmenu = usePaginatedTable({
@@ -147,6 +147,7 @@ const ManageMenuTable = () => {
   // 🔹 EDIT
   const handleEdit = async (row) => {
     console.log(row,"row")
+    setRow(row)
     try {
       const response = await axios.put(`${menu}/${row.Id}`);
       setSelectedRow(response.data);
@@ -360,6 +361,7 @@ return {
   pmenu,
   sMenu,
   Edit,
+  Row,
   setEdit
 };};
 
