@@ -7,7 +7,7 @@ export const OwnerOperatorRackTab = [
     id: '1',
     label: 'Update ESSO Owner Operator Rack Cent',
     // component: <UpdateFgRack title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" />
-    component: <PricingCommon  pricingDate={true} title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" apiname={owner_rack_cent} />
+    component: <PricingCommon validation={true}  pricingDate={true} title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" apiname={owner_rack_cent} />
 ,
   },
   {
@@ -16,11 +16,12 @@ export const OwnerOperatorRackTab = [
     component: <RackCentList apiname={owner_rack_cent} title="Filters" btnTitle="Search" />,
     // component: <PricingCommon company={true}  fromUpto={true} title="Filters" btnTitle="Search" apiname={owner_rack_cent} />,
   },
+
    {
     id: '3',
     label: 'Update  Ultramar Owner Operator Rack Cent',
     // component: <UpdateFgRack title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" />
-        component: <PricingCommon pricingDate={true} title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" apiname={""}/>
+        component: <PricingCommon  validation={true} pricingDate={true} title=" Multiple Owner Operator Rack Cent Entry" btnTitle="Search Rack Company" apiname={""}/>
    }
 ,
  {

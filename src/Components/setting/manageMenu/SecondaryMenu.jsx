@@ -13,7 +13,6 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) => {
     const { pmenu, loading, error } = usePmenu();
-    console.log(row);
     
     const {
         register,
@@ -23,17 +22,18 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
         formState: { errors, isSubmitted, isValid },
     } = useForm();
      useEffect(() => {
-      if (Edit && selectedRow) {
-        console.log(selectedRow)
+      if (Edit && row) {
+        console.log(row)
         reset({
-            menuName: selectedRow.name,
+            menuName: row["Menu Name"],
           primaryMenu:{
-          value:selectedRow.idmenu,
+        //   value:row["Primary Menu"],
+          label:row["Primary Menu"]
           },
-          menuLink: selectedRow.link,
+          menuLink: row["Menu Link"],
            type:{
-            value:selectedRow.sw,
-            label:selectedRow.sw==0?"visible":"hidden"
+            value:row.fulldata["sw"],
+            label:row.fulldata["sw"]==0?"visible":"hidden"
            }
         });
       }

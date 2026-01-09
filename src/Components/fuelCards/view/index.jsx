@@ -222,36 +222,31 @@ const handleFilterChange = (column, value) => {
   }
 };
   
-    const handleDelete = (row) => {
-    if (window.confirm(`Delete "${row.id}"?`)) {
-      setFuelCards(fuelCards.filter((item) => item.id !== row.id));
-      setOpenRowId(null);
-    }
-  };
-  //  const handleDelete = (row) => {
-  //   Swal.fire({
-  //     title: 'Are you sure?',
-  //     text: `Do you really want to delete ?`,
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Yes, delete it!',
-  //     cancelButtonText: 'Cancel'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       axios.delete(`${fual_card}/${row.id}`)
-  //         .then(() => {
-  //                 setFuelCards(fuelCards.filter((item) => item.id !== row.id));
+   const handleDelete = (row) => {
+    console.log(row)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you really want to delete ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`${fual_card}/${row.id}`)
+          .then(() => {
+                  setFuelCards(fuelCards.filter((item) => item.id !== row.id));
 
-  //           Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
-  //         })
-  //         .catch(() => {
-  //           Swal.fire('Error!', 'Failed to delete record.', 'error');
-  //         });
-  //     }
-  //   });
-  // };
+            Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+          })
+          .catch(() => {
+            Swal.fire('Error!', 'Failed to delete record.', 'error');
+          });
+      }
+    });
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {

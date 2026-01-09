@@ -9,7 +9,7 @@ export const EssoGroupRackTab = [
     id: '1',
     label: 'Update ESSO Group Rack Cent',
     // component: <UpdateFgRack title=" Update ESSO Group Rack Cent" btnTitle="Search Group" />
-     component: <PricingCommon title=" Update ESSO Group Rack Cent" btnTitle="Search Group" apiname={""}/>
+     component: <PricingCommon validation={true}  pricingDate={true}  title=" Update ESSO Group Rack Cent" btnTitle="Search Group" apiname={""}/>
 ,
   },
   {
@@ -29,5 +29,4 @@ export const EssoGroupRackTab = [
     label: 'ESSO Group Rack Cent List (New)',
     component: <EssoGroupForm tabletitle="ESSO Group Rack Cent List (New)" title="Filters" btnTitle="Search " />
  }
-
 ];

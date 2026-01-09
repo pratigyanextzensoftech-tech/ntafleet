@@ -96,8 +96,7 @@ const Index = () => {
       company_name: formData.company.label,
       update_otp: "",
     };
-    axios
-      .post(APINAME, payload)
+          axios.put(`${APINAME}/${rowData.card_id}`, payload)
       .then((res) => {
         console.log(res);
 
