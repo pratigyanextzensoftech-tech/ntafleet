@@ -16,7 +16,9 @@ export default function usePaginatedTable({
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
-const debounceRef = useRef(null);
+  
+  const debounceRef = useRef(null);
+
   const fetchData = async (page = 1, per = perPage, filterData = filters) => {
     setLoading(true);
     try {

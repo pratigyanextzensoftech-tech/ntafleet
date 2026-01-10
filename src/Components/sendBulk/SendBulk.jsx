@@ -97,30 +97,24 @@ console.log(rows)
   });
 };
 
-
     const columnsMap = {
       "Invoice#": "invoice_id",
       Company: "company_name",
-      "From ": "from_date",
-      To: "to_date",
+      "From": "from",
+      To: "to",
       "Due Date": "due_date",
       Total: "total",
       "Retail Total": "retail_price",
       Saving: "saving",
-      // Fees: "fees",
-      // "Tr Count": "tr_count",
       Country: "country",
       Supplier: "supplier_id",
-      // Mailed_By: "mailby",
-      // Mailed_On: "mail_on",
-      // "Show/Hide": "total_gln",
       Status: "status",
     };
      const OwnercolumnsMap = {
       "Invoice#": "invoice_id",
       Company: "company_name",
-      "From ": "from_date",
-      To: "to_date",
+      "From": "from",
+      To: "to",
       "Due Date": "due_date",
       Total: "total",
       "Retail Total": "retail_price",
@@ -134,8 +128,8 @@ console.log(rows)
     const moneyCodecolumnsMap = {
       "Invoice#": "invoice_id",
       Company: "company_name",
-      "From ": "from_date",
-      To: "to_date",
+      "From":"from_date",
+      "To":"to_date",
       "Due Date": "due_date",
       Total: "total",
       Status: "status",
@@ -143,7 +137,7 @@ console.log(rows)
     const ownerColumnWidths  = {
   "Invoice#": "130px",
   Company: "300px",
-  "From ": "110px",
+  "From": "110px",
   To: "110px",
   "Due Date": "130px",
   Total: "60px",
@@ -159,7 +153,7 @@ console.log(rows)
 const moneyCodeColumnWidths = {
   "Invoice#": "160px",
   "Company":"450px",
-  "From ": "250px",
+  "From": "250px",
   To: "270px",
   "Due Date": "200px",
   Total: "160px",
@@ -188,7 +182,7 @@ const moneyCodeColumnWidths = {
       loading,
       handlePageChange,
       handlePerRowsChange,
-       handleFormSearch,
+       handleSearch,
       setData,
     } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap,perPageValue });
   
@@ -198,7 +192,7 @@ const moneyCodeColumnWidths = {
       loading: ownerLoading,
       handlePageChange: ownerHandlePerChange,
       handlePerRowsChange: ownerHandlePerROwChange,
-       handleFormSearch:OwnerFormSearch,      // ✅ Added
+       handleSearch:OwnerFormSearch,      // ✅ Added
       setData: handleSetData,
     } = usePaginatedTable({ apiUrl: owner_invoice, columnsMap,perPageValue });
    const {
@@ -207,7 +201,7 @@ const moneyCodeColumnWidths = {
       loading: moneycodeLoading,
       handlePageChange: moneycodeHandlePerChange,
       handlePerRowsChange: moneyHandlePerROwChange,
-       handleFormSearch:moneycodeFormSearch,
+       handleSearch:moneycodeFormSearch,
       setData: setmoneycodeData,
     } = usePaginatedTable({ apiUrl: moneycode_invoice, columnsMap,perPageValue });
     const {
@@ -216,7 +210,7 @@ const moneyCodeColumnWidths = {
       loading: customizedLoading,
       handlePageChange: customizedHandlePageChange,
       handlePerRowsChange: customizedHandlePerRowsChange,
-       handleFormSearch:customizedFormSearch,
+       handleSearch:customizedFormSearch,
       setData: setCustomizedData,
     } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap,perPageValue });
      const {
@@ -225,7 +219,7 @@ const moneyCodeColumnWidths = {
       loading: tcheckLoading,
       handlePageChange: tcheckHandlePerChange,
       handlePerRowsChange: tcheckHandlePerROwChange,
-      handleFormSearch:tcheckFormSearch,
+      handleSearch:tcheckFormSearch,
       setData: settcheckData,
     } = usePaginatedTable({ apiUrl: tcheck_invoice, columnsMap,perPageValue });
 
@@ -253,10 +247,9 @@ const filteredTcheckData = applyFilters(tcheckdata, filters);
   }));
 };
 
-
 const getTableColumns = (tableData,columnmap,colWidth) => {
   return [
-    ...Object.keys(colWidth).map((label) => ({
+    ...Object.keys(columnmap).map((label) => ({
       name: (
         <div className='w-100'>
           <div className="fw-bold">{label}</div>
@@ -378,15 +371,19 @@ useEffect(() => {
           defaultInvoiceType:"MONEYCODE",
           supplier:"",
           mail_type:"INVOICE",
-          // ✅ dynamic API
-           // ✅ refresh correct tab
+        
         })
       } 
       loading={moneycodeLoading} 
       handlePageChange={moneycodeHandlePerChange}
       setData={setmoneycodeData}
       handlePerRowsChange={moneyHandlePerROwChange}
-      totalRows={moneycodeTotalRow}   tableColumns={getTableColumns(filteredmoneyCodeData,moneyCodecolumnsMap,moneyCodeColumnWidths)}  tableData={filteredmoneyCodeData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} buttonTitle="Send Mail"/>,
+      totalRows={moneycodeTotalRow} 
+      tableColumns={getTableColumns(filteredmoneyCodeData,moneyCodecolumnsMap,moneyCodeColumnWidths)} 
+      tableData={filteredmoneyCodeData}
+      paginationRowsPerPageOptions={[ 200,300]}
+      table={showTable}
+      buttonTitle="Send Mail"/>,
   },
    {
     id: '4',
@@ -434,7 +431,7 @@ const SendBulkTab = [
   {
     id: '1',
     label:"Send Invoice",
-    component: <SingleEssoForm loading={loading} company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleFormSearch} setShowTable={setShowTable} />,
+    component: <SingleEssoForm loading={loading} company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} setShowTable={setShowTable} />,
   },
   {
     id: '2',

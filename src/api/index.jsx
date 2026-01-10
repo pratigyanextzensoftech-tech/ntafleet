@@ -72,6 +72,7 @@ export const report_detail = `${baseurl}/api/report_detail`;
 export const report_new = `${baseurl}/api/report_new`;
 export const report_new_downlod = `${baseurl}/api/report_new/download`;
 export const tranaction_total = `${baseurl}/api/transactions/totals`;
+export const notification = `${baseurl}/api/notification`;
 
 export const owner_report = `${baseurl}/api/owner_report`;
 export const owner_report_downlod = `${baseurl}/api/owner_report/download`;
@@ -98,6 +99,7 @@ export const CreateMonocodeInvoice = `${baseurl}/api/invoice/create_monycode_inv
 export const CreateTcheckInvoice = `${baseurl}/api/invoice/create_tcheck_invoice`;
 export const retail_to_rack_Api = `${baseurl}/api/transactions/retailtorack`;
 export const create_pricing_pdf = `${baseurl}/api/pricing/create_pricing_pdf`;
+export const zero_discount = `${baseurl}/api/zero_discount`;
 
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;
@@ -121,7 +123,6 @@ export const love_group = `${baseurl}/api/love_group`;
 export const menu = `${baseurl}/api/menu`;
 export const moneycode_invoice_detail = `${baseurl}/api/moneycode_invoice_detail`;
 export const multidate_pricing_excel = `${baseurl}/api/multidate_pricing_excel`;
-export const notification = `${baseurl}/api/notification`;
 export const oauth_tokens = `${baseurl}/api/oauth_tokens`;
 export const owner_invoice_detail = `${baseurl}/api/owner_invoice_detail`;
 export const permission = `${baseurl}/api/permission`;
@@ -149,7 +150,6 @@ export const ul_owner_rack_cent = `${baseurl}/api/ul_owner_rack_cent`;
 export const update_history = `${baseurl}/api/update_history`;
 export const user_log = `${baseurl}/api/user_log`;
 export const view_loc = `${baseurl}/api/view_loc`;
-export const zero_discount = `${baseurl}/api/zero_discount`;
 export const bulk_pricing_excel = `${baseurl}/api/bulk_pricing_excel`;
 
 
