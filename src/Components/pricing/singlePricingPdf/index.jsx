@@ -135,7 +135,7 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
           refetch: tab.data.fetchData // ✅ refresh correct tab
         })
       }
-    tableColumns={createColumns(tab.map, tab.data,{
+    tableColumns={createColumns(tab.map, tab.data.data,{
     withCheckbox: true,         // ✅ show checkboxes
     withActions: true,          // ✅ show action column
     showDownload: false,         // ✅ conditionally show download

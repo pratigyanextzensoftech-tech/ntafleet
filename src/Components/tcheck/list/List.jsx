@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { optionscompany } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form,Card,CardBody } from 'reactstrap';
+import { Row, Col, Form } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm } from 'react-hook-form';
 import DropDown from '../../Forms/FormControl/formInput/DropDown';
@@ -9,8 +8,6 @@ import useCompany from '../../../Hooks/useCompany';
 const List = ({ btnTitle1,onSearch }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const { companies: companyOptions, loading: companyLoading } = useCompany();
-
-  
     const {
         reset,
         register,
@@ -47,9 +44,6 @@ const List = ({ btnTitle1,onSearch }) => {
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-
-
-
             <Row className="mt-3">
                 <Col sm="3">
                     <Row>

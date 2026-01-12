@@ -270,7 +270,10 @@ const getTableColumns = (tableData,columnmap,colWidth) => {
           />
         </div>
       ),
-      selector: (row) => row[label],
+   selector: (row) => {
+    const key = columnmap[label];
+        return row.fulldata?.[key] ?? row[key] ?? "";   
+   },
       sortable: true,
       width: colWidth[label],
       wrap: true,

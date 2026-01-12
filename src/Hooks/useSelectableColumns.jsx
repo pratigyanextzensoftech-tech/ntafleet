@@ -70,6 +70,7 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
       setSelectedRows([]);
       return;
     }
+    console.log(data)
     const ids = data.map((row) => row.id);
     setSelectedRows(ids);
   };
@@ -178,7 +179,7 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
       cols.push({
         name: "Action",
         cell: (row) => (
-          <div className="position-relative dropdown-action">
+          <div className="position-relative dropdown-action ">
             <button
               className="btn btn-sm btn-primary"
               onClick={(e) => {
@@ -190,17 +191,24 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
             </button>
 
             {openRowId === row.id && (
-              <div className="position-absolute bg-white border rounded shadow p-1">
-                <button className="dropdown-item">
+              <div   className="position-absolute bg-white border rounded shadow mb-3"
+              style={{
+                zIndex: 1000,
+                right: 0,
+                marginTop: 5,
+                minWidth: 140,
+                padding: "12px 12px",
+              }}>
+                <button className="dropdown-item d-flex align-items-center text-warning mb-2">
                   <FaDownload /> View PDF
                 </button>
-                <button className="dropdown-item">
+                <button className="dropdown-item d-flex align-items-center text-primary mb-2">
                   <FaFilePdf /> Admin PDF
                 </button>
-                <button className="dropdown-item">
+                <button className="dropdown-item d-flex align-items-center text-danger mb-2">
                   <FaEnvelope /> Email PDF
                 </button>
-                <button className="dropdown-item">
+                <button className="dropdown-item d-flex align-items-center text-success mb-2">
                   <FaEnvelopeOpenText /> Test Email
                 </button>
               </div>
