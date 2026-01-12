@@ -96,7 +96,6 @@ const Index = () => {
         const response = await axios.get(`${money_code}/${row.id}`);
     console.log(response.data)
         const encodedId = btoa(row.id); // encode ID
-
         // setSelectedRows(response.data);
      navigate(`/editMoney_code_List/${encodedId}`, {
       state: { data: response.data }
@@ -162,14 +161,51 @@ const handleSearch=(formData)=>{
     fetchMoneyCodes(1, perPage, formData); // fetch new data immediately
 }
   // Delete selected rows
+  // const handleDeleteSelected = () => {
+  //   if (selectedRows.length === 0) return alert("No rows selected!");
+  //   if (window.confirm(`Delete ${selectedRows.length} selected rows?`)) {
+  //     setMoneyCodes(moneyCodes.filter(row => !selectedRows.includes(row.id)));
+  //     setSelectedRows([]);
+  //     setSelectAll(false);
+  //   }
+  // };
   const handleDeleteSelected = () => {
-    if (selectedRows.length === 0) return alert("No rows selected!");
-    if (window.confirm(`Delete ${selectedRows.length} selected rows?`)) {
-      setMoneyCodes(moneyCodes.filter(row => !selectedRows.includes(row.id)));
+  if (selectedRows.length === 0) {
+    return Swal.fire({
+      icon: 'warning',
+      title: 'No rows selected',
+      text: 'Please select at least one row to delete'
+    });
+  }
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you really want to delete ${selectedRows.length} selected records?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete them!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // OPTIONAL: call API for bulk delete here
+      axios.delete( `${money_code}/${selectedRows}`, { ids: selectedRows })
+      setMoneyCodes((prevData) =>
+        prevData.filter((row) => !selectedRows.includes(row.id))
+      );
+
       setSelectedRows([]);
       setSelectAll(false);
+
+      Swal.fire(
+        'Deleted!',
+        `${selectedRows.length} records deleted successfully.`,
+        'success'
+      );
     }
-  };
+  });
+};
 
   // ✅ Close dropdown when clicking outside
   useEffect(() => {
