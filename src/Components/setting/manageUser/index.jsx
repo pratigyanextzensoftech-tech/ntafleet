@@ -9,6 +9,7 @@ import { administrator } from "../../../api/index";
 import FormComponent from "./Form";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+
 const Index = () => {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
@@ -25,212 +26,7 @@ const Index = () => {
  const [selectedRow, setSelectedRow] = useState(null);
     const[Edit,setEdit]=useState(false)
  const { id } = useParams();
-
- 
-  useEffect(()=>{
-let Edit_id = null;
-
-try {
-  if (id) {
-    Edit_id = atob(id);
-setEditId(Edit_id)
-  }
-} catch (error) {
-  console.error("❌ Invalid Base64 string:", id, error);
-  Edit_id = id; // fallback to raw id
-}
-
-console.log("Decoded ID:", Edit_id);
-
-  },[])
-  const fetchUsers = async (page = 1, limit = 10) => {
-    setLoading(true);
-    try {
-      const start = (page - 1) * limit;
-      const params = { draw, start, length: limit };
-
-      const res = await axios.get(administrator, { params });
-      const apiData = Array.isArray(res.data.data)
-        ? res.data.data
-        : res.data;
-
-      const formatted = apiData.map((item, index) => ({
-        id: item.id ,
-        name: item.name ,
-        email: item.email ,
-        phone: item.phone ,
-        company: item.company ,
-        added_by: item.added_by_name ,
-        company_login: item.company_login ,
-        status: item.status ,
-         password: item.password 
-      }));
-
-      setData(formatted);
-      setTotalRows(res.data.recordsTotal || res.data.total || apiData.length);
-      setDraw((prev) => prev + 1);
-    } catch (error) {
-      console.error("❌ Error fetching users:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers(currentPage, perPage);
-  }, [perPage]);
-  const handleFilterChange = (column, value) => {
-  setFilters((prev) => ({
-    ...prev,
-    [column]: value.toLowerCase(),
-  }));
-};
-  const filteredData = data.filter((row) =>
-  Object.keys(filters).every((key) => {
-    if (!filters[key]) return true;
-    return (
-      row[key] &&
-      row[key].toString().toLowerCase().includes(filters[key])
-    );
-  })
-); 
-  // ✅ Pagination handlers
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    fetchUsers(page, perPage);
-  };
-
-  const handlePerRowsChange = (newPerPage, page) => {
-    setPerPage(newPerPage);
-    setCurrentPage(page);
-    fetchUsers(page, newPerPage);
-  };
-
-  // ✅ Edit / Delete / Send Details
-  const handleEdit = async(row) => {
-    setValidation(false)
-    console.log(row.id)
-    try {
-    const response = await axios.get(`${administrator}/${row.id}`);
-    setSelectedRow(response.data);     // ✅ full API object
-    setEdit(true);
-  } catch (error) {
-    console.error("Error fetching full row data", error);
-  }
-  };
-  const handleDelete = (row) => {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: `Do you really want to delete user "${row.name}"?`,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'Cancel'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // ✅ Call API to delete
-      axios.delete(`${administrator}/${row.id}`)
-        .then((res) => {
-          console.log(res);
-          // ✅ Remove from state
-          setData((prevData) => prevData.filter((item) => item.id !== row.id));
-
-          // ✅ Success alert
-          Swal.fire(
-            'Deleted!',
-            `User "${row.name}" has been deleted.`,
-            'success'
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-          Swal.fire('Error!', 'Failed to delete user.', 'error');
-        });
-    }
-  });
-};
-const refreshTable=()=>{
-      fetchUsers(currentPage, perPage);
-
-}
-  const handleSendDetails = (row) => alert(`📤 Send details for: ${row.email}`);
-
-  // ✅ Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".dropdown-action")) {
-        setOpenRowId(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // ✅ Dropdown updaters (company_login, status)
-  const handleChange = async (id, field, value) => {
-   console.log("Invoice ID:", id);
- 
-   const result = await Swal.fire({
-     title: "Are you sure?",
-     text: "Do you want to update the Status?",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonText: "Yes, Update",
-     cancelButtonText: "Cancel",
-   });
- 
-   if (!result.isConfirmed) return;
- 
-   try {
-     // 🔹 SHOW LOADING
-     Swal.fire({
-       title: "Updating...",
-       allowOutsideClick: false,
-       didOpen: () => Swal.showLoading(),
-     });
- 
-     // 🔹 PUT API CALL
-     await axios.put(administrator, {
-       id,
-       [field]: value,
-     });
- 
-     // 🔹 UPDATE STATE AFTER SUCCESS
-     setData((prevData) =>
-       prevData.map((item) =>
-         item.id === id
-           ? { ...item, [field]: value }
-           : item
-       )
-     );
- 
-     Swal.fire("Success", "Updated successfully", "success");
-   }
-    catch (error) {
-     console.error(error);
-     Swal.fire("Error", "Failed to update data", "error");
-   }
- };
-  const handleCompanyLogin = async (id, field, value) => {
-   console.log("Invoice ID:", id);
- 
-   await axios.put(administrator, {
-       id,
-       [field]: value,
-     });
-
-     // 🔹 UPDATE STATE AFTER SUCCESS
-     setData((prevData) =>
-       prevData.map((item) =>
-         item.id === id
-           ? { ...item, [field]: value }
-           : item
-       )
-     );
- };
-  // ✅ Build columns
+ // ✅ Build columns
   useEffect(() => {
     const columns = [
       {  name: (
@@ -471,7 +267,213 @@ const refreshTable=()=>{
     ];
     setTableColumns(columns);
   }, [openRowId,data]);
+ 
+  useEffect(()=>{
+let Edit_id = null;
 
+try {
+  if (id) {
+    Edit_id = atob(id);
+setEditId(Edit_id)
+  }
+} catch (error) {
+  console.error("❌ Invalid Base64 string:", id, error);
+  Edit_id = id; // fallback to raw id
+}
+
+console.log("Decoded ID:", Edit_id);
+
+  },[])
+  const fetchUsers = async (page = 1, limit = 10) => {
+    setLoading(true);
+    try {
+      const start = (page - 1) * limit;
+      const params = { draw, start, length: limit };
+
+      const res = await axios.get(administrator, { params });
+      const apiData = Array.isArray(res.data.data)
+        ? res.data.data
+        : res.data;
+
+      const formatted = apiData.map((item, index) => ({
+        id: item.id ,
+        name: item.name ,
+        email: item.email ,
+        phone: item.phone ,
+        company: item.company ,
+        added_by: item.added_by_name ,
+        company_login: item.company_login ,
+        status: item.status ,
+         password: item.password 
+      }));
+
+      setData(formatted);
+      setTotalRows(res.data.recordsTotal || res.data.total || apiData.length);
+      setDraw((prev) => prev + 1);
+    } catch (error) {
+      console.error("❌ Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers(currentPage, perPage);
+  }, [perPage]);
+  const handleFilterChange = (column, value) => {
+  setFilters((prev) => ({
+    ...prev,
+    [column]: value.toLowerCase(),
+  }));
+};
+  const filteredData = data.filter((row) =>
+  Object.keys(filters).every((key) => {
+    if (!filters[key]) return true;
+    return (
+      row[key] &&
+      row[key].toString().toLowerCase().includes(filters[key])
+    );
+  })
+); 
+  // ✅ Pagination handlers
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchUsers(page, perPage);
+  };
+
+  const handlePerRowsChange = (newPerPage, page) => {
+    setPerPage(newPerPage);
+    setCurrentPage(page);
+    fetchUsers(page, newPerPage);
+  };
+
+  // ✅ Edit / Delete / Send Details
+ 
+const refreshTable=()=>{
+      fetchUsers(currentPage, perPage);
+
+}
+  const handleSendDetails = (row) => alert(`📤 Send details for: ${row.email}`);
+
+  // ✅ Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-action")) {
+        setOpenRowId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ✅ Dropdown updaters (company_login, status)
+  const handleChange = async (id, field, value) => {
+   console.log("Invoice ID:", id);
+ 
+   const result = await Swal.fire({
+     title: "Are you sure?",
+     text: "Do you want to update the Status?",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonText: "Yes, Update",
+     cancelButtonText: "Cancel",
+   });
+ 
+   if (!result.isConfirmed) return;
+ 
+   try {
+     // 🔹 SHOW LOADING
+     Swal.fire({
+       title: "Updating...",
+       allowOutsideClick: false,
+       didOpen: () => Swal.showLoading(),
+     });
+ 
+     // 🔹 PUT API CALL
+     await axios.put(administrator, {
+       id,
+       [field]: value,
+     });
+ 
+     // 🔹 UPDATE STATE AFTER SUCCESS
+     setData((prevData) =>
+       prevData.map((item) =>
+         item.id === id
+           ? { ...item, [field]: value }
+           : item
+       )
+     );
+ 
+     Swal.fire("Success", "Updated successfully", "success");
+   }
+    catch (error) {
+     console.error(error);
+     Swal.fire("Error", "Failed to update data", "error");
+   }
+ };
+  const handleCompanyLogin = async (id, field, value) => {
+   console.log("Invoice ID:", id);
+ 
+   await axios.put(administrator, {
+       id,
+       [field]: value,
+     });
+
+     // 🔹 UPDATE STATE AFTER SUCCESS
+     setData((prevData) =>
+       prevData.map((item) =>
+         item.id === id
+           ? { ...item, [field]: value }
+           : item
+       )
+     );
+ };
+ 
+ const handleEdit = async(row) => {
+    setValidation(false)
+    console.log(row.id)
+    try {
+    const response = await axios.get(`${administrator}/${row.id}`);
+    setSelectedRow(response.data);     // ✅ full API object
+    setEdit(true);
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+  };
+  const handleDelete = (row) => {
+    console.log(row)
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you really want to delete user "${row.name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // ✅ Call API to delete
+      axios.delete(`${administrator}/${row.id}`)
+        .then((res) => {
+          console.log(res);
+          // ✅ Remove from state
+          setData((prevData) => prevData.filter((item) => item.id !== row.id));
+
+          // ✅ Success alert
+          Swal.fire(
+            'Deleted!',
+            `User "${row.name}" has been deleted.`,
+            'success'
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          Swal.fire('Error!', 'Failed to delete user.', 'error');
+        });
+    }
+  });
+};
   return (
     <Fragment>
       <Breadcrumbs parent="Manage User" title="Manage User" />
@@ -483,7 +485,9 @@ const refreshTable=()=>{
               <CardBody>
                 <FormComponent Edit_id={editId} Edit={Edit}
   selectedRow={selectedRow} onDataAdded={refreshTable}
-  setEdit={setEdit}  onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])} editUser={editUser}  validation={validation}/>
+  setEdit={setEdit}
+    onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])}
+     editUser={editUser}  validation={validation}/>
               </CardBody>
             </Card>
           </Col>

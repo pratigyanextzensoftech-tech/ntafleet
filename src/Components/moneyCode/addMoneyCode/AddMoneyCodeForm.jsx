@@ -1,7 +1,7 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select'
-import { optionscompany,MoneyCodeStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
-import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
+import { MoneyCodeStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+import { Row, Col, Form, FormGroup,  InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import {money_code} from '../../../api/index'
@@ -10,9 +10,7 @@ import { toast } from 'react-toastify';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useCompany } from '../../../Hooks/Dropdowns';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
-import { useLocation } from "react-router-dom";
 const AddMoneyCodeForm = ({btntitle}) => {
-   
     const [selectedValues, setSelectedValues] = useState([]);
     const[Edit,setEdit]=useState(false)
     const{data}=useCompany()
@@ -93,7 +91,54 @@ PONumber:formData.PONo|| "",
         .then((res)=>{
             console.log(res);  
               toast.success("Add successfully!");
-       reset();
+       reset({company:"",
+        status:"",
+        ref:"",
+        voided:"",
+        issueType:"",
+        issueBy:"",
+        issueTo:"",
+        issueDate:"",
+        Fee:"",
+        originalAmt:"",
+        billdate:"",
+        checkNum:"",
+        dateUsed:"",
+        amountUsed:"",
+        currency:"",
+        oneTime:"",
+        exactAmount:"",
+        expireDate:"",
+        name:"",
+        city:"",
+        state:"",
+        phone:"",
+        license:"",
+        driverState:"",
+        driverId:"",
+        hubometer:"",
+        refeerHours:"",
+        licenseState:"",
+        LicenseNo:"",
+        Odometer:"",
+        PONo:"",
+        TripNo:"",
+        trailNo:"",
+        unitNo:"",
+        ControlNo:"",
+        Birthday:"",
+        ReeferTempatur:"",
+        pinNo:"",
+       Subfleet:"" ,
+       Billing_Id:"",
+        firstInitial:"",
+        LastName:"",
+        driverName:"",
+        SSN:"",
+        notes:"",
+        mail_attachment:""
+
+    });
     
         })
         .catch((err)=>{
@@ -102,21 +147,7 @@ PONumber:formData.PONo|| "",
         })    
             };
 
-    const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
 
-    const handleCheckboxChange = (e) => {
-        const { value, checked } = e.target;
-
-        setSelectedValues(prev => {
-            if (checked) {
-                return [...prev, value];
-            } else {
-                return prev.filter(item => item !== value);
-            }
-        });
-    }
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >

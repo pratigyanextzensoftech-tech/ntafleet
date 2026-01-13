@@ -194,7 +194,7 @@ const handleSearch=(formData)=>{
       setMoneyCodes((prevData) =>
         prevData.filter((row) => !selectedRows.includes(row.id))
       );
-
+//  fetchMoneyCodes(currentPage, perPage, filters);
       setSelectedRows([]);
       setSelectAll(false);
 
@@ -358,7 +358,6 @@ const HeaderWithFilter = (label, key) => (
                 </div>
                 <DataTableComponent
                   tableColumns={tableColumns}
-                 
                   tableData={filteredData}
                   loading={loading}
                   pagination
