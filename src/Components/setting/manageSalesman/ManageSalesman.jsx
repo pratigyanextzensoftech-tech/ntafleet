@@ -83,8 +83,6 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
     toast.error(err.message);
   });
       }
-      
-
     }       
     return (
         <Fragment >

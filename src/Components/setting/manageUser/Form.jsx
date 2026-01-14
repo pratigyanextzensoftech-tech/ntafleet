@@ -12,8 +12,7 @@ import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
 
-const FormComponent = ({ onUserAdded,editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded,validation }) => {
-  console.log(Edit_id)
+const FormComponent = ({ editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded,validation }) => {
   const {
     register,
     control,
@@ -65,7 +64,7 @@ useEffect(() => {
   // ✅ Handle form submission
 const onSubmit = async (formData) => {
   console.log(formData)
-  const payload = {
+    const payload = {
     name: formData.name,
     email: formData.email,
     phone: formData.phone,
@@ -102,12 +101,7 @@ const onSubmit = async (formData) => {
       status:"",
       company_login:""
     }); 
-      if (onUserAdded) {
-        onUserAdded({
-          ...payload,
-          added_by: "1",
-        });
-      }
+       if (onDataAdded) onDataAdded(res.data); 
     }
 
   // reset form after submit

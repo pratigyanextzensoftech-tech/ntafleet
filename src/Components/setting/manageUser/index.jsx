@@ -348,11 +348,10 @@ console.log("Decoded ID:", Edit_id);
   };
 
   // ✅ Edit / Delete / Send Details
- 
 const refreshTable=()=>{
       fetchUsers(currentPage, perPage);
-
 }
+
   const handleSendDetails = (row) => alert(`📤 Send details for: ${row.email}`);
 
   // ✅ Close dropdown when clicking outside
@@ -459,7 +458,6 @@ const refreshTable=()=>{
           console.log(res);
           // ✅ Remove from state
           setData((prevData) => prevData.filter((item) => item.id !== row.id));
-
           // ✅ Success alert
           Swal.fire(
             'Deleted!',
@@ -483,11 +481,11 @@ const refreshTable=()=>{
             <Card>
               <HeaderCard title="Add User" />
               <CardBody>
-                <FormComponent Edit_id={editId} Edit={Edit}
+                <FormComponent  Edit_id={editId} Edit={Edit}
   selectedRow={selectedRow} onDataAdded={refreshTable}
   setEdit={setEdit}
-    onUserAdded={(newUser) => setData((prev) => [newUser, ...prev])}
-     editUser={editUser}  validation={validation}/>
+     editUser={editUser}  validation={validation}/> 
+    
               </CardBody>
             </Card>
           </Col>
