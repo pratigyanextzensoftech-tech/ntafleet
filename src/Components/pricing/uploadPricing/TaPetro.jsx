@@ -38,7 +38,6 @@ const [fileKey, setFileKey] = useState(Date.now());
       pricingDate: new Date(),
     },
   });
-
 useEffect(() => {
     
      axios
@@ -103,7 +102,6 @@ useEffect(() => {
   }
   return newRow;
 };
-
 
   // 📘 Handle Excel file upload
   const handleFileChange = (e) => {
@@ -170,7 +168,6 @@ useEffect(() => {
         dated: Date.now(),
       };
     });
-
 
     console.log("🧾 Final Data Sent:", enrichedData);
     
