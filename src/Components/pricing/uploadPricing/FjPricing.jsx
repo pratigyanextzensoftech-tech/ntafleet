@@ -110,35 +110,29 @@ const FjPricing = ({ title, btnTtitle }) => {
   };
 
   const AllColmn = [
-    "site",
-    "city",
-    "prov",
-    "prod",
-    "rack_id",
-    "rack_city",
-    "rack_prov",
-    "cost",
-    "federal_tax",
-    "state_tax",
-    "sales_tax",
-    "super_fund",
-    "freight_fee",
-    "pump_fee",
-    "other_fee",
-    "base_price",
-    "excise_tax_fees",
-    "prov_fuel_tax_fees",
-    "carbon_tax_fees",
-    "fuel_price",
-    "g_hst",
-    "in_tax_price",
-    "qst",
-    "total_cost",
-    "retail_price",
-    "disc_retail",
-    "your_price",
-    "savings_tota",
-  ];
+  "site","city","prov","prod","rack_id","rack_city","rack_prov",
+  "cost","federal_tax","state_tax","sales_tax","super_fund",
+  "freight_fee","pump_fee","other_fee",
+  "base_price","excise_tax_fees","prov_fuel_tax_fees","carbon_tax_fees",
+  "fuel_price","g_hst","in_tax_price","qst",
+  "total_cost","retail_price","disc_retail","your_price","savings_total"
+];
+
+const pilotMap = {
+  site:0, city:1, prov:2, prod:3, rack_id:4, rack_city:5, rack_prov:6,
+  cost:7, federal_tax:8, state_tax:9, sales_tax:10, super_fund:11,
+  freight_fee:12, pump_fee:13, other_fee:15,
+  total_cost:16, retail_price:17, disc_retail:18, your_price:19, savings_total:20
+};
+
+const otherMap = {
+  site:0, city:1, prov:2, prod:3, rack_id:4, rack_city:5, rack_prov:6,
+  freight_fee:8, pump_fee:9, other_fee:10,
+  base_price:11, excise_tax_fees:12, prov_fuel_tax_fees:13,
+  carbon_tax_fees:14, fuel_price:15,
+  g_hst:17, in_tax_price:18, qst:19,
+  total_cost:20, retail_price:21, disc_retail:22, your_price:23, savings_total:24
+};
 
   const renameKeys = (row, keyMap) => {
     const newRow = {};
@@ -169,57 +163,34 @@ const FjPricing = ({ title, btnTtitle }) => {
             const pricingdate = row[17] || row[21] || "";
             const match = pricingdate.match(/\d{4}-\d{2}-\d{2}/);
             p_date = match ? `${match[0]} 00:00:00` : "";
-
-            Sup =
-              row[7] === "US Direct Bill-Pilot Travel Centers LLC"
-                ? "Pilot Flying J"
-                : row[10]
-                  ? "Shell Flying J"
-                  : "";
+            Sup =row[7] === "US Direct Bill-Pilot Travel Centers LLC"? "Pilot Flying J": row[10]? "Shell Flying J": "";
             setSupplier(Sup);
             Setpricing_date(p_date);
           }
           if (index < 6) return null;
           const obj = {};
           if (index >= 6) {
-            row.forEach((cell, colIndex) => {
-              AllColmn.forEach((col) => {
- 
-                if (col === "site") {obj[col] = Sup === "Pilot Flying J" ? cell[0] : cell[0];}
-                if (col === "city") {obj[col] = Sup === "Pilot Flying J" ? cell[1] : cell[1];}
-                if (col === "prov") {obj[col] = Sup === "Pilot Flying J" ? cell[2] : cell[2];}
-                if (col === "prod") {obj[col] = Sup === "Pilot Flying J" ? cell[3] : cell[3];}
-                if (col === "rack_id") {obj[col] = Sup === "Pilot Flying J" ? cell[4] : cell[4];}
-                if (col === "rack_city") {obj[col] = Sup === "Pilot Flying J" ? cell[5] : cell[5];}
-                if (col === "rack_prov") {obj[col] = Sup === "Pilot Flying J" ? cell[6] : cell[6];}
-                if (col === "cost") {obj[col] = Sup === "Pilot Flying J" ? cell[7] : cell[7];}
-                if (col === "federal_tax") {obj[col] = Sup === "Pilot Flying J" ? cell[8] : 0;}
-                if (col === "state_tax") {obj[col] = Sup === "Pilot Flying J" ? cell[9] : 0;}
-                if (col === "sales_tax") {obj[col] = Sup === "Pilot Flying J" ? cell[10] : 0;}
-                if (col === "super_fund") {obj[col] = Sup === "Pilot Flying J" ? cell[11] : 0;}
-                if (col === "freight_fee") {obj[col] = Sup === "Pilot Flying J" ? cell[12] : cell[8];}
-                if (col === "pump_fee") {obj[col] = Sup === "Pilot Flying J" ? cell[13] : cell[9];}
-                if (col === "other_fee") {obj[col] = Sup === "Pilot Flying J" ? cell[15] : cell[10];} 
-                if (col === "base_price") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[11];}
-                if (col === "excise_tax_fees") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[12];}
-                if (col === "prov_fuel_tax_fees") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[13];}
-                if (col === "carbon_tax_fees") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[14];}
-                if (col === "fuel_price") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[15];}
-                if (col === "g_hst") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[17];}
-                if (col === "in_tax_price") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[18];}
-                if (col === "qst") {obj[col] = Sup === "Pilot Flying J" ? 0 : cell[19];} 
-                if (col === "total_cost") {obj[col] = Sup === "Pilot Flying J" ? cell[16] : cell[20];}
-                if (col === "retail_price") {obj[col] = Sup === "Pilot Flying J" ? cell[17] : cell[21];}
-                if (col === "disc_retail") {obj[col] = Sup === "Pilot Flying J" ? cell[18] : cell[22];}
-                if (col === "your_price") {obj[col] = Sup === "Pilot Flying J" ? cell[19] : cell[23];}
-                if (col === "savings_total") {obj[col] = Sup === "Pilot Flying J" ? cell[20] : cell[24];}
-              });
+  const map = Sup === "Pilot Flying J" ? pilotMap : otherMap;
 
-              //obj[`${colIndex + 1}`] =typeof cell === "string" ? cell.trim() : cell;
-            });
-            obj["supplier"] = Sup;
-            obj["pricing_date"] = p_date;
-          }
+  AllColmn.forEach((col) => {
+    const colIndex = map[col];
+
+    let value =
+      colIndex !== undefined && row[colIndex] !== undefined
+        ? row[colIndex]
+        : 0;
+
+    // Trim strings
+    if (typeof value === "string") {
+      value = value.trim();
+    }
+
+    obj[col] = value || 0; // ensure 0 if empty/null
+  });
+
+  obj.supplier = Sup;
+  obj.pricing_date = p_date;
+}
           return obj;
         })
         .filter(Boolean);
