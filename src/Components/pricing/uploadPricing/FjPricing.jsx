@@ -21,6 +21,7 @@ const FjPricing = ({ title, btnTtitle }) => {
   const [supplierData, setSupplierData] = useState([]);
   const [supplier, setSupplier] = useState("");
   const [pricing_date, Setpricing_date] = useState("");
+  const [fileKey, setFileKey] = useState(Date.now());
 
   const {
     control,
@@ -158,7 +159,7 @@ const idby= Number(localStorage.getItem("userId"));
       const response = axios.post(pricing+"/upload", excelData);
       console.log("✅ Upload Success:", response);
       setFile(null);
-     
+      setFileKey(Date.now());
       toast.success(`CSV rows inserted successfully}`);
     } catch (error) {
       console.error("❌ Upload Error:", error);
@@ -185,6 +186,7 @@ const idby= Number(localStorage.getItem("userId"));
                     <Col className="px-0" sm="9">
                       <Input
                         style={{ border: "1px solid #ccc" }}
+                         key={fileKey}
                         className="form-control"
                         type="file"
                         onChange={handleFileChange}

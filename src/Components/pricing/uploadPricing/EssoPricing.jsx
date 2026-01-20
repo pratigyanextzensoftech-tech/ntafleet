@@ -167,7 +167,7 @@ const formatDate = (value) => {
                         className="form-control"
                         style={{ border: "1px solid #ccc" }}
                         accept=".csv"
-                          key={fileKey}
+                        key={fileKey}
                         onChange={handleFileChange}
                       />
                     </Col>
@@ -178,10 +178,10 @@ const formatDate = (value) => {
                 <Col sm="3">
                   <FormGroup>
                     <InputGroup>
-                      <Col sm="3">
+                      <Col sm="4">
                         <InputGroupText>Pricing Date</InputGroupText>
                       </Col>
-                      <Col sm="9">
+                      <Col sm="8">
                         <Controller
                           name="pricingDate"
                           control={control}
