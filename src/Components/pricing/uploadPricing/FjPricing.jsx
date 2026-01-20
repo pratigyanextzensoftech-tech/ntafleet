@@ -8,26 +8,19 @@ import {
   InputGroupText,
   Input,
 } from "reactstrap";
-import { useSupplier } from "../../../Hooks/Dropdowns";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import Papa from "papaparse";
 import { pricing, supplierById } from "../../../api/index";
 import axios from "axios";
-import dayjs from "dayjs";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 const FjPricing = ({ title, btnTtitle }) => {
   const [excelData, setExcelData] = useState([]);
-  const [Title, setTitle] = useState("");
   const [file, setFile] = useState(null);
   const [supplierData, setSupplierData] = useState([]);
   const [supplier, setSupplier] = useState("");
   const [pricing_date, Setpricing_date] = useState("");
-  const [pricingDate, setPricingDate] = useState(new Date());
-  const { data: suppliers, loading } = useSupplier();
-  const [fileKey, setFileKey] = useState(Date.now());
 
   const {
     control,
@@ -50,64 +43,12 @@ const FjPricing = ({ title, btnTtitle }) => {
         }));
 
         setSupplierData(formatted);
-        setValue("supplier", supplierData);
+        setValue("supplier", formatted[0]);
 
         // ⭐ Automatically set default supplier based on type
       })
       .catch((err) => console.log(err));
-  }, [supplierData, setValue]);
-
-  const formatDate = (value) => {
-    if (!value) return "-";
-    return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "-";
-  };
-  const PilotkeyMap = {
-    0: "site", // Site
-    1: "city", // City
-    2: "st", // ST
-    3: "product_id", // Prod ID
-    4: "rack_city", // Rack City
-    5: "rack_state", // ST (Rack)
-    6: "cost", // Cost
-    7: "taxes", // Taxes
-    8: "fees_1", // Fees
-    9: "fees_2", // Fees
-    10: "fund_fees", // Fund/Fees
-    11: "freight", // Freight
-    12: "fee", // Fee
-    13: "other", // Other
-    14: "total_cost", // Total Cost
-    15: "retail_price", // Retail Price
-    16: "retail", // Retail
-    17: "price", // Price
-    18: "savings_total", // Savings Total
-  };
-  const ShellkeyMap = {
-    0: "Site",
-    1: "City",
-    2: "V",
-    3: "Prod",
-    4: "k ID",
-    5: "Rack City",
-    6: "Prov",
-    7: "Cost",
-    8: "Fee",
-    9: "Fee",
-    10: "Fee",
-    11: "Price",
-    12: "Fees",
-    13: "Fees",
-    14: "Fees",
-    15: "Price",
-    16: "G/HST",
-    17: "Price",
-    18: "QST",
-    19: "Cost",
-    20: "Price",
-    21: "Retail",
-    22: "Price",
-    23: "s Total",
-  };
+  }, [ setValue]);
 
   const AllColmn = [
   "site","city","prov","prod","rack_id","rack_city","rack_prov",
@@ -134,15 +75,7 @@ const otherMap = {
   total_cost:20, retail_price:21, disc_retail:22, your_price:23, savings_total:24
 };
 
-  const renameKeys = (row, keyMap) => {
-    const newRow = {};
-    for (const key in row) {
-      const trimmedKey = key.trim(); // 🧹 remove leading/trailing spaces
-      const newKey = keyMap[trimmedKey] || trimmedKey;
-      newRow[newKey] = row[key];
-    }
-    return newRow;
-  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -171,7 +104,7 @@ const otherMap = {
           const obj = {};
           if (index >= 6) {
   const map = Sup === "Pilot Flying J" ? pilotMap : otherMap;
-
+const idby= Number(localStorage.getItem("userId"));
   AllColmn.forEach((col) => {
     const colIndex = map[col];
 
@@ -190,16 +123,14 @@ const otherMap = {
 
   obj.supplier = Sup;
   obj.pricing_date = p_date;
+  obj.idby=idby
 }
           return obj;
         })
         .filter(Boolean);
-
       console.log("🧾 Excel Data:", jsonData);
-
       setExcelData(jsonData);
     };
-
     reader.readAsBinaryString(file);
   };
 
@@ -214,44 +145,21 @@ const otherMap = {
       return;
     }
 
-    const enrichedData = excelData.map((row, index) => {
-      let fileTitle = "CDN Direct Bill- SFJ Shell Flying J";
-      if (index == 0) {
-        setTitle(
-          fileTitle === "CDN Direct Bill- SFJ Shell Flying J"
-            ? row[11]
-            : row[8],
-        );
-        setPricingDate(
-          Title === "CDN Direct Bill- SFJ Shell Flying J"
-            ? row[22].slice(15, 25)
-            : row[18].slice(15, 25),
-        );
-      }
-      const renamed = renameKeys(
-        row,
-        fileTitle === "CDN Direct Bill- SFJ Shell Flying J"
-          ? ShellkeyMap
-          : PilotkeyMap,
-      );
-      return {
-        ...renamed,
-        supplier: data.supplier?.label,
-        pricing_date: pricingDate,
-        idby: 1,
-        dated: Date.now(),
-      };
-    });
+    // const enrichedData = excelData.map((row, index) => {
+    //   return {
+    //      ...row,
+    //     idby: Number(localStorage.getItem("userId")),
+    //     // dated: Date.now(),
+    //   };
+    // });
 
-    console.log("🧾 Final Data Sent:", enrichedData);
-
+    console.log("🧾 Final Data Sent:", excelData);
     try {
-      const response = axios.post(pricing, enrichedData);
-      console.log("✅ Upload Success:", response.data);
+      const response = axios.post(pricing+"/upload", excelData);
+      console.log("✅ Upload Success:", response);
       setFile(null);
-      setPricingDate("");
-      setFileKey(Date.now());
-      toast.success(`Upload successful! ${response || ""}`);
+     
+      toast.success(`CSV rows inserted successfully}`);
     } catch (error) {
       console.error("❌ Upload Error:", error);
       toast.error(
@@ -299,13 +207,9 @@ const otherMap = {
                           <Select
                             {...field}
                             className="form-control p-0 border-0"
-                            placeholder={
-                              loading
-                                ? "Loading suppliers..."
-                                : "Select supplier"
-                            }
+                            placeholder=
+                                 "Select supplier"
                             // options={suppliers}
-                            isLoading={loading}
                             onChange={(selectedOption) =>
                               field.onChange(selectedOption)
                             }

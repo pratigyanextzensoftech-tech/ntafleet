@@ -13,7 +13,6 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import * as XLSX from "xlsx";
 import axios from "axios";
 import { ul_pricing_upload } from "../../../api";
@@ -50,14 +49,14 @@ const [fileKey, setFileKey] = useState(Date.now());
       }));
 
       setSupplierData(formatted);
-      setValue("supplier", supplierData);
+      setValue("supplier", formatted[0]);
 
       // ⭐ Automatically set default supplier based on type
       
     })
     .catch((err) => console.log(err));
    
-  }, [supplierData, setValue]);
+  }, [ setValue]);
 
   // ✅ Define key mappings (uppercase)
   const keyMap = {
@@ -155,7 +154,7 @@ const [fileKey, setFileKey] = useState(Date.now());
       const renamed = renameKeys(row, keyMap);
       return {
         ...renamed,
-        supplier: data.supplier?.label,
+        supplier: data.supplier?.label ,
         pricing_date: formatDate(pricingDate),
         idby: 1,
         dated: Date.now(),

@@ -50,14 +50,14 @@ const [fileKey, setFileKey] = useState(Date.now());
        }));
  
        setSupplierData(formatted);
-       setValue("supplier", supplierData);
+       setValue("supplier", formatted[0]);
  
        // ⭐ Automatically set default supplier based on type
        
      })
      .catch((err) => console.log(err));
     
-   }, [supplierData, setValue]);
+   }, [setValue]);
 
   // 🧩 Handle CSV file upload
   const handleFileChange = (e) => {
