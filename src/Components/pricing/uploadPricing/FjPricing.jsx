@@ -183,7 +183,7 @@ const ShellkeyMap = {
             if(index==0  ){
            console.log(row)
               setTitle(fileTitle==="CDN Direct Bill- SFJ Shell Flying J"?row[11]:row[8])
-              setPricingDate(Title==="CDN Direct Bill- SFJ Shell Flying J"?row[22].slice(15,25): row[18].slice(15,25))
+              setPricingDate(!Title==="CDN Direct Bill- SFJ Shell Flying J"?row[22].slice(15,25):row[18].slice(15,25))
             }
            const renamed = renameKeys(row, fileTitle==="CDN Direct Bill- SFJ Shell Flying J"? ShellkeyMap:PilotkeyMap);
            return {
