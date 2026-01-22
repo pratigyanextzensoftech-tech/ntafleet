@@ -225,13 +225,16 @@ const filteredItems = Items.filter((row) =>
             }}
           >
             <button
-              className="dropdown-item d-flex align-items-center"
+              className="dropdown-item d-flex align-items-center text-primary"
+               style={{ padding: "8px 12px", gap: "8px" }}
               onClick={() => handleEdit(row)}
             >
               <FaEdit /> Edit
             </button>
+              
             <button
               className="dropdown-item d-flex align-items-center text-danger"
+              style={{ padding: "8px 12px", gap: "8px" }}
               onClick={() => handleDelete(row)}
             >
               <FaTrashAlt /> Delete

@@ -66,6 +66,8 @@ import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
 //Invoice
 
 import ViewInvoice from '../Components/viewInvoice/ViewInvoice';
+
+import ViewPdf from '../Components/viewInvoice/ViewPdf.jsx';
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';
 import CheckOldINvoice from '../Components/checkOldInvoice/CheckOldINvoice';
 import RetailInvoice from '../Components/retailInvoice/RetailInvoice';
@@ -199,6 +201,7 @@ export const routes = [
 
     //Invoice
     { path: `/view_invoice`, Component: <ViewInvoice /> },
+    { path: `/viewInvoice/ViewPdf/:id`, Component: <ViewPdf /> },
     { path: `/create_invoice`, Component: <CreateInvoice /> },
     { path: `/check_invoice`, Component: <CheckOldINvoice /> },
     { path: `/create_retail_invoice`, Component: <RetailInvoice /> },

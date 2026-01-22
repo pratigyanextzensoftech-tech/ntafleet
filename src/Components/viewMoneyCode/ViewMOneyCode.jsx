@@ -2,7 +2,6 @@ import React, { Fragment, useState,useEffect } from 'react'
 import { Breadcrumbs } from '../../AbstractElements'
 import HeaderCard from '../Common/Component/HeaderCard'
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import { View_Invoice_Table } from '../../Data/tab/ViewInvoiceTable'
 import ViewMoneyCodeForm from './ViewMoneyCodeForm'
 import DataTableComponent from '../Tables/DataTable/DataTableComponent'
 import {  moneycode_invoice as APINAME,retail_invoice,invoice} from '../../api/index'
@@ -184,87 +183,91 @@ width:"150px",
   ),
 });
 
-    cols.push({
-      name: "Action",
-      cell: (row) => (
-        <div className="position-relative dropdown-action">
-          <button
-            className="btn btn-sm btn-primary px-2"
-            onClick={() => setOpenRowId(openRowId === row["Invoice #"] ? null : row["Invoice #"])}
-          >
-            Action
-          </button>
+ cols.push({
+  name: "Action",
+  cell: (row) => (
+    <div className="position-relative dropdown-action">
+      <button
+        className="btn btn-sm btn-primary px-2"
+        onClick={() =>
+          setOpenRowId(openRowId === row["Invoice #"] ? null : row["Invoice #"])
+        }
+      >
+        Action
+      </button>
 
       {openRowId === row["Invoice #"] && (
-  <div
-    className="position-absolute bg-white border rounded shadow"
-    style={{
-      zIndex: 1000,
-      right: 0,
-      marginTop: 5,
-      minWidth: 180,
-      padding: "5px 0",
-    }}
-  >
-    {[
-      {
-        label: "Download",
-        icon: <FaFilePdf />,
-        to: `/download_pdf/${btoa(row["Invoice #"])}`,
-        color: "text-danger",
-        type: "link",
-      },
-      {
-        label: "View",
-        icon: <FaFileExcel />,
-        to: `/download_excel/${btoa(row["Invoice #"])}`,
-        color: "text-success",
-        type: "link",
-      },
-      {
-        label: "Email",
-        icon: <FaEnvelope />,
-       
-        color: "text-primary",
-      },
-      {
-        label: "ReGenerate Invoice",
-        icon: <FaRedoAlt />,
-        color: "text-warning",
-      },
-      {
-        label: "Delete",
-        icon: <FaTrashAlt />,
-        onClick: (e) => handleDelete(e, row),
-        color: "text-danger",
-      },
-    ].map((action, index) =>
-      action.type === "link" ? (
-        <Link
-          key={index}
-          to={action.to}
-          className={`dropdown-item d-flex align-items-center ${action.color}`}
-          style={{ padding: "8px 12px", gap: "8px" }}
+        <div
+          className="position-absolute bg-white border rounded shadow"
+          style={{
+            zIndex: 1000,
+            right: 0,
+            marginTop: 5,
+            minWidth: 180,
+            padding: "5px 0",
+          }}
         >
-          {action.icon} {action.label}
-        </Link>
-      ) : (
-        <button
-          key={index}
-          className={`dropdown-item d-flex align-items-center ${action.color}`}
-          style={{ padding: "8px 12px", gap: "8px" }}
-          onClick={action.onClick}
-        >
-          {action.icon} {action.label}
-        </button>
-      )
-    )}
-  </div>
-)}
-
+          {[
+            {
+              label: "Download",
+              icon: <FaFilePdf />,
+              to: `/download_pdf/${btoa(row["Invoice #"])}`,
+              color: "text-danger",
+              type: "link",
+            },
+            {
+              label: "View",
+              icon: <FaFileExcel />,
+              to: `/viewInvoice/ViewPdf/${btoa(row["Invoice #"])}`,
+              state: { downloadLinkUrl: row.fulldata.download_link },
+              color: "text-success",
+              type: "link",
+            },
+            {
+              label: "Email",
+              icon: <FaEnvelope />,
+              color: "text-primary",
+              // onClick: () => handleEmail(row),
+            },
+            {
+              label: "ReGenerate Invoice",
+              icon: <FaRedoAlt />,
+              color: "text-warning",
+              // onClick: () => handleRegenerate(row),
+            },
+            {
+              label: "Delete",
+              icon: <FaTrashAlt />,
+              onClick: (e) => handleDelete(e, row),
+              color: "text-danger",
+            },
+          ].map((action, index) =>
+            action.type === "link" ? (
+              <Link
+                key={index}
+                to={action.to}
+                state={action.state} // ✅ Pass state here
+                className={`dropdown-item d-flex align-items-center ${action.color}`}
+                style={{ padding: "8px 12px", gap: "8px" }}
+              >
+                {action.icon} {action.label}
+              </Link>
+            ) : (
+              <button
+                key={index}
+                className={`dropdown-item d-flex align-items-center ${action.color}`}
+                style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={action.onClick}
+              >
+                {action.icon} {action.label}
+              </button>
+            )
+          )}
         </div>
-      ),
-    });
+      )}
+    </div>
+  ),
+});
 
     setTableColumns(cols);
   }, [openRowId]);

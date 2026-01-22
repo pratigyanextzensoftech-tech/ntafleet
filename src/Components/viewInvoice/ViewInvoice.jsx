@@ -16,7 +16,7 @@ import $ from "jquery";
 import {
   FaTrashAlt,
   FaFilePdf,
-  FaFileExcel,
+  FaEye,
   FaEnvelope,
 } from "react-icons/fa";
 
@@ -434,23 +434,26 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
                 padding: "5px 0",
               }}
             >
-           <a
-  href={row.fulldata.download_link}
-  
+              
+  <a
+  href={row.fulldata.download_link} 
+  download
   target="_blank"
+  rel="noopener noreferrer"
   className="dropdown-item d-flex align-items-center text-danger"
   style={{ padding: "8px 12px", gap: "8px" }}
-  // download
 >
-  <FaFilePdf /> Download PDF
+  <FaFilePdf /> Download
 </a>
 
+
               <Link
-                to={`/download_excel/${btoa(row.id)}`}
+                to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
+                state={{ downloadLinkUrl: row.fulldata.download_link }}
                 className="dropdown-item d-flex align-items-center text-success"
                 style={{ padding: "8px 12px", gap: "8px" }}
               >
-                <FaFileExcel /> Download Excel
+                <FaEye /> View 
               </Link>
 
               <button
@@ -458,7 +461,14 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
                 style={{ padding: "8px 12px", gap: "8px" }}
                 onClick={()=>handleMail(row)}
               >
-                <FaEnvelope /> Send Email
+                <FaEnvelope />  Email
+              </button>
+                <button
+                className="dropdown-item d-flex align-items-center text-primary"
+                style={{ padding: "8px 12px", gap: "8px" }}
+                onClick={()=>handleMail(row)}
+              >
+                <FaEnvelope />  Regenrate Invoice
               </button>
 
               <button

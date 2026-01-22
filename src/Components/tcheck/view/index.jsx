@@ -234,13 +234,15 @@ const columnWidths = {
               </Link>
 
               {/* View */}
-              <button
-                className="dropdown-item d-flex align-items-center text-success"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleView(row)}
-              >
-                <FaEye /> View
-              </button>
+            
+               <Link
+                              to={`/viewInvoice/ViewPdf/${btoa(row.fulldata["Invoice #"])}`}
+                              state={{ downloadLinkUrl: row.fulldata.download_link }}
+                              className="dropdown-item d-flex align-items-center text-success"
+                              style={{ padding: "8px 12px", gap: "8px" }}
+                            >
+                              <FaEye /> View 
+                            </Link>
 
               {/* Email */}
               <button

@@ -3,12 +3,13 @@ import dayjs from "dayjs";
 import {
   FaDownload,
   FaTrash,
+  FaEye,
   FaFilePdf,
   FaEnvelope,
   FaEnvelopeOpenText,
 } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
-
+import { Link } from "react-router-dom";
 export default function useSelectableColumns(download_link, USEFOR = "") {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filters, setFilters] = useState({});
@@ -199,9 +200,14 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
                 minWidth: 140,
                 padding: "12px 12px",
               }}>
-                <button className="dropdown-item d-flex align-items-center text-warning mb-2">
-                  <FaDownload /> View PDF
-                </button>
+              
+                  <Link
+                              to={`/viewInvoice/ViewPdf/${btoa(row.id)}`}
+                              state={{ downloadLinkUrl: row.fulldata.download_link }}
+                              className="dropdown-item d-flex align-items-center text-secondary mb-2"
+                            >
+                              <FaEye /> View 
+                            </Link>
                 <button className="dropdown-item d-flex align-items-center text-primary mb-2">
                   <FaFilePdf /> Admin PDF
                 </button>

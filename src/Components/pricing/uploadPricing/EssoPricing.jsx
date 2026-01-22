@@ -95,18 +95,25 @@ const formatDate = (value) => {
     "PRICE/LTR.": "PRICE_LTR",
     "GST/HST/FNT": "GST_HST_FNT",
     "PST/QST": "PST_QST",
+
     "TOTAL PRICE": "TOTAL_PRICE",
   };
 
-  const renameKeys = (row, keyMap) => {
+const renameKeys = (row, keyMap) => {
   const newRow = {};
+
   for (const key in row) {
-    const trimmedKey = key.trim(); // 🧹 remove leading/trailing spaces
+    if (!Object.prototype.hasOwnProperty.call(row, key)) continue;
+
+    const trimmedKey = typeof key === "string" ? key.trim() : key;
     const newKey = keyMap[trimmedKey] || trimmedKey;
+
     newRow[newKey] = row[key];
   }
-  return newRow;
+
+  return newRow; // ✅ return object, NOT trim
 };
+
 
   // 🧾 Handle form submission
   const onSubmit = async (data) => {
@@ -120,15 +127,16 @@ const formatDate = (value) => {
       const renamed = renameKeys(row, keyMap);
       return {
         ...renamed,
-        supplier: data.supplier?.label,
-        pricing_date: formatDate(pricingDate),
-        idby: 1,
+        supplier: String(data.supplier?.label || "").trim(),
+        pricing_date: String(formatDate(pricingDate) || "").trim(),
+        idby: Number(localStorage.getItem("UserId")),
         dated: Date.now(),
       };
     });
     
 
     console.log("🧾 Final Data Sent:", enrichedData);
+    
  
     try {
       const response = await axios.post(upload_esso_pricing, enrichedData);
