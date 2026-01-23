@@ -204,18 +204,23 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
                   <Link
                               to={`/viewInvoice/ViewPdf/${btoa(row.id)}`}
                               state={{ downloadLinkUrl: row.fulldata.download_link }}
-                              className="dropdown-item d-flex align-items-center text-secondary mb-2"
+                              className="dropdown-item d-flex  text-success mb-2"
                             >
-                              <FaEye /> View 
+                              <FaEye /> View Pdf 
                             </Link>
-                <button className="dropdown-item d-flex align-items-center text-primary mb-2">
-                  <FaFilePdf /> Admin PDF
-                </button>
+                              <Link
+                              to={`/viewInvoice/ViewPdf/${btoa(row.id)}`}
+                              state={{ downloadLinkUrl: row.fulldata.download_link }}
+                              className="dropdown-item d-flex  text-info mb-2"
+                            >
+                              <FaFilePdf /> View  Admin PDF
+                            </Link>
+               
                 <button className="dropdown-item d-flex align-items-center text-danger mb-2">
-                  <FaEnvelope /> Email PDF
+                  <FaEnvelope /> Email Pricing PDF
                 </button>
-                <button className="dropdown-item d-flex align-items-center text-success mb-2">
-                  <FaEnvelopeOpenText /> Test Email
+                <button className="dropdown-item d-flex align-items-center text-primary mb-2">
+                  <FaEnvelopeOpenText /> Test Email Pricing PDF
                 </button>
               </div>
             )}

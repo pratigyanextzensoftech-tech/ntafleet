@@ -105,22 +105,32 @@ const Index = () => {
                 padding: "5px 0",
               }}
             >
-              <Link
-                to={`/download_pdf/${btoa(row.id)}`}
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaFilePdf /> Download PDF
-              </Link>
-
-              <Link
+             
+              <a
+                    className="dropdown-item d-flex align-items-center text-warning"
+                      style={{ padding: '8px 12px', gap: '8px',cursor:"pointer" }}
+                  href={row?.fulldata?.download_link} 
+                    download
+                    target="_blank"
+                  >
+                    <FaFilePdf /> Download PDF
+                  </a>
+              {/* <Link
                 to={`/download_excel/${btoa(row.id)}`}
                 className="dropdown-item d-flex align-items-center text-success"
                 style={{ padding: "8px 12px", gap: "8px" }}
               >
                 <FaFileExcel /> Download Excel
-              </Link>
-
+              </Link> */}
+           <a
+                    className="dropdown-item d-flex align-items-center text-success"
+                      style={{ padding: '8px 12px', gap: '8px',cursor:"pointer" }}
+                  href={row?.fulldata?.download_link} 
+                    download
+                    target="_blank"
+                  >
+                    <FaFileExcel /> Download Excel
+                  </a>
               <button
                 className="dropdown-item d-flex align-items-center text-primary"
                 style={{ padding: "8px 12px", gap: "8px" }}

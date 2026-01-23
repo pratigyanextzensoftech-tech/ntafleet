@@ -6,7 +6,7 @@ import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import DiscountSheetForm from "./DiscountSheet";
 import axios from "axios";
 import { discount_sheet } from "../../../api";
-import { FaFileAlt, FaClipboardList, FaEnvelope } from "react-icons/fa";
+import { FaDownload, FaEnvelope } from "react-icons/fa";
 
 const DiscountSheetPage = () => {
   const [sheetData, setSheetData] = useState([]);
@@ -207,14 +207,14 @@ const HeaderWithFilter = (label, key) => (
                 style={{ padding: "8px 12px", gap: "8px" }}
                 onClick={() => handleDiscountSheet(row)}
               >
-                <FaFileAlt /> Discount Sheet
+                <FaDownload /> Discount Sheet
               </button>
               <button
                 className="dropdown-item d-flex align-items-center"
                 style={{ padding: "8px 12px", gap: "8px" }}
                 onClick={() => handleDiscountDetail(row)}
               >
-                <FaClipboardList /> Discount Sheet Detail
+                <FaDownload /> Discount Sheet Detail
               </button>
               <button
                 className="dropdown-item d-flex align-items-center"

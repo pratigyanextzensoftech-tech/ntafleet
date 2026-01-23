@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../Common/Component/HeaderCard";
+import Chart from '../Charts/ChartsJs/index'
 import SearchForm from "./SearchForm";
 const index = () => {
   return (
@@ -13,7 +14,8 @@ const index = () => {
          <Card>
            <HeaderCard title="Select Multiple and Delete Single Data" />
            <CardBody>
-            <SearchForm title="Filters" btnTitle="Add Card" btnTitle1="Reset"  />
+            {/* <SearchForm title="Filters" btnTitle="Add Card" btnTitle1="Reset"  /> */}
+            <Chart/>
            </CardBody>
          </Card>
        </Col>

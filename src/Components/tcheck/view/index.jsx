@@ -225,14 +225,17 @@ const columnWidths = {
               }}
             >
               {/* Download */}
-              <Link
-                to={`/manage_user/${btoa(row["Invoice #"])}`}
-                className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaDownload /> Download
-              </Link>
-
+            
+  <a
+  href={row.fulldata.download_link} 
+  download
+  target="_blank"
+  rel="noopener noreferrer"
+  className="dropdown-item d-flex align-items-center text-primary"
+  style={{ padding: "8px 12px", gap: "8px" }}
+>
+  <FaDownload /> Download
+</a>
               {/* View */}
             
                <Link

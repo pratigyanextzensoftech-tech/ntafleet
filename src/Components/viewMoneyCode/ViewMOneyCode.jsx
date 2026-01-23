@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import {
-  FaFilePdf,
-  FaFileExcel,
+  FaDownload,
+  FaEye,
   FaEnvelope,
   FaRedoAlt,
   FaTrashAlt,
@@ -209,15 +209,15 @@ width:"150px",
         >
           {[
             {
-              label: "Download",
-              icon: <FaFilePdf />,
-              to: `/download_pdf/${btoa(row["Invoice #"])}`,
-              color: "text-danger",
-              type: "link",
-            },
+  label: "Download PDF",
+  icon: <FaDownload />,
+  type: "download",
+  color: "text-danger",
+  href: row?.fulldata?.download_link,
+},
             {
               label: "View",
-              icon: <FaFileExcel />,
+              icon: <FaEye />,
               to: `/viewInvoice/ViewPdf/${btoa(row["Invoice #"])}`,
               state: { downloadLinkUrl: row.fulldata.download_link },
               color: "text-success",
@@ -241,28 +241,48 @@ width:"150px",
               onClick: (e) => handleDelete(e, row),
               color: "text-danger",
             },
-          ].map((action, index) =>
-            action.type === "link" ? (
-              <Link
-                key={index}
-                to={action.to}
-                state={action.state} // ✅ Pass state here
-                className={`dropdown-item d-flex align-items-center ${action.color}`}
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                {action.icon} {action.label}
-              </Link>
-            ) : (
-              <button
-                key={index}
-                className={`dropdown-item d-flex align-items-center ${action.color}`}
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={action.onClick}
-              >
-                {action.icon} {action.label}
-              </button>
-            )
-          )}
+          ].map((action, index) => {
+  if (action.type === "link") {
+    return (
+      <Link
+        key={index}
+        to={action.to}
+        state={action.state}
+        className={`dropdown-item d-flex align-items-center ${action.color}`}
+        style={{ padding: "8px 12px", gap: "8px" }}
+      >
+        {action.icon} {action.label}
+      </Link>
+    );
+  }
+
+  if (action.type === "download") {
+    return (
+      <a
+        key={index}
+        href={action.href}
+        download
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`dropdown-item d-flex align-items-center ${action.color}`}
+        style={{ padding: "8px 12px", gap: "8px", cursor: "pointer" }}
+      >
+        {action.icon} {action.label}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      key={index}
+      className={`dropdown-item d-flex align-items-center ${action.color}`}
+      style={{ padding: "8px 12px", gap: "8px" }}
+      onClick={action.onClick}
+    >
+      {action.icon} {action.label}
+    </button>
+  );
+})}
         </div>
       )}
     </div>

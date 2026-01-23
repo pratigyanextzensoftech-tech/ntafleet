@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import ViewForm from "./ViewForm";
-import { FaTrashAlt, FaFilePdf } from "react-icons/fa";
+import { FaTrashAlt, FaDownload } from "react-icons/fa";
 import axios from "axios";
 import { discount_list } from "../../../api"; // ✅ Your API endpoint
 import Swal from "sweetalert2";
@@ -116,13 +116,15 @@ const Index = () => {
             padding: "5px 0",
           }}
         >
-          <button
-            className="dropdown-item d-flex align-items-center"
-            style={{ padding: "8px 12px", gap: "8px" }}
-            onClick={() => handleDownload(row)}
-          >
-            <FaFilePdf /> Download PDF
-          </button>
+         <a
+                    className="dropdown-item d-flex align-items-center"
+                      style={{ padding: '8px 12px', gap: '8px',cursor:"pointer" }}
+                  href={row?.fulldata?.download_link} 
+                    download
+                    target="_blank"
+                  >
+                    <FaDownload /> Download PDF
+                  </a>
 
           <button
             className="dropdown-item d-flex align-items-center text-danger"

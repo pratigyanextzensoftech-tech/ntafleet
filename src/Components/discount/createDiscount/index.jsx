@@ -5,7 +5,7 @@ import HeaderCard from '../../Common/Component/HeaderCard';
 import Create from './Create';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import axios from 'axios';
-import { FaTrashAlt, FaFilePdf } from 'react-icons/fa';
+import { FaTrashAlt, FaDownload } from 'react-icons/fa';
 import { discount_list } from '../../../api';
 import Swal from 'sweetalert2';
 const Index = () => {
@@ -61,7 +61,6 @@ const Index = () => {
   }, [currentPage, perPage]);
 
   // Dropdown actions
-  const handleDownload = (row) => console.log('Download PDF:', row);
 
    const handleDelete = (e,row) => {
     console.log(row.id)
@@ -113,13 +112,16 @@ const Index = () => {
             padding: '5px 0',
           }}
         >
-          <button
+          <a
             className="dropdown-item d-flex align-items-center"
-            style={{ padding: '8px 12px', gap: '8px' }}
-            onClick={() => handleDownload(row)}
+              style={{ padding: '8px 12px', gap: '8px',cursor:"pointer" }}
+          href={row?.fulldata?.download_link} 
+            download
+            target="_blank"
           >
-            <FaFilePdf /> Download PDF
-          </button>
+            <FaDownload /> Download PDF
+          </a>
+         
 
           <button
             className="dropdown-item d-flex align-items-center text-danger"

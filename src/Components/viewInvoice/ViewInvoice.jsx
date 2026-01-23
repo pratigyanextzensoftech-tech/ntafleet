@@ -15,7 +15,7 @@ import axios from "axios";
 import $ from "jquery";
 import {
   FaTrashAlt,
-  FaFilePdf,
+  FaDownload,
   FaEye,
   FaEnvelope,
 } from "react-icons/fa";
@@ -443,7 +443,7 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
   className="dropdown-item d-flex align-items-center text-danger"
   style={{ padding: "8px 12px", gap: "8px" }}
 >
-  <FaFilePdf /> Download
+  <FaDownload /> Download
 </a>
 
 
