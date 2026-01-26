@@ -101,8 +101,8 @@ added_on:new Date()
   return (
     <> 
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <Row className="mt-3">
-          <Col sm="4">
+        <Row className="my-3">
+          <Col xl="4"  md="6" sm="12">
             <DropDown
               name="company"
               label="Company"
@@ -112,7 +112,7 @@ added_on:new Date()
               options={companyOptions}
             />
           </Col>
-          <Col sm="4">
+          <Col  xl="4"  md="6" sm="12">
             <DatePickerInput
               name="startDate"
               control={control} // ✅ make sure this is passed
@@ -121,7 +121,7 @@ added_on:new Date()
              
             />
           </Col>
-          <Col sm="4">
+          <Col  xl="4"  md="6" sm="12">
             <DatePickerInput
               name="endDate"
               control={control} // ✅ make sure this is passed
@@ -130,9 +130,8 @@ added_on:new Date()
              
             />
           </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col sm="4">
+        
+          <Col  xl="4"  md="6" sm="12">
             <DropDown
               name="country"
               label="Country"
@@ -145,7 +144,7 @@ added_on:new Date()
 
 />
           </Col>
-          <Col sm="4">
+          <Col  xl="4"  md="6" sm="12">
             <DropDown
               name="supplier"
               label="Supplier"
@@ -157,7 +156,7 @@ added_on:new Date()
             />
           </Col>
 
-          <Col sm="4">
+          <Col xl="4"  md="6" sm="12">
             <div className="text-end">
               <Btn
                 attrBtn={{

@@ -99,7 +99,7 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
-          <Col md="4">
+          <Col xl="4"  md="6" sm="12">
         
                <InputText
                             name="state"
@@ -110,7 +110,7 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                             rules={{ required: "Required" }}
                         />
           </Col>
-          <Col md="4">
+          <Col xl="4"  md="6" sm="12">
                 <InputText
                             name="abbr"
                             label="Abbreviation"
@@ -121,7 +121,7 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                         />
            
           </Col>
-          <Col md={4}>
+          <Col xl="4"  md="6" sm="12">
           
             <InputText
                             name="tax"
@@ -134,12 +134,10 @@ const StateForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
            
           </Col>
 
-        </Row>
-        <Row>
+     
 
 
-
-          <Col md="4">
+          <Col xl="4"  md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>Country</InputGroupText>
@@ -169,7 +167,7 @@ options={data}
 
 
 
-          <Col md={8}>
+          <Col xl="8"  md="12" sm="12">
             <div className='text-end'>
               <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update State":"Add State"}</Btn>
             </div>

@@ -135,8 +135,8 @@ const Upload = ({ btnTitle }) => {
   return (
 
     <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)} >
-      <Row>
-        <Col sm="10">
+      <Row className='my-2'>
+        <Col md="8" lg="8" sm="7">
           <Input
             type="file"
             name="file"
@@ -153,8 +153,8 @@ const Upload = ({ btnTitle }) => {
 
 
         </Col>
-        <Col sm="2" >
-          <div className='text-end'>
+        <Col md="4"  lg="4" sm="5">
+          <div className='text-end mt-2 mt-sm-0'>
             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
           </div>
         </Col>

@@ -1,7 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import { Col, Card, CardBody,Row,Label,Input } from "reactstrap";
 import HeaderCard from '../../Common/Component/HeaderCard';
-import { LineChart } from '../../../Constant';
 import { Line } from 'react-chartjs-2';
 import { lineChartData1, lineChartOptions,lineChartData } from '../../../Data/Chart/chartjs';
 
@@ -10,6 +9,7 @@ const LineChartClass = () => {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [chartData, setChartData] = useState(null);
 
+  
   useEffect(() => {
     // 🔹 Replace with real API
     const data = [

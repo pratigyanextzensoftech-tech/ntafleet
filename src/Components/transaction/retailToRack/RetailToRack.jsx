@@ -184,14 +184,14 @@ console.log("basePayload",basePayload);
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col sm="3">
+                <Col xxl="3" md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="4">
+                        <Col xs="4">
                           <InputGroupText>Start</InputGroupText>
                         </Col>
-                        <Col sm="8">
+                        <Col xs="8">
                           <Controller
                             name="start"
                             control={control}
@@ -216,14 +216,14 @@ console.log("basePayload",basePayload);
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>End</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="end"
                             control={control}
@@ -249,7 +249,7 @@ console.log("basePayload",basePayload);
                   </Row>
                 </Col>
                 {suplier_list !== false && (
-                  <Col sm="3">
+                  <Col xxl="3" md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Supplier</InputGroupText>
@@ -299,7 +299,7 @@ console.log("basePayload",basePayload);
                   </Col>
                 )}
                 {countryDropDown !== false && (
-                  <Col sm="3">
+                  <Col xxl="3" md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Country</InputGroupText>
@@ -348,7 +348,7 @@ console.log("basePayload",basePayload);
                   </Col>
                 )}
                 {invoice_type_dropdown === true && (
-                  <Col sm="3">
+                  <Col xxl="3" md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Invoice Type</InputGroupText>
@@ -387,7 +387,7 @@ console.log("basePayload",basePayload);
               </Row>
            {(company_list === "checkbox" || (invoice_Type && invoice_Type.trim() !== "")) && (
 
-                  <Col sm="12">
+                  <Col  xs="12">
          
                     <fieldset>
                       <legend>Choose Company </legend>
@@ -398,7 +398,7 @@ console.log("basePayload",basePayload);
                           rules={{ required: "Select at least one company" }}
                           render={({ field }) => (
                             <Row>
-                              <Col sm="4">
+                              <Col xl="4" md="6" sm="12">
                                 <div className="checkbox checkbox-dark">
                                   <input
                                     type="checkbox"
@@ -418,7 +418,7 @@ console.log("basePayload",basePayload);
                               </Col>
 
                               {companies.map((item, index) => (
-                                <Col sm="4" key={index}>
+                                <Col xs="4" key={index}>
                                   <div className="checkbox checkbox-dark">
                                     <input
                                       type="checkbox"

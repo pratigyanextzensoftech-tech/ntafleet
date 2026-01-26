@@ -20,7 +20,7 @@ const UltramarPetro = ({ title }) => {
             <legend>{title}</legend>
             <Form>
               <Row>
-                <Col md="4">
+                <Col xl="4"  md="6" sm="12">
                   <InputText
                     name="essoLoc"
                     label="Esso Location"
@@ -31,7 +31,7 @@ const UltramarPetro = ({ title }) => {
                   />
 
                 </Col>
-                <Col md="4">
+                <Col xl="4"  md="6" sm="12">
                   <InputText
                     name="essoCity"
                     label="Esso City"
@@ -42,7 +42,7 @@ const UltramarPetro = ({ title }) => {
                   />
 
                 </Col>
-                <Col md="4">
+                <Col xl="4"  md="6" sm="12">
                   <InputText
                     name="essoState"
                     label="Esso State"
@@ -52,9 +52,8 @@ const UltramarPetro = ({ title }) => {
                     rules={{ required: "Required" }}
                   />
                 </Col>
-              </Row>
-              <Row>
-                <Col md={4}>
+             
+                <Col xl="4"  md="6" sm="12">
                   <InputText
                     name="petroLoc"
                     label="Petro Location"
@@ -66,7 +65,7 @@ const UltramarPetro = ({ title }) => {
 
                 </Col>
 
-                <Col md="4">
+                <Col xl="4"  md="6" sm="12">
                   <InputText
                     name="petroCity"
                     label="Petro City"
@@ -77,7 +76,7 @@ const UltramarPetro = ({ title }) => {
                   />
                 </Col>
 
-                <Col md="4">
+                <Col xl="4"  md="6" sm="12">
                   <InputText
                     name="petroState"
                     label="Petro State"
@@ -89,9 +88,8 @@ const UltramarPetro = ({ title }) => {
                 </Col>
 
 
-              </Row>
-              <Row>
-                <Col md={12}>
+           
+                <Col xl="12"  md="12" sm="12">
                   <div className='text-end'>
                     <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >Add Location</Btn>
                   </div>

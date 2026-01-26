@@ -100,7 +100,7 @@ const onSubmit = (formData) => {
     <Fragment >
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
-          <Col md="3">
+          <Col xl="3"  md="6" sm="12">
             <InputText
                             name="city"
                             label="City Name"
@@ -111,7 +111,7 @@ const onSubmit = (formData) => {
                         />
       
           </Col>
-          <Col md="3">
+          <Col xl="3"  md="6" sm="12">
            
             <FormGroup className="m-form__group">
               <InputGroup>
@@ -141,7 +141,7 @@ const onSubmit = (formData) => {
               )}
             </FormGroup>
           </Col>
-          <Col md="3">
+          <Col xl="3"  md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>State</InputGroupText>
@@ -170,7 +170,7 @@ const onSubmit = (formData) => {
               )}
             </FormGroup>
           </Col>
-          <Col md={3}>
+          <Col xl="3"  md="6" sm="12">
             <div className='text-end'>
               <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update City":"Add City"}</Btn>
             </div>

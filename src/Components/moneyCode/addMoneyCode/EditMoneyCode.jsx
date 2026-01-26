@@ -195,8 +195,8 @@ PONumber:formData.PONo|| "",
               <HeaderCard title="Edit MoneyCode" />
               <CardBody>
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-                <Row className="mt-3">
-                       <Col sm="3">
+                <Row className="my-3">
+                       <Col xxl="3"  md="6" sm="12">
                         <FormGroup className="m-form__group">
                             <InputGroup >
                                 <InputGroupText>Company</InputGroupText>
@@ -221,7 +221,7 @@ PONumber:formData.PONo|| "",
                         </FormGroup>
                     </Col>
                
- <Col sm="3">
+ <Col xxl="3"  md="6" sm="12">
                         <FormGroup className="m-form__group">
                             <InputGroup >
                                 <InputGroupText>Status</InputGroupText>
@@ -245,7 +245,7 @@ PONumber:formData.PONo|| "",
                             )}
                         </FormGroup>
                     </Col>
-         <Col sm='3'>
+         <Col xxl="3"  md="6" sm="12">
              <InputText
                             name="ref"
                             label="Ref#"
@@ -253,7 +253,7 @@ PONumber:formData.PONo|| "",
                             register={register}
                         />
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                          <InputText
                             name="voided"
                             label="Voided"
@@ -262,8 +262,8 @@ PONumber:formData.PONo|| "",
                         />
                       
                         </Col>
-           <Row>
-             <Col sm='3'>
+          
+             <Col xxl="3"  md="6" sm="12">
                <InputText
                             name="issueType"
                             label="Issue Type"
@@ -272,7 +272,7 @@ PONumber:formData.PONo|| "",
                         />
                  
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                               <InputText
                             name="issueBy"
                             label="Issued By"
@@ -282,7 +282,7 @@ PONumber:formData.PONo|| "",
                  
                         
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                             <InputText
                             name="issueTo"
                             label=" Issued To "
@@ -291,7 +291,7 @@ PONumber:formData.PONo|| "",
                         />
                       
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                             <DatePickerInput
                             name="issueDate"
                             control={control}              // ✅ make sure this is passed
@@ -301,9 +301,8 @@ PONumber:formData.PONo|| "",
                 
                     
                         </Col>
-            </Row> 
-                <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                 <InputText
                             name="Fee"
                             label="Fee "
@@ -313,7 +312,7 @@ PONumber:formData.PONo|| "",
                       
                        
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                               <InputText
                             name="originalAmt"
                             label="Original Amt "
@@ -322,7 +321,7 @@ PONumber:formData.PONo|| "",
                         />
                    
                         </Col>
-                             <Col sm='3'>
+                             <Col xxl="3"  md="6" sm="12">
                                 <DatePickerInput
                             name="billdate"
                             control={control}              // ✅ make sure this is passed
@@ -332,7 +331,7 @@ PONumber:formData.PONo|| "",
                              
                       
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="checkNum"
                             label=" Check Num "
@@ -341,19 +340,16 @@ PONumber:formData.PONo|| "",
                         />
                       
                         </Col>
-            </Row> 
-              <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                  <InputText
                             name="dateUsed"
                             label=" Date Used "
                             type="text"
                             register={register}
-                        />
-                     
-                        </Col>
-                       
-                         <Col sm='3'>
+                        /> 
+                        </Col>            
+                         <Col xxl="3"  md="6" sm="12">
                           <InputText
                             name="amountUsed"
                             label=" Amount Used "
@@ -362,7 +358,7 @@ PONumber:formData.PONo|| "",
                         />
                   
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="currency"
                             label="Currency "
@@ -371,7 +367,7 @@ PONumber:formData.PONo|| "",
                         />
                     
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                              <InputText
                             name="oneTime"
                             label="One Time "
@@ -381,9 +377,8 @@ PONumber:formData.PONo|| "",
                     
                   
                         </Col>
-            </Row>   
-              <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                <InputText
                             name="exactAmount"
                             label=" Exact Amt "
@@ -393,7 +388,7 @@ PONumber:formData.PONo|| "",
                         
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                           <InputText
                             name="expireDate"
                             label="Expire Date "
@@ -402,7 +397,7 @@ PONumber:formData.PONo|| "",
                         />
                        
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                             <InputText
                             name="name"
                             label="Name "
@@ -411,7 +406,7 @@ PONumber:formData.PONo|| "",
                         />
                     
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                               <InputText
                             name="city"
                             label="City "
@@ -420,9 +415,8 @@ PONumber:formData.PONo|| "",
                         />
                        
                         </Col>
-            </Row>  
-                <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                <InputText
                             name="state"
                             label="State "
@@ -432,7 +426,7 @@ PONumber:formData.PONo|| "",
                      
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="phone"
                             label="Phone "
@@ -441,7 +435,7 @@ PONumber:formData.PONo|| "",
                         />
                     
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                           <InputText
                             name="license"
                             label=" Driver License  "
@@ -450,7 +444,7 @@ PONumber:formData.PONo|| "",
                         />
                         
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                             <InputText
                             name="driverState"
                             label="Driver State  "
@@ -459,9 +453,8 @@ PONumber:formData.PONo|| "",
                         />
                   
                         </Col>
-            </Row> 
-              <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                  <InputText
                             name="driverId"
                             label=" Driver Id  "
@@ -471,7 +464,7 @@ PONumber:formData.PONo|| "",
                        
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="hubometer"
                             label=" Hubometer  "
@@ -480,7 +473,7 @@ PONumber:formData.PONo|| "",
                         />
                          
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                               <InputText
                             name="refeerHours"
                             label=" Reefer Hours  "
@@ -489,7 +482,7 @@ PONumber:formData.PONo|| "",
                         />
                   
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                                  <InputText
                             name="licenseState"
                             label=" License State  "
@@ -498,9 +491,8 @@ PONumber:formData.PONo|| "",
                         />
               
                         </Col>
-            </Row>  
-                 <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                <InputText
                             name="LicenseNo"
                             label="License Number  "
@@ -510,7 +502,7 @@ PONumber:formData.PONo|| "",
                      
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="Odometer"
                             label="Odometer  "
@@ -520,7 +512,7 @@ PONumber:formData.PONo|| "",
                      
                
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                             <InputText
                             name="PONo"
                             label="PO Number  "
@@ -530,7 +522,7 @@ PONumber:formData.PONo|| "",
                      
                   
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                             <InputText
                             name="TripNo"
                             label="Trip Number  "
@@ -539,9 +531,8 @@ PONumber:formData.PONo|| "",
                         />
                   
                         </Col>
-            </Row>   
-                <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
               <InputText
                             name="trailNo"
                             label=" Trailer Number  "
@@ -551,7 +542,7 @@ PONumber:formData.PONo|| "",
                       
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                           <InputText
                             name="unitNo"
                             label="Unit Number  "
@@ -560,7 +551,7 @@ PONumber:formData.PONo|| "",
                         />
                 
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="ControlNo"
                             label="Control Number  "
@@ -570,7 +561,7 @@ PONumber:formData.PONo|| "",
                 
                 
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                                    <InputText
                             name="Birthday"
                             label="Birthday  "
@@ -579,9 +570,8 @@ PONumber:formData.PONo|| "",
                         />
                     
                         </Col>
-            </Row>  
-             <Row>
-             <Col sm='3'>
+            
+             <Col xxl="3"  md="6" sm="12">
                 <InputText
                             name="ReeferTempatur"
                             label=" Reefer Tempatur  "
@@ -591,7 +581,7 @@ PONumber:formData.PONo|| "",
                    
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                           <InputText
                             name="pinNo"
                             label=" PIN Number  "
@@ -600,7 +590,7 @@ PONumber:formData.PONo|| "",
                         />
                    
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                                <InputText
                             name="Subfleet"
                             label="Subfleet  "
@@ -609,7 +599,7 @@ PONumber:formData.PONo|| "",
                         />
                         
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                                <InputText
                             name="Billing_Id"
                             label="Billing Id  "
@@ -619,9 +609,8 @@ PONumber:formData.PONo|| "",
                           
                         </Col>
                         
-            </Row> 
-                 <Row>
-             <Col sm='3'>
+           
+             <Col xxl="3"  md="6" sm="12">
                   <InputText
                             name="firstInitial"
                             label=" First Inital  "
@@ -632,7 +621,7 @@ PONumber:formData.PONo|| "",
                
                         </Col>
                        
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="LastName"
                             label="LastName  "
@@ -641,7 +630,7 @@ PONumber:formData.PONo|| "",
                         />
                     
                         </Col>
-                          <Col sm='3'>
+                          <Col xxl="3"  md="6" sm="12">
                            <InputText
                             name="driverName"
                             label="Driver Name  "
@@ -650,7 +639,7 @@ PONumber:formData.PONo|| "",
                         />
                    
                         </Col>
-                         <Col sm='3'>
+                         <Col xxl="3"  md="6" sm="12">
                              <InputText
                             name="SSN"
                             label="SSN  "
@@ -660,9 +649,8 @@ PONumber:formData.PONo|| "",
                          
                         </Col>
                         
-            </Row>  
-                <Row>
-             <Col sm='12'>
+          
+             <Col xxl="12"  md="6" sm="12">
                 <InputText
                             name="notes"
                             label="Notes  "
@@ -673,9 +661,8 @@ PONumber:formData.PONo|| "",
                         </Col>
                        
                         
-            </Row>  
-             <Row>
-            <Col sm="10">
+          
+            <Col xxl="10"  md="6" sm="12">
                <InputText
                             name="mail_attachment"
                             label="Mail Attachment  "
@@ -694,13 +681,12 @@ PONumber:formData.PONo|| "",
                                                         </Row> */}
 
                 </Col>
-<Col sm="2" >
+<Col  xxl="2"  md="12" sm="12" >
                     <div className='text-end'>
                             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{!editData?btntitle:"Update Moneycode"}</Btn>
                     </div>
             </Col>
-                </Row>
-                </Row>
+              </Row> 
         </Form>
         </CardBody>
         </Card>

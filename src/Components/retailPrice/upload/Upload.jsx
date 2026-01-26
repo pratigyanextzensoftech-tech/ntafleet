@@ -34,7 +34,7 @@ const formatDate = (date) => {
 
         <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
-               <Col sm='4'>
+               <Col xl="4" md='6'>
                                          <Row>
                                        
                                        <InputText
@@ -48,7 +48,7 @@ const formatDate = (date) => {
                                                                    
                                                                                                </Row>
                                       </Col>
-         <Col sm="4">
+         <Col  xl="4" md='6'>
                         <Row>
                                 <DatePickerInput
         name="endDate"
@@ -60,11 +60,10 @@ const formatDate = (date) => {
                         </Row>
                     </Col>
 
-         <Col sm="4">
+         <Col  xl="4" md='12'>
                        
                    
                    
-
 <div className='text-end'>
                             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
 

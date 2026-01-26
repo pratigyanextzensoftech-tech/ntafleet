@@ -152,7 +152,7 @@ added_on: new Date()
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
         <CardBody>
           <Row>
-            <Col sm="3">
+            <Col  xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Name</InputGroupText>
@@ -170,7 +170,7 @@ added_on: new Date()
                 )}
               </FormGroup>
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
              <FormGroup className="m-form__group">
   <InputGroup>
     <InputGroupText>
@@ -201,7 +201,7 @@ added_on: new Date()
 </FormGroup>
 
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
          <FormGroup className="m-form__group">
   <InputGroup>
     <InputGroupText>
@@ -231,7 +231,7 @@ added_on: new Date()
 </FormGroup>
 
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Card Discount Sheet Menu</InputGroupText>
@@ -258,9 +258,8 @@ added_on: new Date()
                 )}
               </FormGroup>
             </Col>
-          </Row>
-          <Row>
-            <Col sm="3">
+         
+            <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Company</InputGroupText>
@@ -273,7 +272,7 @@ added_on: new Date()
                         {...field}
                         options={data}
                         className="form-control p-0 border-0"
-                        placeholder="Select Company Name"
+                        placeholder="Select Company "
                        value={field.value}
       onChange={(val) => field.onChange(val)}
                       />
@@ -285,7 +284,7 @@ added_on: new Date()
                 )}
               </FormGroup>
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
   <InputGroup>
     <InputGroupText>
@@ -309,7 +308,7 @@ added_on: new Date()
 </FormGroup>
 
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
              <FormGroup className="m-form__group">
   <InputGroup>
     <InputGroupText>
@@ -348,7 +347,7 @@ added_on: new Date()
 
             </Col>
 
-            <Col sm="3">
+            <Col xxl="3" xl="8"  md="6" sm="12">
               <div className="text-end">
                 <Btn
                   attrBtn={{

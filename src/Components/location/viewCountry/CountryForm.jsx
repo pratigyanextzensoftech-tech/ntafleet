@@ -74,7 +74,7 @@ const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         <Fragment >
             <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                    <Col md="8">
+                    <Col xxl="8" >
                         <InputText
                             name="country"
                             label="Country Name"
@@ -85,7 +85,7 @@ const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                         />
 
                     </Col>
-                    <Col md="4">
+                    <Col xxl="4">
                         <div className='text-end'>
                             <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update"
                             :"Add Country"}</Btn>

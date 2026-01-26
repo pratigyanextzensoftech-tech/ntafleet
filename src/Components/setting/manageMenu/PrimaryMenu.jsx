@@ -90,7 +90,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                         <legend>{title}</legend>
                         <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                             <Row>
-                                <Col md="3">
+                                <Col xxl="3"  md="6" sm="12">
                                     <InputText
                                         name="name"
                                         label="Menu Name"
@@ -101,7 +101,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                                     />
 
                                 </Col>
-                                <Col md="3">
+                                <Col xxl="3"  md="6" sm="12">
                                     <InputText
                                         name="link"
                                         label="Menu Link"
@@ -112,7 +112,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                                     />
 
                                 </Col>
-                                <Col md="3">
+                                <Col xxl="3"  md="6" sm="12">
                                     <DropDown
                                         name="type"
                                         label="Type"
@@ -127,7 +127,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
                                     />
 
                                 </Col>
-                                <Col md={3}>
+                                <Col xxl="3"  md="6" sm="12">
                                     <div className='text-end'>
                                         <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Menu"}</Btn>
                                     </div>

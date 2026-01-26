@@ -167,13 +167,13 @@ const RackToRetail = ({
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           {/* START DATE */}
-          <Col sm="3">
+          <Col xl="3" md="6" sm="12">
             <FormGroup>
               <InputGroup>
-                <Col sm="4">
+                <Col xs="4">
                   <InputGroupText>Start</InputGroupText>
                 </Col>
-                <Col sm="8">
+                <Col xs="8">
                   <Controller
                     name="start"
                     control={control}
@@ -195,13 +195,13 @@ const RackToRetail = ({
           </Col>
 
           {/* END DATE */}
-          <Col sm="3">
+          <Col xl="3" md="6" sm="12">
             <FormGroup>
               <InputGroup>
-                <Col sm="3">
+                <Col xs="3">
                   <InputGroupText>End</InputGroupText>
                 </Col>
-                <Col sm="9">
+                <Col xs="9">
                   <Controller
                     name="end"
                     control={control}
@@ -224,7 +224,7 @@ const RackToRetail = ({
 
           {/* SUPPLIER */}
           {suplier_list !== false && (
-            <Col sm="3">
+            <Col xl="3" md="6" sm="12">
               <FormGroup>
                 <InputGroup>
                   <InputGroupText>Supplier</InputGroupText>
@@ -259,7 +259,7 @@ const RackToRetail = ({
 
           {/* COUNTRY */}
           {suplier_list !== false && (
-            <Col sm="3">
+            <Col xl="3" md="6" sm="12">
               <FormGroup>
                 <InputGroup>
                   <InputGroupText>Country</InputGroupText>
@@ -296,7 +296,7 @@ const RackToRetail = ({
         {/* COMPANY CHECKBOX */}
         {company_list === "checkbox" && (
           <Row>
-            <Col sm="12">
+            <Col xs="12">
               <fieldset>
                 <legend>Choose Company</legend>
 
@@ -307,7 +307,7 @@ const RackToRetail = ({
                   render={({ field }) => (
                     <Row>
                       {/* ALL Company */}
-                      <Col sm="4">
+                      <Col xl="4" md="6" sm="12">
                         <div className="checkbox checkbox-dark">
                           <input
                             type="checkbox"

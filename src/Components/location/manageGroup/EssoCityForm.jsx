@@ -32,7 +32,7 @@ const EssoCityForm = ({ title }) => {
                         <Form >
                             <Row>
 
-                                <Col md="3">
+                                <Col xxl="4"  md="6" sm="12">
 
                                     <FormGroup className=" m-form__group">
                                         <FormGroup className="m-form__group">
@@ -47,7 +47,7 @@ const EssoCityForm = ({ title }) => {
                                                             {...field}
                                                             options={InVoiceSupplier}
                                                             className="form-control p-0 border-0"
-                                                            placeholder="Select Group Name"
+                                                            placeholder="Select Group "
                                                         />
                                                     )}
                                                 />
@@ -59,7 +59,7 @@ const EssoCityForm = ({ title }) => {
                                         </FormGroup>
                                     </FormGroup>
                                 </Col>
-                                <Col md="3">
+                                <Col xxl="4"  md="6" sm="12">
                                     <FormGroup className=" m-form__group">
                                         <InputGroup>
                                             <InputGroupText>City Name</InputGroupText>
@@ -67,7 +67,7 @@ const EssoCityForm = ({ title }) => {
                                         </InputGroup>
                                     </FormGroup>
                                 </Col>
-                                <Col md="3">
+                                <Col  xxl="4"  md="6" sm="12">
                                     <FormGroup className=" m-form__group">
                                         <InputGroup>
                                             <InputGroupText>Site(6 Digit)</InputGroupText>
@@ -75,7 +75,7 @@ const EssoCityForm = ({ title }) => {
                                         </InputGroup>
                                     </FormGroup>
                                 </Col>
-                                <Col md="3">
+                                <Col  xxl="4"  md="6" sm="12">
                                     <FormGroup className=" m-form__group">
                                         <InputGroup>
                                             <InputGroupText>Site(5 Digit)</InputGroupText>
@@ -83,9 +83,8 @@ const EssoCityForm = ({ title }) => {
                                         </InputGroup>
                                     </FormGroup>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col md={12}>
+                           
+                                <Col  xxl="8"  md="12" sm="12">
                                     <div className='text-end'>
                                         <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >Add Group City</Btn>
                                     </div>

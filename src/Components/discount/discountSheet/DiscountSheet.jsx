@@ -164,8 +164,8 @@ idby:localStorage.getItem("userId")
     <>
       
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <Row className="mt-3">
-          <Col sm="3">
+        <Row className="my-3">
+          <Col xxl="4" lg="6"  md="6" sm="12">
             <DropDown
               name="company"
               label="Company"
@@ -177,7 +177,7 @@ idby:localStorage.getItem("userId")
               options={companyOptions}
             />
           </Col>
-          <Col sm="3">
+          <Col xxl="4"  lg="6"  md="6" sm="12">
             <DatePickerInput
               name="startDate"
               control={control} // ✅ make sure this is passed
@@ -187,7 +187,7 @@ idby:localStorage.getItem("userId")
               required="start Date is required"
             />
           </Col>
-          <Col sm="3">
+          <Col xxl="4" lg="6"  md="6" sm="12">
             <DatePickerInput
               name="endDate"
               control={control} // ✅ make sure this is passed
@@ -198,7 +198,7 @@ idby:localStorage.getItem("userId")
             />
           </Col>
 
-          <Col sm="3">
+          <Col xxl="4" lg="6"  md="6" sm="12">
             <InputText
               name="discountCanada"
               label="ESSO Discount Cent (Canada)"
@@ -208,9 +208,8 @@ idby:localStorage.getItem("userId")
               rules={{ required: "Esso Discount is required" }}
             />
           </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col sm="3">
+       
+          <Col xxl="4" lg="6"  md="6" sm="12">
             <InputText
               name="discountUSA"
               label="Flying J Discount Cent (USA) "
@@ -221,7 +220,7 @@ idby:localStorage.getItem("userId")
             />
           </Col>
 
-          <Col sm="3">
+          <Col xxl="4" lg="6"  md="6" sm="12">
             <InputText
               name="Flyingdiscount"
               label=" Flying J Discount Cent (Canada) "
@@ -231,7 +230,7 @@ idby:localStorage.getItem("userId")
               rules={{ required: " Required" }}
             />
           </Col>
-          <Col sm="3">
+          <Col xxl="4" lg="6"  md="6" sm="12">
             <InputText
               name="Petrodiscount"
               label=" Petro Discount Cent (Canada)  "
@@ -242,7 +241,7 @@ idby:localStorage.getItem("userId")
               rules={{ required: " Required" }}
             />
           </Col>
-          <Col sm="3">
+          <Col xxl="4"  lg="6" md="6" sm="12">
             <InputText
               name="TaPetrodiscount"
               label=" Ta-Petro & Love Discount Cent (USA)  "
@@ -255,15 +254,14 @@ idby:localStorage.getItem("userId")
           </Col>
         </Row>
         <Row>
-   <Col sm="2">
-  <div >
+   <Col xxl="2" lg="3"  md="4" sm="12">
+  <div>
    <input type="checkbox" {...register("flying_j")} />
 <Label className="ms-2">Exclude Flying J</Label>
-
   </div>
 </Col>
 
-<Col sm="2">
+<Col xxl="2" lg="3"  md="4" sm="12">
   <div>
     <input
       type="checkbox"
@@ -274,7 +272,7 @@ idby:localStorage.getItem("userId")
   </div>
 </Col>
 
-<Col sm="2">
+<Col xxl="2" lg="3"  md="4" sm="12">
   <div >
     <input
       type="checkbox"
@@ -284,7 +282,7 @@ idby:localStorage.getItem("userId")
   </div>
 </Col>
 
-<Col sm="2">
+<Col xxl="2" lg="3"  md="4" sm="12">
   <div >
     <input
       type="checkbox"
@@ -296,7 +294,7 @@ idby:localStorage.getItem("userId")
 
         
 
-          <Col sm="4">
+          <Col xxl="4"  md="12" sm="12">
             <div className="text-end">
               <Btn
                 attrBtn={{

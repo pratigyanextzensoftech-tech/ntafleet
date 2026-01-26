@@ -36,7 +36,7 @@ const formatDate = (date) => {
     <>
         <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-3">
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <DatePickerInput
               name="startDate"
               control={control} // ✅ make sure this is passed
@@ -46,7 +46,7 @@ const formatDate = (date) => {
               required="start Date is required"
             />
           </Col>
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <DatePickerInput
               name="endDate"
               control={control} // ✅ make sure this is passed
@@ -57,7 +57,7 @@ const formatDate = (date) => {
             />
           </Col>
 
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <DropDown
               name="country"
               label="Country"
@@ -70,7 +70,7 @@ const formatDate = (date) => {
             />
           </Col>
 
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <DropDown
               name="supplier"
               label="Supplier"
@@ -84,7 +84,7 @@ const formatDate = (date) => {
           </Col>
         </Row>
         <Row className="mt-3">
-          <Col sm="12">
+          <Col xl="12"  md="12" sm="12">
             <div className="text-end">
               <Btn
                 attrBtn={{

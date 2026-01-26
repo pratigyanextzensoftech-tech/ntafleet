@@ -39,7 +39,7 @@ const UploadForm = ({ btntitle, btnTitle1 }) => {
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)} >
             <Row>
-                <Col sm="10">
+                <Col xxl="10" md="8" xs="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Select File</InputGroupText> 
@@ -47,7 +47,7 @@ const UploadForm = ({ btntitle, btnTitle1 }) => {
                     </FormGroup>
 
                 </Col>
-                <Col sm="2" >
+                <Col xxl="2"  md="4" xs="12" >
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btntitle}</Btn>
                     </div>

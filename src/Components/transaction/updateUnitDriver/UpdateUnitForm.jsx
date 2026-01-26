@@ -55,7 +55,7 @@ const UpdateUnitForm = ({ btnTitle }) => {
   return (
     <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
       <Row>
-        <Col sm="4">
+        <Col xl="4" md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Company</InputGroupText>
@@ -79,14 +79,14 @@ const UpdateUnitForm = ({ btnTitle }) => {
             )}
           </FormGroup>
         </Col>
-        <Col sm="4">
+        <Col xl="4" md="6" sm="12">
           <Row>
             <FormGroup className="m-form__group">
               <InputGroup>
-                <Col sm="4">
-                  <InputGroupText>Start</InputGroupText>
+                <Col xs="4">
+                  <InputGroupText>Start Date</InputGroupText>
                 </Col>
-                <Col sm="8">
+                <Col xs="8">
                   <Controller
                     name="start"
                     control={control}
@@ -111,14 +111,14 @@ const UpdateUnitForm = ({ btnTitle }) => {
             </FormGroup>
           </Row>
         </Col>
-        <Col sm="4">
+        <Col xl="4" md="6" sm="12">
           <Row>
             <FormGroup className="m-form__group">
               <InputGroup>
-                <Col sm="3">
-                  <InputGroupText>End</InputGroupText>
+                <Col xs="3">
+                  <InputGroupText>End Date</InputGroupText>
                 </Col>
-                <Col sm="9">
+                <Col xs="9">
                   <Controller
                     name="end"
                     control={control}
@@ -142,9 +142,8 @@ const UpdateUnitForm = ({ btnTitle }) => {
             </FormGroup>
           </Row>
         </Col>
-      </Row>
-      <Row>
-        <Col sm="4">
+     
+        <Col xl="4" md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Country</InputGroupText>
@@ -169,7 +168,7 @@ const UpdateUnitForm = ({ btnTitle }) => {
           </FormGroup>
         </Col>
 
-        <Col sm="4">
+        <Col xl="4" md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>What Update </InputGroupText>
@@ -191,7 +190,7 @@ const UpdateUnitForm = ({ btnTitle }) => {
             )}
           </FormGroup>
         </Col>
-        <Col sm="4">
+        <Col xl="4" md="6" sm="12">
           <div className="text-end">
             <Btn
               attrBtn={{

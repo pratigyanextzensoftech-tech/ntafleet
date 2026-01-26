@@ -43,7 +43,7 @@ const payload={
     <Fragment>
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-3">
-          <Col sm="4">
+          <Col xl="4" md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>Company</InputGroupText>
@@ -55,7 +55,7 @@ const payload={
                       {...field}
                       options={companyData}
                       className="form-control p-0 border-0"
-                      placeholder="Select Company Name"
+                      placeholder="Select  Name"
                     />
                   )}
                 />
@@ -64,7 +64,7 @@ const payload={
             
             </FormGroup>
           </Col>
-          <Col sm="4">
+          <Col xl="4" md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>Company Status</InputGroupText>
@@ -76,7 +76,7 @@ const payload={
                       {...field}
                       options={companyStatus}
                       className="form-control p-0 border-0"
-                      placeholder="Select Company Status"
+                      placeholder="Select  Status"
                     />
                   )}
                 />
@@ -86,7 +86,7 @@ const payload={
             </FormGroup>
           </Col>
 
-          <Col sm={4}>
+          <Col xl="4" md="12" sm="12">
             <div className="text-end">
               <Btn
                 attrBtn={{

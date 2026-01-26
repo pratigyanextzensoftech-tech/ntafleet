@@ -47,7 +47,7 @@ const PetroForm = ({ btnTitle, btnTitle1, onSearch }) => {
 
     <Form className='px-2' noValidate='' onSubmit={handleSubmit(onSubmit)}  >
       <Row className="mt-3">
-        <Col sm='4'>
+        <Col xl='4' md="6">
           <Row>
             <DatePickerInput
               name="from"
@@ -59,7 +59,7 @@ const PetroForm = ({ btnTitle, btnTitle1, onSearch }) => {
 
           </Row>
         </Col>
-        <Col sm="4">
+        <Col xl="4" md="6">
           <Row>
             <DatePickerInput
               name="to"
@@ -72,7 +72,7 @@ const PetroForm = ({ btnTitle, btnTitle1, onSearch }) => {
           </Row>
         </Col>
 
-        <Col sm="4">
+        <Col xl="4" >
 
 
 

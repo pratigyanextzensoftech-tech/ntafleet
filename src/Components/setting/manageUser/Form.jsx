@@ -116,7 +116,7 @@ const onSubmit = async (formData) => {
     <Fragment>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
-          <Col md="4">
+          <Col xl="4"  md="6" sm="12">
             <InputText
               name="name"
               label="Name"
@@ -128,7 +128,7 @@ const onSubmit = async (formData) => {
             />
           </Col>
 
-          <Col md="4">
+          <Col xl="4"  md="6" sm="12">
             <InputText
               name="email"
               label="Email"
@@ -141,7 +141,7 @@ const onSubmit = async (formData) => {
             />
           </Col>
 
-          <Col md="4">
+          <Col xl="4"  md="6" sm="12">
             <InputText
               name="phone"
               label="Phone"
@@ -153,10 +153,8 @@ const onSubmit = async (formData) => {
               rules={validation &&{ required: "Phone number is required" }}
             />
           </Col>
-        </Row>
-
-        <Row>
-          <Col md={4}>
+       
+          <Col xl="4"  md="6" sm="12">
             <InputText
               name="company"
               label="Company"
@@ -168,7 +166,7 @@ const onSubmit = async (formData) => {
             />
           </Col>
 
-          <Col md={4}>
+          <Col xl="4"  md="6" sm="12">
             <InputText
               name="password"
               label={!editUser?"Password":"New Password"}
@@ -180,7 +178,7 @@ const onSubmit = async (formData) => {
             />
           </Col>
 
-          <Col md={4}>
+          <Col xl="4"  md="6" sm="12">
            <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>User Status</InputGroupText>
@@ -220,10 +218,8 @@ const onSubmit = async (formData) => {
      onChange={(selected) => field.onChange(selected)}
             /> */}
           </Col>
-        </Row>
-
-        <Row>
-          <Col md={4}>
+       
+          <Col xl="4"  md="6" sm="12">
            <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>Company Login Access</InputGroupText>
@@ -254,7 +250,7 @@ const onSubmit = async (formData) => {
          
           </Col>
 
-          <Col md={8} className="text-end">
+          <Col xl="8"  md="6" sm="12" className="text-end">
             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }}>
               {Edit?"Update User":'Add User'}
             </Btn>

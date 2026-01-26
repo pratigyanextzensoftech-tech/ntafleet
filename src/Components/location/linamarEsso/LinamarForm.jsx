@@ -86,7 +86,7 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         <Fragment > 
                 <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                     <Row>
-                        <Col md="4">
+                        <Col  xxl="4"  md="6" sm="12">
                             <InputText
                                 name="essoLoc"
                                 label="Esso Location"
@@ -95,9 +95,8 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                                 errors={errors}
                                 rules={{ required: "Required" }}
                             />
-
                         </Col>
-                        <Col md="4">
+                        <Col  xxl="4"  md="6" sm="12">
                             <InputText
                                 name="flyingLoc"
                                 label="Flying J Location"
@@ -106,9 +105,8 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                                 errors={errors}
                                 rules={{ required: "Required" }}
                             />
-
                         </Col>
-                        <Col md="4">
+                        <Col  xxl="4"  md="6" sm="12">
                             <InputText
                                 name="flyingJSite"
                                 label="Flying J Site ID"
@@ -117,11 +115,9 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                                 errors={errors}
                                 rules={{ required: "Required" }}
                             />
-
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col md={4}>
+                  
+                        <Col  xxl="4"  md="6" sm="12">
                             <InputText
                                 name="flyingJLOc"
                                 label="Flying J Location ID"
@@ -130,12 +126,8 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                                 errors={errors}
                                 rules={{ required: "Required" }}
                             />
-
                         </Col>
-
-
-
-                        <Col md={8}>
+                        <Col  xxl="8"  md="12" sm="12">
                             <div className='text-end'>
                                 <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Linamar Esso Location"}</Btn>
                             </div>

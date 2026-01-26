@@ -159,8 +159,8 @@ const CreateReport = ({
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
               <fieldset>
                 <legend>Cover transactions in date range</legend>
-                <Row className="mt-3">
-                  <Col sm="9">
+                <Row className="my-3">
+                  <Col  xxl="9"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Company</InputGroupText>
@@ -189,7 +189,7 @@ const CreateReport = ({
                       )}
                     </FormGroup>
                   </Col> 
-                  <Col sm="3">
+                  <Col  xxl="3"  md="6" sm="12">
                     <InputText
                       name="file"
                       label="Report File Name "
@@ -199,17 +199,15 @@ const CreateReport = ({
                       rules={{ required: "Required" }}
                     />
                   </Col>
-                </Row>
-
-                <Row>
-                  <Col sm="4">
-                    <Row>
+               
+               
+                  <Col xxl="4"  md="6" sm="12">
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col sm="3">
+                          <Col xs="3">
                             <InputGroupText>start Date</InputGroupText>
                           </Col>
-                          <Col sm="9">
+                          <Col xs="9">
                             <Controller
                               name="startDate"
                               control={control}
@@ -233,16 +231,15 @@ const CreateReport = ({
                           </span>
                         )}
                       </FormGroup>
-                    </Row>
+                   
                   </Col>
-                  <Col sm="4">
-                    <Row>
+                  <Col xxl="4"  md="6" sm="12">
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col sm="3">
+                          <Col xs="3">
                             <InputGroupText>End Date</InputGroupText>
                           </Col>
-                          <Col sm="9">
+                          <Col xs="9">
                             <Controller
                               name="endDate"
                               control={control}
@@ -266,9 +263,9 @@ const CreateReport = ({
                           </span>
                         )}
                       </FormGroup>
-                    </Row>
+                   
                   </Col>
-                  <Col sm="4">
+                  <Col xxl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Export Type</InputGroupText>
@@ -363,7 +360,7 @@ const CreateReport = ({
 
           <Row>
             {supplier.map((item, index) => (
-              <Col key={index} sm="3">
+              <Col key={index} xxl="3" md="4" sm="6"  xs="12">
                 <div className="checkbox checkbox-dark">
                   <input
                     id={`supplier-checkbox-${index}`}
@@ -428,7 +425,7 @@ const CreateReport = ({
                         <Row>
                           {discount==="Yes" &&(
  displayFeatureCheckBox.map((item, index) => (
-                            <Col key={index} sm="3">
+                            <Col key={index} xxl="3" md="4" sm="6"  xs="12">
                               <div className="checkbox checkbox-dark">
                                 <input
                                   id={`feature-${index}`}
@@ -449,7 +446,7 @@ const CreateReport = ({
                           )}
                           {discount==="No" &&(
  displayFeatureCheckBoxOwner.map((item, index) => (
-                            <Col key={index} sm="3">
+                            <Col key={index} xxl="3" md="4" sm="6"  xs="12">
                               <div className="checkbox checkbox-dark">
                                 <input
                                   id={`feature-${index}`}
@@ -485,7 +482,7 @@ const CreateReport = ({
               <fieldset>
                 <legend>Display Filters (optional) </legend>
                 <Row className="mt-3">
-                  <Col sm="3">
+                  <Col xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>
@@ -513,7 +510,7 @@ const CreateReport = ({
                     </FormGroup>
                   </Col>
 
-                  <Col sm="3">
+                  <Col xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Group By</InputGroupText>
@@ -539,7 +536,7 @@ const CreateReport = ({
                     </FormGroup>
                   </Col>
 
-                  <Col sm="3">
+                  <Col xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Order By </InputGroupText>
@@ -564,7 +561,7 @@ const CreateReport = ({
                       )}
                     </FormGroup>
                   </Col>
-                  <Col sm="3">
+                  <Col xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Volume Unit </InputGroupText>
@@ -591,7 +588,7 @@ const CreateReport = ({
                   </Col>
                 </Row>
                 <Row>
-                  <Col sm="3">
+                  <Col xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Fuel Type </InputGroupText>
@@ -616,7 +613,7 @@ const CreateReport = ({
                       )}
                     </FormGroup>
                   </Col>
-                  <Col sm="3">
+                  <Col xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Currency </InputGroupText>
@@ -647,7 +644,7 @@ const CreateReport = ({
               <fieldset>
                 <legend>Match by (optional) </legend>
                 <Row className="mt-3">
-                  <Col sm="4">
+                  <Col xxl="4"  md="6" sm="12">
                     <InputText
                       name="card"
                       label="Fuel Card "
@@ -658,7 +655,7 @@ const CreateReport = ({
                     />
                   </Col>
 
-                  <Col sm="4">
+                  <Col xxl="4"  md="6" sm="12">
                     <InputText
                       name="driverName"
                       label="Driver Name "
@@ -669,7 +666,7 @@ const CreateReport = ({
                     />
                   </Col>
 
-                  <Col sm="4">
+                  <Col xxl="4"  md="6" sm="12">
                     <InputText
                       name="unitNo"
                       label="Unit Number "
@@ -680,8 +677,7 @@ const CreateReport = ({
                     />
                   </Col>
 
-                  <Row>
-                    <Col sm="4">
+                    <Col xxl="4"  md="6" sm="12">
                       <InputText
                         name="city"
                         label="City "
@@ -692,7 +688,7 @@ const CreateReport = ({
                       />
                     </Col>
 
-                    <Col sm="4">
+                    <Col xxl="4"  md="6" sm="12">
                       <FormGroup className="m-form__group">
                         <InputGroup>
                           <InputGroupText>State</InputGroupText>
@@ -717,12 +713,11 @@ const CreateReport = ({
                         )}
                       </FormGroup>
                     </Col>
-                  </Row>
                 </Row>
               </fieldset>
 
               <Row>
-                <Col sm="9">
+                <Col xxl="9"  md="6" sm="12">
                   {showMessage && (
                     <marquee
                       direction="right"
@@ -733,7 +728,7 @@ const CreateReport = ({
                   )}
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{

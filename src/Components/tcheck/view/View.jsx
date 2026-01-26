@@ -41,14 +41,14 @@ const List = ({ onSearch }) => {
 
     <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
       <Row className="mt-3">
-        <Col sm="3">
+        <Col  xxl="3"  lg="6" sm="12">
           <DatePickerInput
             name="from"
             control={control}              // ✅ make sure this is passed
             label=" From Date"
           />
         </Col>
-        <Col sm="3">
+        <Col  xxl="3"  lg="6" sm="12">
           <DatePickerInput
             name="to"
             control={control}              // ✅ make sure this is passed
@@ -56,7 +56,7 @@ const List = ({ onSearch }) => {
           />
 
         </Col>
-        <Col sm="3">
+        <Col  xxl="3"  lg="6" sm="12">
           <DropDown
             name="company"
             label="Company"
@@ -69,7 +69,7 @@ const List = ({ onSearch }) => {
 
 
 
-        <Col sm="3">
+        <Col  xxl="3"  lg="6" sm="12">
 
           <div className='text-end'>
             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>

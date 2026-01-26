@@ -23,16 +23,16 @@ const DatePickerInput = ({
                     <Row>
                       <InputGroup>
 
-                        <Col sm="4">        <InputGroupText>{label}</InputGroupText>
+                        <Col xs="4">        <InputGroupText>{label}</InputGroupText>
                         </Col>
-                        <Col sm="8">
+                        <Col xs="8">
  <Controller
             name={name}
             control={control}
             render={({ field }) => (
               <DatePicker
                 placeholderText={placeholder}
-                className={`form-control `}
+                className={`form-control`}
                 selected={field.value}
                 onChange={(date) => field.onChange(date)}
                   dateFormat="yyyy-MM-dd" 

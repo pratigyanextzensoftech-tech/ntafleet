@@ -119,8 +119,8 @@ const Index = () => {
               <HeaderCard title="Filter" />
               <CardBody>
                 <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-                  <Row className="mt-3">
-                    <Col sm="4">
+                  <Row className="my-3">
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Card Number </InputGroupText>
@@ -133,7 +133,7 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col sm="4">
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Policy Number </InputGroupText>
@@ -146,7 +146,7 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col sm="4">
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Unit Number </InputGroupText>
@@ -159,9 +159,8 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="4">
+                  
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Pin Number </InputGroupText>
@@ -175,7 +174,7 @@ const Index = () => {
                       </FormGroup>
                     </Col>
 
-                    <Col sm="4">
+                    <Col  xl='4' md="6">
                       <FormGroup className="m-form__group">
                         <InputGroup>
                           <InputGroupText>Company</InputGroupText>
@@ -203,7 +202,7 @@ const Index = () => {
                       </FormGroup>
                     </Col>
 
-                    <Col sm="4">
+                    <Col  xl='4' md="6">
                       <FormGroup className="m-form__group">
                         <InputGroup>
                           <InputGroupText>Supplier</InputGroupText>
@@ -226,9 +225,8 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="4">
+               
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Driver Name </InputGroupText>
@@ -241,7 +239,7 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col sm="4">
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Driver Mobile 1 </InputGroupText>
@@ -254,7 +252,7 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col sm="4">
+                    <Col  xl='4' md="6">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Driver Mobile 2 </InputGroupText>
@@ -267,9 +265,8 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="4">
+                
+                    <Col xl='4' md="6">
                       <FormGroup className="m-form__group">
                         <InputGroup>
                           <InputGroupText>Card Status</InputGroupText>
@@ -292,7 +289,7 @@ const Index = () => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col sm="8">
+                    <Col  xl='8' md="12">
                       <div className="text-end">
                         <Btn
                           attrBtn={{

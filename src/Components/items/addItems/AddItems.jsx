@@ -104,12 +104,14 @@ console.log(formData)
   return (
     <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
       <Row className="mt-3">
-        <Col sm="3">
+        <Col  xl="3"  lg="4" md="6" sm="12">
           <FormGroup className=" m-form__group">
             <InputGroup>
               <InputGroupText>Item Name </InputGroupText>
               <input
                 style={{ border: "1px solid #ccc" }}
+               placeholder="Enter Item "
+
                 className="form-control "
                 type="text"
                {...register("Name", {
@@ -120,7 +122,7 @@ console.log(formData)
             {errors.Name && <span className="text-danger"> Required</span>}
           </FormGroup>
         </Col>
-        <Col sm="3">
+        <Col  xxl="3" lg="4"   md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Discount Applied</InputGroupText>
@@ -133,7 +135,7 @@ console.log(formData)
                     {...field}
                     options={companyLoginAccess}
                     className="form-control p-0 border-0"
-                    placeholder="Select Discount Applied"
+                    placeholder="Select Discount "
                     value={field.value}
                     onChange={(val) => field.onChange(val)}
                   />
@@ -147,7 +149,7 @@ console.log(formData)
           </FormGroup>
         </Col>
 
-        <Col sm="3">
+        <Col  xxl="3" lg="4"   md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Tax Applied</InputGroupText>
@@ -174,7 +176,7 @@ console.log(formData)
           </FormGroup>
         </Col>
 
-        <Col sm="3">
+        <Col  xxl="3" lg="12"   md="6" sm="12">
           <div className="text-end">
             <Btn
               attrBtn={{

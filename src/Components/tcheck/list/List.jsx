@@ -45,7 +45,7 @@ const List = ({ btnTitle1,onSearch }) => {
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
             <Row className="mt-3">
-                <Col sm="3">
+                <Col xxl="3" md="6">
                     <Row>
                         <DatePickerInput
                             name="from"
@@ -56,7 +56,7 @@ const List = ({ btnTitle1,onSearch }) => {
 
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" md="6">
                     <DatePickerInput
                         name="to"
                         control={control}              // ✅ make sure this is passed
@@ -67,7 +67,7 @@ const List = ({ btnTitle1,onSearch }) => {
 
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" md="6">
                     <DropDown
                         name="company"
                         label="Company"
@@ -82,7 +82,7 @@ const List = ({ btnTitle1,onSearch }) => {
 
 
 
-                <Col sm="3">
+                <Col xxl="3" md="6">
 
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>

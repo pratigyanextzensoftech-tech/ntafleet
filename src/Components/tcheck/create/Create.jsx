@@ -59,7 +59,7 @@ setLoading(true)
 
       <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
         <Row className="mt-3">
-          <Col sm="4">
+          <Col xxl="4" md="6">
             <DatePickerInput
               name="startDate"
               control={control}              // ✅ make sure this is passed
@@ -70,7 +70,7 @@ setLoading(true)
             />
           </Col>
 
-          <Col sm="4">
+          <Col xxl="4" md="6">
             <DatePickerInput
               name="endDate"
               control={control}              // ✅ make sure this is passed
@@ -80,9 +80,9 @@ setLoading(true)
               required="End Date is required"
             />
           </Col>
-          <Col sm={{ size: 2, offset: 2 }}>
-            <div className='text-end'>
-              <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
+          <Col  >
+            <div className='text-end '>
+              <Btn attrBtn={{ color: "primary", type: "submit" }} >{btnTitle}</Btn>
             </div>
           </Col>
         </Row>

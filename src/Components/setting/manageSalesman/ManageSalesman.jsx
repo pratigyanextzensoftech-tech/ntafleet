@@ -88,7 +88,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         <Fragment >
                     <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
                         <Row>
-                            <Col md="4">
+                            <Col xxl="4"  md="6" sm="12">
                                   <InputText
             name="name"
             label="Name"
@@ -99,7 +99,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
           />
                                
                             </Col>
-                            <Col md="4">
+                            <Col xxl="4"  md="6" sm="12">
                                 <InputText
             name="email"
             label="Email"
@@ -110,7 +110,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
           />
                               
                             </Col>
-                            <Col md="4">
+                            <Col xxl="4"  md="6" sm="12">
                                 <InputText
             name="phone"
             label="Phone"
@@ -121,9 +121,8 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
           />
                               
                             </Col>
-                        </Row>
-                        <Row>
-                            <Col md={8}>
+                      
+                            <Col xxl="4"  md="6" sm="12">
                                   <InputText
             name="address"
             label="Address"
@@ -140,7 +139,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                             
 
                         
-                        <Col md={4}>
+                        <Col xxl="8"  md="12" sm="12">
                          <div className='text-end'>
                                 <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Sales Man"}</Btn>
                 </div>

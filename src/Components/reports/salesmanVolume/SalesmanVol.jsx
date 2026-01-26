@@ -83,19 +83,14 @@ del:""
           toast.error(err.message);
     })
         };
-    const handleReset = () => {
-    reset(); // reset all fields back to defaultValues (or empty if none given)
-  };
+   
 
    
     return (
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-
-           
-             
                 <Row className="mt-3">
-                       <Col sm="4">
+                       <Col xxl="4" md="6"   xs="12">
                         <FormGroup className="m-form__group">
                             <InputGroup >
                                 <InputGroupText>Salesman</InputGroupText>
@@ -119,18 +114,20 @@ del:""
                             )}
                         </FormGroup>
                     </Col>
-                <Col sm="4">
+                <Col xxl="4" md="6"   xs="12">
                   <FormGroup className="m-form__group">
-                    <Row>
+                  
                       <InputGroup>
 
-                        <Col sm="4">        <InputGroupText>start Date</InputGroupText>
-                        </Col>
-                        <Col sm="8">
+                        <Col xs="4">   
+                             <InputGroupText>start Date</InputGroupText>
+                             </Col>
+                                         <Col xs="8">   
+     
  <Controller
             name="startDate"
             control={control}
-            rules={{ required: " Date is required" }}
+            rules={{ required: "Date is required" }}
             render={({ field }) => (
               <DatePicker
                 placeholderText="Select  date"
@@ -148,21 +145,19 @@ del:""
   {errors.startDate && (
             <span className="text-danger">{errors.startDate.message}</span>
           )}
-                    </Row>
 
 
                  
                   </FormGroup>
                 </Col>
-                       <Col sm="4">
+                       <Col   xxl="4" md="6"   xs="12">
                   <FormGroup className="m-form__group">
-                     <Row>
                     <InputGroup>
 
-                        <Col sm="4">    
+                        <Col    xs="4">    
                       <InputGroupText>End Date</InputGroupText>
                       </Col>
-                      <Col sm="8">
+                      <Col   xs="8">
                    <Controller
             name="endDate"
             control={control}
@@ -180,7 +175,6 @@ del:""
           </Col>
          
                       </InputGroup>
-                      </Row>
                        {errors.endDate && (
             <span className="text-danger">{errors.endDate.message}</span>
           )}
@@ -190,9 +184,8 @@ del:""
  
         
                       
-            </Row> 
-            <Row>
-                <Col sm="4">
+          
+                <Col xxl="4" md="6"   xs="12">
                   <FormGroup className="m-form__group">
                             <InputGroup>
                                 <InputGroupText>Country</InputGroupText>
@@ -216,7 +209,7 @@ del:""
                             )}
                         </FormGroup>
                 </Col>
-                <Col sm="4">
+                <Col xxl="4" md="6"   xs="12">
                 <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Supplier</InputGroupText>
@@ -243,7 +236,7 @@ del:""
                     )}
                   </FormGroup>
                 </Col>
-                <Col sm="4">
+                <Col xxl="4" md="6"   xs="12">
                 
                                             <div className='text-end'>
                                                 <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>

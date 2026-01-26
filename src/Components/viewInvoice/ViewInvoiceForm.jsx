@@ -86,9 +86,10 @@ const{data:country}=useCountry()
       <Row>
         <Col>
          
+         
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col sm="12">
+                <Col xs="12">
                      <Controller
                          name="supplier"
                          control={control}

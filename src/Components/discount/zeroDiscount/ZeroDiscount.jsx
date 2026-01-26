@@ -61,8 +61,8 @@ idby:localStorage.getItem("userId")
   return (
     <> 
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <Row className="mt-3">
-          <Col sm="3">
+        <Row className="my-3">
+          <Col  xl="3"  md="6" sm="12">
             <InputText
               name="state"
               label="State"
@@ -72,7 +72,7 @@ idby:localStorage.getItem("userId")
               rules={{ required: "State is required" }}
             />
           </Col>
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <InputText
               name="city"
               label=" City Name "
@@ -82,7 +82,7 @@ idby:localStorage.getItem("userId")
               rules={{ required: "City is required" }}
             />
           </Col>
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <InputText
               name="location"
               label=" Location #(6 Digit)"
@@ -92,7 +92,7 @@ idby:localStorage.getItem("userId")
               rules={{ required: "Required" }}
             />
           </Col>
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12">
             <DropDown
               name="supplier"
               label="Supplier"
@@ -106,9 +106,8 @@ idby:localStorage.getItem("userId")
               options={supplier}
             />
           </Col>
-        </Row>
+       
 
-        <Row>
           <Col sm="12">
             <div className="text-end">
               <Btn

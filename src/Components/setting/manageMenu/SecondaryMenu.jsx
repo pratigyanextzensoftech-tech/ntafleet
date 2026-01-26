@@ -98,7 +98,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
                         <legend>{title}</legend>
                         <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                             <Row>
-                                <Col sm="4">
+                                <Col xxl="4"  md="6" sm="12">
                                     <DropDown
                                         name="primaryMenu"
                                         label="Primary Menu "
@@ -111,7 +111,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
                                     />
 
                                 </Col>
-                                <Col md="4">
+                                <Col  xxl="4"  md="6" sm="12">
                                     <InputText
                                         name="menuName"
                                         label="Menu Name "
@@ -123,7 +123,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
 
 
                                 </Col>
-                                <Col md="4">
+                                <Col  xxl="4"  md="6" sm="12">
                                     <InputText
                                         name="menuLink"
                                         label="Menu Link "
@@ -135,9 +135,8 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
 
                                 </Col>
 
-                            </Row>
-                            <Row>
-                                <Col md="4">
+                         
+                                <Col  xxl="4"  md="6" sm="12">
                                     <DropDown
                                         name="type"
                                         label="Type "
@@ -151,7 +150,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
                                     />
 
                                 </Col>
-                                <Col md={8}>
+                                <Col  xxl="8"  md="12" sm="12">
                                     <div className='text-end'>
                                         <Btn attrBtn={{ color: "primary", className: "m-r-15 ", type: "submit" }} >{Edit?"Update":"Add Menu"}</Btn>
                                     </div>

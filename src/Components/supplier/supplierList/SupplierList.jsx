@@ -63,12 +63,11 @@ const SupplierList = ({btntitle,btnTitle1,onDataAdded,Edit,selectedRow,setEdit})
   };
     return (
         <div>
-            <Form noValidate='' onSubmit={handleSubmit(onSubmit)} className="form theme-form">
+            <Form noValidate='' onSubmit={handleSubmit(onSubmit)} className="form ">
                 <CardBody>
        
 <Row>
- 
-                 <Col sm='9'>
+                 <Col xxl="9"  md="6" sm="12">
                    <InputText
             name="supplier"
             label="Supplier Name"
@@ -82,10 +81,10 @@ const SupplierList = ({btntitle,btnTitle1,onDataAdded,Edit,selectedRow,setEdit})
                   </Col>
              
 
-                        <Col sm="3">
+                        <Col xxl="3"  md="6" sm="12">
 
                             <div className='text-end'>
-                                <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{Edit?"Update":btntitle}</Btn>
+                                <Btn attrBtn={{ color: "primary", className: "me-2", type: "submit" }} >{Edit?"Update":btntitle}</Btn>
                                  <button  type="reset" className='btn btn-secondary'>{btnTitle1}</button>
                             </div>
                         </Col>

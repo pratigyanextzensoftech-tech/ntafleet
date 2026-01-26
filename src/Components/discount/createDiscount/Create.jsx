@@ -87,8 +87,8 @@ added_on:new Date()
     <>
      
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-        <Row className="mt-3">
-          <Col sm="4">
+        <Row className="my-3">
+          <Col xl="4"  md="6" sm="12">
             <DropDown
               name="company"
               label="Company"
@@ -99,7 +99,7 @@ added_on:new Date()
               options={companyOptions}
             />
           </Col>
-          <Col sm="4">
+          <Col xl="4"  md="6" sm="12">
             <DatePickerInput
               name="startDate"
               control={control} // ✅ make sure this is passed
@@ -109,7 +109,7 @@ added_on:new Date()
               required="start Date is required"
             />
           </Col>
-          <Col sm="4">
+          <Col xl="4"  md="6" sm="12">
             <DatePickerInput
               name="endDate"
               control={control} // ✅ make sure this is passed
@@ -119,9 +119,8 @@ added_on:new Date()
               required="End Date is required"
             />
           </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col sm="4">
+       
+          <Col xl="4"  md="6" sm="12">
             <DropDown
               name="country"
               label="Country"
@@ -134,7 +133,7 @@ added_on:new Date()
               options={country}
             />
           </Col>
-          <Col sm="4">
+          <Col xl="4"  md="6" sm="12">
             <DropDown
               name="supplier"
               label="Supplier"
@@ -148,7 +147,8 @@ added_on:new Date()
             />
           </Col>
 
-          <Col sm="3">
+          <Col xl="3"  md="6" sm="12"
+          >
             <InputText
               name="discount"
               label="Discount Cent"
@@ -160,7 +160,7 @@ added_on:new Date()
             />
           </Col>
 
-          <Col sm="1">
+          <Col xl sm="1"  md="1">
             <div className="text-end">
               <Btn
                 attrBtn={{

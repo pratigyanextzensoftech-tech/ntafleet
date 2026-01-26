@@ -33,8 +33,6 @@ const Index = () => {
         fetchData
       } = usePaginatedTable({ apiUrl: zero_discount, columnsMap });
        const [openRowId, setOpenRowId] = useState(null);
-      
-      
         useEffect(() => {
           const handleClickOutside = (event) => {
             if (!event.target.closest(".dropdown-action")) {

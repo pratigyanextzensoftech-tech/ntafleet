@@ -45,16 +45,16 @@ const payload={
     return (
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
             <Row className="mt-3">
-                <Col sm="3">
+                <Col xxl="3"  md="6" sm="12">
                     <Row>
                         <FormGroup className="m-form__group">
                             <InputGroup>
-                                <Col sm="3">
+                                <Col xs="4" >
                                     <InputGroupText>
                                         Date From
                                     </InputGroupText>
                                 </Col>
-                                <Col sm="9">
+                                <Col xs="8">
                                     <Controller
                                         name="from"
                                         control={control}
@@ -71,16 +71,16 @@ const payload={
                         </FormGroup>
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col  xxl="3"  md="6" sm="12">
                     <Row>
                         <FormGroup className="m-form__group">
                             <InputGroup>
-                                <Col sm="3">
+                                <Col xs="4">
                                     <InputGroupText>
                                         Date To
                                     </InputGroupText>
                                 </Col>
-                                <Col sm="9">
+                                <Col xs="8">
                                     <Controller
                                         name="to"
                                         control={control}
@@ -98,7 +98,7 @@ const payload={
                         </FormGroup>
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col  xxl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Company</InputGroupText>
@@ -110,7 +110,7 @@ const payload={
                                         {...field}
                                         options={companies}
                                         className="form-control p-0 border-0"
-                                        placeholder="Select Company Name"
+                                        placeholder="Select Company "
                                              value={field.value}
                     onChange={(val) => field.onChange(val)}
 
@@ -123,7 +123,7 @@ const payload={
                     </FormGroup>
                 </Col>
 
-                <Col sm='3'>
+                <Col  xxl="3"  md="6" sm="12">
                     <FormGroup className=" m-form__group">
                         <InputGroup>
                             <InputGroupText>  Unit </InputGroupText>
@@ -133,13 +133,11 @@ const payload={
                     </FormGroup>
                 </Col>
 
-                <Row>
                     <div className='text-end'>
-                        <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btntitle}</Btn>
+                        <Btn attrBtn={{ color: "primary", className: "me-2", type: "submit" }} >{btntitle}</Btn>
                         <button type="reset" onClick={handleReset} className='btn btn-secondary'>{btnTitle1}</button>
 
                     </div>
-                </Row>
 
             </Row>
 

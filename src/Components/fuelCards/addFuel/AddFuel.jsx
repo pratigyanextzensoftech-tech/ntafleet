@@ -97,7 +97,7 @@ update_otp:""
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
-                     <Col sm='4'>
+                     <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Card Number </InputGroupText>
@@ -108,7 +108,7 @@ update_otp:""
                             )}
                           </FormGroup>
                         </Col>
-                     <Col sm='4'>
+                     <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Policy Number </InputGroupText>
@@ -119,7 +119,7 @@ update_otp:""
                             )}
                           </FormGroup>
                         </Col>
-                     <Col sm='4'>
+                     <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Unit Number  </InputGroupText>
@@ -130,9 +130,7 @@ update_otp:""
                             )}
                           </FormGroup>
                         </Col>
-                   </Row>
-                   <Row>
-                       <Col sm='4'>
+                       <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Pin Number </InputGroupText>
@@ -145,7 +143,7 @@ update_otp:""
                         </Col>
                   
                  
-         <Col sm="4">
+         <Col xl='4' md="6">
                         <FormGroup className="m-form__group">
                             <InputGroup >
                                 <InputGroupText>Company</InputGroupText>
@@ -170,7 +168,7 @@ update_otp:""
                         </FormGroup>
                     </Col>
 
-        <Col sm="4">
+        <Col xl='4' md="6">
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Supplier</InputGroupText>
@@ -197,9 +195,8 @@ update_otp:""
                     )}
                   </FormGroup>
                 </Col>
-       </Row>  
-        <Row >
-                     <Col sm='4'>
+      
+                     <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Driver Name </InputGroupText>
@@ -210,7 +207,7 @@ update_otp:""
                             )}
                           </FormGroup>
                         </Col>
-                     <Col sm='4'>
+                     <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Driver Mobile 1  </InputGroupText>
@@ -221,7 +218,7 @@ update_otp:""
                             )}
                           </FormGroup>
                         </Col>
-                     <Col sm='4'>
+                     <Col xl='4' md="6">
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>   Driver Mobile 2 </InputGroupText>
@@ -232,9 +229,8 @@ update_otp:""
                             )}
                           </FormGroup>
                         </Col>
-                   </Row>           
-<Row>
-       <Col sm="4">
+                 
+       <Col xl='4' md="6">
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Card Status</InputGroupText>
@@ -261,7 +257,7 @@ update_otp:""
                     )}
                   </FormGroup>
                 </Col>
-                       <Col sm="8">
+                       <Col xl='8'>
 
 <div className='text-end'>
                             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
