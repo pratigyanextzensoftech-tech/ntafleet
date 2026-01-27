@@ -1,33 +1,33 @@
 import React, { Fragment } from 'react'
-import { Form, Row, Col, Card, CardBody, FormGroup, Input, InputGroupText, Container } from 'reactstrap'
+import { Form, Row, Col, Card, CardBody, FormGroup, Input, InputGroupText, Container,InputGroup } from 'reactstrap'
 import { Btn } from '../../AbstractElements'
 import HeaderCard from '../Common/Component/HeaderCard'
 const ManageMacroForm = ({ title, btnTtitle }) => {
     return (
         <Fragment>
-            <Row>
+            <Row className='my-2'>
                 <Col>
                     <fieldset>
                         <legend>{title}</legend>
                         <Form >
 
-                            <Row className='px-3'>
-                                <Col sm="9">
-                                    <Row>
-                                        <Col className='px-0' sm="2">
+                            <Row >
+                               <Col xl="9" md="7" >
+  <FormGroup>
+    <InputGroup>
+      <InputGroupText>File</InputGroupText>
+      <Input
+        type="file"
+        className="form-control"
+        style={{ border: "1px solid #ccc" }}
+      />
+    </InputGroup>
+  </FormGroup>
+</Col>
 
-                                            <InputGroupText className='h-100'>File</InputGroupText>
-                                        </Col>
-                                        <Col className='px-0' sm="10">
-
-                                            <Input style={{ border: "1px solid #ccc" }} className="form-control w-100c " type="file" />
-                                        </Col>
-                                    </Row>
-                                </Col>
-                                <Col sm="3">
-
-                                    <div className='text-end'>
-                                        <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
+                                <Col xl="3" md="5">
+                                    <div className='text-end '>
+                                        <Btn attrBtn={{ color: "primary",  type: "submit" }} >{btnTtitle}</Btn>
 
                                     </div>
                                 </Col>

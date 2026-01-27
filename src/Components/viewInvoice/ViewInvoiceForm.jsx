@@ -83,12 +83,11 @@ const{data:country}=useCountry()
 
   return (
     <Fragment>
-      <Row>
-        <Col>
          
          
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-              <Row>
+                    <Row>
+
                 <Col xs="12">
                      <Controller
                          name="supplier"
@@ -146,7 +145,7 @@ const{data:country}=useCountry()
                  
                                <Row>
                                  {supplier.map((item, index) => (
-                                   <Col key={index} sm="3">
+                                   <Col key={index} xxl="3"  xl="4"  md="6" sm="12">
                                      <div className="checkbox checkbox-dark">
                                        <input
                                          id={`supplier-checkbox-${index}`}
@@ -175,14 +174,14 @@ const{data:country}=useCountry()
                        />
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup>
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>From</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="from"
                             control={control}
@@ -200,14 +199,14 @@ const{data:country}=useCountry()
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>To</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="to"
                             control={control}
@@ -229,7 +228,7 @@ const{data:country}=useCountry()
                   </Row>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Company</InputGroupText>
@@ -250,7 +249,7 @@ const{data:country}=useCountry()
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
@@ -270,10 +269,8 @@ const{data:country}=useCountry()
                    
                   </FormGroup>
                 </Col>
-              </Row>
 
-              <Row className="mt-3">
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Invoice Type</InputGroupText>
@@ -292,7 +289,7 @@ const{data:country}=useCountry()
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Invoice Category</InputGroupText>
@@ -311,7 +308,7 @@ const{data:country}=useCountry()
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Invoice (Show/Hide)</InputGroupText>
@@ -330,7 +327,7 @@ const{data:country}=useCountry()
                   </FormGroup>
                 </Col>
 
-                <Col sm="3" className="text-end">
+                <Col xxl="3"  xl="4"  md="6" sm="12" className="text-end ms-auto">
                   <Btn
                     attrBtn={{
                       color: "primary",
@@ -342,17 +339,16 @@ const{data:country}=useCountry()
                   </Btn>
                   <button
                     type="button"
-                    className="m-r-15 btn btn-primary"
+                    className=" btn btn-primary"
                     onClick={handleReset}
                   >
                     Reset
                   </button>
                 </Col>
-              </Row>
+                      </Row>
+
             </Form>
         
-        </Col>
-      </Row>
     </Fragment>
   );
 };

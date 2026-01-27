@@ -4,7 +4,8 @@ import {
  
 } from "../../api/index";
 
-export const CreateCustomizedTab = [
+export const 
+CreateCustomizedTab = [
   {
     id: '1',
     label: ' Single Customized Invoice (US)',

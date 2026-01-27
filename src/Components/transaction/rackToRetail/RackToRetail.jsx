@@ -325,7 +325,7 @@ const RackToRetail = ({
                       </Col>
 
                       {companies.map((item, index) => (
-                        <Col sm="4" key={index}>
+                        <Col xl="4" md="6" xs="12" key={index}>
                           <div className="checkbox checkbox-dark">
                             <input
                               type="checkbox"

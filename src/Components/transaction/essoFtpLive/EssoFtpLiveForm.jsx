@@ -35,17 +35,17 @@ const EssoFtpLive = ({btnTitle,btnTitle1}) => {
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
             
                     <Row>
-                        <Col sm="5">
+                        <Col sm="5"  md="4" xs="12">
                             <Row>
                                 <FormGroup className="m-form__group">
                                     <InputGroup>
 
-                                        <Col sm="3">
+                                        <Col xs="3">
                                             <InputGroupText>
                                                 From
                                             </InputGroupText>
                                         </Col>
-                                        <Col sm="9">
+                                        <Col xs="9">
                                             <Controller
                                                 name="from"
                                                 control={control}
@@ -72,17 +72,17 @@ const EssoFtpLive = ({btnTitle,btnTitle1}) => {
                                 </FormGroup>
                             </Row>
                         </Col>
-                        <Col sm="5">
+                        <Col sm="5"  md="4" xs="12">
                             <Row>
                                 <FormGroup className="m-form__group">
                                     <InputGroup>
-                                        <Col sm="3">
+                                        <Col xs="3">
 
                                             <InputGroupText>
                                                 To
                                             </InputGroupText>
                                         </Col>
-                                        <Col sm="9">
+                                        <Col xs="9">
 
                                             <Controller
                                                 name="to"
@@ -108,9 +108,9 @@ const EssoFtpLive = ({btnTitle,btnTitle1}) => {
                             </Row>
                         </Col>
                          
-                            <Col sm="2">
+                            <Col sm="2"  md="4" xs="12">
                     <div className='text-end'>
-                        <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
+                        <Btn attrBtn={{ color: "primary", type: "submit" }} >{btnTitle}</Btn>
 
                     </div>
                 </Col> 

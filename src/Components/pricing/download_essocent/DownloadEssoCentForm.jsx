@@ -36,7 +36,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
     <fieldset className="inputField">
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-3">
-          <Col sm="3">
+          <Col  xl="4"   sm="12">
             <DropDown
               name="company"
               label="Company"
@@ -47,7 +47,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
             />
           </Col>
 
-          <Col sm="4">
+          <Col   xl="4"   sm="12">
             <Row>
               <DatePickerInput
                 id="start_date"
@@ -58,7 +58,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
             </Row>
           </Col>
 
-          <Col sm="4">
+          <Col   xl="4"   sm="12">
             <Row>
               <DatePickerInput
                 id="end_date"
@@ -68,7 +68,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
               />
             </Row>
           </Col>
-          <Col sm="1">
+          <Col className="ms-auto"  xl="4"   sm="12">
             <div className="text-end">
               <Btn
                 attrBtn={{

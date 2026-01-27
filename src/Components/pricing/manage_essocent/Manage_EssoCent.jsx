@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from "react";
-import Select from "react-select";
 import {
   Row,
   Col,
@@ -7,17 +6,14 @@ import {
  
 } from "reactstrap";
 import { esso_rack } from "../../../api";
-
 import { Btn } from "../../../AbstractElements";
-import { useForm, Controller } from "react-hook-form";
-import DatePicker from "react-datepicker";
+import { useForm } from "react-hook-form";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import { toast } from "react-toastify";
 import axios from "axios";
 const DownloadEssoCentForm = ({ btnTitle,handleAdd,Edit,selectedRow,setEdit,onDataAdded }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
-
   const {
     register,
     control,
@@ -92,7 +88,7 @@ const onSubmit = async (formData) => {
     <fieldset className="inputField">
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-3">
-          <Col sm="3">
+          <Col xxl="3"  xl="4"  md="6" sm="12">
             <InputText
               name="name"
               label="Name"
@@ -102,7 +98,7 @@ const onSubmit = async (formData) => {
               rules={!Edit &&{ required: "Name is required" }}
             />
           </Col>
-          <Col sm="2">
+          <Col xxl="3"  xl="4"  md="6" sm="12">
             <InputText
               name="value"
               label="Value"
@@ -112,7 +108,7 @@ const onSubmit = async (formData) => {
               rules={!Edit && { required: "Required" }}
             />
           </Col>
-          <Col sm="2">
+          <Col xxl="3"  xl="4"  md="6" sm="12">
             <InputText
               name="ord"
               label="Ord"
@@ -122,7 +118,7 @@ const onSubmit = async (formData) => {
               rules={!Edit &&{ required: "Required" }}
             />
           </Col>
-          <Col sm="2">
+          <Col xxl="3"  xl="4"  md="6" sm="12">
             <InputText
               name="rack"
               label="Rack"
@@ -132,7 +128,7 @@ const onSubmit = async (formData) => {
               rules={!Edit &&{ required: "Required" }}
             />
           </Col>
-          <Col sm="2">
+          <Col className="ms-auto" xxl="3"  xl="4"  md="6" sm="12">
             <div className="text-end">
               <Btn
                 attrBtn={{

@@ -167,9 +167,9 @@ setShowTable(true)
           <fieldset>
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-              <Row className="mt-3">
+              <Row className="my-3">
                 {company_list === "list" && (
-                  <Col sm="4">
+                  <Col  xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Company</InputGroupText>
@@ -197,14 +197,14 @@ setShowTable(true)
                   </Col>
                 )}
 
-                <Col sm="4">
+                <Col  xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <Row>
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="4" >
                           <InputGroupText>Start Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="8">
                           <Controller
                             name="startDate"
                             control={control}
@@ -231,14 +231,14 @@ setShowTable(true)
                   </FormGroup>
                 </Col>
 
-                <Col sm="4">
+                <Col  xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup className={`m-form__group  `}>
                     <Row>
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="4">
                           <InputGroupText>End Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="8">
                           <Controller
                             name="endDate"
                             control={control}
@@ -265,7 +265,7 @@ setShowTable(true)
                   </FormGroup>
                 </Col>
                 {suplier_list!== false &&(
-         <Col sm="4">
+         <Col  xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -307,7 +307,7 @@ setShowTable(true)
                 </Col>
                 )}
         {suplier_list!== false &&(
-                <Col sm="4">
+                <Col  xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
@@ -346,7 +346,7 @@ setShowTable(true)
                 </Col>
         )}
                 {invoice_type_dropdown === true && (
-                  <Col sm="4">
+                  <Col  xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Invoice Type</InputGroupText>
@@ -366,7 +366,7 @@ setShowTable(true)
                                 {...field}
                                 options={invoiceTypes}
                                 className="form-control p-0 border-0"
-                                placeholder="Select Invoice Type"
+                                placeholder="Select Inv "
                                 value={field.value}
                                 onChange={(val) => field.onChange(val)}
                               />
@@ -384,7 +384,7 @@ setShowTable(true)
                   </Col>
                 )}
  {cust_inv_dropdown === true && (
-                  <Col sm="4">
+                  <Col  xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Invoice Category</InputGroupText>
@@ -401,7 +401,7 @@ setShowTable(true)
                                 {...field}
                                 options={InvoiceCategory}
                                 className="form-control p-0 border-0"
-                                placeholder="Select Invoice Type"
+                                placeholder="Select Inv"
                                 value={field.value}
                                 onChange={(val) => field.onChange(val)}
                               />
@@ -419,7 +419,7 @@ setShowTable(true)
                   </Col>
                 )}
              {invoice_category_dropdown === true && (
-                  <Col sm="4">
+                  <Col  xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Customized Type</InputGroupText>
@@ -436,7 +436,7 @@ setShowTable(true)
                                 {...field}
                                 options={customizedTypeType}
                                 className="form-control p-0 border-0"
-                                placeholder="Select Invoice Type"
+                                placeholder="Select Inv"
                                 value={field.value}
                                 onChange={(val) => field.onChange(val)}
                               />
@@ -454,7 +454,7 @@ setShowTable(true)
                   </Col>
                 )}    
                 {company_list === "checkbox" && (
-                  <Col sm="12">
+                  <Col   sm="12">
                     <fieldset>
                       <legend>Choose Company </legend>
                       {
@@ -464,7 +464,7 @@ setShowTable(true)
                           rules={{ required: "Select at least one company" }}
                           render={({ field }) => (
                             <Row>
-                              <Col sm="4">
+                              <Col  xxl="4" xl="6"   xs="12">
                                 <div className="checkbox checkbox-dark">
                                   <input
                                     type="checkbox"
@@ -483,9 +483,8 @@ setShowTable(true)
                                   </Label>
                                 </div>
                               </Col>
-
                               {companies.map((item, index) => (
-                                <Col sm="4" key={index}>
+                                <Col   xxl="4" xl="6"  xs="12" key={index}>
                                   <div className="checkbox checkbox-dark">
                                     <input
                                       type="checkbox"
@@ -514,14 +513,12 @@ setShowTable(true)
                     </fieldset>
                   </Col>
                 )}
-              </Row>
-              <Row>
-                <Col sm="12">
+                <Col className="ms-auto"  xxl="3" xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
+
                         type: "submit",
                       }}
                     >

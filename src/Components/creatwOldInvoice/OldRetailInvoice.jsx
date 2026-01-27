@@ -60,7 +60,7 @@ useEffect(() => {
             <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
 
               <Row className="mt-3">
-                <Col sm="4">
+                <Col xxl="4" xl="3"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Company</InputGroupText>
@@ -84,7 +84,7 @@ useEffect(() => {
                     )}
                   </FormGroup>
                 </Col>
-                <Col sm="4">
+                <Col xxl="4" xl="3"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Supplier</InputGroupText>
@@ -109,7 +109,7 @@ useEffect(() => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="4">
+                <Col xxl="4" xl="3"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup >
                       <InputGroupText>Country</InputGroupText>
@@ -148,15 +148,15 @@ useEffect(() => {
                 </Col>
               </Row>
               <Row className="mt-3">
-                <Col sm="4">
+                <Col xxl="4" xl="3"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <Row>
                       <InputGroup>
-                        <Col sm="4">
+                        <Col xs="4">
                           {" "}
                           <InputGroupText>Start Date</InputGroupText>
                         </Col>
-                        <Col sm="8">
+                        <Col xs="8">
                           <Controller
                             name="startDate"
                             control={control}
@@ -181,15 +181,15 @@ useEffect(() => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="4">
+                <Col xxl="4" xl="3"  md="6" sm="12">
                   <FormGroup className={`m-form__group  `}>
                     <Row>
                       <InputGroup>
-                        <Col sm="4">
+                        <Col xs="4">
                           {" "}
                           <InputGroupText>End Date</InputGroupText>
                         </Col>
-                        <Col sm="8">
+                        <Col xs="8">
                           <Controller
                             name="endDate"
                             control={control}

@@ -64,17 +64,17 @@ onSearch(basePayload)
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
             <Row className="mt-3">
-                <Col sm="3">
+                <Col  xl="3"  md="6" sm="12">
                     <Row>
                         <FormGroup className="m-form__group">
                             <InputGroup>
 
-                                <Col sm="3">
+                                <Col xs="3">
                                     <InputGroupText>
                                         From Date
                                     </InputGroupText>
                                 </Col>
-                                <Col sm="9">
+                                <Col xs="9">
                                     <Controller
                                         name="from"
                                         control={control}
@@ -98,17 +98,17 @@ onSearch(basePayload)
                         </FormGroup>
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col  xl="3"  md="6" sm="12">
                     <Row>
                         <FormGroup className="m-form__group">
                             <InputGroup>
-                                <Col sm="3">
+                                <Col xs="3">
 
                                     <InputGroupText>
                                         To
                                     </InputGroupText>
                                 </Col>
-                                <Col sm="9">
+                                <Col xs="9">
 
                                     <Controller
                                         name="to"
@@ -130,7 +130,7 @@ onSearch(basePayload)
                         </FormGroup>
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col  xl="3"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Company</InputGroupText>
@@ -142,7 +142,7 @@ onSearch(basePayload)
                                         {...field}
                                         options={company}
                                         className="form-control p-0 border-0"
-                                        placeholder="Select Company Name"
+                                        placeholder="Select Company "
                                     />
                                 )}
                             />
@@ -151,10 +151,10 @@ onSearch(basePayload)
                       
                     </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col  xl="3"  md="6" sm="12">
 
                     <div className='text-end'>
-                        <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>
+                        <Btn attrBtn={{ color: "primary",  type: "submit" }} >Search Data</Btn>
 
                     </div>
                 </Col>

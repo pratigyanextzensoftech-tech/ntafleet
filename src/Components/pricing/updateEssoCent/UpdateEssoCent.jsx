@@ -32,7 +32,7 @@ const formatDate = (date) => {
         <fieldset className='inputField'>
             <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
-                    <Col sm="6">
+                    <Col xl="9"  md="8" sm="12">
                         <Row>
                             <DatePickerInput
                                 name="pricingDate"
@@ -43,7 +43,7 @@ const formatDate = (date) => {
                             />
                         </Row>
                     </Col>
-                    <Col sm="6">
+                    <Col   xl="3"  md="4" sm="12">
                         <div className='text-end'>
                             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
 

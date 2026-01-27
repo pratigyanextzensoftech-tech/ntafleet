@@ -26,14 +26,14 @@ const index = () => {
         </Row>
 
         <Row>
-          <Col sm="6">
+          <Col xl="6">
             <DataTableComponent
               title="All Transactions List"
               tableData={dummytabledata}
               tableColumns={tableColumns}
             />
           </Col>
-          <Col sm="6">
+          <Col xl="6">
             <DataTableComponent
               title="Invoiced Transactions List "
               tableData={dummytabledata}

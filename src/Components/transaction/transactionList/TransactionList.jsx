@@ -74,14 +74,14 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
   return (
     <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
       <Row>
-        <Col sm="3">
+        <Col xxl="3" xl="4"  md="6" sm="12">
           <Row>
             <FormGroup className="m-form__group">
               <InputGroup>
-                <Col sm="3">
+                <Col xs="3">
                   <InputGroupText>From</InputGroupText>
                 </Col>
-                <Col sm="9">
+                <Col xs="9">
                   <Controller
                     name="from"
                     control={control}
@@ -105,14 +105,14 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
             </FormGroup>
           </Row>
         </Col>
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <Row>
             <FormGroup className="m-form__group">
               <InputGroup>
-                <Col sm="3">
+                <Col xs="3">
                   <InputGroupText>To</InputGroupText>
                 </Col>
-                <Col sm="9">
+                <Col xs="9">
                   <Controller
                     name="to"
                     control={control}
@@ -136,7 +136,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
             </FormGroup>
           </Row>
         </Col>
-        <Col sm="3">
+        <Col xxl="3" xl="4"   md="6" sm="12">
          <InputText
                             name="stateProv"
                             label="State Prov"
@@ -145,7 +145,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                         />
      
         </Col>
-        <Col sm="3">
+        <Col xxl="3" xl="4"   md="6" sm="12">
           <InputText
                             name="unitNo"
                             label="Unit"
@@ -153,9 +153,8 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                             register={register}
                         />
         </Col>
-      </Row>
-      <Row>
-        <Col sm="3">
+    
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <InputText
                             name="cardNo"
                             label="Card No."
@@ -163,7 +162,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                             register={register}
                         />
         </Col>
-        <Col sm="3">
+        <Col xxl="3" xl="4"  md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Company</InputGroupText>
@@ -176,14 +175,14 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                     {...field}
                     options={company}
                     className="form-control p-0 border-0"
-                    placeholder="Select Company Name"
+                    placeholder="Select Company "
                   />
                 )}
               />
             </InputGroup>
           </FormGroup>
         </Col>
-        <Col sm="3">
+        <Col xxl="3" xl="4"  md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Currency</InputGroupText>
@@ -202,7 +201,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
             </InputGroup>  
           </FormGroup>
         </Col>
-        <Col sm="3">
+        <Col xxl="3" xl="4"  md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Items</InputGroupText>
@@ -221,9 +220,8 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
             </InputGroup> 
           </FormGroup>
         </Col>
-      </Row>
-      <Row>
-        <Col sm="3">
+     
+        <Col xxl="3" xl="4"  md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Invoice Status</InputGroupText>
@@ -243,7 +241,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
             </InputGroup> 
           </FormGroup>
         </Col>
-        <Col sm="3">
+        <Col xxl="3" xl="4"  md="6" sm="12">
           <FormGroup className="m-form__group">
             <InputGroup>
               <InputGroupText>Supplier</InputGroupText>
@@ -271,7 +269,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
             )}
           </FormGroup>
         </Col>
-        <Col sm="6">
+        <Col xxl="3" xl="4"   md="12" sm="12">
           <div className="text-end">
             <Btn
               attrBtn={{

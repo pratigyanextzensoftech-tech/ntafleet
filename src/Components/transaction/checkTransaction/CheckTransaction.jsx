@@ -64,16 +64,16 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
     return (
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
             <Row>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <Row>
                         <FormGroup className="m-form__group">
                             <InputGroup>
-                                <Col sm="3">
+                                <Col xs="3">
                                     <InputGroupText>
                                         From
                                     </InputGroupText>
                                 </Col>
-                                <Col sm="9">
+                                <Col xs="9">
                                     <Controller
                                         name="from"
                                         control={control}
@@ -92,17 +92,17 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                         </FormGroup>
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <Row>
                         <FormGroup className="m-form__group">
                             <InputGroup>
-                                <Col sm="3">
+                                <Col xs="3">
 
                                     <InputGroupText>
                                         To
                                     </InputGroupText>
                                 </Col>
-                                <Col sm="9">
+                                <Col xs="9">
 
                                     <Controller
                                         name="to"
@@ -127,7 +127,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                         </FormGroup>
                     </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <InputText
                             name="stateProv"
                             label="State Prov"
@@ -136,7 +136,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                         />
      
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                    <InputText
                             name="unitNo"
                             label="Unit"
@@ -145,9 +145,8 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                         />
                 </Col>
 
-            </Row>
-            <Row>
-                <Col sm="3">
+          
+                <Col xxl="3" xl="4"  md="6" sm="12">
                         <InputText
                             name="cardNo"
                             label="Card No."
@@ -155,7 +154,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                             register={register}
                         />
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Company</InputGroupText>
@@ -178,7 +177,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                         )}
                     </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Currency</InputGroupText>
@@ -199,7 +198,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                     
                     </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Items</InputGroupText>
@@ -220,9 +219,8 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                        
                     </FormGroup>
                 </Col>
-            </Row>
-            <Row>
-                <Col sm="3">
+           
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Invoice Type</InputGroupText>
@@ -243,7 +241,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                     
                     </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Invoice Status</InputGroupText>
@@ -264,7 +262,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                      
                     </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                         <InputGroup >
                             <InputGroupText>Supplier</InputGroupText>
@@ -288,7 +286,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
                       
                     </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="12" sm="12">
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                         <button type='reset' onClick={reset} className='btn btn-secondary'>{btnTitle1}</button>

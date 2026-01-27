@@ -398,7 +398,7 @@ console.log("basePayload",basePayload);
                           rules={{ required: "Select at least one company" }}
                           render={({ field }) => (
                             <Row>
-                              <Col xl="4" md="6" sm="12">
+                              <Col   xxl="4" md="6" sm="12">
                                 <div className="checkbox checkbox-dark">
                                   <input
                                     type="checkbox"
@@ -418,7 +418,7 @@ console.log("basePayload",basePayload);
                               </Col>
 
                               {companies.map((item, index) => (
-                                <Col xs="4" key={index}>
+                                <Col xxl="4" md="6" sm="12" key={index}>
                                   <div className="checkbox checkbox-dark">
                                     <input
                                       type="checkbox"

@@ -62,15 +62,15 @@ const OwnerOperator = ({ title,onSearch }) => {
           <fieldset>
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
-              <Row className="mt-3">
-                <Col sm="3">
+              <Row className="my-3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>From</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="from"
                             control={control}
@@ -91,14 +91,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>To</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="to"
                             control={control}
@@ -117,10 +117,11 @@ const OwnerOperator = ({ title,onSearch }) => {
 
                   
                     </FormGroup>
-                  </Row>
+                                  </Row>
+
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -155,7 +156,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
@@ -186,7 +187,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
               
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice Type</InputGroupText>
@@ -219,7 +220,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Company</InputGroupText>
@@ -231,7 +232,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                             {...field}
                             options={company}
                             className="form-control p-0 border-0"
-                            placeholder="Select Company Name"
+                            placeholder="Select Company "
                           />
                         )}
                       />
@@ -241,7 +242,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice Category</InputGroupText>
@@ -264,7 +265,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice(Show/Hide) </InputGroupText>
@@ -286,8 +287,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                 
                   </FormGroup>
                 </Col>
-              </Row>
-              <div className="text-end">
+              <Col xxl="3"  xl="4"  md="6" sm="12" className="text-end ms-auto">
                 <Btn
                   attrBtn={{
                     color: "primary",
@@ -306,7 +306,8 @@ const OwnerOperator = ({ title,onSearch }) => {
                 >
                   Reset
                 </Btn>
-              </div>
+              </Col>
+              </Row>
             </Form>
           </fieldset>
         </Col>

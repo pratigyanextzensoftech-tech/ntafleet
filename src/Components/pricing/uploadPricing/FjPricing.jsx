@@ -176,27 +176,29 @@ const idby= Number(localStorage.getItem("userId"));
           <fieldset>
             <legend>{title}</legend>
             <Form className="px-2" onSubmit={handleSubmit(onSubmit)}>
-              <Row className="mt-3">
+              <Row className="my-3">
                 {/* File Upload */}
-                <Col sm="4">
+                <Col   xl="4"  md="6" sm="12">
                   <Row>
-                    <Col className="pe-0" sm="3">
-                      <InputGroupText>File</InputGroupText>
-                    </Col>
-                    <Col className="px-0" sm="9">
-                      <Input
-                        style={{ border: "1px solid #ccc" }}
-                         key={fileKey}
+                  
+                     <FormGroup>
+                        <InputGroup>
+                          <InputGroupText>File</InputGroupText>
+                          <Input
+                             key={fileKey}
                         className="form-control"
                         type="file"
                         onChange={handleFileChange}
-                      />
-                    </Col>
+                                                style={{ border: "1px solid #ccc" }}
+
+                          />
+                        </InputGroup>
+                      </FormGroup>
                   </Row>
                 </Col>
 
                 {/* Supplier Dropdown */}
-                <Col sm="4">
+                <Col   xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -229,7 +231,7 @@ const idby= Number(localStorage.getItem("userId"));
                 </Col>
 
                 {/* Submit Button */}
-                <Col sm="4">
+                <Col className="ms-auto"  xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{

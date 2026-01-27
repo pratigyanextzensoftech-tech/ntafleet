@@ -135,7 +135,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
  }>
           <Row className="mt-3">
             {company_list==!false &&(
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Company</InputGroupText>
@@ -157,15 +157,15 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
               </FormGroup>
             </Col>
               )}
-                 <Col sm="3">
+                 <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <Row>
                   <InputGroup>
-                    <Col sm="4">
+                    <Col xs="4">
                       {" "}
                       <InputGroupText>Start Date</InputGroupText>
                     </Col>
-                    <Col sm="8">
+                    <Col xs="8">
                       <Controller
                         name="startDate"
                         control={control}
@@ -186,15 +186,15 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                 </Row>
               </FormGroup>
             </Col>
-         <Col sm="3">
+         <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <Row>
                   <InputGroup>
-                    <Col sm="4">
+                    <Col xs="4">
                       {" "}
                       <InputGroupText>End Date</InputGroupText>
                     </Col>
-                    <Col sm="8">
+                    <Col xs="8">
                       <Controller
                         name="endDate"
                         control={control}
@@ -215,7 +215,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                 </Row>
               </FormGroup>
             </Col>
-              <Col sm="3">
+              <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Supplier</InputGroupText>
@@ -239,7 +239,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
               
               </FormGroup>
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Country</InputGroupText>
@@ -260,7 +260,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                
               </FormGroup>
             </Col>
-            <Col sm="3">
+            <Col xxl="3" xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Invoice Type</InputGroupText>
@@ -282,7 +282,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
              
               </FormGroup>
             </Col>
- <Col sm="3">
+ <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice Category</InputGroupText>
@@ -306,7 +306,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
           
           
 
-            <Col sm="6">
+            <Col xxl="6" xl="12"  md="12" sm="12">
               <div className="text-end">
                 <Btn
                   attrBtn={{

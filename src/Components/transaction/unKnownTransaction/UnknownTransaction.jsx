@@ -54,17 +54,17 @@ const onSubmit = (data) => {
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
             
                     <Row>
-                        <Col sm="3">
+                        <Col xxl="3" xl="4"   md="6" sm="12">
                             <Row>
                                 <FormGroup className="m-form__group">
                                     <InputGroup>
 
-                                        <Col sm="3">
+                                        <Col xs="3">
                                             <InputGroupText>
                                                 From
                                             </InputGroupText>
                                         </Col>
-                                        <Col sm="9">
+                                        <Col xs="9">
                                             <Controller
                                                 name="from"
                                                 control={control}
@@ -82,16 +82,16 @@ const onSubmit = (data) => {
                                 </FormGroup>
                             </Row>
                         </Col>
-                        <Col sm="3">
+                        <Col xxl="3" xl="4"   md="6" sm="12">
                             <Row>
                                 <FormGroup className="m-form__group">
                                     <InputGroup>
-                                        <Col sm="3">
+                                        <Col xs="3">
                                             <InputGroupText>
                                                 To
                                             </InputGroupText>
                                         </Col>
-                                        <Col sm="9">
+                                        <Col xs="9">
                                             <Controller
                                                 name="to"
                                                 control={control}
@@ -110,7 +110,7 @@ const onSubmit = (data) => {
                                 </FormGroup>
                             </Row>
                         </Col>
-                           <Col sm="3">
+                           <Col xxl="3" xl="4"   md="6" sm="12">
                             <InputText
                                                       name="stateProv"
                                                       label="State Prov"
@@ -118,7 +118,7 @@ const onSubmit = (data) => {
                                                       register={register}
                                                   />
                         </Col>
-                             <Col sm="3">
+                             <Col xxl="3" xl="4"   md="6" sm="12">
                                <InputText
                             name="unitNo"
                             label="Unit"
@@ -127,10 +127,8 @@ const onSubmit = (data) => {
                         />
        
                         </Col>
-                       
-                    </Row>
-<Row>
- <Col sm="3">
+                  
+ <Col xxl="3" xl="4"   md="6" sm="12">
                               <InputText
                             name="cardNo"
                             label="Card No."
@@ -140,7 +138,7 @@ const onSubmit = (data) => {
       
                         </Col>
    
-                         <Col sm="3">
+                         <Col xxl="3" xl="4"   md="6" sm="12">
                             <FormGroup className="m-form__group">
                                 <InputGroup >
                                     <InputGroupText>Currency</InputGroupText>
@@ -158,7 +156,7 @@ const onSubmit = (data) => {
                                 </InputGroup>
                             </FormGroup>
                         </Col>
-                         <Col sm="3">
+                         <Col xxl="3" xl="4"   md="6" sm="12">
                             <FormGroup className="m-form__group">
                                 <InputGroup >
                                     <InputGroupText>Items</InputGroupText>
@@ -176,7 +174,7 @@ const onSubmit = (data) => {
                                 </InputGroup>
                             </FormGroup>
                         </Col>
-                        <Col sm="3">
+                        <Col xxl="3" xl="4"   md="6" sm="12">
                             <FormGroup className="m-form__group">
                                 <InputGroup >
                                     <InputGroupText>Invoice Status</InputGroupText>
@@ -195,10 +193,7 @@ const onSubmit = (data) => {
                                 </InputGroup>
                             </FormGroup>
                         </Col>
-</Row>
-<Row>
-      
-                          <Col sm="3">
+                          <Col xxl="3" xl="4"   md="6" sm="12">
                             <FormGroup className="m-form__group">
                                 <InputGroup >
                                     <InputGroupText>Supplier</InputGroupText>
@@ -223,7 +218,7 @@ const onSubmit = (data) => {
                                
                             </FormGroup>
                         </Col>
-                          <Col sm="9">
+                          <Col xxl="9" xl="12"   md="12" sm="12">
                     <div className='text-end'>
                         <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
                                  <button className='btn btn-secondary'>{btnTitle1}</button>

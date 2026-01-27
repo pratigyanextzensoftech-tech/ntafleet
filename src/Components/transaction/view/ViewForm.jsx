@@ -135,10 +135,10 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                   </Label>
                 </span>
               </legend>
+                                <Row>
 
-              <Row>
                 {supplier.map((item, index) => (
-                  <Col key={index} sm="3">
+                  <Col key={index} xxl="3"  xl="4" md="4" sm="6">
                     <div className="checkbox checkbox-dark">
                       <input
                         id={`supplier-checkbox-${index}`}
@@ -156,7 +156,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                     </div>
                   </Col>
                 ))}
-              </Row>
+                  </Row>
 
               {errors.supplier && (
                 <span className="text-danger">{errors.supplier.message}</span>
@@ -165,16 +165,15 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           );
         }}
       />
-
+<Row>
       {/* Row 1 */}
-      <Row>
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <FormGroup>
             <InputGroup>
-              <Col sm="3">
+              <Col xs="3">
                 <InputGroupText>From</InputGroupText>
               </Col>
-              <Col sm="9">
+              <Col xs="9">
                 <Controller
                   name="from"
                   control={control}
@@ -192,13 +191,13 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           </FormGroup>
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <FormGroup>
             <InputGroup>
-              <Col sm="3">
+              <Col xs="3">
                 <InputGroupText>To</InputGroupText>
               </Col>
-              <Col sm="9">
+              <Col xs="9">
                 <Controller
                   name="to"
                   control={control}
@@ -216,7 +215,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           </FormGroup>
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <FormGroup>
             <InputGroup>
               <InputGroupText>State Prov</InputGroupText>
@@ -229,7 +228,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           </FormGroup>
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <FormGroup>
             <InputGroup>
               <InputGroupText>Unit</InputGroupText>
@@ -241,11 +240,9 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             </InputGroup>
           </FormGroup>
         </Col>
-      </Row>
 
       {/* Row 2 */}
-      <Row>
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <FormGroup>
             <InputGroup>
               <InputGroupText>Card No.</InputGroupText>
@@ -258,7 +255,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           </FormGroup>
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="company"
             label="Company"
@@ -267,7 +264,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           />
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="currency"
             label="Currency"
@@ -277,7 +274,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
        
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="items"
             label="Items"
@@ -285,11 +282,9 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             options={items}
           />
         </Col>
-      </Row>
 
       {/* Row 3 */}
-      <Row>
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="status"
             label="Invoice Status"
@@ -298,7 +293,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           />
         </Col>
 
-        <Col sm="3">
+        <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="invoice_type"
             label="Invoice Type"
@@ -307,7 +302,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
           />
         </Col>
 
-        <Col sm="6" className="text-end">
+        <Col xxl="6" md="12" sm="12" className="text-end">
           <Btn attrBtn={{ color: "primary", type: "submit" }}>{btnTitle}</Btn>
           <button
             type="button"

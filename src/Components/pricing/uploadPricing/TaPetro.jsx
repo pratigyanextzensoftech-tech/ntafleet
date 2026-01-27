@@ -203,31 +203,34 @@ useEffect(() => {
             <Form className="px-2" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
                 {/* 📂 File Upload */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <Row>
-                    <Col sm="3" className="pe-0">
-                      <InputGroupText>File</InputGroupText>
-                    </Col>
-                    <Col sm="9" className="px-0">
-                      <Input
-                        type="file"
-                         key={fileKey}
-                        className="form-control"
-                        accept=".xls, .xlsx"
-                        onChange={handleFileChange}
-                      />
-                    </Col>
-                  </Row>
+                                   
+                                      <FormGroup>
+                                         <InputGroup>
+                                           <InputGroupText>File</InputGroupText>
+                                           <Input
+                                              key={fileKey}
+                                         className="form-control"
+                                         type="file"
+                                         onChange={handleFileChange}
+                                                                 style={{ border: "1px solid #ccc" }}
+                 
+                                           />
+                                         </InputGroup>
+                                       </FormGroup>
+                                   </Row>
+                  
                 </Col>
 
                 {/* 📅 Pricing Date */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
-                      <Col sm="4" className="pe-0">
+                      <Col xs="4" className="pe-0">
                         <InputGroupText>Pricing Date</InputGroupText>
                       </Col>
-                      <Col sm="8">
+                      <Col xs="8">
                         <Controller
                           name="pricingDate"
                           control={control}
@@ -255,7 +258,7 @@ useEffect(() => {
                 </Col>
 
                 {/* 🏭 Supplier Dropdown */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -287,7 +290,7 @@ useEffect(() => {
                 </Col>
 
                 {/* 🚀 Submit */}
-                <Col sm="3">
+                <Col className="ms-auto" xxl="3" xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{

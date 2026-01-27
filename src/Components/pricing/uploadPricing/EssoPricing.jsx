@@ -164,9 +164,9 @@ const renameKeys = (row, keyMap) => {
             <Form className="px-2" onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
                 {/* 📁 File Upload */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <Row>
-                    <Col className="pe-0" sm="3">
+                    <Col className="pe-0" xxl="3" xl="4"  md="6" sm="12">
                       <InputGroupText>File</InputGroupText>
                     </Col>
                     <Col className="px-0" sm="9">
@@ -183,13 +183,13 @@ const renameKeys = (row, keyMap) => {
                 </Col>
 
                 {/* 📅 Pricing Date */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
-                      <Col sm="4">
+                      <Col xs="4">
                         <InputGroupText>Pricing Date</InputGroupText>
                       </Col>
-                      <Col sm="8">
+                      <Col xs="8">
                         <Controller
                           name="pricingDate"
                           control={control}
@@ -218,7 +218,7 @@ const renameKeys = (row, keyMap) => {
                 </Col>
 
                 {/* 🏢 Supplier Dropdown */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -252,7 +252,7 @@ const renameKeys = (row, keyMap) => {
                 </Col>
 
                 {/* 🚀 Submit Button */}
-                <Col sm="3" className="text-end">
+                <Col  xxl="3" xl="4"  md="6" sm="12" className="text-end ms-auto">
                   <Btn
                     attrBtn={{
                       color: "primary",

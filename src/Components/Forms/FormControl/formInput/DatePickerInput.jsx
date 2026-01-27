@@ -23,9 +23,9 @@ const DatePickerInput = ({
                     <Row>
                       <InputGroup>
 
-                        <Col xs="4">        <InputGroupText>{label}</InputGroupText>
+                        <Col xs="5">        <InputGroupText>{label}</InputGroupText>
                         </Col>
-                        <Col xs="8">
+                        <Col xs="7">
  <Controller
             name={name}
             control={control}

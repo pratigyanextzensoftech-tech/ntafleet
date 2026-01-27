@@ -64,17 +64,17 @@ const CheckInvoiceForm = ({onSearch}) => {
 
         <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
                 <Row className="mt-3">
-                    <Col sm="2">
+                    <Col xxl="3" xl="4"  md="6" sm="12">
                         <Row>
                             <FormGroup className="m-form__group">
                                 <InputGroup>
 
-                                    <Col sm="3">
+                                    <Col xs="3">
                                         <InputGroupText>
                                             From
                                         </InputGroupText>
                                     </Col>
-                                    <Col sm="9">
+                                    <Col xs="9">
                                         <Controller
                                             name="from"
                                             control={control}
@@ -86,28 +86,20 @@ const CheckInvoiceForm = ({onSearch}) => {
                                                 />
                                             )}
                                         /></Col>
-
-
-
-
-                                </InputGroup>
-
-                               
+                                </InputGroup>                           
                             </FormGroup>
                         </Row>
                     </Col>
-                    <Col sm="2">
+                    <Col xxl="3" xl="4"  md="6" sm="12">
                         <Row>
                             <FormGroup className="m-form__group">
                                 <InputGroup>
-                                    <Col sm="3">
-
+                                    <Col xs="3">
                                         <InputGroupText>
                                             To
                                         </InputGroupText>
                                     </Col>
-                                    <Col sm="9">
-
+                                    <Col xs="9">
                                         <Controller
                                             name="to"
                                             control={control}
@@ -125,8 +117,7 @@ const CheckInvoiceForm = ({onSearch}) => {
                             </FormGroup>
                         </Row>
                     </Col>
-
-        <Col sm="3">
+        <Col xxl="3" xl="4"  md="6" sm="12">
                         <FormGroup className="m-form__group">
                             <InputGroup>
                                 <InputGroupText>Country</InputGroupText>
@@ -143,13 +134,10 @@ const CheckInvoiceForm = ({onSearch}) => {
                                         />
                                     )}
                                 />
-                            </InputGroup>
-
-                        
+                            </InputGroup> 
                         </FormGroup>
                     </Col>
-
-                    <Col sm="3">
+                    <Col xxl="3" xl="4"  md="6" sm="12">
                         <FormGroup className="m-form__group">
                             <InputGroup >
                                 <InputGroupText>Supplier</InputGroupText>
@@ -165,16 +153,12 @@ const CheckInvoiceForm = ({onSearch}) => {
                                         />
                                     )}
                                 />
-                            </InputGroup>
-
-                           
+                            </InputGroup>                    
                         </FormGroup>
                     </Col>
-                                        <Col sm="2">
-
+        <Col className='ms-auto' xxl="3" xl="4"  md="6" sm="12">
 <div className='text-end'>
-                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Search Data</Btn>
-
+                            <Btn attrBtn={{ color: "primary", type: "submit" }} >Search Data</Btn>
                         </div>
                         </Col>
             

@@ -53,15 +53,14 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
     <>
 
       <Form noValidate='' onSubmit={handleSubmit(onSubmit)}  >
-        <Row className="mt-3">
-          <Col sm="3">
+        <Row className="my-3">
+          <Col xxl="4" xl="3"  md="6" sm="12">
             <FormGroup className="m-form__group">
-              <Row>
                 <InputGroup> 
                 
-                  <Col sm="4">        <InputGroupText>From Date</InputGroupText>
+                  <Col xs="4">        <InputGroupText>From Date</InputGroupText>
                   </Col>
-                  <Col sm="8">
+                  <Col xs="8">
                     <Controller
                       name="from"
                       control={control}
@@ -81,17 +80,16 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
 
                 </InputGroup>
              
-              </Row>
 
 
 
             </FormGroup>
           </Col>
-          <Col sm="3">
+          <Col xxl="4" xl="3"  md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup>
-               <Col sm="4"> 
-                <InputGroupText>To Date</InputGroupText></Col><Col sm="8">
+               <Col xs="4"> 
+                <InputGroupText>To Date</InputGroupText></Col><Col xs="8">
                 <Controller
                   name="to"
                   control={control}
@@ -112,7 +110,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
             </FormGroup>
 
           </Col>
-          <Col sm="3">
+          <Col xxl="4" xl="3"  md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup >
                 <InputGroupText>Search Type</InputGroupText>
@@ -133,7 +131,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
              
             </FormGroup>
           </Col>
-          <Col md="3">
+          <Col xxl="4" xl="3"  md="12" sm="12">
             <FormGroup className=" m-form__group">
               <InputGroup>
                 <InputGroupText>Amount</InputGroupText>
@@ -149,10 +147,8 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
 
 
 
-        </Row>
-        <Row className="mt-3">
 
-          <Col sm="3">
+          <Col xxl="4" xl="3"  md="6" sm="12">
             <FormGroup className="m-form__group">
               <InputGroup>
                 <InputGroupText>Country</InputGroupText>
@@ -178,7 +174,7 @@ const CompareForm = ({ title, btnTtitle, type, btnTtitle1,onSearch }) => {
 
 
 
-          <Col sm="9">
+          <Col xxl="4" xl="12"  md="6" sm="12">
             <div className='text-end'>
               <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTtitle}</Btn>
               <button className='btn btn-secondary'>{btnTtitle1}</button>

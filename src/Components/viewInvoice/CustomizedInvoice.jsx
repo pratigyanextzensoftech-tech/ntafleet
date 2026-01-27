@@ -71,14 +71,14 @@ const CustomizedInvoice = ({ title,onSearch }) => {
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>From</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="from"
                             control={control}
@@ -99,14 +99,14 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3">
                           <InputGroupText>To</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9">
                           <Controller
                             name="to"
                             control={control}
@@ -128,7 +128,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                   </Row>
                 </Col>
 
-                    <Col sm="3">
+                    <Col xxl="3"  xl="4"  md="6" sm="12">
                                <FormGroup className="m-form__group">
                                  <InputGroup>
                                    <InputGroupText>Supplier</InputGroupText>
@@ -157,7 +157,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                                
                                </FormGroup>
                              </Col>
-                   <Col sm="3">
+                   <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
@@ -188,7 +188,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
               
-             <Col sm="3">
+             <Col xxl="3"  xl="4"  md="6" sm="12">
                              <FormGroup className="m-form__group">
                                <InputGroup>
                                  <InputGroupText>Invoice Type</InputGroupText>
@@ -220,7 +220,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                              </FormGroup>
                            </Col>
 
-                 <Col sm="3">
+                 <Col xxl="3"  xl="4"  md="6" sm="12">
                            <FormGroup className="m-form__group">
                              <InputGroup>
                                <InputGroupText>Company</InputGroupText>
@@ -241,7 +241,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                             
                            </FormGroup>
                          </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Customised Type</InputGroupText>
@@ -261,7 +261,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                    
                   </FormGroup>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice Category</InputGroupText>
@@ -282,7 +282,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                   </FormGroup>
                 </Col>
                
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice(Show/Hide) </InputGroupText>
@@ -302,8 +302,8 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                   
                   </FormGroup>
                 </Col>
-                <Col sm="9">
-                  <div className="text-end">
+                <Col className="ms-auto" xxl="3"  xl="4"  md="6" sm="12">
+                  <div className="text-end ">
                     <Btn
                       attrBtn={{
                         color: "primary",
