@@ -38,14 +38,14 @@ const LovePricing = ({ title, btnTitle }) => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col sm="4">
+                <Col  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="4">
                           <InputGroupText>Pricing Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="8">
                           <Controller
                             name="pricingDate"
                             control={control}
@@ -69,7 +69,7 @@ const LovePricing = ({ title, btnTitle }) => {
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="4">
+                <Col  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -100,12 +100,11 @@ const LovePricing = ({ title, btnTitle }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="4">
+                <Col className="ms-auto"  xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
                         type: "submit",
                       }}
                     >

@@ -37,15 +37,15 @@ const UploadEssoGroupRackForm = ({ title, btnTitle }) => {
               noValidate=""
               onSubmit={handleSubmit(onSubmit)}
             >
-              <Row className="mt-3">
-                <Col sm="4">
-                  <Row>
-                    <FormGroup className="m-form__group">
+              <Row className="mt-3 ">
+                <Col xl="4"  md="6" sm="12">
+               <Row>
+                    <FormGroup className="m-form__group">      
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="4">
                           <InputGroupText>Pricing Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="8">
                           <Controller
                             name="pricingDate"
                             control={control}
@@ -67,31 +67,30 @@ const UploadEssoGroupRackForm = ({ title, btnTitle }) => {
                         </span>
                       )}
                     </FormGroup>
-                  </Row>
+                 </Row>
                 </Col>
+                  <Col  xl="4"  md="6" sm="12">
+                                    <Row className='mb-3'>
+                                      <Col xs="3" className="pe-0">
+                                        <InputGroupText>CSV File</InputGroupText>
+                                      </Col>
+                
+                                      <Col xs="9" className="px-0">
+                                        <Input
+                                          style={{ border: "1px solid #ccc" }}
+                                          className="form-control"
+                                          type="file"
+                                          {...register("csvFile")}
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </Col>
 
-                <Col sm="4">
-                  <Row>
-                    <Col className="pe-0" sm="3">
-                      {" "}
-                      <InputGroupText> CSV File</InputGroupText>
-                    </Col>
-                    <Col className="px-0" sm="9">
-                      <Input
-                        style={{ border: "1px solid #ccc" }}
-                        className="form-control w-100c "
-                        type="file"
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-
-                <Col sm="4">
+                <Col className="ms-auto"  xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
                         type: "submit",
                       }}
                     >

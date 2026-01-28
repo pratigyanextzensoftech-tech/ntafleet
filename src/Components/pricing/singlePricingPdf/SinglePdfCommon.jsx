@@ -102,7 +102,7 @@ const SinglePdfCommon = ({
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col sm="4">
+                <Col  xl="4"  md="6" sm="12">
                   <CompanyDropDown
                     label="Company"
                     name="Company"
@@ -113,14 +113,14 @@ const SinglePdfCommon = ({
 
                   />
                 </Col>
-                <Col sm="4">
+                <Col  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="3" md="4">
                           <InputGroupText>Pricing Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="9" md="8">
                           <Controller
                             name="pricingDate"
                             control={control}
@@ -145,7 +145,7 @@ const SinglePdfCommon = ({
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="4">
+                <Col  xl="4"  md="6" sm="12">
   <FormGroup className="m-form__group">
     <InputGroup>
       <InputGroupText>Supplier</InputGroupText>
@@ -187,9 +187,8 @@ const SinglePdfCommon = ({
   </FormGroup>
 </Col>
 
-              </Row>
-              <Row>
-                <Col sm="4">
+             
+                <Col  xl="4"  md="6" sm="12">
                   <InputText
                     name="email"
                     label="Testing Email"
@@ -197,12 +196,11 @@ const SinglePdfCommon = ({
                     register={register}
                   />
                 </Col>
-                <Col sm="8">
+                <Col className="ms-auto"  xl="8"  md="12" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
                         type: "submit",
                       }}
                     >

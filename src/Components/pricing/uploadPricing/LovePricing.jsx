@@ -66,13 +66,13 @@ useEffect(() => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col sm="4">
-                  <Row>
-                    <Col className="pe-0" sm="3">
+                <Col xl="4"  md="6" sm="12">
+                  <Row className="mb-3">
+                    <Col className="pe-0" xs="3">
                       {" "}
                       <InputGroupText>File</InputGroupText>
                     </Col>
-                    <Col className="px-0" sm="9">
+                    <Col className="px-0" xs="9">
                       <Input
                         style={{ border: "1px solid #ccc" }}
                         className="form-control w-100c "
@@ -81,7 +81,7 @@ useEffect(() => {
                     </Col>
                   </Row>
                 </Col>
-                <Col sm="4">
+                <Col xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -112,12 +112,11 @@ useEffect(() => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="4">
+                <Col xl="4"  md="12" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
                         type: "submit",
                       }}
                     >

@@ -11,8 +11,7 @@ export const DownloadBulkTab = [
   {
     id: '1',
     label: 'Create Bulk Price Sheet',
-    component: <CreateBulkForm title=" Download Bulk Price Sheet " btnTitle="Create Excel " />
-,
+    component: <CreateBulkForm title=" Download Bulk Price Sheet " btnTitle="Create Excel " />,
   },
   {
     id: '2',

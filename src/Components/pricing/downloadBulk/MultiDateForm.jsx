@@ -39,14 +39,14 @@ const MultiDateForm = ({ title, btnTitle }) => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="4">
                           <InputGroupText>From Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="8">
                           <Controller
                             name="fromDate"
                             control={control}
@@ -70,14 +70,14 @@ const MultiDateForm = ({ title, btnTitle }) => {
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="4">
                           <InputGroupText>To Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="8">
                           <Controller
                             name="toDate"
                             control={control}
@@ -101,7 +101,7 @@ const MultiDateForm = ({ title, btnTitle }) => {
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col xxl="3"  xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -132,12 +132,11 @@ const MultiDateForm = ({ title, btnTitle }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col className="ms-auto" xxl="3"  xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
                         type: "submit",
                       }}
                     >

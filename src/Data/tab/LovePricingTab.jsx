@@ -29,7 +29,7 @@ export const LovePricingTab = [
       </>
     )
    ,
-    component: <MailPricingCommon supplier="LOVE" listapi={love_pricing_pdf} supplier_ids="7" invoiceType="Actual" title="Mail Bulk Pricing PDF" btnTtitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon supplier="LOVE" listapi={love_pricing_pdf} supplier_ids="7" invoiceType="Actual" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   }
  
   

@@ -211,7 +211,7 @@ console.log(newSelection)
                 }}
               >
                 <Row className="mt-3">
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Company</InputGroupText>
@@ -232,14 +232,14 @@ console.log(newSelection)
                       
                     </FormGroup>
                   </Col>
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col sm="3">
+                          <Col xs="4" md="5" xl="4" >
                             <InputGroupText>Pricing Date</InputGroupText>
                           </Col>
-                          <Col sm="9">
+                          <Col xs="8" md="7" xl="8">
                             <Controller
                               name="pricingDate"
                               control={control}
@@ -258,7 +258,7 @@ console.log(newSelection)
                       </FormGroup>
                     </Row>
                   </Col>
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                  <InputText
                            name="rackus"
                            label="Rack US"
@@ -269,9 +269,8 @@ console.log(newSelection)
                            
                          />
                   </Col>
-                </Row>
-                <Row>
-                  <Col sm="4">
+               
+                  <Col  xl="4"  md="6" sm="12">
                    <InputText
             name="rackca"
             label="Rack CA"
@@ -280,12 +279,11 @@ console.log(newSelection)
             
           />
                   </Col>
-                  <Col sm="8">
-                    <div className="text-end">
+                  <Col className="ms-auto" xl="8"  md="12" sm="12">
+                    <div  className="text-end">
                       <Btn
                         attrBtn={{
                           color: "primary",
-                          className: "m-r-15",
                           type: "submit",
                         }}
                       >

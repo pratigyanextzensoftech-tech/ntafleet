@@ -197,7 +197,7 @@ useEffect(() => {
        <Form className="px-2" noValidate="" onSubmit={handleSubmit(onSubmit)}>
       
           <Row className="mt-3">
-            <Col sm="4">
+            <Col  xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Company</InputGroupText>
@@ -216,7 +216,7 @@ useEffect(() => {
                 </InputGroup>
               </FormGroup>
             </Col>
-            <Col sm="4">
+            <Col  xl="4"  md="6" sm="12">
               <FormGroup className="m-form__group">
                 <InputGroup>
                   <InputGroupText>Discount Type</InputGroupText>
@@ -228,7 +228,7 @@ useEffect(() => {
                         {...field}
                         options={DiscountType}
                         className="form-control p-0 border-0"
-                        placeholder="Select Discount Type"
+                        placeholder="Select Discount "
                       />
                     )}
                   />
@@ -237,14 +237,14 @@ useEffect(() => {
                
               </FormGroup>
             </Col>
-            <Col sm="4">
+            <Col  xl="4"  md="6" sm="12">
               <Row>
                 <FormGroup className="m-form__group">
                   <InputGroup>
-                    <Col sm="3">
+                    <Col xs="3">
                       <InputGroupText>from Date</InputGroupText>
                     </Col>
-                    <Col sm="9">
+                    <Col xs="9">
                       <Controller
                         name="from"
                         control={control}
@@ -265,14 +265,14 @@ useEffect(() => {
                 </FormGroup>
               </Row>
             </Col>
-            <Col sm="4">
+            <Col  xl="4"  md="6" sm="12">
               <Row>
                 <FormGroup className="m-form__group">
                   <InputGroup>
-                    <Col sm="3">
+                    <Col xs="4">
                       <InputGroupText>Upto Date</InputGroupText>
                     </Col>
-                    <Col sm="9">
+                    <Col xs="8">
                       <Controller
                         name="to"
                         control={control}
@@ -294,12 +294,11 @@ useEffect(() => {
               </Row>
             </Col>
 
-            <Col sm="8">
+            <Col className="ms-auto" xl="8"  md="12" sm="12">
               <div className="text-end">
                 <Btn
                   attrBtn={{
                     color: "primary",
-                    className: "m-r-15",
                     type: "submit",
                   }}
                 >

@@ -343,15 +343,15 @@ console.log(newSelection)
 
                 {/* PRICING DATE */}
                 {pricingDate === true && (
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col sm="3">
+                          <Col xs="4" md="5" lg="4">
                             <InputGroupText>Pricing Date</InputGroupText>
                           </Col>
 
-                          <Col sm="9">
+                          <Col xs="8" md="7" lg="8">
                             <Controller
                               name="pricingDate"
                               control={control}
@@ -382,7 +382,7 @@ console.log(newSelection)
                   </Col>
                 )}
 {rackus==true &&(
-      <Col sm="4">
+      <Col  xl="4"  md="6" sm="12">
       <InputText
             name="rackus"
             label="Rack US"
@@ -396,7 +396,7 @@ console.log(newSelection)
           </Col>
 )}
 {rackca==true &&(
-      <Col sm="4">
+      <Col  xl="4"  md="6" sm="12">
       <InputText
             name="rackca"
             label="Rack CA"
@@ -411,7 +411,7 @@ console.log(newSelection)
 )}
                 {/* SUPPLIER */}
                 {supplier === true && (
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Supplier</InputGroupText>
@@ -458,7 +458,7 @@ console.log(newSelection)
 
                 {/* DISCOUNT TYPE */}
                 {discountType === true && (
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Discount Type</InputGroupText>
@@ -476,7 +476,7 @@ console.log(newSelection)
                               {...field}
                               className="form-control p-0 border-0"
                               options={DiscountType}
-                              placeholder="Select Discount Type"
+                              placeholder="Select Discount "
                               onChange={field.onChange}
                               value={field.value}
                             />
@@ -494,7 +494,7 @@ console.log(newSelection)
                 )}
 
                 {testingEmail === true && (
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                   
                     <InputText
             name="testingEmail"
@@ -512,13 +512,13 @@ console.log(newSelection)
 
                 {/* CSV FILE */}
                 {csvFile === true && (
-                  <Col sm="4">
-                    <Row>
-                      <Col sm="3" className="pe-0">
+                  <Col  xl="4"  md="6" sm="12">
+                    <Row className='mb-3'>
+                      <Col xs="3" className="pe-0">
                         <InputGroupText>CSV File</InputGroupText>
                       </Col>
 
-                      <Col sm="9" className="px-0">
+                      <Col xs="9" className="px-0">
                         <Input
                           style={{ border: "1px solid #ccc" }}
                           className="form-control"
@@ -532,7 +532,7 @@ console.log(newSelection)
 
                 {/* COMPANY */}
                 {company === true && (
-                  <Col sm="4">
+                  <Col  xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Company</InputGroupText>
@@ -569,11 +569,11 @@ console.log(newSelection)
                 {fromUpto === true && (
                   <>
                     {/* FROM DATE */}
-                    <Col sm="4">
+                    <Col  xl="4"  md="6" sm="12">
                       <Row>
                         <FormGroup className="m-form__group">
                           <InputGroup>
-                            <Col sm="4">
+                            <Col  xs="4">
                               <InputGroupText>Pricing From</InputGroupText>
                             </Col>
 
@@ -606,15 +606,15 @@ console.log(newSelection)
                       </Row>
                     </Col>
 
-                    <Col sm="4">
+                    <Col  xl="4"  md="6" sm="12">
                       <Row>
                         <FormGroup className="m-form__group">
                           <InputGroup>
-                            <Col sm="4">
+                            <Col  xs="4">
                               <InputGroupText>Pricing Upto</InputGroupText>
                             </Col>
 
-                            <Col sm="8">
+                            <Col xs="8">
                               <Controller
                                 name="pricingUpto"
                                 control={control}
@@ -656,7 +656,7 @@ console.log(newSelection)
                           rules={{ required: "Select at least one company" }}
                           render={({ field }) => (
                             <Row>
-                              <Col sm="4">
+                              <Col  xl="4"  lg="6" sm="12">
                                 <div className="checkbox checkbox-dark">
                                   <input
                                     type="checkbox"
@@ -677,7 +677,7 @@ console.log(newSelection)
                               </Col>
 
                               {companies.map((item, index) => (
-                                <Col sm="4" key={index}>
+                                <Col  xl="4"  lg="6" sm="12" key={index}>
                                   <div className="checkbox checkbox-dark">
                                     <input
                                       type="checkbox"
@@ -711,7 +711,6 @@ console.log(newSelection)
                   <Btn
                     attrBtn={{
                       color: "primary",
-                      className: "m-r-15",
                       type: "submit",
                     }}
                   >

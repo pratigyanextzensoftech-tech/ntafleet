@@ -162,14 +162,15 @@ const renameKeys = (row, keyMap) => {
           <fieldset>
             <legend>{title}</legend>
             <Form className="px-2" onSubmit={handleSubmit(onSubmit)}>
-              <Row className="mt-3">
+              <Row className="my-3">
                 {/* 📁 File Upload */}
                 <Col xxl="3" xl="4"  md="6" sm="12">
-                  <Row>
-                    <Col className="pe-0" xxl="3" xl="4"  md="6" sm="12">
+                  <Row className="mb-3">
+                    <InputGroup>
+                    <Col  xs="3">
                       <InputGroupText>File</InputGroupText>
                     </Col>
-                    <Col className="px-0" sm="9">
+                    <Col  xs="9">
                       <Input
                         type="file"
                         className="form-control"
@@ -179,11 +180,13 @@ const renameKeys = (row, keyMap) => {
                         onChange={handleFileChange}
                       />
                     </Col>
+                    </InputGroup>
                   </Row>
                 </Col>
 
                 {/* 📅 Pricing Date */}
                 <Col xxl="3" xl="4"  md="6" sm="12">
+                
                   <FormGroup>
                     <InputGroup>
                       <Col xs="4">
@@ -230,6 +233,7 @@ const renameKeys = (row, keyMap) => {
                         render={({ field }) => (
                           <Select
                             {...field}
+                            
                             className="form-control p-0 border-0"
                             placeholder={
                               loading

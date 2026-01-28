@@ -225,7 +225,7 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
             >
             
                 <Row className="mt-3">
-                    <Col sm="3">
+                    <Col  xxl="3" xl="4"  md="6" sm="12">
                     <FormGroup className="m-form__group">
                       <InputGroup>
                         <InputGroupText>Company</InputGroupText>
@@ -251,14 +251,14 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                       )}
                     </FormGroup>
                   </Col>
-                  <Col sm="3">
+                  <Col  xxl="3" xl="4"  md="6" sm="12">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col sm="5">
+                          <Col xs="5">
                             <InputGroupText>Pricing from Date</InputGroupText>
                           </Col>
-                          <Col sm="7
+                          <Col xs="7
                           ">
                             <Controller
                               name="pricingDate"
@@ -283,14 +283,14 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                       </FormGroup>
                     </Row>
                   </Col>
-                  <Col sm="3">
+                  <Col  xxl="3" xl="4"  md="6" sm="12">
                     <Row>
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col sm="5">
+                          <Col xs="5">
                             <InputGroupText>Pricing Upto Date</InputGroupText>
                           </Col>
-                          <Col sm="7">
+                          <Col xs="7">
                             <Controller
                               name="pricingDate"
                               control={control}
@@ -314,7 +314,7 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                       </FormGroup>
                     </Row>
                   </Col>
-<Col sm="3">
+<Col  xxl="3" xl="4"  md="6" sm="12">
  <InputText
             name="rackon"
             label="Rack On"
@@ -329,7 +329,6 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                       <Btn
                         attrBtn={{
                           color: "primary",
-                          className: "m-r-15",
                           type: "submit",
                         }}
                       >

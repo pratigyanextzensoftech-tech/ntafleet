@@ -45,7 +45,7 @@ const EssoGroupForm = ({ title, btnTitle, tabletitle }) => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col sm="3">
+                <Col  xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Company</InputGroupText>
@@ -72,14 +72,14 @@ const EssoGroupForm = ({ title, btnTitle, tabletitle }) => {
                   </FormGroup>
                 </Col>
 
-                <Col sm="3">
+                <Col  xxl="3" xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col  xs="5">
                           <InputGroupText>Pricing from Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="7">
                           <Controller
                             name="pricingDate"
                             control={control}
@@ -103,14 +103,14 @@ const EssoGroupForm = ({ title, btnTitle, tabletitle }) => {
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col sm="3">
+                <Col  xxl="3" xl="4"  md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
-                        <Col sm="3">
+                        <Col xs="5">
                           <InputGroupText>Pricing Upto Date</InputGroupText>
                         </Col>
-                        <Col sm="9">
+                        <Col xs="7">
                           <Controller
                             name="pricingDate"
                             control={control}
@@ -135,12 +135,11 @@ const EssoGroupForm = ({ title, btnTitle, tabletitle }) => {
                   </Row>
                 </Col>
 
-                <Col sm="3">
+                <Col className="ms-auto"  xxl="3" xl="4"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
                         type: "submit",
                       }}
                     >

@@ -187,12 +187,13 @@ const [fileKey, setFileKey] = useState(Date.now());
             <Form className="px-2" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
                 {/* 🗂 File Upload */}
-                <Col sm="3">
-                  <Row>
-                    <Col className="pe-0" sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
+                  <Row className="mb-3">
+                    <InputGroup>
+                    <Col xs="3">
                       <InputGroupText>File</InputGroupText>
                     </Col>
-                    <Col className="px-0" sm="9">
+                    <Col className="px-0" xs="9">
                       <Input
                         type="file"
                          key={fileKey}
@@ -202,17 +203,18 @@ const [fileKey, setFileKey] = useState(Date.now());
                         onChange={handleFileChange}
                       />
                     </Col>
+                    </InputGroup>
                   </Row>
                 </Col>
 
                 {/* 📅 Pricing Date */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
-                      <Col sm="4" className="pe-0">
+                      <Col xs="4" className="pe-0">
                         <InputGroupText>Pricing Date</InputGroupText>
                       </Col>
-                      <Col sm="8">
+                      <Col xs="8">
                         <Controller
                           name="pricingDate"
                           control={control}
@@ -241,7 +243,7 @@ const [fileKey, setFileKey] = useState(Date.now());
                 </Col>
 
                 {/* 🏢 Supplier Dropdown */}
-                <Col sm="3">
+                <Col xxl="3" xl="4"  md="6" sm="12">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupText>Supplier</InputGroupText>
@@ -272,12 +274,12 @@ const [fileKey, setFileKey] = useState(Date.now());
                 </Col>
 
                 {/* 🚀 Submit */}
-                <Col sm="3">
+                <Col className="ms-auto" xxl="3" xl="12"  md="6" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        className: "m-r-15",
+                    
                         type: "submit",
                       }}
                     >
