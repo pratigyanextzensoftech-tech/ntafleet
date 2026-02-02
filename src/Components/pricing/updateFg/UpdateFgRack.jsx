@@ -77,15 +77,22 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
                         <Col xs="8">
                           <Controller
                             name="pricingDate"
+                            rules={{ required: "Please Fill out this field" }}
                             control={control}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control `}
                                 selected={field.value}
-                                onChange={(date) => field.onChange(date)}
+                             
+                                onChange={(date) => {field.onChange(date)}}
                               />
                             )}
                           />
+                            {errors.pricingDate && (
+                        <span className="text-danger">
+                          {errors.pricingDate.message}
+                        </span>
+                      )}
                         </Col>
                       </InputGroup>
 
@@ -95,7 +102,7 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
                 </Col>
 
                 <Col className="ms-auto" lg="4" sm="12">
-                  <div className="text-end">
+                  <div className="text-end ">
                     <Btn
                       attrBtn={{
                         color: "primary",
@@ -105,7 +112,7 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
                       {resetShow?"Save Rack Pricing": btnTitle}
                     </Btn>
                     {resetShow && (
-  <button className="btn btn-secondary" onClick={handleReset}
+                <button className="btn btn-secondary mx-2" onClick={handleReset}
                       
                     >
                      Reset

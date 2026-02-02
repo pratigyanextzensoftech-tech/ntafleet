@@ -149,6 +149,7 @@ const UpdateTaPetroRackCent = ({ title, btnTitle,apiName }) => {
                           <Controller
                             name="pricingDate"
                             control={control}
+                            rules={{ required: "Please Fill out this field" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control `}
@@ -159,7 +160,13 @@ const UpdateTaPetroRackCent = ({ title, btnTitle,apiName }) => {
 
                               />
                             )}
+                             
                           />
+                          {errors.pricingDate && (
+                        <span className="text-danger">
+                          {errors.pricingDate.message}
+                        </span>
+                      )}
                         </Col>
                       
                       </InputGroup>
@@ -180,7 +187,7 @@ const UpdateTaPetroRackCent = ({ title, btnTitle,apiName }) => {
                       {resetShow?"Save Rack Pricing": btnTitle}
                     </Btn>
                     {resetShow && (
-  <button className="btn btn-secondary" onClick={handleReset}
+  <button className="btn btn-secondary mx-2" onClick={handleReset}
                       
                     >
                      Reset
