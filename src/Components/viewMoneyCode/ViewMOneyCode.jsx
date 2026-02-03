@@ -6,6 +6,7 @@ import ViewMoneyCodeForm from './ViewMoneyCodeForm'
 import DataTableComponent from '../Tables/DataTable/DataTableComponent'
 import {  moneycode_invoice as APINAME,retail_invoice,invoice} from '../../api/index'
 import usePaginatedTable from '../../Hooks/usePagination';
+import { downloadPdf } from '../../Hooks/Dropdowns';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -213,7 +214,8 @@ width:"150px",
   icon: <FaDownload />,
   type: "download",
   color: "text-danger",
-  href: row?.fulldata?.download_link,
+  href: "#",
+  onClick:()=>downloadPdf(row?.fulldata?.download_link)
 },
             {
               label: "View",

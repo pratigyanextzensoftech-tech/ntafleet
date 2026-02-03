@@ -7,6 +7,7 @@ import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { tcheck_invoice } from '../../../api';
+import { downloadPdf } from '../../../Hooks/Dropdowns';
 import {
   FaDownload,
   FaEye, 
@@ -227,9 +228,8 @@ const columnWidths = {
               {/* Download */}
             
   <a
-  href={row.fulldata.download_link} 
-  download
-  target="_blank"
+  href="#"
+  onClick={()=>downloadPdf(row.fulldata.download_link)}
   rel="noopener noreferrer"
   className="dropdown-item d-flex align-items-center text-primary"
   style={{ padding: "8px 12px", gap: "8px" }}

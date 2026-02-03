@@ -8,6 +8,7 @@ import OwnerOperator from "../viewInvoice/OwnerOperator";
 import ViewInvoiceForm from "../viewInvoice/ViewInvoiceForm";
 import CustomizedInvoice from "../viewInvoice/CustomizedInvoice";
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
+import { downloadPdf } from "../../Hooks/Dropdowns";
 import usePaginatedTable from "../../Hooks/usePagination";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -301,20 +302,6 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
     },
   ];
 
-  const downloadPdf = async (url) => {
-  const res = await fetch(url);
-  const blob = await res.blob();
-  const filename=url.split("/").pop().split("?")[0];
-  const blobUrl = window.URL.createObjectURL(blob);
-  const link = document.createElement("a"); 
-  link.href = blobUrl;
-  link.download = filename || "invoice.pdf"; 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link); 
-  window.URL.revokeObjectURL(blobUrl);
-};
-
   useEffect(() => {
    const cols = Object.keys(columnsMap)
   .filter((key) => key !== "Id")
@@ -460,14 +447,18 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
 </a>
 
 
-              <Link
-                to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
-                state={{ downloadLinkUrl: row.fulldata.download_link }}
-                className="dropdown-item d-flex align-items-center text-success"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaEye /> View 
-              </Link>
+          <Link
+  to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}?pdf=${encodeURIComponent(
+    row.fulldata.download_link
+  )}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="dropdown-item d-flex align-items-center text-success"
+  style={{ padding: "8px 12px", gap: "8px" }}
+>
+  <FaEye /> View
+</Link>
+
 
               <button
                 className="dropdown-item d-flex align-items-center text-primary"

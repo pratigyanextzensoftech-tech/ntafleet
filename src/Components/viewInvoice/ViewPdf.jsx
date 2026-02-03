@@ -1,36 +1,36 @@
-import React,{Fragment,useEffect} from 'react'
-import HeaderCard from '../Common/Component/HeaderCard'
-import { Breadcrumbs } from '../../AbstractElements';
-import { Row,Col,CardBody,Card,Container } from 'reactstrap';
-import { useParams } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
+import React, { Fragment } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { Row, Col, Card, Container } from "reactstrap";
+import HeaderCard from "../Common/Component/HeaderCard";
+import { Breadcrumbs } from "../../AbstractElements";
+
 const ViewPdf = () => {
-   const { id } = useParams();
-const { state } = useLocation();
-   const InvoiceId = atob(decodeURIComponent(id));
-  console.log("Encoded:", id);
-  console.log("Decoded:", InvoiceId);
-   
+  const { id } = useParams();
+  const location = useLocation();
+
+  const invoiceId = atob(decodeURIComponent(id));
+  const pdfUrl = new URLSearchParams(location.search).get("pdf");
+
   return (
     <Fragment>
-          <Breadcrumbs parent="Invoice" title="View Invoice" />
-          <Container fluid={true}>
-            <Row>
-              <Col sm="12">
-                <Card>
-                  <HeaderCard title="View  Invoice " />
-                    <iframe
-          src={state?.downloadLinkUrl?state?.downloadLinkUrl:""}
-          width="100%"
-          height="700px"
-          title="Invoice PDF"
-        />
-                  </Card>
-                  </Col>
-                  </Row>
-                  </Container>
-                  </Fragment>
-  )
-}
+      <Breadcrumbs parent="Invoice" title="View Invoice" />
+      <Container fluid>
+        <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title={`View Invoice ${invoiceId}`} />
+              <iframe
+                src={pdfUrl}
+                width="100%"
+                height="700px"
+                title="Invoice PDF"
+              />
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
+  );
+};
 
-export default ViewPdf
+export default ViewPdf;
