@@ -70,8 +70,6 @@ const Index = () => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } =useForm({
- 
-
   });
   useEffect(() => {
     axios
@@ -87,7 +85,6 @@ const Index = () => {
 
   const onSubmit = async (formData) => {
     try {
-      // Create request payload (if needed, map keys)
       const payload = {
         company_name: formData.company_name || "",
         otp_phone: formData.otp_phone || "",
@@ -166,6 +163,7 @@ const Index = () => {
         esso_live: formData.esso_live || "",
         remarks: formData.remarks || "",
       };
+      console.log(formData)
       console.log("📤 Submitting data:", payload);
       const res = await axios.put(`${company}/${company_id}`, payload);
       console.log("✅ API Response:", res.data);
@@ -201,16 +199,16 @@ const Index = () => {
                             <input
                               className="form-control"
                               name="company_name"
-                              defaultValue={FullData.company_name}
+                              defaultValue={FullData?.company_name}
                               type="text"
-                              {...register("company_name", { required: true })}
+                              {...register("company_name")}
                             />
                           </InputGroup>
-                          {errors.company_name && (
+                          {/* {errors.company_name && (
                             <span className="text-danger">
                               Company Name is required
                             </span>
-                          )}
+                          )} */}
                         </FormGroup>
                       </Col>
 
@@ -228,9 +226,9 @@ const Index = () => {
                               name="email"
                               type="email"
                               defaultValue={FullData.email}
-                              disabled
+                              readOnly
                               {...register("email", {
-                                required: "Email-1 is required",
+                              
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                   message: "Invalid email address",
@@ -238,11 +236,7 @@ const Index = () => {
                               })}
                             />
                           </InputGroup>
-                          {errors.email && (
-                            <span className="text-danger">
-                              {errors.email?.message}
-                            </span>
-                          )}
+                       
                         </FormGroup>
                       </Col>
                       <Col sm="3">
@@ -257,7 +251,7 @@ const Index = () => {
                               type="email"
                               defaultValue={FullData.email2}
 
-                              disabled
+                              readOnly
                               {...register("email2", {
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -286,7 +280,7 @@ const Index = () => {
                               name="other_email"
                                defaultValue={FullData.other_email}
 
-                              disabled
+                              readOnly
                               type="email"
                               {...register("other_email", {
                                 pattern: {
@@ -317,10 +311,9 @@ const Index = () => {
                               className="form-control"
                               name="otp_email"
                               defaultValue={FullData.otp_email}
-                              disabled
+                             readOnly
                               type="email"
                               {...register("otp_email", {
-                                required: "Otp Email-1 is required",
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                   message: "Invalid email format",
@@ -328,11 +321,7 @@ const Index = () => {
                               })}
                             />
                           </InputGroup>
-                          {errors.otp_email && (
-                            <p className="text-danger">
-                              {errors.otp_email?.message}
-                            </p>
-                          )}
+                         
                         </FormGroup>
                       </Col>
                       <Col sm="3">
@@ -344,7 +333,7 @@ const Index = () => {
                             </InputGroupText>
                             <input
                               name="otp_email2"
-                              disabled
+                              readOnly
                               className="form-control"
                               defaultValue={FullData.otp_email2}
 
@@ -1497,7 +1486,7 @@ const Index = () => {
                               type="text"
                               name="username"
                               value={FullData.email}
-                              disabled
+                             readOnly
                               {...register("username")}
                             />
                           </InputGroup>

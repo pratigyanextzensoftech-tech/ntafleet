@@ -11,7 +11,6 @@ import { Loading } from '../../Constant';
 import SvgIcon from '../../Components/Common/Component/SvgIcon';
 
 const Header = () => {
-  
   const id = window.location.pathname.split('/').pop();
   const layout = id;
   const { toggleIcon } = useContext(CustomContext);
@@ -23,7 +22,6 @@ const Header = () => {
   // eslint-disable-next-line
   const [searchResultEmpty, setSearchResultEmpty] = useState(false);
   const { customizer } = useContext(CustomContext);
-
   const layout_type = customizer.settings.layout_type;
   const layout_versions = customizer.color.mix_background_layout;
 

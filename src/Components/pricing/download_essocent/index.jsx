@@ -18,7 +18,6 @@ const Index = () => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
@@ -200,7 +199,12 @@ const Index = () => {
                     <li className="dropdown position-relative">
                       <button
                         className="btn btn-primary dropdown-toggle d-flex align-items-center gap-2"
-                        onClick={() => setOpen(!open)}
+                        
+                         onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(!open);
+  }}
                         style={{
                           fontWeight: 500,
                           transition: "all 0.2s ease-in-out",
@@ -208,6 +212,7 @@ const Index = () => {
                       >
                         <i className="fa fa-download"></i>
                         Download
+
                       </button>
 
                       {open && (

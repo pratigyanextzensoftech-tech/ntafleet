@@ -14,6 +14,7 @@ import OwnerOperator from "../viewInvoice/OwnerOperator";
 import ViewInvoiceForm from "../viewInvoice/ViewInvoiceForm";
 import CustomizedInvoice from "../viewInvoice/CustomizedInvoice";
 import DataTableComponent from "../Tables/DataTable/DataTableComponent";
+import { downloadPdf } from "../../Hooks/Dropdowns";
 import usePaginatedTable from "../../Hooks/usePagination";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -314,6 +315,7 @@ const ViewInvoice = () => {
     },
   ];
 
+<<<<<<< HEAD
   const downloadPdf = async (url) => {
     const res = await fetch(url);
     const blob = await res.blob();
@@ -328,6 +330,8 @@ const ViewInvoice = () => {
     window.URL.revokeObjectURL(blobUrl);
   };
 
+=======
+>>>>>>> 288983b6b264a200ad516a9ecfa20d7bc4dfbc75
   useEffect(() => {
     const cols = Object.keys(columnsMap)
       .filter((key) => key !== "Id")
@@ -473,6 +477,7 @@ const ViewInvoice = () => {
                 <FaDownload /> Download
               </a>
 
+<<<<<<< HEAD
               <Link
                 to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
                 state={{ downloadLinkUrl: row.fulldata.download_link }}
@@ -481,6 +486,20 @@ const ViewInvoice = () => {
               >
                 <FaEye /> View
               </Link>
+=======
+          <Link
+  to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}?pdf=${encodeURIComponent(
+    row.fulldata.download_link
+  )}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="dropdown-item d-flex align-items-center text-success"
+  style={{ padding: "8px 12px", gap: "8px" }}
+>
+  <FaEye /> View
+</Link>
+
+>>>>>>> 288983b6b264a200ad516a9ecfa20d7bc4dfbc75
 
               <button
                 className="dropdown-item d-flex align-items-center text-primary"
