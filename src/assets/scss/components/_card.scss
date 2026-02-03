@@ -2,6 +2,21 @@
     03.  Card CSS Start
 ==========================**/
 //Card css
+.table-responsive {
+  overflow-x: auto;
+  overflow-y: visible; /* ✅ add this */
+}
+
+.card-body {
+  overflow: visible;
+}
+.dropdown-menu,
+.action-dropdown {
+  z-index: 1050; /* or higher */
+  position: absolute;
+}
+ .card-header h5 {font-size: 14px}
+
 .card {
   margin-bottom: $card-margin-bottom;
   border: none;
@@ -15,13 +30,14 @@
     transition: all 0.3s ease;
   }
 
+
    .card-header {
-	background:linear-gradient(90deg,#22b5d9 0%,#af31d3 88.92%);
+	background:linear-gradient(90deg, rgb(46, 45, 63) 0%, rgb(17, 106, 186) 0%, rgba(0, 212, 255, 1) 100%);
 	border-bottom: 1px solid #ecf3fa;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	position: relative;
-	padding: 10px 20px; 
+	padding: 10px; 
   color: #fff;
 
     &.card-no-border {
@@ -43,6 +59,8 @@
       display: block;
       letter-spacing: 1px;
     }
+
+   
 
     .card-header-right {
       border-radius: 0 0 0 7px;

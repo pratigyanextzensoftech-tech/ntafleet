@@ -301,6 +301,20 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
     },
   ];
 
+  const downloadPdf = async (url) => {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  const filename=url.split("/").pop().split("?")[0];
+  const blobUrl = window.URL.createObjectURL(blob);
+  const link = document.createElement("a"); 
+  link.href = blobUrl;
+  link.download = filename || "invoice.pdf"; 
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link); 
+  window.URL.revokeObjectURL(blobUrl);
+};
+
   useEffect(() => {
    const cols = Object.keys(columnsMap)
   .filter((key) => key !== "Id")
@@ -436,9 +450,8 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
             >
               
   <a
-  href={row.fulldata.download_link} 
-  download
-  target="_blank"
+  href="#"
+   onClick={() =>  downloadPdf(row.fulldata.download_link)  } 
   rel="noopener noreferrer"
   className="dropdown-item d-flex align-items-center text-danger"
   style={{ padding: "8px 12px", gap: "8px" }}

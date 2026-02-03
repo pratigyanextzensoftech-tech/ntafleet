@@ -11,18 +11,20 @@ const useCompany = () => {
     const fetchCompanies = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(companyall);
-        // console.log("API Response:", response); // <--- check what is returned
+        const response = await axios.get(companyall); 
         const data = response.data; // if response.data.data, use that
-        if (!Array.isArray(data)) {
-          // console.error("API did not return an array:", data);
+        if (!Array.isArray(data)) { 
           setCompanies([]);
           return;
         }
-        const options = data.map((company) => ({
-          value: company.company_id,
-          label: company.company_name,
-        }));
+       const options = [
+  { value: '', label: 'All Companies' },
+  ...data.map(company => ({
+    value: company.company_id,
+    label: company.company_name,
+  }))
+];
+
         setCompanies(options);
       } catch (err) {
         setError(err);
