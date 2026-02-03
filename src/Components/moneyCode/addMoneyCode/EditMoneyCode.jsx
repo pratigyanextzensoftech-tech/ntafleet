@@ -202,7 +202,6 @@ PONumber:formData.PONo|| "",
                                 <InputGroupText>Company</InputGroupText>
                                 <Controller name="company"
                                     rules={!editData?{ required: "company Name is required" }:""}
-
                                     control={control}
                                     render={({ field }) => (
                                         <Select
