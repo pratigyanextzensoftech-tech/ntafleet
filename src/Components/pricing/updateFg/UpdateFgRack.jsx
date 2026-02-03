@@ -1,4 +1,4 @@
-import React, { Fragment,useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Col,
   Row,
@@ -14,8 +14,8 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
 import usePaginatedTable from "../../../Hooks/usePagination";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-const UpdateFgRack = ({ title, btnTitle,apiName }) => {
-  const[resetShow,setresetShow]=useState(false)
+const UpdateFgRack = ({ title, btnTitle, apiName }) => {
+  const [resetShow, setresetShow] = useState(false);
   const [tableColumns, setTableColumns] = useState([]);
   const {
     register,
@@ -24,37 +24,36 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
     reset,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-     const columnsMap = {
-        "Company Name": "company_name",
-        "Rack-Canada": "",
-        "Rack-USA": "pricing_date",   
-      };
+  const columnsMap = {
+    "Company Name": "company_name",
+    "Rack-Canada": "",
+    "Rack-USA": "pricing_date",
+  };
   const {
-        data,
-        totalRows,
-        loading:essoLoading,
-        handlePageChange,
-        handlePerRowsChange,
-        handleSearch, // ✅ Added
-        setData,
-      } = usePaginatedTable({ apiUrl: apiName, columnsMap });
-    
+    data,
+    totalRows,
+    loading: essoLoading,
+    handlePageChange,
+    handlePerRowsChange,
+    handleSearch, // ✅ Added
+    setData,
+  } = usePaginatedTable({ apiUrl: apiName, columnsMap });
+
   const onSubmit = (data) => {
     console.log("Form Data:", data);
-    setresetShow(true) 
-   const cols = Object.keys(columnsMap).map((key) => ({
-          name: key,
-          selector: (row) => row[key],
-          sortable: true,
-          wrap: true,
-        }));
-                setTableColumns(cols);
-
+    setresetShow(true);
+    const cols = Object.keys(columnsMap).map((key) => ({
+      name: key,
+      selector: (row) => row[key],
+      sortable: true,
+      wrap: true,
+    }));
+    setTableColumns(cols);
   };
-  const handleReset=()=>{
+  const handleReset = () => {
     reset();
-    setresetShow(false)
-  }
+    setresetShow(false);
+  };
   return (
     <Fragment>
       <Row>
@@ -67,7 +66,7 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="my-3">
-                <Col  lg="8" sm="12">
+                <Col lg="5" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
@@ -83,42 +82,41 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
                               <DatePicker
                                 className={`form-control `}
                                 selected={field.value}
-                             
-                                onChange={(date) => {field.onChange(date)}}
+                                onChange={(date) => {
+                                  field.onChange(date);
+                                }}
                               />
                             )}
                           />
-                            {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
+                          {errors.pricingDate && (
+                            <span className="text-danger">
+                              {errors.pricingDate.message}
+                            </span>
+                          )}
                         </Col>
                       </InputGroup>
-
-                     
                     </FormGroup>
                   </Row>
                 </Col>
 
-                <Col className="ms-auto" lg="4" sm="12">
-                  <div className="text-end ">
+                <Col className="ms-auto" lg="7" sm="12">
+                  <div className="text-start ">
                     <Btn
                       attrBtn={{
                         color: "primary",
                         type: "submit",
                       }}
                     >
-                      {resetShow?"Save Rack Pricing": btnTitle}
+                      {resetShow ? "Save Rack Pricing" : btnTitle}
                     </Btn>
                     {resetShow && (
-                <button className="btn btn-secondary mx-2" onClick={handleReset}
-                      
-                    >
-                     Reset
-                    </button>
+                      <button
+                        className="btn btn-secondary mx-2"
+                        onClick={handleReset}
+                      >
+                        Reset
+                      </button>
                     )}
-                    
                   </div>
                 </Col>
               </Row>
@@ -126,8 +124,8 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
           </fieldset>
         </Col>
       </Row>
-      {resetShow &&(
- <DataTableComponent
+      {resetShow && (
+        <DataTableComponent
           title="Multiple FG Rack Cent Entry "
           tableColumns={tableColumns}
           tableData={data}
@@ -140,7 +138,6 @@ const UpdateFgRack = ({ title, btnTitle,apiName }) => {
           onChangePage={handlePageChange}
         />
       )}
-       
     </Fragment>
   );
 };

@@ -6,6 +6,7 @@ export const discount_sheet = `${baseurl}/api/discount_sheet`;
 export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
 export const companyall = `${baseurl}/api/company/all`;
+export const tacompany = `${baseurl}/api/company/taall`;
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;
 
@@ -77,7 +78,11 @@ export const notification = `${baseurl}/api/notification`;
 export const owner_report = `${baseurl}/api/owner_report`;
 export const owner_report_downlod = `${baseurl}/api/owner_report/download`;
 export const loc_group_Essogroup = `${baseurl}/api/loc_group_new/esso_group`;
+
 export const Esso_cent_Data = `${baseurl}/api/loc_group_new/esso_group_input`;
+
+export const ta_group_Tagroup = `${baseurl}/api/ta_group/ta_group`;
+export const ta_group_TagroupInput = `${baseurl}/api/ta_group/ta_group_input`;
 export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;
@@ -137,6 +142,7 @@ export const retail_invoice_detail_new = `${baseurl}/api/retail_invoice_detail_n
 export const retail_invoice_new = `${baseurl}/api/retail_invoice_new`;
 export const send_email = `${baseurl}/api/send_email`;
 export const ta_cent = `${baseurl}/api/ta_cent`;
+export const ta_centValue = `${baseurl}/api/ta_cent/get_value`;
 export const ta_corp_cent = `${baseurl}/api/ta_corp_cent`;
 export const ta_group = `${baseurl}/api/ta_group`;
 export const ta_location = `${baseurl}/api/ta_location`;

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://ntafleetsolution.com/card-admin",
-  "proxy": "https://api.ntafleetsolutions.com",
+  "proxy": "https://newapi.ntafleetsolutions.com",
   "dependencies": {
     "@auth0/auth0-react": "^2.0.1",
     "@fortawesome/fontawesome-free": "^7.0.1",

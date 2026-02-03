@@ -1,4 +1,4 @@
-import React, { Fragment,useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -6,234 +6,201 @@ import {
   FormGroup,
   InputGroup,
   InputGroupText,
-  Input,
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import $ from "jquery";
+
 import {
-  loc_group_Essogroup as APINAME,
-  Esso_cent_Data,
-  esso_cent_auto,
+  tacompany,
+  ta_group_Tagroup as APINAME,
+  ta_centValue,
 } from "../../../api";
-const UpdateTaPetroRackCent = ({ title, btnTitle,apiName }) => {
-  const[resetShow,setresetShow]=useState(false)
-     const [dynamicColumns, setDynamicColumns] = useState([]);
-     const [dynamicGroupIds, setGroupIds] = useState([]);
+
+const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
+  const [resetShow, setResetShow] = useState(false);
+  const [dynamicColumns, setDynamicColumns] = useState([]);
+  const [dynamicGroupIds, setGroupIds] = useState([]);
+  const [dynamicCompany, setDynamicCompany] = useState([]);
+  const [cellValues, setCellValues] = useState({});
+
   const {
-    register,
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitted, isValid },
+    formState: { errors },
   } = useForm();
-   
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    setresetShow(true) 
-         fetch(APINAME)
-          .then((res) => res.json())
-          .then((data) => {
-            if (Array.isArray(data)) {
-              setDynamicColumns(data.map((item) => item.name));
-              setGroupIds(data.map((item) => item.id));
-            } else {
-              console.error("APINAME response is not an array:", data);
-            }
-          })
-          .catch((err) => console.error(err));
+
+  /* ================= LOAD COMPANIES (ONCE) ================= */
+  useEffect(() => {
+    fetch(tacompany)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setDynamicCompany(data);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  /* ================= FORM SUBMIT ================= */
+  const onSubmit = async (formData) => {
+    setResetShow(true);
+
+    try {
+      const res = await fetch(APINAME);
+      const groups = await res.json();
+
+      if (!Array.isArray(groups)) return;
+
+      setDynamicColumns(
+        groups.map((g) => Number(g.ibp_adjustment).toFixed(4))
+      );
+      setGroupIds(groups.map((g) => g.id));
+
+      // Fetch cell values
+      fetchAllCellValues(groups.map((g) => g.id), formData.pricingDate);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
+  /* ================= FETCH ALL CELL VALUES ================= */
+  const fetchAllCellValues = async (groupIds, pricingDate) => {
+    const map = {};
 
-    $(document).ready(function () {
-      $("#example").DataTable().clear().destroy();
-      GetDataTAble();
-    });
-  
-    function GetDataTAble() {
-      const columns = [
-        { data: "company_name", title: "Company Name" },
-        ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
-      ];
-  
-      $("#example").DataTable({
-        serverSide: true,
-        processing: true,
-        responsive: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        pageLength: 200,
-        columns: columns,
-        columnDefs: [
-          {
-            targets: "_all",
-            orderable: false,
-          },
-          {
-            targets: [0, 1], // allow ordering only here
-            orderable: true,
-          },
-        ],
-  
-        ajax: function (data, callback) {
-          const params = new URLSearchParams();
-          params.append("start", data.start);
-          params.append("length", data.length);
-          params.append("search", data.search.value || "");
-          params.append("orderColumn", data.columns[data.order[0].column].data);
-          params.append("orderDir", data.order[0].dir); 
-        
-          fetch(`${Esso_cent_Data}?${params.toString()}`)
-            .then((res) => res.json())
-            .then((json) => {
-              const url = `${Esso_cent_Data}?${params.toString()}`;
-              console.log("🔗 API URL:", url);
-              const tableData = json.data.map((row) => {
-                const obj = {
-                  company_name: row[0],
-                };
-                dynamicColumns.forEach((col, idx) => {
-                  obj[`col_${idx}`] = row[idx + 3] || "";
-                });
-                return obj;
-              });
-              console.log(tableData);
-              callback({
-                draw: data.draw,
-                recordsTotal: json.recordsTotal,
-                recordsFiltered: json.recordsFiltered,
-                data: tableData,
-              });
-            })
-            .catch((err) => {
-              console.error("Error fetching table data:", err);
-              callback({
-                draw: data.draw,
-                recordsTotal: 0,
-                recordsFiltered: 0,
-                data: [],
-              });
-            });
-        },
-      });
+    for (const company of dynamicCompany) {
+      for (const groupId of groupIds) {
+        try {
+          const res = await fetch(
+            `${ta_centValue}?company_id=${company.company_id}&group_id=${groupId}&pricing_date=${pricingDate
+              .toISOString()
+              .slice(0, 10)}`
+          );
+          const data = await res.json();
+
+          map[`${company.company_id}_${groupId}`] = data?.value
+            ? Number(data.value).toFixed(4)
+            : "0.0000";
+        } catch {
+          map[`${company.company_id}_${groupId}`] = "0.0000";
+        }
+      }
     }
-  const handleReset=()=>{
+
+    setCellValues(map);
+  };
+
+  const handleReset = () => {
     reset();
-    setresetShow(false)
- 
-  }
+    setResetShow(false);
+    setDynamicColumns([]);
+    setCellValues({});
+  };
+
+  /* ================= RENDER ================= */
   return (
     <Fragment>
       <Row>
         <Col>
           <fieldset>
             <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
+
+            <Form onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
-                <Col lg="8" sm="12">
-                    <FormGroup className="m-form__group">
-                                        <Row>
-
-                      <InputGroup>
-                     
-                        <Col xs="12" sm="4">
-                          <InputGroupText>Pricing Date</InputGroupText>
-                        </Col>
-                        <Col xs="12" sm="8">
-                          <Controller
-                            name="pricingDate"
-                            control={control}
-                            rules={{ required: "Please Fill out this field" }}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
-
-
-                              />
-                            )}
-                             
+                <Col lg="5">
+                  <FormGroup>
+                    <InputGroup>
+                      <InputGroupText>Pricing Date</InputGroupText>
+                      <Controller
+                        name="pricingDate"
+                        control={control}
+                        rules={{ required: "Required" }}
+                        render={({ field }) => (
+                          <DatePicker
+                            className="form-control"
+                            selected={field.value}
+                            onChange={field.onChange}
+                            dateFormat="yyyy-MM-dd"
                           />
-                          {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
-                        </Col>
-                      
-                      </InputGroup>
-                  </Row>
-
-                     
-                    </FormGroup>
+                        )}
+                      />
+                    </InputGroup>
+                    {errors.pricingDate && (
+                      <span className="text-danger">
+                        {errors.pricingDate.message}
+                      </span>
+                    )}
+                  </FormGroup>
                 </Col>
 
-                <Col lg="4" sm="12">
-                  <div className="text-end">
+                <Col lg="7">
+                  <Btn color="primary" type="submit">
+                    {btnTitle}
+                  </Btn>
+                  {resetShow && (
                     <Btn
-                      attrBtn={{
-                        color: "primary",
-                        type: "submit",
-                      }}
+                      color="secondary"
+                      className="mx-2"
+                      onClick={handleReset}
                     >
-                      {resetShow?"Save Rack Pricing": btnTitle}
+                      Reset
                     </Btn>
-                    {resetShow && (
-  <button className="btn btn-secondary mx-2" onClick={handleReset}
-                      
-                    >
-                     Reset
-                    </button>
-                    )}
-                    
-                  </div>
+                  )}
                 </Col>
               </Row>
             </Form>
           </fieldset>
         </Col>
       </Row>
-      {resetShow &&(
-        <>
-<div className="table-responsive">
-                  <table
-                    id="example"
-                    className="display table table-striped table-bordered nowrap"
-                    style={{ width: "100%" }}
-                  >
-                    <thead>
-                      <tr>
-                        <th>Company Name</th>
-                        {dynamicColumns.map((col, idx) => (
-                          <th key={idx}>{col}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-  <div className="text-end mt-2">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        className: "m-r-15",
-                        type: "submit",
-                      }}
-                    >Save Rack Pricing</Btn>
-                    </div>
 
-                </>
-                
+      {/* ================= TABLE ================= */}
+      {resetShow && (
+        <>
+          <div className="table-responsive mt-3">
+            <table className="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th width="300">Company Name</th>
+                  {dynamicColumns.map((col, idx) => (
+                    <th key={idx}>{col}</th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {dynamicCompany.map((company) => (
+                  <tr key={company.company_id}>
+                    <td>{company.company_name}</td>
+
+                    {dynamicGroupIds.map((groupId, idx) => (
+                      <td key={idx}>
+                        <input
+                          type="text"
+                          value={
+                            cellValues[
+                              `${company.company_id}_${groupId}`
+                            ] || ""
+                          }
+                          readOnly
+                          style={{
+                            width: "60px",
+                            fontSize: "11px",
+                          }}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="text-end">
+            <Btn color="primary">Save Rack Pricing</Btn>
+          </div>
+        </>
       )}
-       
     </Fragment>
   );
 };
