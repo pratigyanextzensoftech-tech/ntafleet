@@ -254,7 +254,7 @@ export const routes = [
     //TCheck
     { path: `/upload_tcheck`, Component: < UploadTcheck /> },
     { path: `/tcheck_list`, Component: < TcheckList /> },
- { path: `/tcheck_list/:id`, Component: <TcheckEditForm /> },
+    { path: `/tcheck_list/:id`, Component: <TcheckEditForm /> },
     { path: `/create_tcheck_invoice`, Component: < CreateTCheck /> },
     { path: `view_tcheck_invoices`, Component: < ViewTCheck /> },
 
@@ -262,9 +262,8 @@ export const routes = [
     { path: `/help_use_efsllc`, Component: <Help_Use_Efsllc/> },
     { path: `/help_add_card`, Component: <Help_Add_Card /> },
     { path: `/how_create_report`, Component: <How_Create_Report /> },
-    { path: `/how_card_discount`, Component: <How_Card_Discount /> },
-
-
+    { path: `/how_card_discount`, Component: <How_Card_Discount /> }, 
+    
     //notification
     { path: `/manage_notification`, Component: <Notification /> },
 
