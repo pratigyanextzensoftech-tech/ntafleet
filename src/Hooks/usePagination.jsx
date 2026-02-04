@@ -95,7 +95,6 @@ const handleSearch = (formData) => {
 //   }, 500);
 // };
 
-
 const handlePerRowsChange = (newPerPage, page) => {
     setPerPage(newPerPage);
     setCurrentPage(page);

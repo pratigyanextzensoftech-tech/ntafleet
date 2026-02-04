@@ -273,8 +273,8 @@ const getTableColumns = (tableData,columnmap,colWidth) => {
    selector: (row) => {
     const key = columnmap[label];
         const value= row.fulldata?.[key] ?? row[key] ?? "";   
-          if (key === "from" || key === "to") {
-           return value ? value.split(" ")[0] : "";
+          if (key === "from" || key === "to" || key==="from_date" || key==='to_date') {
+           return value ? value.split(/[ T]/)[0]: "";
         }
         return value;
    },

@@ -2,18 +2,23 @@
     03.  Card CSS Start
 ==========================**/
 //Card css
-.table-responsive {
-  overflow-x: auto;
-  overflow-y: visible; /* ✅ add this */
+
+table.dataTable > tbody > tr > th, table.dataTable > tbody > tr > td {
+	padding: 3px !important;
+	font-size: 12px;
+	text-align: left;
+}
+table.dataTable > thead > tr > th, table.dataTable > thead > tr > td {
+	padding: 3px !important;
+  font-size: 12px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	text-align: center; 
+  font-weight: normal;
 }
 
-.card-body {
-  overflow: visible;
-}
-.dropdown-menu,
-.action-dropdown {
-  z-index: 1050; /* or higher */
-  position: absolute;
+.rdt_Table .rdt_TableBody .rdt_TableRow .rdt_TableCell {
+	padding: 5px!important;
+  font-weight: normal;
 }
  .card-header h5 {font-size: 14px}
 

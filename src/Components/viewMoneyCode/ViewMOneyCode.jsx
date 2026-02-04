@@ -134,7 +134,16 @@ const columnWidths = {
           />
         </div>
       ),
-      selector: (row) => row[key],
+     selector: (row) => {
+  const value = row[key]; // make sure `key` exists in outer scope
+
+  if ((key === "From Date" || key === "To Date") && value) {
+    return value.split(/[ T]/)[0];
+  }
+
+  return value ?? "";
+},
+
       sortable: true,
       width:colWidth,
       wrap: true,

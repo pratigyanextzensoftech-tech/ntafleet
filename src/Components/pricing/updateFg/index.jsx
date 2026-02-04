@@ -19,8 +19,7 @@ const index = () => {
               </CardBody>
             </Card>
           </Col>
-        </Row>
-       
+        </Row> 
       </Container>
     </Fragment>
   );
