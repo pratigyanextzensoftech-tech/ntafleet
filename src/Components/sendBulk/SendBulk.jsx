@@ -272,7 +272,11 @@ const getTableColumns = (tableData,columnmap,colWidth) => {
       ),
    selector: (row) => {
     const key = columnmap[label];
-        return row.fulldata?.[key] ?? row[key] ?? "";   
+        const value= row.fulldata?.[key] ?? row[key] ?? "";   
+          if (key === "from" || key === "to") {
+           return value ? value.split(" ")[0] : "";
+        }
+        return value;
    },
       sortable: true,
       width: colWidth[label],

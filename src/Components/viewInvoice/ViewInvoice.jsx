@@ -332,7 +332,12 @@ const filteredCustomizedData = applyFilters(customizedData, filters);
           />
         </div>
       ),
-      selector: (row) => row[key],
+      selector: (row) =>  {
+        if (key === "From " || key === "To") {
+          return row[key].split(" ")[0];
+        }
+        return row[key];
+      },
       sortable: true,
       width:colWidth,
       wrap: true,

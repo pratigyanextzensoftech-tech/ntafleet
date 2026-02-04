@@ -330,9 +330,7 @@ const tabs = [
             <Card>
               {/* <HeaderCard title="Pricing List" /> */}
 
-              <CardBody>
-                                
-
+              <CardBody>                              
                 <BasicTabCard tabContent={pricingListTableTab} />
               </CardBody>
             </Card>
