@@ -83,6 +83,10 @@ export const Esso_cent_Data = `${baseurl}/api/loc_group_new/esso_group_input`;
 
 export const ta_group_Tagroup = `${baseurl}/api/ta_group/ta_group`;
 export const ta_group_TagroupInput = `${baseurl}/api/ta_group/ta_group_input`;
+export const ta_get_rowvalue = `${baseurl}/api/ta_cent/get_rowvalue`;
+export const ta_saverowvalue = `${baseurl}/api/ta_cent/upsert`;
+
+
 export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;

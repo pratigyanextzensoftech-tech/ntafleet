@@ -1,4 +1,4 @@
-import React, { Fragment,useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Col,
   Row,
@@ -17,10 +17,10 @@ import {
   Esso_cent_Data,
   esso_cent_auto,
 } from "../../../api";
-const UpdateLoveRack = ({ title, btnTitle,apiName }) => {
-  const[resetShow,setresetShow]=useState(false)
-     const [dynamicColumns, setDynamicColumns] = useState([]);
-     const [dynamicGroupIds, setGroupIds] = useState([]);
+const UpdateLoveRack = ({ title, btnTitle, apiName }) => {
+  const [resetShow, setresetShow] = useState(false);
+  const [dynamicColumns, setDynamicColumns] = useState([]);
+  const [dynamicGroupIds, setGroupIds] = useState([]);
   const {
     register,
     control,
@@ -28,102 +28,100 @@ const UpdateLoveRack = ({ title, btnTitle,apiName }) => {
     reset,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-   
+
   const onSubmit = (data) => {
     console.log("Form Data:", data);
-    setresetShow(true) 
-         fetch(APINAME)
-          .then((res) => res.json())
-          .then((data) => {
-            if (Array.isArray(data)) {
-              setDynamicColumns(data.map((item) => item.name));
-              setGroupIds(data.map((item) => item.id));
-            } else {
-              console.error("APINAME response is not an array:", data);
-            }
-          })
-          .catch((err) => console.error(err));
+    setresetShow(true);
+    fetch(APINAME)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setDynamicColumns(data.map((item) => item.name));
+          setGroupIds(data.map((item) => item.id));
+        } else {
+          console.error("APINAME response is not an array:", data);
+        }
+      })
+      .catch((err) => console.error(err));
   };
 
+  $(document).ready(function () {
+    $("#example").DataTable().clear().destroy();
+    GetDataTAble();
+  });
 
-    $(document).ready(function () {
-      $("#example").DataTable().clear().destroy();
-      GetDataTAble();
-    });
-  
-    function GetDataTAble() {
-      const columns = [
-        { data: "company_name", title: "Company Name" },
-        ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
-      ];
-  
-      $("#example").DataTable({
-        serverSide: true,
-        processing: true,
-        responsive: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        pageLength: 200,
-        columns: columns,
-        columnDefs: [
-          {
-            targets: "_all",
-            orderable: false,
-          },
-          {
-            targets: [0, 1], // allow ordering only here
-            orderable: true,
-          },
-        ],
-  
-        ajax: function (data, callback) {
-          const params = new URLSearchParams();
-          params.append("start", data.start);
-          params.append("length", data.length);
-          params.append("search", data.search.value || "");
-          params.append("orderColumn", data.columns[data.order[0].column].data);
-          params.append("orderDir", data.order[0].dir); 
-        
-          fetch(`${Esso_cent_Data}?${params.toString()}`)
-            .then((res) => res.json())
-            .then((json) => {
-              const url = `${Esso_cent_Data}?${params.toString()}`;
-              console.log("🔗 API URL:", url);
-              const tableData = json.data.map((row) => {
-                const obj = {
-                  company_name: row[0],
-                };
-                dynamicColumns.forEach((col, idx) => {
-                  obj[`col_${idx}`] = row[idx + 3] || "";
-                });
-                return obj;
-              });
-              console.log(tableData);
-              callback({
-                draw: data.draw,
-                recordsTotal: json.recordsTotal,
-                recordsFiltered: json.recordsFiltered,
-                data: tableData,
-              });
-            })
-            .catch((err) => {
-              console.error("Error fetching table data:", err);
-              callback({
-                draw: data.draw,
-                recordsTotal: 0,
-                recordsFiltered: 0,
-                data: [],
-              });
-            });
+  function GetDataTAble() {
+    const columns = [
+      { data: "company_name", title: "Company Name" },
+      ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
+    ];
+
+    $("#example").DataTable({
+      serverSide: true,
+      processing: true,
+      responsive: true,
+      paging: true,
+      searching: true,
+      ordering: true,
+      pageLength: 200,
+      columns: columns,
+      columnDefs: [
+        {
+          targets: "_all",
+          orderable: false,
         },
-      });
-    }
-  const handleReset=()=>{
-    reset();
-    setresetShow(false)
- 
+        {
+          targets: [0, 1], // allow ordering only here
+          orderable: true,
+        },
+      ],
+
+      ajax: function (data, callback) {
+        const params = new URLSearchParams();
+        params.append("start", data.start);
+        params.append("length", data.length);
+        params.append("search", data.search.value || "");
+        params.append("orderColumn", data.columns[data.order[0].column].data);
+        params.append("orderDir", data.order[0].dir);
+
+        fetch(`${Esso_cent_Data}?${params.toString()}`)
+          .then((res) => res.json())
+          .then((json) => {
+            const url = `${Esso_cent_Data}?${params.toString()}`;
+            console.log("🔗 API URL:", url);
+            const tableData = json.data.map((row) => {
+              const obj = {
+                company_name: row[0],
+              };
+              dynamicColumns.forEach((col, idx) => {
+                obj[`col_${idx}`] = row[idx + 3] || "";
+              });
+              return obj;
+            });
+            console.log(tableData);
+            callback({
+              draw: data.draw,
+              recordsTotal: json.recordsTotal,
+              recordsFiltered: json.recordsFiltered,
+              data: tableData,
+            });
+          })
+          .catch((err) => {
+            console.error("Error fetching table data:", err);
+            callback({
+              draw: data.draw,
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
+            });
+          });
+      },
+    });
   }
+  const handleReset = () => {
+    reset();
+    setresetShow(false);
+  };
   return (
     <Fragment>
       <Row>
@@ -147,32 +145,28 @@ const UpdateLoveRack = ({ title, btnTitle,apiName }) => {
                           <Controller
                             name="pricingDate"
                             control={control}
-                             rules={{ required: "Please Fill out this field" }}
+                            rules={{ required: "Please Fill out this field" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control `}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
-
-
                               />
                             )}
                           />
-                             {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
+                          {errors.pricingDate && (
+                            <span className="text-danger">
+                              {errors.pricingDate.message}
+                            </span>
+                          )}
                         </Col>
                       </InputGroup>
-
-                     
                     </FormGroup>
                   </Row>
                 </Col>
 
-                <Col  className="ms-auto" lg="4" sm="12">
+                <Col className="ms-auto" lg="4" sm="12">
                   <div className="text-end">
                     <Btn
                       attrBtn={{
@@ -180,16 +174,16 @@ const UpdateLoveRack = ({ title, btnTitle,apiName }) => {
                         type: "submit",
                       }}
                     >
-                      {resetShow?"Save Rack Pricing": btnTitle}
+                      {resetShow ? "Save Rack Pricing" : btnTitle}
                     </Btn>
                     {resetShow && (
-  <button className="btn btn-secondary mx-2" onClick={handleReset}
-                      
-                    >
-                     Reset
-                    </button>
+                      <button
+                        className="btn btn-secondary mx-2"
+                        onClick={handleReset}
+                      >
+                        Reset
+                      </button>
                     )}
-                    
                   </div>
                 </Col>
               </Row>
@@ -197,39 +191,38 @@ const UpdateLoveRack = ({ title, btnTitle,apiName }) => {
           </fieldset>
         </Col>
       </Row>
-      {resetShow &&(
+      {resetShow && (
         <>
-<div className="table-responsive">
-                  <table
-                    id="example"
-                    className="display table table-striped table-bordered nowrap"
-                    style={{ width: "100%" }}
-                  >
-                    <thead>
-                      <tr>
-                        <th>Company Name</th>
-                        {dynamicColumns.map((col, idx) => (
-                          <th key={idx}>{col}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-  <div className="text-end mt-2">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        className: "m-r-15",
-                        type: "submit",
-                      }}
-                    >Save Rack Pricing</Btn>
-                    </div>
-
-                </>
-                
+          <div className="table-responsive">
+            <table
+              id="example"
+              className="display table table-striped table-bordered nowrap"
+              style={{ width: "100%" }}
+            >
+              <thead>
+                <tr>
+                  <th>Company Name</th>
+                  {dynamicColumns.map((col, idx) => (
+                    <th key={idx}>{col}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div className="text-end mt-2">
+            <Btn
+              attrBtn={{
+                color: "primary",
+                className: "m-r-15",
+                type: "submit",
+              }}
+            >
+              Save Rack Pricing
+            </Btn>
+          </div>
+        </>
       )}
-       
     </Fragment>
   );
 };
