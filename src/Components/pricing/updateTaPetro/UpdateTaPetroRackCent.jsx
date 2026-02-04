@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import axios from "axios";
 import {
   Col,
   Row,
@@ -10,19 +11,16 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-
-import {
-  tacompany,
-  ta_group_Tagroup as APINAME,
-  ta_centValue,
-} from "../../../api";
-
+import { formatDate } from "../../../Hooks/Dropdowns"; 
+import Loader from "../../../Layout/Loader";
+import { toast } from 'react-toastify';
+import {tacompany, ta_get_rowvalue, ta_group_Tagroup as APINAME,ta_saverowvalue } from "../../../api"; 
 const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [dynamicCompany, setDynamicCompany] = useState([]);
-  const [cellValues, setCellValues] = useState({});
+  const [loading, setloading] = useState(false);
 
   const {
     control,
@@ -32,121 +30,154 @@ const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
   } = useForm();
 
   /* ================= LOAD COMPANIES (ONCE) ================= */
-  useEffect(() => {
-    fetch(tacompany)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setDynamicCompany(data);
-        }
-      })
-      .catch(console.error);
-  }, []);
+
+  async function SaveData()
+  { 
+        setloading(true);
+        const pricingDate = document.getElementById("pricingDate").value;
+        const idby = localStorage.getItem("userId");
+        const dated = formatDate(Date.now());
+
+        const gres = await fetch(APINAME);
+        const groups = await gres.json();
+        if (!Array.isArray(groups)) return; 
+        
+       const res = await fetch(tacompany);
+        const company = await res.json();
+        if (!Array.isArray(company)) return; 
+        
+        company.map((c, cid) => 
+        { 
+
+            let payload = {company_id: c.company_id||0};
+            payload['company_name'] = c.company_name;
+            payload['pricing_date'] = pricingDate;
+            groups.map((g, gid) => 
+            {
+              const inputName = `group_${g.id}`;
+              const inputId = `c${c.company_id}g${g.id}`;
+              const rawVal = document.getElementById(inputId)?.value;
+              payload[inputName] =  rawVal|| 0.0000;  
+            }) 
+            payload['idby'] = idby;
+            payload['dated'] = dated; 
+            console.log(c.company_name+" : ",payload)
+            
+            axios.post(ta_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+        }) 
+       toast.success("Rack Cent Updated Succesfully");  
+       setloading(false);
+  }
 
   /* ================= FORM SUBMIT ================= */
   const onSubmit = async (formData) => {
+      setloading(true);
     setResetShow(true);
 
     try {
+      
       const res = await fetch(APINAME);
       const groups = await res.json();
-
       if (!Array.isArray(groups)) return;
-
-      setDynamicColumns(
-        groups.map((g) => Number(g.ibp_adjustment).toFixed(4))
-      );
+      setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
       setGroupIds(groups.map((g) => g.id));
-
-      // Fetch cell values
-      fetchAllCellValues(groups.map((g) => g.id), formData.pricingDate);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  /* ================= FETCH ALL CELL VALUES ================= */
-  const fetchAllCellValues = async (groupIds, pricingDate) => {
-    const map = {};
-
-    for (const company of dynamicCompany) {
-      for (const groupId of groupIds) {
-        try {
-          const res = await fetch(
-            `${ta_centValue}?company_id=${company.company_id}&group_id=${groupId}&pricing_date=${pricingDate
-              .toISOString()
-              .slice(0, 10)}`
-          );
-          const data = await res.json();
-
-          map[`${company.company_id}_${groupId}`] = data?.value
-            ? Number(data.value).toFixed(4)
-            : "0.0000";
-        } catch {
-          map[`${company.company_id}_${groupId}`] = "0.0000";
-        }
+      // 2️⃣ Guard: pricingDate must exist
+      if (!formData?.pricingDate) {
+        console.warn("pricingDate missing");
+        return;
       }
+
+      // 3️⃣ Fetch TA row values (FIXED URL)
+      const rowRes = await fetch(
+        `${ta_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+      );
+      const rowData = await rowRes.json();
+      if (!Array.isArray(rowData)) return;
+      setDynamicCompany(rowData);
+      setloading(false);
+    } catch (err) {
+      console.error("Submit error:", err);
     }
-
-    setCellValues(map);
-  };
-
+  }; 
   const handleReset = () => {
     reset();
     setResetShow(false);
-    setDynamicColumns([]);
-    setCellValues({});
+    setDynamicColumns([]); 
   };
 
   /* ================= RENDER ================= */
   return (
     <Fragment>
       <Row>
-        <Col>
+         <Col>
           <fieldset>
             <legend>{title}</legend>
-
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form
+              className="px-2"
+              noValidate=""
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <Row className="mt-3">
-                <Col lg="5">
-                  <FormGroup>
-                    <InputGroup>
-                      <InputGroupText>Pricing Date</InputGroupText>
-                      <Controller
-                        name="pricingDate"
-                        control={control}
-                        rules={{ required: "Required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            className="form-control"
-                            selected={field.value}
-                            onChange={field.onChange}
-                            dateFormat="yyyy-MM-dd"
+                <Col lg="4" sm="12">
+                  <Row>
+                    <FormGroup className="m-form__group">
+                      <InputGroup>
+                        <Col sm="4" xs="12">
+                          <InputGroupText>Pricing Date</InputGroupText>
+                        </Col>
+                        <Col sm="8" xs="12">
+                          <Controller
+                            name="pricingDate" 
+                            control={control}
+                            rules={{ required: "Please Fill out this field" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                  id="pricingDate"
+                                className={`form-control `}
+                                selected={field.value}
+                                onChange={(date) => field.onChange(date)}
+                                dateFormat="yyyy-MM-dd"
+                              />
+                            )}
                           />
-                        )}
-                      />
-                    </InputGroup>
-                    {errors.pricingDate && (
-                      <span className="text-danger">
-                        {errors.pricingDate.message}
-                      </span>
-                    )}
-                  </FormGroup>
+                          {errors.pricingDate && (
+                            <span className="text-danger">
+                              {errors.pricingDate.message}
+                            </span>
+                          )}
+
+                          
+                        </Col>
+                      </InputGroup>
+                    </FormGroup>
+                  </Row>
                 </Col>
 
-                <Col lg="7">
-                  <Btn color="primary" type="submit">
-                    {btnTitle}
-                  </Btn>
-                  {resetShow && (
+                <Col className="ms-auto" lg="4" sm="12">
+                  
+                  {!resetShow ?
                     <Btn
-                      color="secondary"
-                      className="mx-2"
-                      onClick={handleReset}
-                    >
-                      Reset
-                    </Btn>
-                  )}
+                      attrBtn={{
+                        color: "primary",
+                        type: "submit", 
+                      }}
+                    >{btnTitle} 
+                    </Btn>:''}
+                    {resetShow && (
+                      <button
+                        className="btn btn-secondary mx-2"
+                        onClick={handleReset}
+                      >
+                        Reset
+                      </button>
+                    )} 
+                </Col>
+                 <Col className="ms-auto" lg="4" sm="12"> 
+          {resetShow ?
+                   <div className="text-end">
+                    <button className="btn btn-primary  mx-2" color="primary" type="button" onClick={()=>SaveData()}>Save Rack Pricing</button>
+                  </div>
+                  :''}
                 </Col>
               </Row>
             </Form>
@@ -157,6 +188,7 @@ const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
       {/* ================= TABLE ================= */}
       {resetShow && (
         <>
+         <Loader loading={loading}/>
           <div className="table-responsive mt-3">
             <table className="table table-bordered table-striped">
               <thead>
@@ -169,35 +201,30 @@ const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
               </thead>
 
               <tbody>
-                {dynamicCompany.map((company) => (
-                  <tr key={company.company_id}>
-                    <td>{company.company_name}</td>
-
-                    {dynamicGroupIds.map((groupId, idx) => (
-                      <td key={idx}>
-                        <input
-                          type="text"
-                          value={
-                            cellValues[
-                              `${company.company_id}_${groupId}`
-                            ] || ""
-                          }
-                          readOnly
-                          style={{
-                            width: "60px",
-                            fontSize: "11px",
-                          }}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                {dynamicCompany.map((company) => { 
+                  return (
+                    <tr key={company.company_id}>
+                      <td>{company.company_name}</td> 
+                      {dynamicGroupIds.map((groupId) => {
+                        const groupKey = `group_${groupId}`;
+                        return (
+                          <td
+                            key={`${company.company_id}_${groupKey}`}
+                            dangerouslySetInnerHTML={{
+                              __html: company[groupKey],
+                            }}
+                          />
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
           <div className="text-end">
-            <Btn color="primary">Save Rack Pricing</Btn>
+            <button className="btn btn-primary  mx-2" color="primary" type="button" onClick={()=>SaveData()}>Save Rack Pricing</button>
           </div>
         </>
       )}
