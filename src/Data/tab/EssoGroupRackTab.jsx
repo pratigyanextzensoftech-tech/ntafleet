@@ -4,13 +4,14 @@ import LoveRackCentList from '../../Components/pricing/updateLoveRack/LOveRackCe
 import UploadEssoGroupRackForm from '../../Components/pricing/essoGroup/UploadEssoGroupRackForm';
 import EssoGroupForm from '../../Components/pricing/essoGroup/EssoGroupForm';
 import PricingCommon from '../../Components/pricing/PricingCommon';
+import UpdateEsso from '../../Components/pricing/essoGroup/UpdateEsso';
+import EssoGroupRackcentList from '../../Components/pricing/essoGroup/EssoGroupRackcentList';
 export const EssoGroupRackTab = [
   {
     id: '1',
     label: 'Update ESSO Group Rack Cent',
-    // component: <UpdateFgRack title=" Update ESSO Group Rack Cent" btnTitle="Search Group" />
-     component: <PricingCommon validation={true}  pricingDate={true}  title=" Update ESSO Group Rack Cent" btnTitle="Search Group" apiname={""}/>
-,
+    component: <UpdateEsso title=" Update ESSO Group Rack Cent" btnTitle="Search Group" />
+     
   },
   {
     id: '2',
@@ -21,7 +22,7 @@ export const EssoGroupRackTab = [
    {
     id: '3',
     label: 'ESSO Group  Cent List ',
-    component: <EssoGroupForm tabletitle="ESSO Group Rack Cent List"  title="Filters " btnTitle="Upload Rack Pricing" />
+    component: <EssoGroupRackcentList tabletitle="ESSO Group Rack Cent List"  title="Filters " btnTitle="Search" />
    }
 ,
  {
