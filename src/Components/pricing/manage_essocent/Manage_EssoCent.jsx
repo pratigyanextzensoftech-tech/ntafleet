@@ -44,8 +44,8 @@ const onSubmit = async (formData) => {
   const payload={
     name:formData.name,
     val:formData.value,
-    rack:formData.ord,
-    ord:formData.rack
+    rack:formData.rack,
+    ord:formData.ord
   }
     if (Edit && selectedRow) {
           axios.put(`${esso_rack}/${selectedRow.id}`, payload)
@@ -71,7 +71,12 @@ const onSubmit = async (formData) => {
         const res = await axios.post(esso_rack, payload);
         console.log("✅ User Added:", res.data);
         toast.success("User added successfully!");
-  
+    reset({
+   name:"",
+      value:"",
+      ord:"",
+      rack:""
+          });
        
       }
   

@@ -337,7 +337,6 @@ console.log(newSelection)
         <Col>
           <fieldset>
             <legend>{title}</legend>
-
             <Form className="px-2" noValidate onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
 

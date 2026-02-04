@@ -2,12 +2,14 @@ import UpdateFgRack from "../../Components/pricing/updateFg/UpdateFgRack";
 import EssoGroupForm from "../../Components/pricing/essoGroup/EssoGroupForm";
 import UploadEssoGroupRackForm from "../../Components/pricing/essoGroup/UploadEssoGroupRackForm";
 import PricingCommon from "../../Components/pricing/PricingCommon";
+import UpdateUltramar from "../../Components/pricing/ultramarGroup/UpdateUltramar";
+import UlRackList from "../../Components/pricing/ultramarGroup/UlRackList";
 export const UltramarGroupTab = [
   {
     id: "1",
     label: "Update ULTRAMAR  Group Rack Cent",
     component: (
-      <UpdateFgRack
+      <UpdateUltramar
         title=" ULTRAMAR  Group Rack Entry"
         btnTitle="Search Group"
       />
@@ -31,7 +33,7 @@ export const UltramarGroupTab = [
     id: "3",
     label: "ULTRAMAR  Group Rack Cent List  ",
     component: (
-      <EssoGroupForm
+      <UlRackList
         tabletitle="ULTRAMAR Group Rack Cent List "
         title=" ULTRAMAR  Group Rack Entry"
         btnTitle="Search Group"

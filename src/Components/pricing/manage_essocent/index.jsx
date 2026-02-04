@@ -38,6 +38,7 @@ const Index = () => {
 params.append(`columns[${index}][search][value]`, col.search.value || "");
   });
 
+
  params.append("order[0][column]", data.order[0].column);
   params.append("order[0][dir]", data.order[0].dir);
 
@@ -53,7 +54,6 @@ params.append(`columns[${index}][search][value]`, col.search.value || "");
     });
 }
 ,
-
         columns: [
           { data: "id", title: "ID" , width: "50px",    },
           { data: "name", title: "Name" },
@@ -79,17 +79,16 @@ params.append(`columns[${index}][search][value]`, col.search.value || "");
   render: function (data) {
     
     return `
-      <div class="position-relative action-dropdown" style="display:inline-block;">
+      <div class="position-relative dropdown-action">
         <button
           class="btn btn-sm btn-primary px-2 toggle-dropdown"
-          data-id="${data.id}"
-          style="padding: 2px 8px; font-size: 13px;"
+          data-id="${data.id}" 
         >
           Action
         </button>
         <div
-          class="dropdown-menu-custom bg-white border rounded shadow-sm"
-          style="
+          class="position-absolute bg-white border rounded shadow dropdown-menu-custom"
+            style="
             display:none;
             position:absolute;
             right:0;
@@ -99,10 +98,10 @@ params.append(`columns[${index}][search][value]`, col.search.value || "");
             z-index:1000;
           "
         >
-          <a href="#" class="dropdown-item-custom text-success edit-btn d-flex align-items-center" data-id="${data.id}" style="padding:8px 12px; gap:8px; text-decoration:none;">
+          <a href="#" class="dropdown-item-custom dropdown-item edit-btn d-flex align-items-center text-primary" data-id="${data.id}" style="padding:8px 12px; gap:8px; text-decoration:none;">
             <i class="fa fa-edit"></i> Edit
           </a>
-          <a href="#" class="dropdown-item-custom text-danger delete-btn d-flex align-items-center" data-id="${data.id}" style="padding:8px 12px; gap:8px; text-decoration:none;">
+          <a href="#" class="dropdown-item-custom dropdown-item delete-btn d-flex align-items-center text-danger" data-id="${data.id}" style="padding:8px 12px; gap:8px; text-decoration:none;">
             <i class="fa fa-trash"></i> Delete
           </a>
         </div>
@@ -144,7 +143,7 @@ $(document).on("click", ".toggle-dropdown", function (e) {
   const $menu = $btn.siblings(".dropdown-menu-custom");
 
   // Close other open dropdowns first
-  $(".dropdown-menu-custom").not($menu).hide();
+    $(".dropdown-menu-custom").not($menu).hide();
 
   // Toggle only this one
   $menu.toggle();
@@ -152,15 +151,12 @@ $(document).on("click", ".toggle-dropdown", function (e) {
 
 // Close dropdown when clicking outside
 $(document).on("click", function (e) {
-  if (!$(e.target).closest(".action-dropdown").length) {
+  if (!$(e.target).closest(".dropdown-action").length) {
     $(".dropdown-menu-custom").hide();
   }
 });
 
-// Close dropdown if clicked outside
-$(document).on("click", function () {
-  $(".dropdown-menu-custom").hide();
-});
+
 
 
     const timeout = setTimeout(initTable, 300);

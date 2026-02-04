@@ -344,7 +344,12 @@ const ViewInvoice = () => {
               />
             </div>
           ),
-          selector: (row) => row[key],
+      selector: (row) => {
+        if (key === "From " || key === "To") {
+          return row[key].split(" ")[0];
+        }
+        return row[key];
+      },
           sortable: true,
           width: colWidth,
           wrap: true,
@@ -461,9 +466,7 @@ const ViewInvoice = () => {
               </a>
 
           <Link
-  to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}?pdf=${encodeURIComponent(
-    row.fulldata.download_link
-  )}`}
+  to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
   target="_blank"
   rel="noopener noreferrer"
   className="dropdown-item d-flex align-items-center text-success"
