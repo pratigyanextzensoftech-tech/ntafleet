@@ -148,7 +148,13 @@ const columnWidths = {
           />
         </div>
       ),
-      selector: (row) => row[key],
+      selector: (row) => {
+       
+        if(key==='From Date' || key==='To Date'){
+          return row[key].split("T")[0]
+        }
+        return  row[key]
+      },
       sortable: true,
       wrap: true,
       width: colWidth, // ✅ THIS sets the actual table column width

@@ -66,5 +66,15 @@ export const PricingTab = [
     
     component: <PricingCommon supplier_ids="10" apiName={ULTRAMAR_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
   },
+   {
+    id: '8',
+    label:
+       (
+      <>
+       Irving 
+      </>
+    ), 
+     component: <PricingCommon supplier_ids="3" apiName={TA_CAPPED_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+  },
   
 ];

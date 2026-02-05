@@ -199,13 +199,13 @@ const filteredData = discountData.filter((row) =>
   },
   {
     name: columnHeader("Start Date", "start_date"),
-    selector: (row) => row.start_date,
+    selector: (row) => row.start_date.split("T")[0],
     sortable: true,
     width: "150px",
   },
   {
     name: columnHeader("End Date", "end_date"),
-    selector: (row) => row.end_date,
+    selector: (row) => row.end_date.split("T")[0],
     sortable: true,
     width: "150px",
   },

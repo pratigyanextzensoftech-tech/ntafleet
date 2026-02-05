@@ -185,8 +185,8 @@ const columnHeader = ( label, columnKey ) => (
     {  
       name: columnHeader("  ID#","id")  , selector: (row) => row.id, sortable: true, width: "100px" },
     {name:columnHeader("Company","company_name") , selector: (row) => row.company_name, sortable: true, wrap: true, width: "250px" },
-    { name:columnHeader("Start_Date","start_date"), selector: (row) => row.start_date, sortable: true, wrap: true, width: "150px" },
-    { name:columnHeader("End_Date","end_date"), selector: (row) => row.end_date, sortable: true, wrap: true, width: "150px" },
+    { name:columnHeader("Start_Date","start_date"), selector: (row) => row.start_date.split("T")[0], sortable: true, wrap: true, width: "150px" },
+    { name:columnHeader("End_Date","end_date"), selector: (row) => row.end_date.split("T")[0], sortable: true, wrap: true, width: "150px" },
     {name:columnHeader("Country","country"), selector: (row) => row.country, sortable: true, wrap: true, width: "150px" },
     { name:columnHeader("Supplier","supplier") , selector: (row) => row.supplier, sortable: true, wrap: true, width: "120px" },
     { name: columnHeader("Cent (CA)","cent_ca")  , selector: (row) => row.cent_ca, sortable: true, wrap: true, width: "120px" },

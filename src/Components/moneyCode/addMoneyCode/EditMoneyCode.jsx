@@ -218,8 +218,7 @@ PONumber:formData.PONo|| "",
                                 <span className="text-danger">{errors.company?.message}</span>
                             )}
                         </FormGroup>
-                    </Col>
-               
+                    </Col>       
  <Col xxl="3"  md="6" sm="12">
                         <FormGroup className="m-form__group">
                             <InputGroup >

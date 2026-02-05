@@ -133,7 +133,6 @@ params.append(`columns[${index}][search][value]`, col.search.value || "");
       });
   });
 }
-
       });
     };
 // Handle Action dropdown toggle

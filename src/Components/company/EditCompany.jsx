@@ -76,7 +76,30 @@ const Index = () => {
       .get(`${company}/${company_id}`)
       .then((res) => {
         setFullData(res.data);
-        console.log(res.data);
+        if (res.data) {
+          console.log(res.data);
+          
+    setValue("company_name", res.data?.company_name);
+    setValue("auth_location", res.data?.auth_location);
+    setValue("address", res.data?.address);
+    setValue("country", res.data?.country);
+    setValue("last_name", res.data?.last_name);
+    setValue("first_name", res.data?.first_name);
+    setValue("special_instructions", res.data?.special_instructions);
+    setValue( "love_daily_pricing",res.data.love_daily_pricing);
+    setValue( "ul_daily_pricing_wtax",res.data.ul_daily_pricing_wtax);
+    setValue( "ul_daily_pricing",res.data.ul_daily_pricing);
+    setValue( "shell_pricing",res.data.shell_pricing);
+    setValue( "pilot_pricing",res.data.pilot_pricing);
+    setValue( "esso_daily_pricing_wtax",res.data.esso_daily_pricing_wtax);
+    setValue( "esso_daily_pricing",res.data.esso_daily_pricing);
+    setValue( "ta_daily_pricing",res.data.ta_daily_pricing);
+    setValue( "love_daily_pricing",res.data.love_daily_pricing);
+    setValue( "daily_pricing",res.data.daily_pricing);
+     setValue("fees",res.data.fees);
+   
+    
+  }
       })
       .catch((err) => {
         console.log(err);
@@ -85,12 +108,14 @@ const Index = () => {
 
   const onSubmit = async (formData) => {
     try {
-      const payload = {
-        company_name: formData.company_name || "",
+      if(FullData.length!==0){
+const payload = {
+        company_name: formData?.company_name || "",
         otp_phone: formData.otp_phone || "",
         address: formData.address || "",
         auth_location: formData.auth_location || "",
-        country_name: formData.country_name || "",
+        country_name: formData?.country_name?.label,
+        salesman_id:formData.salesman_id?.value ||0,
         phone: formData.phone || "",
         fax: formData.fax || "",
         mobile: formData.mobile || "",
@@ -100,24 +125,24 @@ const Index = () => {
         policy_number: formData.policy_number || "",
         company_status: formData.company_status?.value || "",
         susp_comp: formData.susp_comp?.value || "",
-        defd_mark_up: formData.defd_mark_up || "",
-        daily_report: formData.daily_report || "",
+        defd_mark_up: formData.defd_mark_up.value || "",
+        daily_report: formData.daily_report.value || "",
         identifier: formData.identifier || "",
         irving: formData.irving || "",
-        fees: formData.fees || "",
+        fees: formData?.fees || "",
         shell_pricing: formData.shell_pricing || "0",
         pilot_pricing: formData.pilot_pricing || "0",
         discount_canada: formData.discount_canada || "0",
         discount_usa: formData.discount_usa || "0",
         rack_ca: formData.rack_ca || "0",
         rack_us: formData.rack_us || "0",
-        aoi: formData.aoi || "",
-        drivers_license: formData.drivers_license || "",
-        signed_agreement: formData.signed_agreement || "",
-        void_cheque: formData.void_cheque || "",
-        check_rebate: formData.check_rebate || "",
+        aoi: formData.aoi?.value ||"0",
+        drivers_license: formData.drivers_license?.value || "",
+        signed_agreement: formData.signed_agreement?.value || "",
+        void_cheque: formData.void_cheque?.value || "",
+        check_rebate: formData?.check_rebate?.value || "",
         retail_invoice: formData.retail_invoice || "",
-        ta_retail_invoice: formData.ta_retail_invoice || "",
+        ta_retail_invoice: formData.ta_retail_invoice?.value || "",
         esso_retail_invoice: formData.esso_retail_invoice || "",
         esso_inv_type: formData.esso_inv_type?.value || "",
         cust_inv_type: formData.cust_inv_type?.value || "",
@@ -126,8 +151,8 @@ const Index = () => {
         esso_rcent: formData.esso_rcent || "0",
         ul_rcent: formData.ul_rcent || "0",
         esso_rack: formData.esso_rack || "0",
-        esso_rack_on: formData.esso_rack_on || "0",
-        esso_rack_oon: formData.esso_rack_oon || "0",
+        esso_rack_on: formData.esso_rack_on?.value || "0",
+        esso_rack_oon: formData.esso_rack_oon?.value || "0",
         fee: formData.fee || "",
         owner_operator_invoice: formData.owner_operator_invoice?.value || "",
         ul_owner_operator_invoice:
@@ -146,7 +171,7 @@ const Index = () => {
         ta_daily_pricing: formData.ta_daily_pricing || "",
         esso_daily_pricing: formData.esso_daily_pricing || "",
         esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || "",
-        love_daily_pricing: formData.love_daily_pricing || "",
+        love_daily_pricing: formData.love_daily_pricing?'Yes' : "",
         ul_daily_pricing: formData.ul_daily_pricing || "",
         ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || "",
         invoice_creation: formData.invoice_creation?.value || "",
@@ -156,8 +181,9 @@ const Index = () => {
         special_instructions: formData.special_instructions || "",
         first_name: formData.first_name || "",
         last_name: formData.last_name || "",
-        card_discount: formData.card_discount || "",
+        card_discount: formData.card_discount.value || "",
         username: formData.username || "",
+
         password: formData.password || "",
         date: formData.date || "1970-01-01 00:00:00",
         esso_live: formData.esso_live || "",
@@ -169,10 +195,11 @@ const Index = () => {
       console.log("✅ API Response:", res.data);
       toast.success("Company Updated Succesfully");
       //reset(); // Reset the form on success
+      }
+      
     } catch (error) {
       console.error("❌ Error submitting form:", error);
-    }
-    
+    }   
   };
   return (
     <Fragment>
@@ -203,6 +230,7 @@ const Index = () => {
                               type="text"
                               {...register("company_name")}
                             />
+                            
                           </InputGroup>
                           {/* {errors.company_name && (
                             <span className="text-danger">
@@ -225,8 +253,8 @@ const Index = () => {
                               className="form-control"
                               name="email"
                               type="email"
-                              defaultValue={FullData.email}
-                              readOnly
+                              defaultValue={FullData?.email}
+                              disabled
                               {...register("email", {
                               
                                 pattern: {
@@ -249,9 +277,9 @@ const Index = () => {
                               className="form-control"
                               name="email2"
                               type="email"
-                              defaultValue={FullData.email2}
+                              defaultValue={FullData?.email2}
 
-                              readOnly
+                              disabled
                               {...register("email2", {
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -278,9 +306,9 @@ const Index = () => {
                             <input
                               className="form-control"
                               name="other_email"
-                               defaultValue={FullData.other_email}
+                               defaultValue={FullData?.other_email}
 
-                              readOnly
+                              disabled
                               type="email"
                               {...register("other_email", {
                                 pattern: {
@@ -310,8 +338,8 @@ const Index = () => {
                             <input
                               className="form-control"
                               name="otp_email"
-                              defaultValue={FullData.otp_email}
-                             readOnly
+                              defaultValue={FullData?.otp_email}
+                             disabled
                               type="email"
                               {...register("otp_email", {
                                 pattern: {
@@ -333,7 +361,7 @@ const Index = () => {
                             </InputGroupText>
                             <input
                               name="otp_email2"
-                              readOnly
+                              disabled
                               className="form-control"
                               defaultValue={FullData.otp_email2}
 
@@ -573,7 +601,7 @@ const Index = () => {
                             <Input
                               className="form-control"
                               type="text"
-                               defaultValue={FullData.rack_ca}
+                              defaultValue={FullData.rack_ca}
                               name="rack_ca"
                             />
                           </InputGroup>
@@ -1016,18 +1044,26 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                           <Col sm="3">
-                            <div className="checkbox checkbox-dark">
-                              <Input
-                                id="checkbox1"
-                                type="checkbox"
-                                name="fees"
-                                checked={FullData.fees}
-                                value="1"
-                              />
-                              <Label for="checkbox1">Fees</Label>
-                            </div>
-                          </Col>
+                         <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="fees"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox1"
+          type="checkbox"
+          checked={field.value === "1"}
+          onChange={(e) =>
+            field.onChange(e.target.checked ? "1" : "0")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox1">Fees</Label>
+  </div>
+</Col>
+
                           {/* <Col sm="12">
                             <FormGroup className="m-form__group">
                               <InputGroup>
@@ -1056,7 +1092,7 @@ const Index = () => {
     {suppliers.map((item, index) => (
       <Col key={index} sm="6">
         <fieldset>
-          <legend>{item.label} Check All</legend>
+          <legend>{item.label} Check All </legend>
 
           <div className="checkbox checkbox-dark">
 
@@ -1066,7 +1102,7 @@ const Index = () => {
                 <Input
                   id={`esso-${index}`}
                   type="checkbox"
-                  name="ta_daily_pricing"
+                  name="pricing"
                   className="mx-3"
                   value="1"
                 />
@@ -1079,7 +1115,7 @@ const Index = () => {
                   <Input
                     id={`chk-${index}-${i}`}
                     type="checkbox"
-                    name="ta_daily_pricing"
+                    name="pricing"
                     className="mx-3"
                     value="1"
                   />
@@ -1102,110 +1138,163 @@ const Index = () => {
                     <legend>Daily Pricing</legend>
                     <Row className="my-3">
                       <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox1"
-                            type="checkbox"
-                            name="daily_pricing"
-                             checked={FullData.daily_pricing}
-                            value="Yes"
-                          />
-                          <Label for="checkbox1">FJ Daily Pricing PDF</Label>
-                        </div>
-                      </Col>
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox2"
-                            type="checkbox"
-                            name="ta_daily_pricing"
-                            checked={FullData.ta_daily_pricing}
-                            value="Yes"
-                          />
-                          <Label for="checkbox2">
-                            Ta-Petro Daily Pricing PDF
-                          </Label>
-                        </div>
-                      </Col>
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox3"
-                            type="checkbox"
-                            name="esso_daily_pricing"
-                            checked={FullData.esso_daily_pricing}
-
-                            value="Yes"
-                          />
-                          <Label for="checkbox3">
-                            ESSO Daily Pricing PDF (With Tax)
-                          </Label>
-                        </div>
-                      </Col>
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="daily_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox1"
+          type="checkbox"
+          checked={field.value === "Yes"}
+          onChange={(e) =>
+            field.onChange(e.target.checked ? "Yes" : "")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox1">FJ Daily Pricing PDF</Label>
+  </div>
+</Col>
 
                       <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox4"
-                            type="checkbox"
-                             checked={FullData.esso_daily_pricing_wtax}
-                            value="Yes"
-                            name="esso_daily_pricing_wtax"
-                      
-                          />
-                          <Label for="checkbox4">
-                            ESSO Daily Pricing PDF (Without Tax)
-                          </Label>
-                        </div>
-                      </Col>
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="ta_daily_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox2"
+          type="checkbox"
+          checked={field.value === "Yes"}
+          onChange={(e) =>
+            field.onChange(e.target.checked ? "Yes" : "")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox2">
+      Ta-Petro Daily Pricing PDF
+    </Label>
+  </div>
+</Col>
+
+                     <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="esso_daily_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox3"
+          type="checkbox"
+          checked={field.value === "Yes"}
+          onChange={(e) =>
+            field.onChange(e.target.checked ? "Yes" : "")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox3">
+      ESSO Daily Pricing PDF (With Tax)
+    </Label>
+  </div>
+</Col>
+
+                    <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="esso_daily_pricing_wtax"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox4"
+          type="checkbox"
+          checked={field.value=="Yes"}
+          onChange={(e) =>
+            field.onChange(e.target.checked ? "Yes" : "")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox4">
+      ESSO Daily Pricing PDF (Without Tax)
+    </Label>
+  </div>
+</Col>
+
+
+                     <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="pilot_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox5"
+          type="checkbox"
+          checked={field.value=='1'}
+          onChange={(e) => field.onChange(e.target.checked?'1':"")}
+        />
+      )}
+    />
+    <Label for="checkbox5">Pilot Flying J</Label>
+  </div>
+</Col>
+
+                     <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="shell_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox6"
+          type="checkbox"
+          checked={field.value=='1'}
+          onChange={(e) => field.onChange(e.target.checked?'1':"")}
+        />
+      )}
+    />
+    <Label for="checkbox6">Shell Flying J</Label>
+  </div>
+</Col>
+
+
+                      <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="ul_daily_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox7"
+          type="checkbox"
+          checked={!!field.value}
+          onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
+        />
+      )}
+    />
+    <Label for="checkbox7">
+      Ultramar Daily Pricing PDF (With Tax)
+    </Label>
+  </div>
+</Col>
 
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox5"
-                            type="checkbox"
-                            name="pilot_pricing"
-                        checked={FullData.pilot_pricing}
-                            value="1"
-                          />
-                          <Label for="checkbox5">Pilot Flying J</Label>
-                        </div>
-                      </Col>
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox6"
-                            type="checkbox"
-                            name="shell_pricing"
-                            checked={FullData.shell_pricing}
-                            value="1"
-                          />
-                          <Label for="checkbox6">Shell Flying J</Label>
-                        </div>
-                      </Col>
-
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox7"
-                            type="checkbox"
-                            name="ul_daily_pricing"
-                            checked={FullData.ul_daily_pricing}
-                            value="Yes"
-                          />
-                          <Label for="checkbox7">
-                            Ultramar Daily Pricing PDF (With Tax)
-                          </Label>
-                        </div>
-                      </Col>
-
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox8"
-                            type="checkbox"
-                            name="ul_daily_pricing_wtax"
-                            value="Yes"
+                          <Controller
+                           name="ul_daily_pricing_wtax"
+                           control={control}
+                          defaultValue={FullData.ul_daily_pricing==='Yes'}
+                          render={({ field }) => (
+    <Input
+      id="checkbox8"
+      type="checkbox"
+      checked={field.value}
+      onChange={(e) => field.onChange(e.target.checked)}
+    />
+  )}
                           />
                           <Label for="checkbox8">
                             Ultramar Daily Pricing PDF (Without Tax)
@@ -1215,12 +1304,20 @@ const Index = () => {
 
                       <Col sm="3">
                         <div className="checkbox checkbox-dark">
-                          <Input
-                            id="checkbox9"
-                            type="checkbox"
-                            name="love_daily_pricing"
-                            value="Yes"
-                          />
+                          <Controller
+  name="love_daily_pricing"
+  control={control}
+  defaultValue={FullData?.love_daily_pricing === "Yes"}
+  render={({ field }) => (
+    <Input
+      id="checkbox9"
+      type="checkbox"
+      checked={field.value}
+      onChange={(e) => field.onChange(e.target.checked)}
+    />
+  )}
+/>
+
                           <Label for="checkbox9">Loves Daily Pricing PDF</Label>
                         </div>
                       </Col>
@@ -1486,7 +1583,7 @@ const Index = () => {
                               type="text"
                               name="username"
                               value={FullData.email}
-                             readOnly
+                             disabled
                               {...register("username")}
                             />
                           </InputGroup>

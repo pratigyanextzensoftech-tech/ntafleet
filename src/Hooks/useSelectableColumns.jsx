@@ -137,8 +137,20 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
             />
           </div>
         ),
-        selector: (row) =>
-          key === "Date" ? formatDate(row[key]) : row[key],
+       selector: (row) => {
+  const value = row[key];
+
+  if (key === "Date" && value) {
+    return formatDate(value);
+  }
+  if (key === "Pricing Date" && value) {
+    return value.split("T")[0];
+  }
+
+  return value ?? "";
+}
+
+         ,
         sortable: true,
         wrap: true,
       }));

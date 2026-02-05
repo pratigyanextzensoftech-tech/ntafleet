@@ -129,13 +129,13 @@ const HeaderWithFilter = (label, key) => (
     },
     {
       name:HeaderWithFilter("Start Date","start_date") ,
-      selector: (row) => row.start_date,
+      selector: (row) => row.start_date.split("T")[0],
       sortable: true,
       width: "170px",
     },
     {
       name:HeaderWithFilter("End Date","end_date")  ,
-      selector: (row) => row.end_date,
+      selector: (row) => row.end_date.split("T")[0],
       sortable: true,
       width: "170px",
     },

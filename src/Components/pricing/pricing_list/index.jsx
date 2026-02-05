@@ -238,14 +238,25 @@ const tabs = [
   },
   {
     id: "2",
-    label: "TA Capped",
+ label:
+       (
+      <>
+       Ta-Petro  - <strong> [Capped]</strong>
+      </>
+    ), 
     data: taCapped,
     map: columnSets.taCapped,
     deleteApi: TA_CAPPED_API,
   },
   {
     id: "3",
-    label: "TA Actual",
+    label: 
+     (
+      <>
+       Ta-Petro  - <strong> [Actual]</strong>
+      </>
+    )
+   ,
     data: taActual,
     map: columnSets.taActual,
     deleteApi: TA_ACTUAL_API,
@@ -259,14 +270,23 @@ const tabs = [
   },
   {
     id: "5",
-    label: "Love Capped",
+    label:  (
+      <>
+      Love  - <strong> [Capped]</strong>
+      </>
+    ),
     data: loveCapped,
     map: columnSets.loveCapped,
     deleteApi: LOVE_CAPPED_API,
   },
   {
     id: "6",
-    label: "Love Actual",
+    label: 
+     (
+      <>
+       Love  - <strong> [Actual]</strong>
+      </>
+    ), 
     data: loveActual,
     map: columnSets.loveActual,
     deleteApi: LOVE_ACTUAL_API,
@@ -278,6 +298,14 @@ const tabs = [
     map: columnSets.ultramar,
     deleteApi: ULTRAMAR_API,
   },
+   {
+    id: "8",
+    label: "Irving",
+    data: ultramar,
+    map: columnSets.ultramar,
+    deleteApi: ULTRAMAR_API,
+  },
+
 ];
 
   // ✅ Define tab content dynamically
