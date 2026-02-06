@@ -1,3 +1,4 @@
+import IrvingGroupList from "../../Components/pricing/irvingGroup/IrvingGroupList";
 import EssoPricing from "../../Components/pricing/uploadPricing/EssoPricing";
 import FjPricing from "../../Components/pricing/uploadPricing/FjPricing";
 import LovePricing from "../../Components/pricing/uploadPricing/LovePricing";
@@ -84,6 +85,17 @@ export const UploadFjPricingTab = [
       <Ultramar
         title="Upload ULTRAMAR Pricing"
         btnTtitle="Upload ULTRAMAR Pricing"
+      />
+    ),
+  },
+   {
+    id: "8",
+    label: "Irving Pricing",
+
+    component: (
+      <IrvingGroupList
+        title=" Irving Group Rack cent List"
+        btnTtitle="Search"
       />
     ),
   },

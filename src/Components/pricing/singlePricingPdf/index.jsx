@@ -117,8 +117,9 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
       Love Pdf  - <strong> [Actual]</strong>
       </>
     ), data: lovePdfActual, map: pricingpdf,deleteApi:love_pricing_pdf },
-    {
-     id: "8", label: " Ultramar Pdf", data: ulPdf, map: pricingpdf,deleteApi:ul_pricing_pdf },
+   
+     {
+     id: "9", label: "Irving Pdf", data: ulPdf, map: pricingpdf,deleteApi:ul_pricing_pdf },
   ];
    const pricingpdfTab = tabs.map((tab) => ({
     id: tab.id,
@@ -160,6 +161,7 @@ const fetchers = {
   lovePdf: lovePdf.fetchData,
   lovePdfActual: lovePdfActual.fetchData,
   ulPdf: ulPdf.fetchData,
+  irvingPdf:ulPdf.fetchData,
 };
   return (
     <Fragment>

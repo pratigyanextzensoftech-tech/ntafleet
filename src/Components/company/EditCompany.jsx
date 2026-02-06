@@ -96,7 +96,10 @@ const Index = () => {
     setValue( "ta_daily_pricing",res.data.ta_daily_pricing);
     setValue( "love_daily_pricing",res.data.love_daily_pricing);
     setValue( "daily_pricing",res.data.daily_pricing);
-     setValue("fees",res.data.fees);
+    setValue("fees",res.data.fees);
+    setValue("irv_daily_pricing",res.data.irv_daily_pricing );
+    setValue("irv_daily_pricing_wtax",res.data.irv_daily_pricing_wtax);
+    setValue("country_id",res.data.country_id)
    
     
   }
@@ -174,6 +177,8 @@ const payload = {
         love_daily_pricing: formData.love_daily_pricing?'Yes' : "",
         ul_daily_pricing: formData.ul_daily_pricing || "",
         ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || "",
+        irv_daily_pricing: formData.irv_daily_pricing || '',
+        irv_daily_pricing_wtax: formData.irv_daily_pricing_wtax || '',
         invoice_creation: formData.invoice_creation?.value || "",
         invoice_day: formData.invoice_day?.value || "",
         invoice_week: formData.invoice_week?.value || "",
@@ -459,7 +464,7 @@ const payload = {
                           label="Country" 
                           control={control}
                           setValue={setValue}
-                          placeholder="Select Country"
+                        placeholder="Select Country"
                         defaultValueId={FullData.country_id }
                         options={countries} 
                         />
@@ -973,6 +978,47 @@ const payload = {
                         </Row>
                       </fieldset>
                     </Col>
+                      <Col sm="12">
+                      <fieldset>
+                        <legend>Irving INVOICE TYPE</legend>
+                        <Row className="mt-3">
+                          <Col sm="6">
+                           <DropDown
+                          name="irv_inv_type"
+                          label="Irving INVOICE TYPE"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ul_inv_type}
+                          options={YesNo}
+                        />
+                           
+                          </Col>
+                         
+                          <Col sm="6">
+                              <DropDown
+                          name="irv_owner_operator_invoice"
+                          label="Owner Operator Invoice"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ul_owner_operator_invoice}
+                          options={YesNo}
+                        />
+                        
+                          </Col>
+                          <Col sm="6">
+                             <DropDown
+                          name="irv_cust_inv_type"
+                          label="Customized Invoice Type"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.ul_cust_inv_type}
+                          options={customizedTypeType}
+                        />
+                           
+                          </Col>
+                        </Row>
+                      </fieldset>
+                    </Col>
                     <Col sm="12">
                       <fieldset>
                         <legend>ESSO INVOICE TYPE</legend>
@@ -1018,15 +1064,17 @@ const payload = {
                         <legend>Other Details</legend>
                         <Row className="mt-3">
                           <Col sm="3">
-                            <DropDown
+                           <DropDown
                               name="country_id"
                               label="Country"
                               control={control}
                               placeholder="Select Country"
-                          setValue={setValue}
-                          defaultValueId={FullData.country_id}
+                              span={true}
+                              defaultValueId={0}
+                              rules={{message:"Country is Required"}}
+                              errors={errors}
                               options={countries}
-                            />
+                            />     
                           </Col>
                          
                           <Col sm="3">
@@ -1085,77 +1133,94 @@ const payload = {
                                  
 
   <Row>
-   <fieldset>
-  <legend>Fee Setting Check All</legend>
+  {/* 🔹 TOP LEVEL FIELDSET */}
+  <Col sm="12">
+    <fieldset className="border p-3">
+      <legend className="w-auto px-2">
+        Fee Setting Check All
+      </legend>
 
-  <Row>
-    {suppliers.map((item, index) => (
-      <Col key={index} sm="6">
-        <fieldset>
-          <legend>{item.label} Check All </legend>
-
-          <div className="checkbox checkbox-dark">
-
-            {/* 👉 If ESSO MOBIL – show only 1 checkbox */}
-            {item.label === "ESSO MOBIL" ? (
-              <>
-                <Input
-                  id={`esso-${index}`}
-                  type="checkbox"
-                  name="pricing"
-                  className="mx-3"
-                  value="1"
+      <Row>
+        {suppliers.map((item, index) => (
+          <Col key={index} sm="6">
+            <fieldset className="border p-3 mb-3">
+              
+              {/* 🔹 SUPPLIER LEVEL */}
+              <legend className="w-auto px-2">
+                {item.label} Check All
+                <Controller
+                  name={`${item.key}.all`}
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      type="checkbox"
+                      className="mx-2"
+                      checked={field.value === "Yes"}
+                      onChange={(e) =>
+                        field.onChange(e.target.checked ? "Yes" : "")
+                      }
+                    />
+                  )}
                 />
-                <Label for={`esso-${index}`}>E-85</Label>
-              </>
-            ) : (
-              /* 👉 Otherwise show all checkbox list */
-              CompanySupplierCheckbox.map((v, i) => (
-                <Fragment key={i}>
-                  <Input
-                    id={`chk-${index}-${i}`}
-                    type="checkbox"
-                    name="pricing"
-                    className="mx-3"
-                    value="1"
-                  />
-                  <Label for={`chk-${index}-${i}`}>{v.label}</Label>
-                </Fragment>
-              ))
-            )}
+              </legend>
 
-          </div>
-        </fieldset>
-      </Col>
-    ))}
-  </Row>
+              <div className="checkbox checkbox-dark">
+                {/* ESSO MOBIL */}
+                {item.label === "ESSO MOBIL" ? (
+                  <>
+                    <Input
+                      id={`esso-${index}`}
+                      type="checkbox"
+                      className="mx-3"
+                    />
+                    <Label for={`esso-${index}`}>E-85</Label>
+                  </>
+                ) : (
+                  CompanySupplierCheckbox.map((v, i) => (
+                    <Fragment key={i}>
+                      <Input
+                        id={`chk-${index}-${i}`}
+                        type="checkbox"
+                        className="mx-3"
+                      />
+                      <Label for={`chk-${index}-${i}`}>
+                        {v.label}
+                      </Label>
+                    </Fragment>
+                  ))
+                )}
+              </div>
 
-</fieldset>
-
-                  </Row>
+            </fieldset>
+          </Col>
+        ))}
+      </Row>
+    </fieldset>
+  </Col>
+</Row>
 
                   <fieldset>
                     <legend>Daily Pricing</legend>
                     <Row className="my-3">
-                      <Col sm="3">
-  <div className="checkbox checkbox-dark">
-    <Controller
-      name="daily_pricing"
-      control={control}
-      render={({ field }) => (
-        <Input
-          id="checkbox1"
-          type="checkbox"
-          checked={field.value === "Yes"}
-          onChange={(e) =>
-            field.onChange(e.target.checked ? "Yes" : "")
-          }
-        />
-      )}
-    />
-    <Label for="checkbox1">FJ Daily Pricing PDF</Label>
-  </div>
-</Col>
+                     <Col sm="3">
+                      <div className="checkbox checkbox-dark">
+                        <Controller
+                          name="daily_pricing"
+                          control={control}
+                          defaultValue={false}
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              id="daily_pricing"
+                              type="checkbox"
+                              checked={field.value=='Yes'}
+                              onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
+                            />
+                          )}
+                        />
+                        <Label for="daily_pricing">FJ Daily Pricing PDF</Label>
+                      </div>
+                    </Col>
 
                       <Col sm="3">
   <div className="checkbox checkbox-dark">
@@ -1270,7 +1335,7 @@ const payload = {
         <Input
           id="checkbox7"
           type="checkbox"
-          checked={!!field.value}
+          checked={field.value=='Yes'}
           onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
         />
       )}
@@ -1286,13 +1351,12 @@ const payload = {
                           <Controller
                            name="ul_daily_pricing_wtax"
                            control={control}
-                          defaultValue={FullData.ul_daily_pricing==='Yes'}
                           render={({ field }) => (
     <Input
       id="checkbox8"
       type="checkbox"
-      checked={field.value}
-      onChange={(e) => field.onChange(e.target.checked)}
+      checked={field.value=='Yes'}
+      onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
     />
   )}
                           />
@@ -1307,13 +1371,12 @@ const payload = {
                           <Controller
   name="love_daily_pricing"
   control={control}
-  defaultValue={FullData?.love_daily_pricing === "Yes"}
   render={({ field }) => (
     <Input
       id="checkbox9"
       type="checkbox"
-      checked={field.value}
-      onChange={(e) => field.onChange(e.target.checked)}
+      checked={field.value=='Yes'}
+      onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
     />
   )}
 />
@@ -1321,6 +1384,50 @@ const payload = {
                           <Label for="checkbox9">Loves Daily Pricing PDF</Label>
                         </div>
                       </Col>
+                      <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="irv_daily_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox10"
+          type="checkbox"
+          checked={field.value=='Yes'}
+          onChange={(e) =>
+            field.onChange(e.target.checked?'Yes':'')
+          }
+        />
+      )}
+    />
+    <Label for="checkbox10">
+      Irving Daily Pricing PDF (With Tax)
+    </Label>
+  </div>
+</Col>
+
+  <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="irv_daily_pricing_wtax"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox11"
+          type="checkbox"
+          checked={field.value=='Yes'}
+          onChange={(e) =>
+            field.onChange(e.target.checked?"Yes":"")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox11">
+      Irving Daily Pricing PDF (Without Tax)
+    </Label>
+  </div>
+</Col>
+
                     </Row>
                   </fieldset>
 
@@ -1379,7 +1486,9 @@ const payload = {
                       <Col sm="3">
                         <FormGroup>
                           <InputGroup>
-                            <InputGroupText>Invoice Pay Day</InputGroupText>
+                            <InputGroupText>Invoice Pay Day   <span className="text-danger fw-bold mx-1">
+                                *
+                              </span></InputGroupText>
                             {FullData.invoice_day && (
                             <Controller
                               name="invoice_day"
@@ -1413,7 +1522,9 @@ const payload = {
                       <Col sm="3">
                         <FormGroup>
                           <InputGroup>
-                            <InputGroupText>Invoice Week</InputGroupText>
+                            <InputGroupText>Invoice Week   <span className="text-danger fw-bold mx-1">
+                                *
+                              </span></InputGroupText>
                             <Controller
                               name="invoice_week"
                               control={control}
@@ -1537,9 +1648,7 @@ const payload = {
                           <InputGroup>
                             <InputGroupText>
                               Card Discount Sheet Menu
-                              <span className="text-danger fw-bold mx-1">
-                                *
-                              </span>
+                             
                             </InputGroupText>
                                {FullData.card_discount && (
                             <Controller
@@ -1562,11 +1671,7 @@ const payload = {
                             />
                                )}
                           </InputGroup>
-                          {errors.invoice_creation && (
-                            <span className="text-danger">
-                              {errors.invoice_creation.message}
-                            </span>
-                          )}
+                          
                         </FormGroup>
                       </Col>
                       <Col sm="4">

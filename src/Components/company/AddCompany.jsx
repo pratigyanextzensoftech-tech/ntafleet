@@ -144,6 +144,8 @@ const Index = () => {
         love_daily_pricing: formData.love_daily_pricing || '',
         ul_daily_pricing: formData.ul_daily_pricing || '',
         ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || '',
+        irv_daily_pricing: formData.irv_daily_pricing || '',
+        irv_daily_pricing_wtax: formData.irv_daily_pricing_wtax || '',
         invoice_creation: formData.invoice_creation?.value || '',
         invoice_day: formData.invoice_day?.value || '',
         invoice_week: formData.invoice_week?.value || '',
@@ -165,6 +167,9 @@ const Index = () => {
         last_failed: formData.last_failed || '1970-01-01 00:00:00', 
         added_on: new Date().toISOString().slice(0, 19).replace('T', ' '), 
       }; 
+
+      console.log(payload);
+      
       const res = await axios.post(table_name, payload);  
       toast.success("Company Add Succesfully") 
       reset(); // Reset the form on success
@@ -889,13 +894,12 @@ const Index = () => {
                       </Col>
                     </Row>{" "}
                   </fieldset>
-
                   <Row className="mt-3">
-                    <Col sm="4">
+                    <Col sm="12">
                       <fieldset>
                         <legend>Ultramar INVOICE TYPE</legend>
                         <Row className="mt-3">
-                          <Col sm="12">
+                          <Col sm="4">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -909,21 +913,8 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
-                            <FormGroup className="m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Discount Cent(R)
-                                </InputGroupText>
-                                <input
-                                  className="form-control"
-                                  name="ul_rcent"
-                                  type="text"
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
-                          <Col sm="12">
+                        
+                          <Col sm="4">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -937,7 +928,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
+                          <Col sm="4">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -954,17 +945,69 @@ const Index = () => {
                         </Row>
                       </fieldset>
                     </Col>
-                    <Col sm="4">
+                    
+                    <Col sm="12">
+                      <fieldset>
+                        <legend>Irving INVOICE TYPE</legend>
+                        <Row className="my-3">
+                          <Col sm="4">
+                            <FormGroup className=" m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Irving INVOICE TYPE
+                                </InputGroupText>
+
+                                <Select
+                                  options={invoiceType1}
+                                  className="form-control p-0 border-0"
+                                  name="irv_inv_type"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                         
+                          <Col sm="4">
+                            <FormGroup className=" m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Owner Operator Invoice
+                                </InputGroupText>
+
+                                <Select
+                                  options={YesNo}
+                                  className="form-control p-0 border-0"
+                                  name="irv_owner_operator_invoice"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                          <Col sm="4">
+                            <FormGroup className=" m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Customized Invoice Type
+                                </InputGroupText>
+                                <Select
+                                  options={customizedTypeType}
+                                  className="form-control p-0 border-0"
+                                  name="irv_cust_inv_type"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </fieldset>
+                    </Col>
+                          <Col sm="12">
                       <fieldset>
                         <legend>ESSO INVOICE TYPE</legend>
                         <Row className="my-3">
-                          <Col sm="12">
+                          <Col sm="4">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
                                   ESSO INVOICE TYPE
                                 </InputGroupText>
-
                                 <Select
                                   options={invoiceType1}
                                   className="form-control p-0 border-0"
@@ -973,21 +1016,8 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                           <Col sm="12">
-                            <FormGroup className="m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Discount Cent(R)
-                                </InputGroupText>
-                                <input
-                                  className="form-control"
-                                  name="esso_rcent"
-                                  type="text"
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
-                          <Col sm="12">
+                         
+                          <Col sm="4">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1002,7 +1032,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="12">
+                          <Col sm="4">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1019,7 +1049,7 @@ const Index = () => {
                         </Row>
                       </fieldset>
                     </Col>
-                    <Col sm="4">
+                    <Col sm="12">
                       <fieldset>
                         <legend>Other Details</legend>
                         <Row className="mt-3">
@@ -1029,123 +1059,269 @@ const Index = () => {
                               label="Country"
                               control={control}
                               placeholder="Select Country"
+                              span={true}
                               defaultValueId={0}
+                              rules={{message:"Country is Required"}}
+                              errors={errors}
                               options={countries}
-                            />
+                            />                   
                           </Col>
                           <Col sm="2">
                             <div className="checkbox checkbox-dark">
-                              <Input id="checkbox1" type="checkbox" name="fees" value="1"/>
-                              <Label for="checkbox1">Fees</Label>
+                             <Controller
+  name="fees"
+  control={control}
+  defaultValue={false}
+  render={({ field }) => (
+    <Input
+      id="checkbox1"
+      type="checkbox"
+      checked={field.value === "1"}
+      onChange={(e) => field.onChange(e.target.checked ? "1" : "")}
+    />
+  )}
+/>
+<Label for="checkbox1">Fees</Label>
                             </div>
                           </Col>
-                          <Col sm="12">
-                            <FormGroup className="m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Discount For Canada
-                                </InputGroupText>
-                                <input
-                                  className="form-control"
-                                  name="discount_canada"
-                                  type="text"
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
-                          <Col sm="12">
-                            <FormGroup className="m-form__group">
-                              <InputGroup>
-                                <InputGroupText>
-                                  Discount For USA
-                                </InputGroupText>
-                                <input
-                                  className="form-control"
-                                  name="discount_usa"
-                                  type="text"
-                                />
-                              </InputGroup>
-                            </FormGroup>
-                          </Col>
+                         
+                        
                         </Row>
                       </fieldset>
                     </Col>
                   </Row>
 
-                  <fieldset>
-                    <legend>Daily Pricing</legend>
-                    <Row className="my-3">
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox1" type="checkbox" name="daily_pricing" value="1"/>
-                          <Label for="checkbox1">FJ Daily Pricing PDF</Label>
-                        </div>
-                      </Col>
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox2" type="checkbox" name="ta_daily_pricing" value="1" /> 
-                          <Label for="checkbox2">
-                            Ta-Petro Daily Pricing PDF
-                          </Label>
-                        </div>
-                      </Col> 
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox3" type="checkbox" name="esso_daily_pricing" value="1"/>
-                          <Label for="checkbox3">
-                            ESSO Daily Pricing PDF (With Tax)
-                          </Label>
-                        </div>
-                      </Col>
-
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox4" type="checkbox" name="esso_daily_pricing_wtax" value="1"/>
-                          <Label for="checkbox4">
-                            ESSO Daily Pricing PDF (Without Tax)
-                          </Label>
-                        </div>
-                      </Col>
-                    
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox5" type="checkbox" name="pilot_pricing" value="1" />
-                          <Label for="checkbox5">Pilot Flying J</Label>
-                        </div>
-                      </Col>
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox6" type="checkbox" name="shell_pricing" value="1"/>
-                          <Label for="checkbox6">Shell Flying J</Label>
-                        </div>
-                      </Col>
-
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox7" type="checkbox" name="ul_daily_pricing" value="1"/>
-                          <Label for="checkbox7">
-                            Ultramar Daily Pricing PDF (With Tax)
-                          </Label>
-                        </div>
-                      </Col>
-
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox8" type="checkbox" name="ul_daily_pricing_wtax" value="1"/>
-                          <Label for="checkbox8">
-                            Ultramar Daily Pricing PDF (Without Tax)
-                          </Label>
-                        </div>
-                      </Col>
-                    
-                      <Col sm="3">
-                        <div className="checkbox checkbox-dark">
-                          <Input id="checkbox9" type="checkbox" name="love_daily_pricing" value="1"/>
-                          <Label for="checkbox9">Loves Daily Pricing PDF</Label>
-                        </div>
-                      </Col>
-                    </Row>
-                  </fieldset>
+                     <fieldset>
+                                     <legend>Daily Pricing</legend>
+                                     <Row className="my-3">
+                              <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="daily_pricing"
+      control={control}
+      defaultValue={false}
+      render={({ field }) => (
+        <Input
+          {...field}
+          id="daily_pricing"
+          type="checkbox"
+          checked={field.value=='Yes'}
+          onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
+        />
+      )}
+    />
+    <Label for="daily_pricing">FJ Daily Pricing PDF</Label>
+  </div>
+</Col>
+                 
+                                       <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="ta_daily_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox2"
+                           type="checkbox"
+                           checked={field.value === "Yes"}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked ? "Yes" : "")
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox2">
+                       Ta-Petro Daily Pricing PDF
+                     </Label>
+                   </div>
+                 </Col>
+                 
+                                      <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="esso_daily_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox3"
+                           type="checkbox"
+                           checked={field.value === "Yes"}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked ? "Yes" : "")
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox3">
+                       ESSO Daily Pricing PDF (With Tax)
+                     </Label>
+                   </div>
+                 </Col>
+                 
+                                     <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="esso_daily_pricing_wtax"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox4"
+                           type="checkbox"
+                           checked={field.value=="Yes"}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked ? "Yes" : "")
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox4">
+                       ESSO Daily Pricing PDF (Without Tax)
+                     </Label>
+                   </div>
+                 </Col>
+                 
+                 
+                                      <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="pilot_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox5"
+                           type="checkbox"
+                           checked={field.value=='1'}
+                           onChange={(e) => field.onChange(e.target.checked?'1':"")}
+                         />
+                       )}
+                     />
+                     <Label for="checkbox5">Pilot Flying J</Label>
+                   </div>
+                 </Col>
+                 
+                                      <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="shell_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox6"
+                           type="checkbox"
+                           checked={field.value=='1'}
+                           onChange={(e) => field.onChange(e.target.checked?'1':"")}
+                         />
+                       )}
+                     />
+                     <Label for="checkbox6">Shell Flying J</Label>
+                   </div>
+                 </Col>
+                 
+                 
+                                       <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="ul_daily_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox7"
+                           type="checkbox"
+                           checked={field.value=='Yes'}
+                           onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
+                         />
+                       )}
+                     />
+                     <Label for="checkbox7">
+                       Ultramar Daily Pricing PDF (With Tax)
+                     </Label>
+                   </div>
+                 </Col>
+                 
+                                       <Col sm="3">
+                                         <div className="checkbox checkbox-dark">
+                                           <Controller
+                                            name="ul_daily_pricing_wtax"
+                                            control={control}
+                                           render={({ field }) => (
+                     <Input
+                       id="checkbox8"
+                       type="checkbox"
+                       checked={field.value=='Yes'}
+                       onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
+                     />
+                   )}
+                                           />
+                                           <Label for="checkbox8">
+                                             Ultramar Daily Pricing PDF (Without Tax)
+                                           </Label>
+                                         </div>
+                                       </Col>
+                 
+                                       <Col sm="3">
+                                         <div className="checkbox checkbox-dark">
+                                           <Controller
+                   name="love_daily_pricing"
+                   control={control}
+                   render={({ field }) => (
+                     <Input
+                       id="checkbox9"
+                       type="checkbox"
+                       checked={field.value=='Yes'}
+                       onChange={(e) => field.onChange(e.target.checked?'Yes':"")}
+                     />
+                   )}
+                 />
+                 
+                                           <Label for="checkbox9">Loves Daily Pricing PDF</Label>
+                                         </div>
+                                       </Col>
+                                       <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="irv_daily_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox10"
+                           type="checkbox"
+                           checked={field.value=='Yes'}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked?'Yes':'')
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox10">
+                       Irving Daily Pricing PDF (With Tax)
+                     </Label>
+                   </div>
+                 </Col>
+                 
+                   <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="irv_daily_pricing_wtax"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox11"
+                           type="checkbox"
+                           checked={field.value=='Yes'}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked?"Yes":"")
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox11">
+                       Irving Daily Pricing PDF (Without Tax)
+                     </Label>
+                   </div>
+                 </Col>
+                 
+                                     </Row>
+                                   </fieldset>
 
                   <fieldset>
                     <legend>Invoice Setting</legend>
@@ -1188,7 +1364,11 @@ const Index = () => {
                       <Col sm="3">
                         <FormGroup>
                           <InputGroup>
-                            <InputGroupText>Invoice Pay Day</InputGroupText>
+                            <InputGroupText>Invoice Pay Day
+                            <span className="text-danger fw-bold mx-1">
+                                *
+                              </span>
+                            </InputGroupText>
                             <Controller
                               name="invoice_day"
                               control={control}
@@ -1219,7 +1399,9 @@ const Index = () => {
                           <InputGroup>
                             <InputGroupText>
                               Invoice Week 
-                             
+                             <span className="text-danger fw-bold mx-1">
+                                *
+                              </span>
                             </InputGroupText>
                             <Controller
                               name="invoice_week"
@@ -1351,7 +1533,9 @@ const Index = () => {
                       <Col sm="4">
                         <FormGroup className=" m-form__group">
                           <InputGroup>
-                            <InputGroupText><RiLockPasswordFill className="mx-1 " /> Password   </InputGroupText>
+                            <InputGroupText><RiLockPasswordFill className="mx-1 " /> Password   <span className="text-danger fw-bold  mx-1">
+                                *
+                              </span> </InputGroupText>
                             <input
                               className="form-control"
                               type="password"

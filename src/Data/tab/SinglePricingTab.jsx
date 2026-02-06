@@ -147,5 +147,20 @@ export const SinglepricingTab = (fetchers) => [
       />
     ),
   },
+   {
+    id: "9",
+    label: "Irving Pdf",
+   component: () => (
+      <SinglePdfCommon
+        supplier_id= "5" 
+        // invoice_type= "Actual" 
+        title="Create Irving Pricing PDF"
+        btnTtitle="Create Irving Pricing PDF"
+        onDataAdded={fetchers.ulPdf}  
+        api_name={create_pricing_pdf}
+
+      />
+    ),
+  },
 ];
 

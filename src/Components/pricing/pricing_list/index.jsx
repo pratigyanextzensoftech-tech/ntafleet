@@ -356,8 +356,6 @@ const tabs = [
         <Row>
           <Col sm="12">
             <Card>
-              {/* <HeaderCard title="Pricing List" /> */}
-
               <CardBody>                              
                 <BasicTabCard tabContent={pricingListTableTab} />
               </CardBody>

@@ -13,6 +13,7 @@ const DropDown = ({
   errors = {},
   defaultValueId = null,
   setValue,
+  span
 }) => {
 
   // 👇 watch current value safely
@@ -34,7 +35,9 @@ useEffect(() => {
   return (
     <FormGroup>
       <InputGroup>
-        <InputGroupText>{label}</InputGroupText>
+        <InputGroupText>{label} {span==true &&   <span className="text-danger fw-bold mx-1">
+                                *
+                              </span>}</InputGroupText>
 
         <Controller
           name={name}

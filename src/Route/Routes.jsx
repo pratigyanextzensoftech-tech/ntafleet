@@ -32,9 +32,10 @@ import UpdateTaPetro from '../Components/pricing/updateTaPetro/index';
 import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
 import OwnerOperator from '../Components/pricing/ownerOperator/index';
 import EssoGroup from '../Components/pricing/essoGroup/index';
+import IrvingGroup from '../Components/pricing/irvingGroup/index';
 import UltramarGroup from '../Components/pricing/ultramarGroup/index';
 import DownloadBulk from '../Components/pricing/downloadBulk/index';
-
+import IrvingBulk from '../Components/pricing/IrvingBulk/index.jsx'
 //Items
 import AddItems from '../Components/items/addItems/index';
 
@@ -136,18 +137,15 @@ export const routes = [
     { path: `/dashboard`, Component: <Dashboard /> },
     { path: `/report_dashboard`, Component: <Report_Dashboard /> },
     { path: `/graph_dashboard`, Component: <Ggraph_Dashboard /> },
-
     //Discount
     { path: `/create_discount`, Component: <CreateDiscount /> },
     { path: `/view_discount`, Component: <ViewDiscount /> },
     { path: `/discount_Sheet`, Component: <DiscountSheet /> },
     { path: `/create_bulk_discount`, Component: <BulkDiscount /> },
     { path: `/zero_discount_location`, Component: <ZeroDiscount /> },
-
     //Retail Price
     { path: `/upload_retail_prices`, Component: <Upload /> },
     { path: `/petro_retail_prices`, Component: < PetroRetail /> },
-
     //Pricing
     { path: `/download_esso_cent`, Component: < DownloadEssoCent /> },
     { path: `/update_esso_centwise`, Component: < UpdateEssoCent /> },
@@ -158,6 +156,7 @@ export const routes = [
     { path: `/fj_bulk_price`, Component: <BulkPrice /> },
     { path: `/ta_petro_bulk_price`, Component: <TaPetroBulk /> },
     { path: `/esso_bulk_price`, Component: <EssoBulk /> },
+    { path: `/irving_bulk_price`, Component: <IrvingBulk /> },
     { path: `/love_bulk_price`, Component: <LoveBulk /> },
     { path: `/ultramar_bulk_price`, Component: <Ultramar /> },
     { path: `/update_fg_rack_price`, Component: <UpdateFgRack /> },
@@ -165,27 +164,24 @@ export const routes = [
     { path: `/update_love_rack_pricing`, Component: <UpdateLoveRack /> },
     { path: `/OwnerUpdate_rack_price`, Component: <OwnerOperator /> },
     { path: `/esso_group_rack_price`, Component: <EssoGroup /> },
+    { path: `/irving_group_rack_price`, Component: <IrvingGroup /> },
     { path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
     { path: `/download_bulk_excel`, Component: <DownloadBulk /> },
-
     //Items
     { path: `/add_items`, Component: <AddItems /> },
     { path: `/view_items`, Component: <AddItems /> },
-
     //Company
     { path: `/add_company`, Component: <AddCompany /> },
     { path: `/edit_company/:id`, Component: <EditCompany /> },
     { path: `/view_company`, Component: <ViewCompany /> },
     { path: `/company_info`, Component: <CompanyInfo /> },
     { path: `/sub_login`, Component: <SubLOgin /> },
-
     //Fuel Card
     { path: `/add_card`, Component: < AddFuel /> },
     { path: `/view_fuelCards`, Component: < ViewFuel /> },
     { path: `/efs_view_card`, Component: < EFSFuel /> },
     { path: `/card_update`, Component: < HistoryFuel /> },
     { path: `/edit-fuelCards/:id`, Component: < EditFuel /> },
-
     //Transaction
     { path: `/view_transaction`, Component: < ViewTransaction /> },
     { path: `/upload_transaction`, Component: < UploadTransaction /> },
@@ -198,7 +194,6 @@ export const routes = [
     { path: `/view_efs_transaction`, Component: < ViewEfs /> },
     { path: `/update_unit`, Component: < UpdateUnit /> },
     { path: `/edit-unknown/:id`, Component: < EditUnknownTransaction /> },
-
     //Invoice
     { path: `/view_invoice`, Component: <ViewInvoice /> },
     { path: `/viewInvoice/ViewPdf/:id`, Component: <ViewPdf /> },
@@ -214,25 +209,20 @@ export const routes = [
     { path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
     { path: `/send_bulk_mail`, Component: <SendBulk /> },
     { path: `/compare_invoice`, Component: <CompareInvoice /> },
-
     //Report 
     { path: `/view_Reports`, Component: <ViewReports /> },
     { path: `/salesman_report`, Component: <SalesmanVol /> },
     { path: `/create_Reports`, Component: <CreateReports /> },
-
     //Supplier
     { path: `/suppler_list`, Component: <SupplierList /> },
     { path: `/add_supplier`, Component: <SupplierList /> },
-
     //Money Code 
     { path: `/money_code_List`, Component: <MoneyCodeList /> },
     { path: `/addMoney_code_List`, Component: <AddMoneyCode /> },
-        { path: `/editMoney_code_List/:id`, Component: < EditMoneyCodeForm /> },
-
+    { path: `/editMoney_code_List/:id`, Component: < EditMoneyCodeForm /> },
     { path: `/upload_money_code`, Component: <UploadMoney /> },
     { path: `/view_moneyCode_invoices`, Component: <ViewMoneyCode /> },
     { path: `/check_moneycode`, Component: <CheckInvoicemoneyCode /> },
-
     // Location
     { path: `/Linamar_Esso_Location`, Component: < LinamarEsso /> },
     { path: `/esso_ulramar_petroLink`, Component: < PetroLink /> },
@@ -241,7 +231,6 @@ export const routes = [
     { path: `/view_cities`, Component: < ViewCity /> },
     { path: `/manage_location`, Component: < ManageLoc /> },
     { path: `/manage_group`, Component: < ManageGroup /> },
-
     //Setting
     { path: `/login_log`, Component: < UserLogin /> },
     { path: `/track_visitors`, Component: < TrackVisitor /> },
@@ -250,22 +239,17 @@ export const routes = [
     { path: `/manage_user/:id`, Component: <ManageUser /> },
     { path: `/manage_salesMan`, Component: < ManageSalesman /> },
     { path: `/manage_Menu`, Component: < ManageMenu /> },
-
     //TCheck
     { path: `/upload_tcheck`, Component: < UploadTcheck /> },
     { path: `/tcheck_list`, Component: < TcheckList /> },
     { path: `/tcheck_list/:id`, Component: <TcheckEditForm /> },
     { path: `/create_tcheck_invoice`, Component: < CreateTCheck /> },
     { path: `view_tcheck_invoices`, Component: < ViewTCheck /> },
-
     //Help
     { path: `/help_use_efsllc`, Component: <Help_Use_Efsllc/> },
     { path: `/help_add_card`, Component: <Help_Add_Card /> },
     { path: `/how_create_report`, Component: <How_Create_Report /> },
     { path: `/how_card_discount`, Component: <How_Card_Discount /> }, 
-    
     //notification
     { path: `/manage_notification`, Component: <Notification /> },
-
-
 ];
