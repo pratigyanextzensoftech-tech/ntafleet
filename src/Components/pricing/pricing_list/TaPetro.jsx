@@ -56,6 +56,8 @@ const TaPetro = ({ title, btnTitle }) => {
                                 className={`form-control `}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
+                                 portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -88,6 +90,14 @@ const TaPetro = ({ title, btnTitle }) => {
                               field.onChange(selectedOption)
                             }
                             value={field.value}
+                                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />

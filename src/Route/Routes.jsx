@@ -131,6 +131,7 @@ import EditUnknownTransaction from '../Components/transaction/unKnownTransaction
  import EditFuel from '../Components/fuelCards/editFuel/index'
 import EditMoneyCodeForm from '../Components/moneyCode/addMoneyCode/EditMoneyCode';
 import Notification from '../Components/notification/index';
+import CreateIrving from '../Components/createIrving/CreateIrving.jsx';
 
 export const routes = [
     //Dashboard
@@ -209,6 +210,7 @@ export const routes = [
     { path: `/create_repeat_invoice`, Component: <CreateRepeat /> },
     { path: `/send_bulk_mail`, Component: <SendBulk /> },
     { path: `/compare_invoice`, Component: <CompareInvoice /> },
+    { path: `/create_irv_invoice`, Component: <CreateIrving /> },
     //Report 
     { path: `/view_Reports`, Component: <ViewReports /> },
     { path: `/salesman_report`, Component: <SalesmanVol /> },

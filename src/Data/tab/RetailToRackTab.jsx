@@ -153,4 +153,41 @@ export const RetailToRackTab = [
       />
     ),
   },
+   {
+    id: '10',
+    label: "Irving",
+    component: () => (
+      <RetailToRack 
+       invoice_type=""
+        supplier_ids="10"
+        invoice_type_dropdown={true}
+        country_id="1"
+        title="Create Single Rack Invoice (Actual)"
+        btnTtitle="Search Company" 
+        api_name={retail_to_rack_Api}
+        owner_operator="NO"
+
+      />
+    ),
+  },
+   {
+    id: '11',
+    label: "Irving Owner Operator",
+    component: () => (
+      <RetailToRack
+       company_list="checkbox"
+        supplier_ids="10"
+        invoice_type="RG"
+        owner_operator_invoice="Yes"
+        invoice_type_dropdown={true}
+        type="ultramar"
+         country_id="1"
+        title="Create Single Rack Invoice (Actual)"
+        btnTtitle="Update Transaction"
+        api_name={retail_to_rack_Api}
+                owner_operator="Yes"
+
+      />
+    ),
+  },
 ];

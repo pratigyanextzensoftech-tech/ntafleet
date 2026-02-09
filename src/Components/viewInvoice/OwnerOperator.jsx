@@ -80,6 +80,8 @@ const OwnerOperator = ({ title,onSearch }) => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
+                                 portalId="root"
+                                popperPlacement="bottom-start"
 
                               />
                             )}
@@ -108,7 +110,8 @@ const OwnerOperator = ({ title,onSearch }) => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
-
+                                 portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -146,6 +149,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                                                      placeholder="Select supplier"
                                                      value={field.value}
                                                      onChange={(val) => field.onChange(val)}
+                                                       menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                                                    />
                                                  );
                                                }}
@@ -179,6 +190,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                             options={country}
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
   )}}
                       />
@@ -210,7 +229,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                             {...field}
                             options={invoiceTypes}
                             className="form-control p-0 border-0"
-                            
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       }
@@ -233,6 +259,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                             options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select Company "
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
@@ -256,6 +290,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                             className="form-control p-0 border-0"
                                    value={field.value}              // IMPORTANT for controlled select
         onChange={(val) => field.onChange(val)}
+          menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
@@ -279,6 +321,14 @@ const OwnerOperator = ({ title,onSearch }) => {
                             className="form-control p-0 border-0"
                                    value={field.value}              // IMPORTANT for controlled select
         onChange={(val) => field.onChange(val)}
+          menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />

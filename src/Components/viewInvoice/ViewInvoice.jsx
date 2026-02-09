@@ -432,7 +432,7 @@ const ViewInvoice = () => {
     cols.push({
       name: "Action",
       cell: (row) => (
-        <div className="position-relative dropdown-action">
+        <div className="position-relative dropdown-action" >
           <button
             className="btn btn-sm btn-primary px-2"
             onClick={() =>
@@ -457,7 +457,7 @@ const ViewInvoice = () => {
             >
               <a
                 href="#"
-                onClick={() => downloadPdf(row.fulldata.download_link)}
+                onClick={() => downloadPdf(row.fulldata.download_link,row)}
                 rel="noopener noreferrer"
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}

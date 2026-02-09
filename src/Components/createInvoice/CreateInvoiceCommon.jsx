@@ -183,6 +183,14 @@ setShowTable(true)
                               options={companies}
                               className="form-control p-0 border-0"
                               placeholder="Select Company"
+                                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                             />
                           )}
                         />
@@ -216,6 +224,8 @@ setShowTable(true)
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                dateFormat="yyyy-MM-dd"
+                                portalId="root"
+                              popperPlacement="bottom-start"
 
                               />
                             )}
@@ -250,7 +260,8 @@ setShowTable(true)
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                dateFormat="yyyy-MM-dd"
-
+                               portalId="root"
+                              popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -292,6 +303,14 @@ setShowTable(true)
                               placeholder="Select supplier"
                               value={field.value}
                               onChange={(val) => field.onChange(val)}
+                                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                             />
                           );
                         }}
@@ -331,6 +350,14 @@ setShowTable(true)
                               placeholder="Select Country"
                               value={field.value}
                               onChange={(val) => field.onChange(val)}
+                                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                             />
                           );
                         }}
@@ -369,6 +396,14 @@ setShowTable(true)
                                 placeholder="Select Inv "
                                 value={field.value}
                                 onChange={(val) => field.onChange(val)}
+                                  menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                               />
                             );
                           }}
@@ -404,6 +439,14 @@ setShowTable(true)
                                 placeholder="Select Inv"
                                 value={field.value}
                                 onChange={(val) => field.onChange(val)}
+                                  menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                               />
                             );
                           }}
@@ -439,6 +482,14 @@ setShowTable(true)
                                 placeholder="Select Inv"
                                 value={field.value}
                                 onChange={(val) => field.onChange(val)}
+                                  menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                               />
                             );
                           }}

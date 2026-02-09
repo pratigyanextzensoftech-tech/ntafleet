@@ -13,7 +13,10 @@ const DropDown = ({
   errors = {},
   defaultValueId = null,
   setValue,
-  span
+  span,
+menuPortalTarget,
+menuPosition,
+styles
 }) => {
 
   // 👇 watch current value safely
@@ -47,6 +50,9 @@ useEffect(() => {
             <Select
               {...field}
               options={options}
+              menuPortalTarget={menuPortalTarget}
+              menuPosition={menuPosition}
+              styles={styles}
               placeholder={placeholder}
               value={field.value || null}
               onChange={field.onChange}

@@ -148,6 +148,14 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         options={company}
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
+                          menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                       />
                     )}
                   />
@@ -176,7 +184,8 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                             selected={field.value}
                             onChange={(date) => field.onChange(date)}
                             dateFormat="yyyy-MM-dd"
-
+                             portalId="root"
+                              popperPlacement="bottom-start"
                           />
                         )}
                       />
@@ -205,7 +214,8 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                             selected={field.value}
                             onChange={(date) => field.onChange(date)}
                              dateFormat="yyyy-MM-dd"
-
+                             portalId="root"
+                              popperPlacement="bottom-start"
                           />
                         )}
                       />
@@ -231,6 +241,14 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         }
                         className="form-control p-0 border-0"
                         placeholder="Select supplier"
+                        menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                       />
                     )}
                   />
@@ -252,6 +270,14 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         options={[country[1]]}
                         className="form-control p-0 border-0"
                         placeholder="Select Country"
+                        menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                       />
                     )}
                   />
@@ -275,6 +301,14 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         {...field}
                        options={invoiceType.filter((_, index) => index !== 0)}
                         className="form-control p-0 border-0"
+                        menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                       />
                     )}
                   />
@@ -294,6 +328,14 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                             {...field}
                             options={InvoiceCategory}
                             className="form-control p-0 border-0"
+                            menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />

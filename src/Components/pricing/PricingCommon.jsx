@@ -365,6 +365,8 @@ console.log(newSelection)
                                   selected={field.value}
                                   onChange={(date) => field.onChange(date)}
                                    dateFormat="yyyy-MM-dd"
+                                    portalId="root"
+                                    popperPlacement="bottom-start"
                                 />
                               )}
                             />
@@ -439,7 +441,15 @@ console.log(newSelection)
                                 }
                                 placeholder="Select supplier"
                                 value={field.value}
+                                  menuPortalTarget={document.body}
+                                  menuPosition="fixed"
                                 onChange={field.onChange}
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                               />
                             );
                           }}
@@ -478,6 +488,14 @@ console.log(newSelection)
                               placeholder="Select Discount "
                               onChange={field.onChange}
                               value={field.value}
+                               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                             />
                           )}
                         />
@@ -550,6 +568,15 @@ console.log(newSelection)
                               options={companies}
                               className="form-control p-0 border-0"
                               placeholder="Select company"
+                               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                onChange={field.onChange}
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                             />
                           )}
                         />
@@ -590,6 +617,8 @@ console.log(newSelection)
                                     className="form-control"
                                     selected={field.value}
                                     onChange={field.onChange}
+                                    portalId="root"
+                                    popperPlacement="bottom-start"
                                   />
                                 )}
                               />
@@ -627,6 +656,8 @@ console.log(newSelection)
                                     className="form-control"
                                     selected={field.value}
                                     onChange={field.onChange}
+                                    portalId="root"
+                                    popperPlacement="bottom-start"
                                   />
                                 )}
                               />

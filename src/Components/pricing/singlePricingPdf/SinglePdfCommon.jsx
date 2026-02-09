@@ -110,6 +110,14 @@ const SinglePdfCommon = ({
                     control={control}
               rules={{ required: "Company is required" }}
                errors={errors}
+                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
 
                   />
                 </Col>
@@ -131,6 +139,8 @@ const SinglePdfCommon = ({
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
+                                 portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -154,6 +164,7 @@ const SinglePdfCommon = ({
         name="supplier"
         control={control}
         rules={{ required: "Supplier is required" }}
+       
         defaultValue={null} // RHF default
         render={({ field }) => {
           const options =
@@ -174,6 +185,14 @@ const SinglePdfCommon = ({
               options={options}
               placeholder="Select supplier"
               value={currentValue}
+                menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
               onChange={(selected) => field.onChange(selected)}
             />
           );

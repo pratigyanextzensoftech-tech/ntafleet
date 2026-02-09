@@ -373,6 +373,8 @@ console.log(newSelection)
                                   selected={field.value}
                                   onChange={(date) => field.onChange(date)}
                                    dateFormat="yyyy-MM-dd"
+                                  portalId="root"
+                                popperPlacement="bottom-start"
                                 />
                               )}
                             />
@@ -409,6 +411,14 @@ console.log(newSelection)
                                 placeholder="Select supplier"
                                 value={field.value}
                                 onChange={field.onChange}
+                                 menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                               />
                             );
                           }}

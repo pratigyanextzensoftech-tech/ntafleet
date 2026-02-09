@@ -239,6 +239,14 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                               options={company}
                               className="form-control p-0 border-0"
                               placeholder="Select a country"
+                               menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                             />
                           )}
                         />
@@ -269,6 +277,8 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                                   className={`form-control `}
                                   selected={field.value}
                                   onChange={(date) => field.onChange(date)}
+                                  portalId="root"
+                                popperPlacement="bottom-start"
                                 />
                               )}
                             />
@@ -300,6 +310,8 @@ const RackCentList = ({ title, btnTitle,apiname }) => {
                                   className={`form-control `}
                                   selected={field.value}
                                   onChange={(date) => field.onChange(date)}
+                                   portalId="root"
+                                popperPlacement="bottom-start"
                                 />
                               )}
                             />

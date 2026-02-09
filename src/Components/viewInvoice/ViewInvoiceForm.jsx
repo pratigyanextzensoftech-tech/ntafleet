@@ -87,7 +87,6 @@ const{data:country}=useCountry()
          
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <Row>
-
                 <Col xs="12">
                      <Controller
                          name="supplier"
@@ -191,6 +190,8 @@ const{data:country}=useCountry()
                                 selected={field.value}
                                 onChange={field.onChange}
                                 dateFormat="yyyy-MM-dd"
+                                 portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -216,7 +217,8 @@ const{data:country}=useCountry()
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
-
+                                portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -241,6 +243,14 @@ const{data:country}=useCountry()
                             options={companies}
                             className="form-control p-0 border-0"
                             placeholder="Select Company"
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
@@ -262,6 +272,14 @@ const{data:country}=useCountry()
                             options={country}
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
@@ -282,6 +300,14 @@ const{data:country}=useCountry()
                             {...field}
                             options={invoiceType}
                             className="form-control p-0 border-0"
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
@@ -301,6 +327,14 @@ const{data:country}=useCountry()
                             {...field}
                             options={InvoiceCategory}
                             className="form-control p-0 border-0"
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
@@ -320,6 +354,14 @@ const{data:country}=useCountry()
                             {...field}
                             options={InvoiceShow}
                             className="form-control p-0 border-0"
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
