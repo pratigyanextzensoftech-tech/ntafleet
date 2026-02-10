@@ -293,11 +293,12 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       </Row>
       </CardBody>
       </Card>
+       <Card>
+              <CardBody>
       <Container fluid>
         <Row>
           <Col sm="12">
-            <Card>
-              <CardBody>
+           
                 <HeaderCard title="ULTRAMAR Group Rack Cent List" download={true} downloadHeading="Download"/>
                 <div className="text-end my-3">
                 <button className="btn btn-primary">Delete Pricing</button>
@@ -321,11 +322,12 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                     <tbody></tbody>
                   </table>
                 </div>
-              </CardBody>
-            </Card>
+             
           </Col>
         </Row>
       </Container>
+      </CardBody>
+    </Card>
     </Fragment>
   );
 };
