@@ -16,7 +16,7 @@ const Index = () => {
   const { createColumns,selectedRows,getFilteredData } = useSelectableColumns();
 const pricingpdf = {
   id: "id",
-  "ID#": "id",
+  "ID#": "id" ,
   "Company": "company_name",
   "Pricing Date": "pricing_date",
   "Supplier": "supplier",
