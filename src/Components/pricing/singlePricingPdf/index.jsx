@@ -21,11 +21,12 @@ const pricingpdf = {
   "Pricing Date": "pricing_date",
   "Supplier": "supplier",
   "Entry_Count": "entry_count",
-  "Added_By": "idby",
+  "Added_By": "added_by_name",
   "Added_On": "added_on",
-  "Mailed_By": "mailby",
+  "Mailed_By": "mailed_by",
   "Mailed_On": "mail_on",
 }   
+
 const handleDelete = ({ ids = [], deleteApi, refetch }) => {
   if (!ids.length) {
     Swal.fire("Warning", "Please select at least one record.", "warning");
