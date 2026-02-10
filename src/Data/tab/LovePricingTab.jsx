@@ -8,7 +8,7 @@ export const LovePricingTab = [
   {
     id: '1',
     label:"Create LOVE Bulk Pricing PDF"  , 
-    component: <PricingCommon  listapi={love_pricing_pdf}  table={true}  apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="7" discountType={true} testingEmail={true} validation={true}  title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List "  listapi={love_pricing_pdf}  table={true}  apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="7" discountType={true} testingEmail={true} validation={true}  title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
   },
   {
     id: '2',
@@ -18,7 +18,7 @@ export const LovePricingTab = [
        Mail Love Bulk Pricing PDF - <strong> [Capped]</strong>
       </>
     ), 
-    component: <MailPricingCommon supplier="LOVE" listapi={love_pricing_pdf} invoiceType="Capped" supplier_ids="7" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="LOVE" listapi={love_pricing_pdf} invoiceType="Capped" supplier_ids="7" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
   {
     id: '3',
@@ -29,7 +29,7 @@ export const LovePricingTab = [
       </>
     )
    ,
-    component: <MailPricingCommon supplier="LOVE" listapi={love_pricing_pdf} supplier_ids="7" invoiceType="Actual" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="LOVE" listapi={love_pricing_pdf} supplier_ids="7" invoiceType="Actual" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   }
  
   

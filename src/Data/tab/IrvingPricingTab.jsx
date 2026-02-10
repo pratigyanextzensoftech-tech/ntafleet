@@ -8,24 +8,24 @@ export const IrvingPricingTab = [
   {
     id: '1',
     label:"Create Irving Bulk Pricing PDF (Without Tax)"  , 
-    component: <PricingCommon  listapi={irv_pricing_pdf}  table={true}  apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="5" discountType={true} testingEmail={true} validation={true}  title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List (Without Tax)"  listapi={irv_pricing_pdf}  table={true}  apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="5"  testingEmail={true} validation={true}  title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
   },
   {
     id: '2',
     label:"Mail Irving Bulk Pricing PDF (Without Tax)", 
-    component: <MailPricingCommon supplier="IRVING" listapi={irv_pricing_pdf} supplier_ids="5" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List (Without Tax)" supplier="IRVING" listapi={irv_pricing_pdf} supplier_ids="5" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf (Without Tax)"/>,
   },
   {
     id: '3',
     label: "Create Irving Bulk Pricing PDF (With Tax)"
    ,
-    component: <PricingCommon  listapi={irv_pricing_pdf}  table={true}  apiName={create_pricing_pdf} tax= "Yes" pricingDate={true} supplier={true} supplier_ids="5" testingEmail={true} validation={true} title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Create Pricing PDF (With Tax)"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List (With Tax)"  listapi={irv_pricing_pdf}  table={true}  apiName={create_pricing_pdf} tax= "Yes" pricingDate={true} supplier={true} supplier_ids="5" testingEmail={true} validation={true} title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Create Pricing PDF (With Tax)"/>,
   },
 
   {
     id: '4',
     label:"Mail Irving Bulk Pricing PDF (With Tax)"  , 
-    component: <MailPricingCommon listapi={irv_pricing_pdf} supplier="IRV" supplier_ids="5" title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Search Pricing Pdf (Without Tax)"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List (With Tax)"  listapi={irv_pricing_pdf} supplier="IRV" supplier_ids="5" title="Mail Bulk Pricing PDF (With Tax)" btnTitle="Search Pricing Pdf (With Tax)"/>,
   }
  
   

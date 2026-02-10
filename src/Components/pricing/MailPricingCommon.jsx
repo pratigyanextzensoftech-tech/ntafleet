@@ -35,6 +35,7 @@ const MailPricingCommon = ({
   supplier,
   discountType,
   supplier_ids,
+  tableTitle,
   tax,
 table,invoiceType
 }) => {
@@ -447,7 +448,7 @@ console.log(newSelection)
       </Row>
      
         <DataTableComponent
-          title="Pricing PDF List (Without Tax) "
+          title={tableTitle && tableTitle || "Pricing PDF List (Without Tax) "}
           tableColumns={tableColumns}
           tableData={filteredData}
           loading={essoLoading}
