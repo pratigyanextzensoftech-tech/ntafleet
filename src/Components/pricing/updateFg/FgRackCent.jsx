@@ -306,6 +306,8 @@ console.log(newSelection)
           pagination
           buttonTitle="Delete Rack Cent"
            handleDelete={()=>handleDelete(selectedRows)}
+           download={true}
+           downloadHeading="Download"
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

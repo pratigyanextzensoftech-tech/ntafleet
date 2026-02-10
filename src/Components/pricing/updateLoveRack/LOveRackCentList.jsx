@@ -19,6 +19,7 @@ import {
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import { useCompany } from "../../../Hooks/Dropdowns";
+import HeaderCard from "../../Common/Component/HeaderCard";
 import {
   loc_group_Essogroup as APINAME,
   Esso_cent_Data,
@@ -190,6 +191,8 @@ useEffect(() => {
   };
   return (
     <Fragment>
+      <Card>
+                <CardBody>
   <Row>
     <Col> 
     <fieldset>
@@ -311,11 +314,18 @@ useEffect(() => {
     </fieldset>
     </Col>
   </Row>
+  </CardBody>
+  </Card>
+   <Card>
+                <CardBody>
+                         <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
   <Container fluid>
           <Row>
             <Col sm="12">
-              <Card>
-                <CardBody>
+            <div className="text-end my-3">
+                <button className="btn btn-primary">Delete Rack Cent</button>
+                </div>
+             
     <div className="table-responsive">
                   <table
                     id="example"
@@ -335,9 +345,10 @@ useEffect(() => {
                     <tbody></tbody>
                   </table>
                 </div>
-                </CardBody>
-                </Card></Col>
+              </Col>
                 </Row ></Container>
+                </CardBody>
+                </Card>
 </Fragment> 
   );
 };
