@@ -26,6 +26,8 @@ import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
 import HeaderCard from "../../Common/Component/HeaderCard";
+import Loader from "../../../Layout/Loader";
+
 const TaPetroRackCent = ({ title, btnTitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
@@ -42,12 +44,15 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
   useEffect(() => {
+    setLoading(true)
     fetch(APINAME)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
           setGroupIds(data.map((item) => item.id));
+              setLoading(false)
+
         } 
         else {
           console.error("APINAME response is not an array:", data);
@@ -111,6 +116,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       ],
 
       ajax: function (data, callback) {
+       
         const params = new URLSearchParams();
         params.append("start", data.start);
         params.append("length", data.length);
@@ -143,6 +149,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
               recordsFiltered: json.recordsFiltered,
               data: tableData,
             });
+
           })
           .catch((err) => {
             console.error("Error fetching table data:", err);
@@ -177,6 +184,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
         params: basePayload,
       })
       .then((res) => {
+        
         res.data.success
           ? toast.success(res.data.message)
           : toast.error(res.data.message);
@@ -303,6 +311,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                 <div className="text-end my-3">
                 <button className="btn btn-primary">Delete Rack Cent</button>
                 </div>
+                { <Loader loading={loading}/>}
                 <div className="table-responsive">
                   <table
                     id="example"
