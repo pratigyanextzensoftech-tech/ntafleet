@@ -17,25 +17,48 @@ import {
   irv_pricing_pdf,
 } from "../../../api";
 import usePaginatedTable from "../../../Hooks/usePagination";
-const Index = () => {
-  const { createColumns, selectedRows, getFilteredData } =
-    useSelectableColumns();
-  const pricingpdf = {
-    id: "id",
-    "ID#": "id",
-    Company: "company_name",
-    "Pricing Date": "pricing_date",
-    Supplier: "supplier",
-    Entry_Count: "entry_count",
-    Added_By: "idby",
-    Added_On: "added_on",
-    Mailed_By: "mailby",
-    Mailed_On: "mail_on",
-  };
-  const handleDelete = ({ ids = [], deleteApi, refetch }) => {
-    if (!ids.length) {
-      Swal.fire("Warning", "Please select at least one record.", "warning");
-      return;
+const Index = () =>  {
+  const { createColumns,selectedRows,getFilteredData } = useSelectableColumns();
+const pricingpdf = {
+  id: "id",
+  "ID#": "id",
+  "Company": "company_name",
+  "Pricing Date": "pricing_date",
+  "Supplier": "supplier",
+  "Entry_Count": "entry_count",
+  "Added_By": "added_by_name",
+  "Added_On": "added_on",
+  "Mailed_By": "mailed_by",
+  "Mailed_On": "mail_on",
+}   
+
+const handleDelete = ({ ids = [], deleteApi, refetch }) => {
+  if (!ids.length) {
+    Swal.fire("Warning", "Please select at least one record.", "warning");
+    return;
+  }
+  const stringId = ids.join(",");
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axios
+        .delete(`${deleteApi}/${stringId}`)
+        .then(() => {
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+          refetch(); // ✅ refresh correct tab
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
     }
     const stringId = ids.join(",");
 
@@ -204,3 +227,4 @@ const Index = () => {
 };
 
 export default Index;
+cxcxc

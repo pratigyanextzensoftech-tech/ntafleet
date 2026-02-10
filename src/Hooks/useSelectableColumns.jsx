@@ -54,7 +54,6 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
 
         const cellValue =
           key === "Date" ? formatDate(row[key]) : row[key];
-
         return String(cellValue ?? "")
           .toLowerCase()
           .includes(value.toLowerCase());
@@ -214,8 +213,10 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
               }}>
               
                   <Link
-                              to={`/viewInvoice/ViewPdf/${btoa(row.id)}`}
-                              state={{ downloadLinkUrl: row.fulldata.download_link }}
+                              // to={`/viewInvoice/ViewPdf/${btoa(row.id)}`}
+                              to={row.fulldata.download_link }
+                               target="_blank"
+                              // state={{ downloadLinkUrl: row.fulldata.download_link }}
                               className="dropdown-item d-flex  text-success mb-2"
                             >
                               <FaEye /> View Pdf 
