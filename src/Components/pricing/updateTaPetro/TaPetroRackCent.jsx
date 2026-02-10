@@ -25,6 +25,7 @@ import {
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
+import HeaderCard from "../../Common/Component/HeaderCard";
 const TaPetroRackCent = ({ title, btnTitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
@@ -190,6 +191,8 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
   };
   return (
     <Fragment>
+        <Card>
+              <CardBody>
       <Row>
         <Col>
           <fieldset>
@@ -288,11 +291,17 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
           </fieldset>
         </Col>
       </Row>
+      </CardBody>
+      </Card>
       <Container fluid>
         <Row>
           <Col sm="12">
             <Card>
               <CardBody>
+                <HeaderCard title="ULTRAMAR Group Rack Cent List" download={true} downloadHeading="Download"/>
+                <div className="text-end my-3">
+                <button className="btn btn-primary">Delete Pricing</button>
+                </div>
                 <div className="table-responsive">
                   <table
                     id="example"
