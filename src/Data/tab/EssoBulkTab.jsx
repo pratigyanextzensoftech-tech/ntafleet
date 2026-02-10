@@ -6,35 +6,36 @@ export const EssoBulkTab = [
   {
     id: '1',
     label:"Create ESSO PDF (Without Tax)",
-    component: <PricingCommon  apiName={create_pricing_pdf} listapi={esso_pricing_pdf} tax= "No"  pricingDate={true} supplier={true} supplier_ids="6" testingEmail={true} validation={true} btnTitle="Create  Pricing PDF (Without Tax)" title="Create Bulk Pricing PDF (Without Tax) "/>,
+    component: <PricingCommon tableTitle="Pricing PDF List (Without Tax)"  apiName={create_pricing_pdf} listapi={esso_pricing_pdf} tax= "No"  pricingDate={true} supplier={true} supplier_ids="6" testingEmail={true} validation={true} btnTitle="Create  Pricing PDF (Without Tax)" title="Create Bulk Pricing PDF (Without Tax) "/>,
   },
   {
     id: '2',
     label:"Mail ESSO PDF (Without Tax)",
-    component: <MailPricingCommon supplier="ESSO" listapi={esso_pricing_pdf}  tax= "No" supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)"   title="Mail Bulk Pricing PDF (Without Tax)"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List (Without Tax)" supplier="ESSO" listapi={esso_pricing_pdf}  tax= "No" supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)"   title="Mail Bulk Pricing PDF (Without Tax)"/>,
   },
   
   {
     id: '3',
     label: "Create ESSO PDF (With Tax)",
-    component: <PricingCommon tax= "Yes"  listapi={esso_pricing_pdf} apiName={create_pricing_pdf}  pricingDate={true} supplier={true} supplier_ids="6" testingEmail={true} validation={true} btnTitle="Create Pricing PDF (With Tax)" title="Create Bulk Pricing PDF (With Tax)
+    component: <PricingCommon tableTitle="Pricing PDF List (With Tax)" tax= "Yes"  listapi={esso_pricing_pdf} apiName={create_pricing_pdf}  pricingDate={true} supplier={true} supplier_ids="6" testingEmail={true} validation={true} btnTitle="Create Pricing PDF (With Tax)" title="Create Bulk Pricing PDF (With Tax)
 "/>,
   },
    {
     id: '4',
     label:"Mail ESSO PDF (With Tax)",
-    component:  <MailPricingCommon supplier="ESSO" listapi={esso_pricing_pdf} tax= "Yes"  supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)"   title="Mail Bulk Pricing PDF (With Tax)"/>,
+    component:  <MailPricingCommon tableTitle="Pricing PDF List (With Tax)"
+     supplier="ESSO" listapi={esso_pricing_pdf} tax= "Yes"  supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)"   title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
  
   
    { 
     id: '5',
     label:"Mail ESSO PDF (Without Tax)",
-    component: <MailPricingCommon supplier="ESSO" listapi={esso_pricing_pdf} tax= "No"  supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)" title="Mail Bulk Pricing PDF (Without Tax)"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List (Without Tax)" supplier="ESSO" listapi={esso_pricing_pdf} tax= "No"  supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)" title="Mail Bulk Pricing PDF (Without Tax)"/>,
   },
     {
     id: '6',
     label:"Mail ESSO PDF (With Tax)",
-    component: <PricingCommon listapi={esso_pricing_pdf} tax= "Yes"  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List (With Tax)" listapi={esso_pricing_pdf} tax= "Yes"  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
 ];

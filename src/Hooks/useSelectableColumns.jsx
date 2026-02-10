@@ -162,7 +162,7 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
       cols.push({
         name: (
           <div className="d-flex align-items-center gap-2">
-            <span className="fw-bold">Select</span>
+            <span className="fw-bold">Action</span>
             <input
               type="checkbox"
               checked={selectAll}

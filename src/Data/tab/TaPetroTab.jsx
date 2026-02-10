@@ -8,7 +8,7 @@ export const TaPetroTab = [
   {
     id: '1',
     label:"Create Ta-Petro Bulk Pricing"  , 
-    component: <PricingCommon  listapi={ta_pricing_pdf}  table={true} invoiceType=""  apiName={create_pricing_pdf} validation={true} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} discountType={true} title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List "  listapi={ta_pricing_pdf}  table={true} invoiceType=""  apiName={create_pricing_pdf} validation={true} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} discountType={true} title="Create Bulk Pricing PDF" btnTitle="Create  Pricing PDF"/>,
   },
   {
     id: '2',
@@ -18,7 +18,7 @@ export const TaPetroTab = [
        Mail Bulk Pricing PDF - <strong> [Capped]</strong>
       </>
     ), 
-    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf} invoiceType="Capped" supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} invoiceType="Capped" supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
   {
     id: '3',
@@ -29,24 +29,24 @@ export const TaPetroTab = [
       </>
     )
    ,
-    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf} invoiceType="Actual"   supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} invoiceType="Actual"   supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
  {
     id: '4',
     label:" Mail Ta-Petro Bulk Pricing (Non-Customer) ", 
-    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf}  supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf}  supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
   },
    {
     id: '5',
    label:"Create Retail Ta-Petro Bulk Pricing", 
-    component: <PricingCommon listapi={ta_pricing_pdf}  table={true} company_list="checkbox" invoiceType="Retail" apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} title="Create Retail Bulk Pricing PDF" btnTitle="Create Retail Pricing Pdf"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List " listapi={ta_pricing_pdf}  table={true} company_list="checkbox" invoiceType="Retail" apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} title="Create Retail Bulk Pricing PDF" btnTitle="Create Retail Pricing Pdf"/>,
   },
    {
     id: '6',
     label: " Mail Retail Ta-Petro Bulk Pricing "
      
     , 
-    component: <MailPricingCommon supplier="TA" listapi={ta_pricing_pdf} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
   },
  
   

@@ -41,6 +41,7 @@ const PricingCommon = ({
   supplier_ids,
   tax,
   validation, rackus,
+  tableTitle,
   rackca,invoiceType
 }) => {
  const [selectedRows, setSelectedRows] = useState([]);
@@ -756,7 +757,7 @@ console.log(newSelection)
       {/* {table!==false &&( */}
         <>
         <DataTableComponent
-          title="Pricing PDF List (Without Tax) "
+          title={tableTitle && tableTitle || "Pricing PDF List (Without Tax) "}
           tableColumns={tableColumns}
           tableData={data}
           loading={essoLoading}

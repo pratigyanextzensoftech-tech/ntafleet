@@ -97,18 +97,18 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
     { id: "1", label: "Flying J Pdf", data: pricingPdfData, map: pricingpdf,deleteApi:pricing_pdf_Api },
     { id: "2", label:   (
       <>
-       Ta-Petro Pdf  - <strong> [Capped]</strong>
+       Ta-Petro  <strong> [Capped]</strong>
       </>
     ), data:tapetroPdf, map:  pricingpdf,deleteApi:ta_pricing_pdf},
     { id: "3", label:  (
       <>
-       Ta-Petro Pdf - <strong> [Actual]</strong>
+       Ta-Petro <strong> [Actual]</strong>
       </>
     ), data: tapetroPdfActual, map: pricingpdf,deleteApi:ta_pricing_pdf },
    {
-     id: "4", label: " Esso Pdf (without Text) ", data: essoPdfWithoutTax, map: pricingpdf,deleteApi: esso_pricing_pdf},
+     id: "4", label: " Esso (without Text) ", data: essoPdfWithoutTax, map: pricingpdf,deleteApi: esso_pricing_pdf},
       {
-     id: "5", label: " Esso Pdf (with Text)", data: essoPdf, map: pricingpdf,deleteApi:esso_pricing_pdf },
+     id: "5", label: " Esso (with Text)", data: essoPdf, map: pricingpdf,deleteApi:esso_pricing_pdf },
      {
      id: "6", label:(
       <>
@@ -121,7 +121,8 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
       Love Pdf  - <strong> [Actual]</strong>
       </>
     ), data: lovePdfActual, map: pricingpdf,deleteApi:love_pricing_pdf },
-   
+    {
+     id: "8", label: "Ultramar Pdf", data: ulPdf, map: pricingpdf,deleteApi:ul_pricing_pdf },
      {
      id: "9", label: "Irving Pdf", data: irvPdf, map: pricingpdf,deleteApi:irv_pricing_pdf },
   ];
