@@ -9,7 +9,7 @@ import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import Swal from "sweetalert2";
 import axios from "axios";
 import {
-  ta_pricing_pdf,pricing_pdf as pricing_pdf_Api,love_pricing_pdf,ul_pricing_pdf,esso_pricing_pdf
+  ta_pricing_pdf,pricing_pdf as pricing_pdf_Api,love_pricing_pdf,ul_pricing_pdf,esso_pricing_pdf,irv_pricing_pdf
 } from "../../../api";
 import usePaginatedTable from "../../../Hooks/usePagination";
 const Index = () => {
@@ -88,6 +88,10 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
          apiUrl: ul_pricing_pdf,
          columnsMap: pricingpdf,
        });
+        const irvPdf = usePaginatedTable({
+         apiUrl: irv_pricing_pdf,
+         columnsMap: pricingpdf,
+       });
         
   const tabs = [
     { id: "1", label: "Flying J Pdf", data: pricingPdfData, map: pricingpdf,deleteApi:pricing_pdf_Api },
@@ -119,7 +123,7 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
     ), data: lovePdfActual, map: pricingpdf,deleteApi:love_pricing_pdf },
    
      {
-     id: "9", label: "Irving Pdf", data: ulPdf, map: pricingpdf,deleteApi:ul_pricing_pdf },
+     id: "9", label: "Irving Pdf", data: irvPdf, map: pricingpdf,deleteApi:irv_pricing_pdf },
   ];
    const pricingpdfTab = tabs.map((tab) => ({
     id: tab.id,

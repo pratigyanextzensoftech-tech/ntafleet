@@ -25,6 +25,7 @@ import {
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
+import HeaderCard from "../../Common/Component/HeaderCard";
 const EssoGroupRackcentList = ({ title, btnTitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
@@ -190,6 +191,8 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
   };
   return (
     <Fragment>
+      <Card>
+        <CardBody>
       <Row>
         <Col>
           <fieldset>
@@ -288,11 +291,17 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
           </fieldset>
         </Col>
       </Row>
+      </CardBody>
+      </Card>
+      <Card>
+                <CardBody>
+                         <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
       <Container fluid>
         <Row>
           <Col sm="12">
-            <Card>
-              <CardBody>
+             <div className="text-end my-3">
+                <button className="btn btn-primary">Delete Rack Cent</button>
+                </div>
                 <div className="table-responsive">
                   <table
                     id="example"
@@ -312,11 +321,12 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
                     <tbody></tbody>
                   </table>
                 </div>
-              </CardBody>
-            </Card>
+             
           </Col>
         </Row>
       </Container>
+      </CardBody>
+      </Card>
     </Fragment>
   );
 };

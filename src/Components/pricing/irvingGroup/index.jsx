@@ -12,7 +12,7 @@ const index = () => {
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Update ESSO Group Rack Cent" />
+              <HeaderCard title="Update Irving Group Rack Cent" />
               <CardBody>
                 <BasicTabCard tabContent={IrvingGroupRackTab} />
               </CardBody>

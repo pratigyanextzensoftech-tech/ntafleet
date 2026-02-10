@@ -36,7 +36,7 @@ export default function usePaginatedTable({
       });
 
       const apiData = res.data?.data || [];
-
+console.log(apiData)
       // ✅ Preserve full API row
       const mapped = apiData.map((row) => {
         const newRow = { fulldata: row,source: apiUrl, };

@@ -114,8 +114,8 @@ export const formatDate = (date) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart( 2, "0" )}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
-export  const downloadPdf = async (url,data) => {
-  console.log(data)
+export  const downloadPdf = async (url,invoiceName,data) => {
+  console.log(invoiceName)
   const res = await fetch(url);
   const blob = await res.blob();
   const filename=url.split("/").pop().split("?")[0];
@@ -128,7 +128,7 @@ export  const downloadPdf = async (url,data) => {
   document.body.removeChild(link); 
   window.URL.revokeObjectURL(blobUrl);
 };
-  
+
 export const useItems = () =>
   useDropdown(itemsAll, (i) => ({
     value: i.item_id,

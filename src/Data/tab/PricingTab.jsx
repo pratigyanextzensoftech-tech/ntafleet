@@ -6,6 +6,7 @@ import {
   love_pricing as LOVE_CAPPED_API,
   love_pricing_actual as LOVE_ACTUAL_API,
   ul_pricing as ULTRAMAR_API,
+  irv_pricing as IRVING_API,
   pricing
 } from "../../api";
 export const PricingTab = [
@@ -74,7 +75,7 @@ export const PricingTab = [
        Irving 
       </>
     ), 
-     component: <PricingCommon supplier_ids="3" apiName={TA_CAPPED_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+     component: <PricingCommon supplier_ids="5" apiName={IRVING_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
   },
   
 ];

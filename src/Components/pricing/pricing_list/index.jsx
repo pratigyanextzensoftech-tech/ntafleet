@@ -15,6 +15,7 @@ import {
   love_pricing as LOVE_CAPPED_API,
   love_pricing_actual as LOVE_ACTUAL_API,
   ul_pricing as ULTRAMAR_API,
+  irv_pricing as IRVING_API,
   pricing
 } from "../../../api";
 import usePaginatedTable from "../../../Hooks/usePagination";
@@ -160,6 +161,27 @@ ultramar: {
   "GST / HST": "gst_hst",
   PST: "pst",
   Total: "total",
+},
+irving: {
+      id: "id",
+      Date: "pricing_date",
+      Supplier: "supplier",
+      "Site#": "site_id",
+      "Site":"site_name",
+      "City": "city",
+      "Prov": "prov",
+      "Prod": "prod",
+      "Card_ID":"card_id",
+       "Rack City": "rack_city",
+      "Rack Prov": "rack_prov",
+      "Base_Price":"base_price",
+      "Excise_Tax":"excise_tax",
+      "Prov_Tax":"prov_fuel_tax_fees",
+      "Fuel_Price": "fuel_price",
+      "GST_HST":"gst_hst",
+       "QST":"qst",
+       "Tax_Price":"in_tax_price",
+       "Total_Cost":"total_cost"
 }
 
   }
@@ -195,6 +217,10 @@ ultramar: {
   const ultramar = usePaginatedTable({
     apiUrl: ULTRAMAR_API,
     columnsMap: columnSets.ultramar,
+  });
+   const irving = usePaginatedTable({
+    apiUrl: IRVING_API,
+    columnsMap: columnSets.irving,
   });
 const handleDelete = ({ ids = [], deleteApi, refetch }) => {
   if (!ids.length) {
@@ -301,9 +327,9 @@ const tabs = [
    {
     id: "8",
     label: "Irving",
-    data: ultramar,
-    map: columnSets.ultramar,
-    deleteApi: ULTRAMAR_API,
+    data: irving,
+    map: columnSets.irving,
+    deleteApi: IRVING_API,
   },
 
 ];

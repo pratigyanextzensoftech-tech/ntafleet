@@ -17,6 +17,7 @@ import Select from "react-select";
 import { DiscountType } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import { useCompany } from "../../../Hooks/Dropdowns";
+import HeaderCard from "../../Common/Component/HeaderCard";
 import {
   ta_group_Tagroup as APINAME,
   ta_group_TagroupInput,
@@ -190,6 +191,8 @@ const UlRackList = ({ title, btnTitle }) => {
   };
   return (
     <Fragment>
+      <Card>
+        <CardBody>
       <Row>
         <Col>
           <fieldset>
@@ -288,9 +291,17 @@ const UlRackList = ({ title, btnTitle }) => {
           </fieldset>
         </Col>
       </Row>
+      </CardBody>
+      </Card>
+      <Card>
+                      <CardBody>
+                               <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
       <Container fluid>
         <Row>
           <Col sm="12">
+          <div className="text-end my-3">
+                <button className="btn btn-primary">Delete Rack Cent</button>
+                </div>
             <Card>
               <CardBody>
                 <div className="table-responsive">
@@ -317,6 +328,7 @@ const UlRackList = ({ title, btnTitle }) => {
           </Col>
         </Row>
       </Container>
+      </CardBody></Card>
     </Fragment>
   );
 };

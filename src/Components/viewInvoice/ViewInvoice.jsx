@@ -24,6 +24,7 @@ import { FaTrashAlt, FaDownload, FaEye, FaEnvelope } from "react-icons/fa";
 
 const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
+    const [btntp, setbtntp] = useState('INV');
   const [tableColumns, setTableColumns] = useState([]);
   const [filters, setFilters] = useState({});
 
@@ -61,9 +62,9 @@ const ViewInvoice = () => {
   };
 
   const getTableSetter = (source) => {
-    if (source === combine_invoice) return setData;
-    if (source === owner_invoice) return handleSetData;
-    if (source === customized_invoice) return setCustomizedData;
+    if (source === combine_invoice) {setbtntp("INV"); return setData;}
+    if (source === owner_invoice) {setbtntp("OWNER"); return handleSetData;}
+    if (source === customized_invoice) {setbtntp("CUS");return setCustomizedData;}
     return setData;
   };
 
@@ -93,11 +94,12 @@ const ViewInvoice = () => {
           ),
         );
         let api;
-        if (fullRow.tp === "Retail") api = invoice;
-        else if (fullRow.tp === "Rack") api = retail_invoice;
+
+        if (fullRow.tp === "Retail")api = invoice;
+        else if (fullRow.tp === "Rack")api =retail_invoice;
         else if (source === owner_invoice) api = owner_invoice;
-        else if (source === customized_invoice) api = customized_invoice;
-        else api = invoice;
+        else if (source === customized_invoice) api = customized_invoice
+        else {api = invoice; setbtntp("INV");}
         // 3️⃣ API call
 
         const update_status = {
@@ -457,7 +459,7 @@ const ViewInvoice = () => {
             >
               <a
                 href="#"
-                onClick={() => downloadPdf(row.fulldata.download_link,row)}
+                onClick={() => downloadPdf(row.fulldata.download_link,btntp,row)}
                 rel="noopener noreferrer"
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}
