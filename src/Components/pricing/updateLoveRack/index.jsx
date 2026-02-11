@@ -3,8 +3,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
-import { UpdateLoveRackTab } from "../../../Data/tab/UpdateLoveRackCentTab";
-
+import { UpdateLoveRackTab } from "../../../Data/tab/UpdateLoveRackCentTab"; 
 const index = () => {
   return (
     <Fragment>
@@ -20,7 +19,6 @@ const index = () => {
             </Card>
           </Col>
         </Row>
-       
       </Container>
     </Fragment>
   );

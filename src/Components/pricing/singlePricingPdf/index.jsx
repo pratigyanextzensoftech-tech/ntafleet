@@ -13,7 +13,7 @@ import {
 } from "../../../api";
 import usePaginatedTable from "../../../Hooks/usePagination";
 const Index = () => {
-  const { createColumns,selectedRows,getFilteredData } = useSelectableColumns();
+  const { createColumns,selectedRows,getFilteredData } = useSelectableColumns('','',"Delete");
 const pricingpdf = {
   id: "id",
   "ID#": "id" ,

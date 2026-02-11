@@ -46,7 +46,7 @@ export const UploadFjPricingTab = [
     id: "4",
     label: " Esso Pricing",
     component: (
-      <EssoPricing title="Upload Esso Pricing" btnTtitle="Upload Pricing" />
+      <EssoPricing title="Upload Esso Pricing" btnTtitle="Upload Esso Pricing" />
     ),
   },
   {
@@ -95,7 +95,7 @@ export const UploadFjPricingTab = [
     component: (
       <IrvingGroupList
         title=" Irving Group Rack cent List"
-        btnTtitle="Search"
+        btnTtitle="Upload Irving Pricing"
       />
     ),
   },

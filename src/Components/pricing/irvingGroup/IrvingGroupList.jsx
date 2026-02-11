@@ -25,7 +25,7 @@ import {
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
-const IrvingGroupList = ({ title, btnTitle }) => {
+const IrvingGroupList = ({ title, btnTtitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -279,7 +279,7 @@ const IrvingGroupList = ({ title, btnTitle }) => {
                         type: "submit",
                       }}
                     >
-                      {btnTitle}
+                      {btnTtitle}
                     </Btn>
                   </div>
                 </Col>

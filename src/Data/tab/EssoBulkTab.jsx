@@ -36,6 +36,6 @@ export const EssoBulkTab = [
     {
     id: '6',
     label:"Mail ESSO PDF (With Tax)",
-    component: <PricingCommon tableTitle="Pricing PDF List (With Tax)" listapi={esso_pricing_pdf} tax= "Yes"  pricingDate={true} supplier={true} supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
+    component: <MailPricingCommon tableTitle="Pricing PDF List (With Tax)" listapi={esso_pricing_pdf} tax= "Yes"   supplier="ESSO" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
 ];

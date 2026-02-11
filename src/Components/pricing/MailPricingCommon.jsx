@@ -37,6 +37,7 @@ const MailPricingCommon = ({
   supplier_ids,
   tableTitle,
   tax,
+  taxOption,
 table,invoiceType
 }) => {
  const [selectedRows, setSelectedRows] = useState([]);
@@ -133,17 +134,32 @@ console.log(newSelection)
 };
   const [openRowId, setOpenRowId] = useState(null);
       const [tableColumns, setTableColumns] = useState([]);
-      const columnsMap = {
-        "ID #": "id",
-        "Company": "company_name",
-        "Pricing Date": "pricing_date",
-        "Supplier": "supplier",
-        "Entry_Count": "entry_count",
-        "Added_By": "added_by_name",
-        "Added_On": "added_on",
-        "Mailed_By": "mailed_by",
-        "Mailed_On": "mail_on",
-      };
+   const columnsMap = taxOption === false
+  ? {
+      "ID #": "id",
+      "Company": "company_name",
+      "Pricing Date": "pricing_date",
+      "Supplier": "supplier",
+      "Entry_Count": "entry_count",
+      "Added_By": "added_by_name",
+      "Added_On": "added_on",
+      "Mailed_By": "mailed_by",
+      "Mailed_On": "mail_on",
+    }
+  : {
+      "ID #": "id",
+      "Company": "company_name",
+      "Pricing Date": "pricing_date",
+      "Supplier": "supplier",
+      "Entry_Count": "entry_count",
+      "Tax Option": "without_tax",
+      "Added_By": "added_by_name",
+      "Added_On": "added_on",
+      "Mailed_By": "mailed_by",
+      "Mailed_On": "mail_on",
+    };
+
+     
  const columnWidths = {
   "ID #": "100px",
   "Company": "300px",

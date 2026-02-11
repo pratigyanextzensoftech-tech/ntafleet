@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -6,161 +6,163 @@ import {
   FormGroup,
   InputGroup,
   InputGroupText,
+  Container,
+  Card,
+  CardBody,
   Input,
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { toast } from "react-toastify";
-
+import { DiscountType } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import { useCompany } from "../../../Hooks/Dropdowns";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
-import usePaginatedTable from "../../../Hooks/usePagination";
-import InputText from "../../Forms/FormControl/formInput/InputText";
+import {
+  ta_group_Tagroup as APINAME,
+  ta_group_TagroupInput,
+  ta_cent,
+} from "../../../api";
+import $ from "jquery";
 import axios from "axios";
-import Swal from "sweetalert2";
-const FgRackCent = ({ title, btnTitle,apiName }) => {
-  const [selectedRows, setSelectedRows] = useState([]);
-    const [selectAll, setSelectAll] = useState(false);
-    const [tableColumns, setTableColumns] = useState([]);
-    const[loading,setLoading]=useState(false)
-    
-  const {data:company}=useCompany()
+import { toast } from "react-toastify";
+import HeaderCard from "../../Common/Component/HeaderCard";
+import Loader from "../../../Layout/Loader";
+import InputText from "../../Forms/FormControl/formInput/InputText";
+const FgRackCent = ({ title, btnTitle }) => {
+  const [companyId, setCompnyId] = useState("");
+  const [startDate, setStatrtDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [dynamicColumns, setDynamicColumns] = useState([]);
+  const [dynamicGroupIds, setGroupIds] = useState([]);
+  const [open, setOpen] = useState(false);
+  const { data: company } = useCompany();
   const {
     register,
     control,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-     const columnsMap = {
-        "Sr.": "id",
-        "Company Name": "company_name",
-        "Pricing Date": "pricing_date",
-        "Rack-Canada": "rack_ca",
-        "Rack-USA": "rack_us",
-        "Added_By": "idby",
-        "Added_On": "dated",
-      };
-     const {
-          data,
-          totalRows,
-          loading:essoLoading,
-          handlePageChange,
-          handlePerRowsChange,
-          handleSearch, // ✅ Added
-          setData,
-        } = usePaginatedTable({ apiUrl: apiName, columnsMap });
-         const handleDelete = (id) => {
-        console.log(data)
-        const stringId=id.join(",")
-        console.log(stringId)
-      Swal.fire({
-    title: "Are you sure?",
-    text: "Do you really want to delete this record?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "Cancel",
-  }).then((result) => {
+  useEffect(() => {
+    fetch(APINAME)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setDynamicColumns(
+            data.map((item) => Number(item.ibp_adjustment).toFixed(4)),
+          );
+          setGroupIds(data.map((item) => item.id));
+        } else {
+          console.error("APINAME response is not an array:", data);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
-    if (result.isConfirmed) {
-              axios.delete(`${apiName}/${stringId}`)
-        .then(() => {
-          setData((prev) => prev.filter((item) => item["Sr."] !== Number(stringId)));
-          setSelectedRows([]); // or remove only that ID
-          Swal.fire("Deleted!", "Record deleted successfully.", "success");
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Failed to delete record.", "error");
-        });
-    } 
-  });
-      };
- useEffect(() => {
-        console.log(data,"list")
-        const cols = Object.keys(columnsMap).map((key) => ({
-          name: key,
-          selector: (row) => row[key],
-          sortable: true,
-          wrap: true,
-        }));
-      cols.push({
-        name: (
-          <div className="d-flex align-items-center">
-            <span className="me-2 fw-bold">Delete</span>
-            <input
-              type="checkbox"
-              checked={selectAll}
-              onChange={(e) => handleSelectAll(e.target.checked, data)}
-            />
-          </div>
-        ),
-        cell: (row) => (
-          <input
-            type="checkbox"
-            checked={selectedRows.includes(row["Sr."])}
-            onChange={() => handleSelectRow(row["Sr."])}
-          />
-        ),
-        width: "120px",
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
+  // Step 2: Initialize DataTable
+  useEffect(() => {
+    $(document).on("click", ".update-btn", function () {
+      const id = $(this).data("id");
+      const updateData = {};
+      dynamicGroupIds.forEach((groupid) => {
+        const inputId = `#c${id}g${groupid}`;
+        const value = $(inputId).val();
+        updateData[`group_${groupid}`] = value;
       });
-        cols.push({
-          name: "Action",
-          cell: (row) => (
-            <div className="position-relative dropdown-action">
-              <button
-                className="btn btn-sm btn-primary px-2" 
-              >
-                Update
-              </button>
-    
-         
-    
-            </div>
-          ),
+
+      axios
+        .put(`${ta_cent}/${id}`, updateData)
+        .then((response) => {
+          toast.success("Data updated");
+        })
+        .catch((error) => {
+          toast.error("Error In Data update");
         });
-        
-    
-        setTableColumns(cols);
-      }, [data, selectedRows, selectAll]);
-      const handleSelectAll = (checked, data) => {
-  setSelectAll(checked);
+    });
+  }, [dynamicColumns, companyId]);
 
-  if (!checked) {
-    setSelectedRows([]);
-    return;
+  $(document).ready(function () {
+    $("#example").DataTable().clear().destroy();
+    GetDataTAble();
+  });
+
+  function GetDataTAble() {
+    const columns = [
+      { data: "company_name", title: "Company Name" },
+      { data: "pricing_date", title: "Pricing Date" },
+      ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
+      { data: "Action", title: "Action", orderable: false },
+    ];
+
+    $("#example").DataTable({
+      serverSide: true,
+      processing: true,
+      responsive: true,
+      paging: true,
+      searching: true,
+      ordering: true,
+      pageLength: 25,
+      columns: columns,
+      columnDefs: [
+        {
+          targets: "_all",
+          orderable: false,
+        },
+        {
+          targets: [0, 1], // allow ordering only here
+          orderable: true,
+        },
+      ],
+
+      ajax: function (data, callback) {
+        const params = new URLSearchParams();
+        params.append("start", data.start);
+        params.append("length", data.length);
+        params.append("search", data.search.value || "");
+        params.append("orderColumn", data.columns[data.order[0].column].data);
+        params.append("orderDir", data.order[0].dir);
+        params.append("company_id", companyId);
+        params.append("from_date", startDate);
+        params.append("upto_date", endDate);
+        fetch(`${ta_group_TagroupInput}?${params.toString()}`)
+          .then((res) => res.json())
+          .then((json) => {
+            const url = `${ta_group_TagroupInput}?${params.toString()}`;
+            console.log("🔗 API URL:", url);
+            const tableData = json.data.map((row) => {
+              const obj = {
+                company_name: row[0],
+                pricing_date: row[1],
+                Action: row[2],
+              };
+              dynamicColumns.forEach((col, idx) => {
+                obj[`col_${idx}`] = row[idx + 3] || "";
+              });
+
+              return obj;
+            });
+            console.log(tableData);
+
+            callback({
+              draw: data.draw,
+              recordsTotal: json.recordsTotal,
+              recordsFiltered: json.recordsFiltered,
+              data: tableData,
+            });
+          })
+          .catch((err) => {
+            console.error("Error fetching table data:", err);
+            callback({
+              draw: data.draw,
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
+            });
+          });
+      },
+    });
   }
-
-  // 1️⃣ Create comma-separated string
-  const ids = data.map(row => row["Sr."]);
-
-  setSelectedRows(ids); // store comma string if needed
-
-};
-
-
- const handleSelectRow = (id) => {
-  // 1️⃣ Toggle checkbox first
-  const alreadySelected = selectedRows.includes(id);
-
-  // Update selection immediately
-  const newSelection = alreadySelected
-    ? selectedRows.filter((rowId) => rowId !== id)
-    : [...selectedRows, id];
-  // const ids=newSelection.join(",")
-
-  setSelectedRows(newSelection);
-console.log(newSelection)
-  // 2️⃣ Now show confirmation popup
- 
-};
- const formatDate = (date) => {
+  const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -168,153 +170,198 @@ console.log(newSelection)
     return `${year}-${month}-${day}`;
   };
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
-     setLoading(true);
-        const basePayload = {
-          company_id: data.company.value,
-          rack_us: data.rackca,
-          rack_ca: data.rackca,
-          pricing_date:data?.pricingDate? formatDate(data.pricingDate):"",
-        };
-    
-        axios
-          .post(apiName, basePayload, {
-      params: basePayload})
-          .then((res) => {  
-            res.data.success?toast.success(res.data.message):toast.error(res.data.message);
-            setLoading(false);
-          })
-          .catch((err) => {
-            toast.error(err);
-            setLoading(false);
-          });
-    
-        console.log("Final Payload Sent =>", basePayload); // ✅ This will print your inputs
+    setLoading(true);
+    const basePayload = {
+      company_id: data.company.value,
+      discount_type: data.discountType.value,
+      from: data?.from ? formatDate(data.from) : "",
+      to: data?.to ? formatDate(data.to) : "",
+    };
+
+    axios
+      .post(APINAME, basePayload, {
+        params: basePayload,
+      })
+      .then((res) => {
+        res.data.success
+          ? toast.success(res.data.message)
+          : toast.error(res.data.message);
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.error(err);
+        setLoading(false);
+      });
+
+    console.log("payload", basePayload); // ✅ This will print your inputs
   };
   return (
     <Fragment>
-      <Row>
-        <Col>
-          <fieldset>
-            <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div
-                style={{
-                  border: "1px solid #ccc",
-                  padding: "5px 5px",
-                  bprderRadius: "3px",
-                  marginBottom: "10px",
-                }}
-              >
-                <Row className="mt-3">
-                  <Col  xl="4"  md="6" sm="12">
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <InputGroupText>Company</InputGroupText>
-                        <Controller
-                          name="company"
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              options={company}
-                              className="form-control p-0 border-0"
-                              placeholder="Select a country"
-                            />
-                          )}
-                        />
-                      </InputGroup>
-
-                      
-                    </FormGroup>
-                  </Col>
-                  <Col  xl="4"  md="6" sm="12">
-                    <Row>
+      <Card>
+        <CardBody>
+          <Row>
+            <Col>
+              <fieldset>
+                <legend>{title}</legend>
+                <Form
+                  className="px-2"
+                  noValidate=""
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <Row className="mt-3">
+                    <Col xl="4" md="6" sm="12">
                       <FormGroup className="m-form__group">
                         <InputGroup>
-                          <Col xs="4" md="5" xl="4" >
-                            <InputGroupText>Pricing Date</InputGroupText>
-                          </Col>
-                          <Col xs="8" md="7" xl="8">
-                            <Controller
-                              name="pricingDate"
-                              control={control}
-                              render={({ field }) => (
-                                <DatePicker
-                                  className={`form-control `}
-                                  selected={field.value}
-                                  onChange={(date) => field.onChange(date)}
-                                />
-                              )}
-                            />
-                          </Col>
+                          <InputGroupText>Company</InputGroupText>
+                          <Controller
+                            name="company"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={company}
+                                className="form-control p-0 border-0"
+                                placeholder="Select Company"
+                                menuPortalTarget={document.body}
+                                menuPosition="fixed"
+                                styles={{
+                                  menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 99999,
+                                  }),
+                                }}
+                              />
+                            )}
+                          />
                         </InputGroup>
-
-                       
                       </FormGroup>
-                    </Row>
-                  </Col>
-                  <Col  xl="4"  md="6" sm="12">
-                 <InputText
-                           name="rackus"
-                           label="Rack US"
-                           type="text"
-                           register={register}
-                           errors={errors}
-                          
-                           
-                         />
-                  </Col>
-               
-                  <Col  xl="4"  md="6" sm="12">
-                   <InputText
-            name="rackca"
-            label="Rack CA"
-            type="text"
-            register={register}
-            
+                    </Col>
+
+                   <Col xl="2" md="6" sm="12">
+                      <Row>
+                        <FormGroup className="m-form__group">
+                          <InputGroup>
+                            <Col sm="4" xs="12">
+                              <InputGroupText>Pricing Date</InputGroupText>
+                            </Col>
+                            <Col sm="8" xs="12">
+                              <Controller
+                                name="pricingDate"
+                                control={control}
+                                rules={{
+                                  required: "Please Fill out this field",
+                                }}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    id="pricingDate"
+                                    className={`form-control `}
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                  />
+                                )}
+                              />
+                              {errors.pricingDate && (
+                                <span className="text-danger">
+                                  {errors.pricingDate.message}
+                                </span>
+                              )}
+                            </Col>
+                          </InputGroup>
+                        </FormGroup>
+                      </Row>
+                    </Col>
+                    <Col xl="2" md="6" sm="12">
+                      <FormGroup className=" m-form__group">
+                        <InputGroup>
+                          <InputGroupText> Rack US </InputGroupText>
+                          <input
+                            style={{ border: "1px solid #ccc" }}
+                            className="form-control"
+                            type="text"
+                            {...register("cardNo", { required: true })}
+                          />
+                        </InputGroup>
+                        {errors.cardNo && (
+                          <span className="text-danger"> Required</span>
+                        )}
+                      </FormGroup>
+                    </Col>
+                      <Col xl="2" md="6" sm="12">
+                      <FormGroup className=" m-form__group">
+                        <InputGroup>
+                          <InputGroupText> Rack CA </InputGroupText>
+                          <input
+                            style={{ border: "1px solid #ccc" }}
+                            className="form-control"
+                            type="text"
+                            {...register("cardNo", { required: true })}
+                          />
+                        </InputGroup>
+                        {errors.cardNo && (
+                          <span className="text-danger"> Required</span>
+                        )}
+                      </FormGroup>
+                    </Col>
+
+
+                    <Col className="ms-auto" xl="1" md="12" sm="12">
+                      <div className="text-end">
+                        <Btn
+                          attrBtn={{
+                            color: "primary",
+                            type: "submit",
+                          }}
+                        >
+                          {btnTitle}
+                        </Btn>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </fieldset>
+            </Col>
+          </Row>
+        </CardBody>
+      </Card>
+      <Card>
+        <CardBody>
+          <HeaderCard
+            title="Rack Cent List"
+            download={true}
+            downloadHeading="Download"
           />
-                  </Col>
-                  <Col className="ms-auto" xl="8"  md="12" sm="12">
-                    <div  className="text-end">
-                      <Btn
-                        attrBtn={{
-                          color: "primary",
-                          type: "submit",
-                        }}
-                      >
-                        {btnTitle}
-                      </Btn>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            </Form>
-          </fieldset>
-        </Col>
-      </Row>
- <DataTableComponent
-          title="Multiple FG Rack Cent Entry "
-          tableColumns={tableColumns}
-          tableData={data}
-          loading={essoLoading}
-          table={true}
-          pagination
-          buttonTitle="Delete Rack Cent"
-           handleDelete={()=>handleDelete(selectedRows)}
-           download={true}
-           downloadHeading="Download"
-          paginationServer
-          paginationTotalRows={totalRows}
-          onChangeRowsPerPage={handlePerRowsChange}
-          onChangePage={handlePageChange}
-        />
-      
-    
+          <Container fluid>
+            <Row>
+              <Col sm="12">
+                <div className="text-end my-3">
+                  <button className="btn btn-primary">Delete Rack Cent</button>
+                </div>
+                {<Loader loading={loading} />}
+                <div className="table-responsive">
+                  <table
+                    id="example"
+                    className="display table table-striped table-bordered nowrap"
+                    style={{ width: "100%" }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>Company Name</th>
+                        <th>Pricing Date</th>
+                        {dynamicColumns.map((col, idx) => (
+                          <th key={idx}>{col}</th>
+                        ))}
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </CardBody>
+      </Card>
     </Fragment>
   );
 };

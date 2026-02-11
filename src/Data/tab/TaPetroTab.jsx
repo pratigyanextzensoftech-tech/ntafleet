@@ -39,7 +39,7 @@ export const TaPetroTab = [
    {
     id: '5',
    label:"Create Retail Ta-Petro Bulk Pricing", 
-    component: <PricingCommon tableTitle="Pricing PDF List " listapi={ta_pricing_pdf}  table={true} company_list="checkbox" invoiceType="Retail" apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} title="Create Retail Bulk Pricing PDF" btnTitle="Create Retail Pricing Pdf"/>,
+    component: <PricingCommon tableTitle="Pricing PDF List " listapi={ta_pricing_pdf}  table={true}  invoiceType="Retail" apiName={create_pricing_pdf} pricingDate={true} supplier={true} supplier_ids="3" testingEmail={true} title="Create Retail Bulk Pricing PDF" btnTitle="Search Company"/>,
   },
    {
     id: '6',

@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { Link } from "react-router-dom";
-export default function useSelectableColumns(download_link, USEFOR = "") {
+export default function useSelectableColumns(download_link, USEFOR = "",checkboxTitle) {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filters, setFilters] = useState({});
   const [selectAll, setSelectAll] = useState(false);
@@ -161,7 +161,7 @@ export default function useSelectableColumns(download_link, USEFOR = "") {
       cols.push({
         name: (
           <div className="d-flex align-items-center gap-2">
-            <span className="fw-bold">Action</span>
+            <span className="fw-bold">{checkboxTitle?checkboxTitle:"Action"}</span>
             <input
               type="checkbox"
               checked={selectAll}
