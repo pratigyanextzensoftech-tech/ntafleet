@@ -4,8 +4,6 @@ import { Container } from 'reactstrap';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
 import {  efs_fual_card1 as APINAME} from '../../../api/index'
 import usePaginatedTable from '../../../Hooks/usePagination';
-import Swal from 'sweetalert2';
-import axios from 'axios';
 
 const Index = () => {
    const [openRowId, setOpenRowId] = useState(null);
@@ -126,6 +124,7 @@ const Index = () => {
     <Fragment>
       <Breadcrumbs parent='Fuel Cards' title=' View EFS Fual Cards'  />
       <Container fluid={true}> 
+       
        <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={filteredData}   downloadHeading="Download"
           download={true}
           pagination/>    

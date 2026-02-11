@@ -76,6 +76,8 @@ export const report_new = `${baseurl}/api/report_new`;
 export const report_new_downlod = `${baseurl}/api/report_new/download`;
 export const tranaction_total = `${baseurl}/api/transactions/totals`;
 export const notification = `${baseurl}/api/notification`;
+export const card_update = `${baseurl}/api/fual_card/card_update`;
+export const updateHistory = `${baseurl}/api/update_history`;
 
 export const owner_report = `${baseurl}/api/owner_report`;
 export const owner_report_downlod = `${baseurl}/api/owner_report/download`;

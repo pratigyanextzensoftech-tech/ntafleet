@@ -204,7 +204,9 @@ console.log(newSelection)
   width:"180px",
   cell: (row) => (
     <Link
-      to={`/download_pdf/${btoa(row.id)}`}
+      // to={`/download_pdf/${btoa(row.id)}`}
+      to={row.fulldata.download_link}
+      target='_blank'
       className="d-flex align-items-center text-primary"
       style={{ gap: "6px", textDecoration: "none" }}
       title="View PDF"
