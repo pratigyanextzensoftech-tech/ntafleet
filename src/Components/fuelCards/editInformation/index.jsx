@@ -1,68 +1,91 @@
 import React,{Fragment} from 'react'
 import { Breadcrumbs } from '../../../AbstractElements'
-import { Container } from 'reactstrap'
+import { Container,Table } from 'reactstrap'
 import { useLocation } from 'react-router'
 const Index = () => {
      const { state } = useLocation();
-     const rowData = state?.data;
-     console.log(rowData);
+     const oldData = state.data.oldData;
+     const NewData=state.data.newData
+     console.log(state);
+     
+     console.log(oldData);
+     console.log(NewData)
      
   return (
     <Fragment>
         <Breadcrumbs parent="Fuel Card" title="Fuel Card Information " />
-        <Container fluid={true}>
-            <table className='table-responsive border'>
-                <tr>
+        <Container >
+            <div style={{width: "750px", margin: "auto"}} className='table-responsive '>
+                <table  className=' table table-bordered' width="700px"> 
+              <thead>
+                <tr className='border-bottom-primary'>
+               
                     <th>Heading</th>
                     <th>Before</th>
                     <th>After</th>
                 </tr>
-                  <tr>
+                 </thead>
+              <tbody>
+                  <tr className='border-bottom-dark'>
                     <th>CardNumber</th>
-                    <th>{rowData?.card_no}</th>
-                    <th>-</th>
+                    <th>{oldData?.card_no}</th>
+                    <th>{NewData?.cardNo}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Company</th>
-                    <th>{rowData.company_name}</th>
-                    <th>-</th>
+                    <th>{oldData.company_name}</th>
+                    <th>{NewData.company.label}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Pollicy Number</th>
-                    <th>{rowData.policy}</th>
-                    <th>-</th>
+                    <th>{oldData.policy}</th>
+                    <th>{NewData.policyNo}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Unit Number</th>
-                    <th>{rowData.unit_number}</th>
-                    <th>-</th>
+                    <th>{oldData.unit_number}</th>
+                    <th>{NewData.unitNo}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Pin Number</th>
-                    <th>{rowData.pin_number}</th>
-                    <th>-</th>
+                    <th>{oldData.pin_number}</th>
+                    <th>{NewData.pinNo}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Driver Name</th>
-                    <th>{rowData.driver_name}</th>
-                    <th>-</th>
+                    <th>{oldData.driver_name}</th>
+                    <th>{NewData.driverName}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Driver  Mobile1 </th>
-                    <th>{rowData.d_mobile1}</th>
-                    <th>-</th>
+                    <th>{oldData.d_mobile1}</th>
+                    <th>{NewData.driverMobile}</th>
                 </tr>
-                <tr>
+                <tr className='border-bottom-dark'>
                     <th>Driver  Mobile2</th>
-                    <th>{rowData.d_mobile2}</th>
-                    <th>-</th>
+                    <th>{oldData.d_mobile2}</th>
+                    <th>{NewData.driverMobile2}</th>
                 </tr>
-                  <tr>
+                  <tr className='border-bottom-dark'>
                     <th>Card Status</th>
-                    <th>{rowData.status}</th>
-                    <th>-</th>
+                    <th>{oldData.status}</th>
+                    <th>{NewData.cardStatus.value}</th>
                 </tr>
-            </table>
+                </tbody>
+                </table>
+                  <div className=' my-4 text-center'>
+          <p>Please Enter OTP for Update Card {oldData.card_no} is below</p>
+          <div className='row  gx-0 '>
+            <div className='col-md-6 '>
+                    <input className='form-control ' type="text" placeholder='Enter Otp' />
+            </div>
+               <div className='col-md-6 '>
+                <button className='btn btn-primary' type="submit">Submit OTP</button>
+            </div>
+          </div>
+          </div>
+            </div>
+          
         </Container>
       </Fragment>
   )

@@ -78,9 +78,14 @@ const Index = () => {
   }, [rowData, reset]);
 
   const onSubmit = (formData) => {
-    console.log("Form Data:", formData); // ✅ This will print your inputs
+    console.log("Form Data:", formData);
+    const Data={
+      newData:formData,
+      oldData:rowData
+    }
+    // ✅ This will print your inputs
     navigate(`/edit-information/${rowData.card_id}`, {
-      state: { data: rowData }
+      state: { data: Data }
     });
     const payload = {
       card_no: formData.cardNo,

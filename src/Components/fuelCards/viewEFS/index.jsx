@@ -2,7 +2,7 @@ import React, { Fragment,useState,useEffect } from 'react';
 import { Breadcrumbs } from '../../../AbstractElements';
 import { Container } from 'reactstrap';
 import DataTableComponent from '../../Tables/DataTable/DataTableComponent';
-import {  efs_fual_card1 as APINAME} from '../../../api/index'
+import {  efs_fual_card as APINAME} from '../../../api/index'
 import usePaginatedTable from '../../../Hooks/usePagination';
 
 const Index = () => {
@@ -127,7 +127,13 @@ const Index = () => {
        
        <DataTableComponent title=" View EFS Fual Cards " tableColumns={tableColumns} tableData={filteredData}   downloadHeading="Download"
           download={true}
-          pagination/>    
+          loading={loading}
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
+          />    
       </Container>
     </Fragment>
   );
