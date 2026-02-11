@@ -27,7 +27,7 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import { useCountry } from "../../../Hooks/Dropdowns";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
@@ -35,7 +35,7 @@ import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
 const Index = () => {
   const { data: supplierOption } = useSupplier();
   const { state } = useLocation();
-
+  const navigate=useNavigate()
   const rowData = state?.data;
   console.log("Received Edit Data:", rowData);
   const { data } = useCompany();
@@ -79,7 +79,9 @@ const Index = () => {
 
   const onSubmit = (formData) => {
     console.log("Form Data:", formData); // ✅ This will print your inputs
-
+    navigate(`/edit-information/${rowData.card_id}`, {
+      state: { data: rowData }
+    });
     const payload = {
       card_no: formData.cardNo,
       policy: formData.policyNo,
@@ -96,18 +98,17 @@ const Index = () => {
       company_name: formData.company.label,
       update_otp: "",
     };
-          axios.put(`${APINAME}/${rowData.card_id}`, payload)
-      .then((res) => {
-        console.log(res);
+      //     axios.put(`${APINAME}/${rowData.card_id}`, payload)
+      // .then((res) => {
+      //   console.log(res);
 
-        toast.success("Update successfully!");
+      //   toast.success("Update successfully!");
 
-        // if (onDataAdded) onDataAdded();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.message);
-      });
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      //   toast.error(err.message);
+      // });
   };
   return (
     <Fragment>

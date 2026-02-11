@@ -4,7 +4,6 @@ import { Btn, H6 } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import Loader from "../../../Layout/Loader";
 import { Row, Col, Card, CardBody } from "reactstrap";
-
 const DataTableComponent = ({
   tableData,
   showTable,

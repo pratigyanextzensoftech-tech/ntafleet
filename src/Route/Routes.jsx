@@ -51,6 +51,7 @@ import AddFuel from '../Components/fuelCards/addFuel/index';
 import ViewFuel from '../Components/fuelCards/view/index';
 import EFSFuel from '../Components/fuelCards/viewEFS/index';
 import HistoryFuel from '../Components/fuelCards/history/index';
+import EditInformation from '../Components/fuelCards/editInformation/index.jsx'
 
 //Transaction
 import ViewTransaction from '../Components/transaction/view/index'
@@ -183,6 +184,7 @@ export const routes = [
     { path: `/efs_view_card`, Component: < EFSFuel /> },
     { path: `/card_update`, Component: < HistoryFuel /> },
     { path: `/edit-fuelCards/:id`, Component: < EditFuel /> },
+    { path: `/edit-information/:id`, Component: < EditInformation /> },
     //Transaction
     { path: `/view_transaction`, Component: < ViewTransaction /> },
     { path: `/upload_transaction`, Component: < UploadTransaction /> },

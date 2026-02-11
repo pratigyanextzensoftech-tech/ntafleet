@@ -44,14 +44,12 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
   useEffect(() => {
-    setLoading(true)
     fetch(APINAME)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
           setGroupIds(data.map((item) => item.id));
-              setLoading(false)
 
         } 
         else {
@@ -140,9 +138,12 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
               dynamicColumns.forEach((col, idx) => {
                 obj[`col_${idx}`] = row[idx + 3] || "";
               });
+
               return obj;
+
             });
             console.log(tableData);
+
             callback({
               draw: data.draw,
               recordsTotal: json.recordsTotal,
