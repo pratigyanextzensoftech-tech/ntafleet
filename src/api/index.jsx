@@ -90,6 +90,13 @@ export const ta_get_rowvalue = `${baseurl}/api/ta_cent/get_rowvalue`;
 export const ta_saverowvalue = `${baseurl}/api/ta_cent/upsert`;
 
 
+export const love_group_lovegroup = `${baseurl}/api/love_group/love_group`;
+export const love_group_lovegroupInput = `${baseurl}/api/love_group/love_group_input`;
+
+export const love_get_rowvalue = `${baseurl}/api/love_cent/get_rowvalue`;
+export const love_saverowvalue = `${baseurl}/api/love_cent/upsert`;
+
+
 export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;

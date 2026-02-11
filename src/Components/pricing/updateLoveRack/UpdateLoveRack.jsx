@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns"; 
 import Loader from "../../../Layout/Loader";
 import { toast } from 'react-toastify';
-import {tacompany, ta_get_rowvalue, ta_group_Tagroup as APINAME,ta_saverowvalue } from "../../../api"; 
+import {tacompany, love_get_rowvalue,love_group_lovegroup as APINAME,love_saverowvalue} from "../../../api"; 
 const UpdateLoveRack = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
@@ -63,7 +63,7 @@ const UpdateLoveRack = ({ title, btnTitle }) => {
             payload['dated'] = dated; 
             console.log(c.company_name+" : ",payload)
             
-            axios.post(ta_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+            axios.post(love_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
         }) 
        toast.success("Rack Cent Updated Succesfully");  
        setloading(false);
@@ -79,7 +79,7 @@ const UpdateLoveRack = ({ title, btnTitle }) => {
       const res = await fetch(APINAME);
       const groups = await res.json();
       if (!Array.isArray(groups)) return;
-      setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
+      setDynamicColumns(groups.map((g) => Number(g.pumping_fee).toFixed(4)));
       setGroupIds(groups.map((g) => g.id));
       // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
@@ -89,7 +89,7 @@ const UpdateLoveRack = ({ title, btnTitle }) => {
 
       // 3️⃣ Fetch TA row values (FIXED URL)
       const rowRes = await fetch(
-        `${ta_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+        `${love_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
       const rowData = await rowRes.json();
       if (!Array.isArray(rowData)) return;

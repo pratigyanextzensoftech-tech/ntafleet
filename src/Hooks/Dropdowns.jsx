@@ -100,14 +100,12 @@ export const useCompany = (invoice_creation = "", ta_retail_invoice = "", owner_
     
   } 
   if (params.toString()) url = `${companyall}?${params.toString()}`;
-
+ 
   return useDropdown(url, (c) => ({
     value: c.company_id,
     label: c.company_name,
   }));
-};
-
-
+}; 
 export const formatDate = (date) => {
   if (!date) return "";
   const d = new Date(date);

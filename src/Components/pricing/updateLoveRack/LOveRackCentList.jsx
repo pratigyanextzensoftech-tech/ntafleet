@@ -18,9 +18,9 @@ import { DiscountType } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import { useCompany } from "../../../Hooks/Dropdowns";
 import {
-  ta_group_Tagroup as APINAME,
-  ta_group_TagroupInput,
-  ta_cent,
+  love_group_lovegroup as APINAME,
+  love_group_lovegroupInput,
+  love_cent,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -48,7 +48,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
       .then((data) => {
         if (Array.isArray(data)) {
           setDynamicColumns(
-            data.map((item) => Number(item.ibp_adjustment).toFixed(4)),
+            data.map((item) => Number(item.pumping_fee).toFixed(4)),
           );
           setGroupIds(data.map((item) => item.id));
         } else {
@@ -60,24 +60,25 @@ const LoveRackCent = ({ title, btnTitle }) => {
 
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
-      dynamicGroupIds.forEach((groupid) => {
-        const inputId = `#c${id}g${groupid}`;
-        const value = $(inputId).val();
-        updateData[`group_${groupid}`] = value;
-      });
-
-      axios
-        .put(`${ta_cent}/${id}`, updateData)
-        .then((response) => {
-          toast.success("Data updated");
-        })
-        .catch((error) => {
-          toast.error("Error In Data update");
-        });
+   $(document).off("click", ".update-btn").on("click", ".update-btn", function () {
+    //setLoading(true);
+    const id = $(this).data("id");
+    const updateData = {}; 
+    dynamicGroupIds.forEach((groupid) => {
+      const inputId = `#c${id}g${groupid}`;
+      updateData[`group_${groupid}`] = $(inputId).val();
     });
+
+    axios
+      .put(`${love_cent}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+         // setLoading(false);
+      })
+      .catch(() => {
+        toast.error("Error in data update");
+      });
+  });
   }, [dynamicColumns, companyId]);
 
   $(document).ready(function () {
@@ -85,7 +86,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
     GetDataTAble();
   });
 
-  function GetDataTAble() {
+  function GetDataTAble(company_id='',discount_type='',from_date='',upto_date='') {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -113,21 +114,21 @@ const LoveRackCent = ({ title, btnTitle }) => {
         },
       ],
 
-      ajax: function (data, callback) {
+      ajax: function (data, callback) { 
         const params = new URLSearchParams();
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", companyId);
-        params.append("from_date", startDate);
-        params.append("upto_date", endDate);
-        fetch(`${ta_group_TagroupInput}?${params.toString()}`)
+        params.append("company_id", company_id);
+        params.append("discount_type", discount_type);
+        params.append("from_date", from_date);
+        params.append("upto_date", upto_date); 
+        fetch(`${love_group_lovegroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${ta_group_TagroupInput}?${params.toString()}`;
-            console.log("🔗 API URL:", url);
+            const url = `${love_group_lovegroupInput}?${params.toString()}`; 
             const tableData = json.data.map((row) => {
               const obj = {
                 company_name: row[0],
@@ -139,8 +140,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
               });
 
               return obj;
-            });
-            console.log(tableData);
+            });  
 
             callback({
               draw: data.draw,
@@ -168,32 +168,18 @@ const LoveRackCent = ({ title, btnTitle }) => {
     const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-  const onSubmit = (data) => {
-    setLoading(true);
-    const basePayload = {
-      company_id: data.company.value,
-      discount_type: data.discountType.value,
-      from: data?.from ? formatDate(data.from) : "",
-      to: data?.to ? formatDate(data.to) : "",
-    };
-
-    axios
-      .post(APINAME, basePayload, {
-        params: basePayload,
-      })
-      .then((res) => {
-        res.data.success
-          ? toast.success(res.data.message)
-          : toast.error(res.data.message);
-        setLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err);
-        setLoading(false);
-      });
-
-    console.log("payload", basePayload); // ✅ This will print your inputs
+  const onSubmit = (data) => 
+    {  
+      const company_id= data.company.value||0;
+      const discount_type= data?.discountType?.value ||0;
+      const from_date= data?.from ? formatDate(data.from_date) : "";
+      const upto_date= data?.to ? formatDate(data.upto_date) : "";
+       $("#example").DataTable().clear().destroy();
+      GetDataTAble(company_id,discount_type,from_date,upto_date); 
   };
+
+
+  
   return (
     <Fragment>
       <Card>
@@ -235,39 +221,36 @@ const LoveRackCent = ({ title, btnTitle }) => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-  <Col  xl="3"  md="6" sm="12">
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <InputGroupText>Discount Type</InputGroupText>
+                    <Col xl="3" md="6" sm="12">
+                      <FormGroup className="m-form__group">
+                        <InputGroup>
+                          <InputGroupText>Discount Type</InputGroupText>
 
-                        <Controller
-                          name="DiscountType"
-                          control={control}
-                        
-                          render={({ field }) => (
-                            <Select
-                              {...field}
-                              className="form-control p-0 border-0"
-                              options={DiscountType}
-                              placeholder="Select Discount "
-                              onChange={field.onChange}
-                              value={field.value}
-                               menuPortalTarget={document.body}
-                                  menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
-                            />
-                          )}
-                        />
-                      </InputGroup>
-
-                     
-                    </FormGroup>
-                  </Col>
+                          <Controller
+                            name="DiscountType"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                className="form-control p-0 border-0"
+                                options={DiscountType}
+                                placeholder="Select Discount "
+                                onChange={field.onChange}
+                                value={field.value}
+                                menuPortalTarget={document.body}
+                                menuPosition="fixed"
+                                styles={{
+                                  menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 99999,
+                                  }),
+                                }}
+                              />
+                            )}
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
                     <Col xl="3" md="6" sm="12">
                       <Row>
                         <FormGroup className="m-form__group">
@@ -277,7 +260,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                             </Col>
                             <Col xs="8">
                               <Controller
-                                name="from"
+                                name="from_date"
                                 control={control}
                                 render={({ field }) => (
                                   <DatePicker
@@ -304,7 +287,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                             </Col>
                             <Col xs="8">
                               <Controller
-                                name="to"
+                                name="upto_date"
                                 control={control}
                                 render={({ field }) => (
                                   <DatePicker
