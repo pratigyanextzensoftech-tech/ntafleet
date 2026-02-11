@@ -16,8 +16,8 @@ export const EssoGroupRackTab = [
   {
     id: '2',
     label: 'Upload ESSO Group Rack Cent ',
-    // component: <UploadEssoGroupRackForm title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" />,
-    component: <PricingCommon csvFile={true} title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" apiname={""}/>,
+    component: <UploadEssoGroupRackForm title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" />,
+    // component: <PricingCommon csvFile={true} title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" apiname={""}/>,
   },
    {
     id: '3',
