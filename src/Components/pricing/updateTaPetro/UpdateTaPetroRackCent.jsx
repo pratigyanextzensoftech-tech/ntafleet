@@ -137,6 +137,8 @@ const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
+                                portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
