@@ -39,7 +39,10 @@ const PricingCommon = ({
   supplier,
   discountType,
   supplier_ids,
+  search,
   tax,
+  table,
+  taxOption,
   validation, rackus,
   tableTitle,
   rackca,invoiceType
@@ -91,20 +94,26 @@ const[loading,setLoading]=useState(false)
       added_by:userId||""
     };
 
-    axios
-      .post(apiName, basePayload, {
-  params: basePayload})
-      .then((res) => {  
-        res.data.success?toast.success(res.data.message):toast.error(res.data.message);
-        setLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err);
-        setLoading(false);
-      });
+axios
+  .post(apiName, basePayload, {
+    params: basePayload,
+  })
+  .then((res) => {
+    res.data.success
+      ? toast.success(res.data.message)
+      : toast.error(res.data.message);
+
+    setLoading(false);
+  })
+  .catch((err) => {
+    toast.error(err.message || "Something went wrong");
+    setLoading(false);
+  });
 
     console.log("Final Payload Sent =>", basePayload);
   };
+
+
     const handleCheckboxChange = (value, field) => {
     
     const allValues = companies.map((c) => c.value); // all possible
@@ -177,17 +186,30 @@ console.log(newSelection)
 
   const [openRowId, setOpenRowId] = useState(null);
       const [tableColumns, setTableColumns] = useState([]);
-      const columnsMap = {
-        "ID #": "id",
-        "Company": "company_name",
-        "Pricing Date": "pricing_date",
-        "Supplier": "supplier",
-        "Entry_Count": "entry_count",
-        "Added_By": "added_by_name",
-        "Added_On": "added_on",
-        "Mailed_By": "mailed_by",
-        "Mailed_On": "mail_on",
-      };
+    const columnsMap = taxOption === false
+  ? {
+      "ID #": "id",
+      "Company": "company_name",
+      "Pricing Date": "pricing_date",
+      "Supplier": "supplier",
+      "Entry_Count": "entry_count",
+      "Added_By": "added_by_name",
+      "Added_On": "added_on",
+      "Mailed_By": "mailed_by",
+      "Mailed_On": "mail_on",
+    }
+  : {
+      "ID #": "id",
+      "Company": "company_name",
+      "Pricing Date": "pricing_date",
+      "Supplier": "supplier",
+      "Entry_Count": "entry_count",
+      "Tax Option": "without_tax",
+      "Added_By": "added_by_name",
+      "Added_On": "added_on",
+      "Mailed_By": "mailed_by",
+      "Mailed_On": "mail_on",
+    };
     const perPageValue=200
       const {
         data,
@@ -303,7 +325,7 @@ console.log(newSelection)
       }, []);
     
       const handleDelete = (id) => {
-        console.log(data)
+        console.log(id)
         const stringId=id.join(",")
         console.log(stringId)
       Swal.fire({
@@ -318,15 +340,18 @@ console.log(newSelection)
   }).then((result) => {
 
     if (result.isConfirmed) {
-              axios.delete(`${listapi}/${stringId}`)
+      for(let i=0;i<id.length;i++){
+ axios.delete(`${listapi}/${id[i]}`)
         .then(() => {
-          setData((prev) => prev.filter((item) => item["ID #"] !== Number(stringId)));
+          setData((prev) => prev.filter((item) => item["ID #"] !== id[i]));
           setSelectedRows([]); // or remove only that ID
           Swal.fire("Deleted!", "Record deleted successfully.", "success");
         })
         .catch(() => {
           Swal.fire("Error!", "Failed to delete record.", "error");
         });
+      }
+             
     } 
   });
       };
@@ -754,7 +779,7 @@ console.log(newSelection)
           </fieldset>
         </Col>
       </Row>
-      {/* {table!==false &&( */}
+      {table!==false &&(
         <>
         <DataTableComponent
           title={tableTitle && tableTitle || "Pricing PDF List (Without Tax) "}
@@ -772,8 +797,8 @@ console.log(newSelection)
           onChangePage={handlePageChange}
         />
         </>
-      {/* )
-    } */}
+     
+      )}
         
     </Fragment>
   );

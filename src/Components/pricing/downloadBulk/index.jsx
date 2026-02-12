@@ -4,7 +4,7 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col ,Card,CardBody} from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import { pricingListTableTab } from "../../../Data/tab/PricingListTableTab";
-import { DownloadBulkTab } from "../../../Data/tab/DownloadBulkTab";
+import { DownloadBulkTab } from "./DownloadBulkTab";
 import { DownloadBulkTableTab } from "../../../Data/tab/DownloadBulkTableTab";
 const index = () => {
   return (

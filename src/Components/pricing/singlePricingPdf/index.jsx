@@ -44,8 +44,9 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
     cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
+      for(let i=0;i<ids.length;i++){
       axios
-        .delete(`${deleteApi}/${stringId}`)
+        .delete(`${deleteApi}/${ids[i]}`)
         .then(() => {
           Swal.fire("Deleted!", "Record deleted successfully.", "success");
           refetch(); // ✅ refresh correct tab
@@ -54,6 +55,7 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
           Swal.fire("Error!", "Failed to delete record.", "error");
         });
     }
+  }
   });
 };
    const pricingPdfData= usePaginatedTable({
@@ -186,7 +188,6 @@ const fetchers = {
             <Card>
               <HeaderCard title="Pricing List" />
               <CardBody>
-
                 <BasicTabCard tabContent={pricingpdfTab} />
               </CardBody>
             </Card>

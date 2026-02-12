@@ -7,6 +7,7 @@ import PricingCommon from '../../Components/pricing/PricingCommon';
 import UpdateEsso from '../../Components/pricing/essoGroup/UpdateEsso';
 import EssoGroupRackcentList from '../../Components/pricing/essoGroup/EssoGroupRackcentList';
 import UpdateIrving from '../../Components/pricing/irvingGroup/UpdateIrving';
+import IrvingGroupList from '../../Components/pricing/irvingGroup/IrvingGroupList';
 export const IrvingGroupRackTab = [
   {
     id: '1',
@@ -23,7 +24,7 @@ export const IrvingGroupRackTab = [
    {
     id: '3',
     label: 'Irving Group  Cent List ',
-    component: <EssoGroupRackcentList tabletitle="Irving Group Rack Cent List"  title="Filters " btnTitle="Search" />
+    component: <IrvingGroupList tabletitle="Irving Group Rack Cent List"  title="Filters " btnTitle="Search" />
    }
 ,
  

@@ -30,7 +30,6 @@ const MailPricingCommon = ({
   btnTitle,
   company_list,
   testingEmail,
-  apiName,
   listapi,
   supplier,
   discountType,
@@ -76,21 +75,21 @@ const[loading,setLoading]=useState(false)
   // console.log(data)
     setLoading(true);
     const basePayload = {
-      company_id: company_list==="checkbox"? companyValue : "",
+      // company_id: company_list==="checkbox"? companyValue : "",
       supplier_id:  data.supplier.value,
       supplier:data.supplier.label,
-      testing_email :testingEmail?data.testingEmail:"",
-      tax: tax? tax:"No",
+      // testing_email :testingEmail?data.testingEmail:"",
+      // tax: tax? tax:"No",
       pricing_date:data?.pricingDate? formatDate(data.pricingDate):"",
-      invoice_type:discountType?data.DiscountType.value:"",
-      added_by:userId
+      // invoice_type:discountType?data.DiscountType.value:"",
+      // added_by:userId
     };
 
-    axios
-      .post(apiName, basePayload, {
+    axios.post(listapi, basePayload, {
   params: basePayload})
       .then((res) => {  
         res.data.success?toast.success(res.data.message):toast.error(res.data.message);
+        console.log(res.data.success)
         setLoading(false);
       })
       .catch((err) => {
@@ -165,6 +164,7 @@ console.log(newSelection)
   "Company": "300px",
   "Pricing Date": "180px",
   "Supplier": "150px",
+  "Tax Option":"150px",
   "Entry_Count": "150px",
   "Added_By": "120px",
   "Added_On": "160px",

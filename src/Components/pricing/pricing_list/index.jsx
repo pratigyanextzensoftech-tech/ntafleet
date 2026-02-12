@@ -241,8 +241,9 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
     cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
+       for(let i=0;i<ids.length;i++){
       axios
-        .delete(`${deleteApi}/${stringId}`)
+        .delete(`${deleteApi}/${ids[i]}`)
         .then(() => {
           Swal.fire("Deleted!", "Record deleted successfully.", "success");
           refetch(); // ✅ refresh correct tab
@@ -250,6 +251,7 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
         .catch(() => {
           Swal.fire("Error!", "Failed to delete record.", "error");
         });
+      }
     }
   });
 };
@@ -257,9 +259,10 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
 const tabs = [
   {
     id: "1",
-    label: "Flying J",
+    label: "Flying J ",
     data: flyingJ,
     map: columnSets.flyingJ,
+    title:"Flying J Pricing List",
     deleteApi: pricing, // ✅ DELETE API
   },
   {
@@ -272,6 +275,7 @@ const tabs = [
     ), 
     data: taCapped,
     map: columnSets.taCapped,
+    title:"TA-Petro Pricing List (Capped) List ",
     deleteApi: TA_CAPPED_API,
   },
   {
@@ -285,6 +289,7 @@ const tabs = [
    ,
     data: taActual,
     map: columnSets.taActual,
+    title:"TA-Petro Pricing List (Actual) List",
     deleteApi: TA_ACTUAL_API,
   },
   {
@@ -292,6 +297,7 @@ const tabs = [
     label: "Esso",
     data: esso,
     map: columnSets.esso,
+    title:"ESSO Pricing List ",
     deleteApi: esso_pricing,
   },
   {
@@ -303,6 +309,7 @@ const tabs = [
     ),
     data: loveCapped,
     map: columnSets.loveCapped,
+    title:"LOVES Pricing List (Capped) List ",
     deleteApi: LOVE_CAPPED_API,
   },
   {
@@ -315,6 +322,7 @@ const tabs = [
     ), 
     data: loveActual,
     map: columnSets.loveActual,
+    title:"LOVES Pricing List (Actual) List ",
     deleteApi: LOVE_ACTUAL_API,
   },
   {
@@ -322,6 +330,7 @@ const tabs = [
     label: "Ultramar",
     data: ultramar,
     map: columnSets.ultramar,
+    title:"ULTRAMAR Pricing List ",
     deleteApi: ULTRAMAR_API,
   },
    {
@@ -329,6 +338,7 @@ const tabs = [
     label: "Irving",
     data: irving,
     map: columnSets.irving,
+    title:"Irving Pricing List",
     deleteApi: IRVING_API,
   },
 
@@ -340,7 +350,7 @@ const tabs = [
     label: tab.label,
     component: (
       <DataTableComponent
-        title={tab.label}
+        title={tab.title}
         tableColumns={createColumns(tab.map, tab.data.data, { withCheckbox: true ,
     withActions: false,          // ✅ show action column
     showDownload: false,         // ✅ conditionally show download
@@ -374,7 +384,7 @@ const tabs = [
             <Card>
               <HeaderCard title="Create Pricing PDF" />
               <CardBody>
-              <BasicTabCard tabContent={PricingTab} />
+              <BasicTabCard  tabContent={PricingTab} />
               </CardBody>
             </Card>
           </Col>

@@ -3,7 +3,6 @@ import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { Container, Row, Col,Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard"; 
-import { LovePricingTab } from "../../../Data/tab/LovePricingTab";
 import { IrvingPricingTab } from "../../../Data/tab/IrvingPricingTab";
 const index = () => {
   return (

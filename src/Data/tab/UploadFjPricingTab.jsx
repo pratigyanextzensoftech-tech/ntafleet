@@ -95,7 +95,7 @@ export const UploadFjPricingTab = [
     component: (
       <IrvingGroupList
         title=" Irving Group Rack cent List"
-        btnTtitle="Upload Irving Pricing"
+        btnTitle="Upload Irving Pricing"
       />
     ),
   },

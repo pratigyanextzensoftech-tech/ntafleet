@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { useNavigate, useLocation } from "react-router";
 
-const BasicTabCard = ({ tabContent, title }) => {
+const BasicTabCard = ({ tabContent, title,onSearch }) => {
   const navigate = useNavigate();
   const location = useLocation();
 

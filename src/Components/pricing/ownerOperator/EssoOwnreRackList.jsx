@@ -15,7 +15,6 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import { useCompany } from "../../../Hooks/Dropdowns";
 import {
   ta_group_Tagroup as APINAME,
   ta_group_TagroupInput,
@@ -24,23 +23,22 @@ import {
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
+import InputText from "../../Forms/FormControl/formInput/InputText";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import Loader from "../../../Layout/Loader";
-
-const TaPetroRackCent = ({ title, btnTitle }) => {
+const EssoOwnerRackList = ({ title, btnTitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
-  const [company,setCompany]=useState();
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
- 
+     const [company,setCompany]=useState();
+  
   const {
     register,
     control,
-    setValue,
+     setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm({
@@ -48,11 +46,6 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     company: null,
   },
   });
-   useEffect(() => {
-      if (company && company.length > 0) {
-        setValue("company", company[0]); // set first option
-      }
-    }, [company, setValue]);
   useEffect(() => {
     fetch(APINAME)
       .then((res) => res.json())
@@ -60,13 +53,13 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
         if (Array.isArray(data)) {
           setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
           setGroupIds(data.map((item) => item.id));
-
         } 
         else {
           console.error("APINAME response is not an array:", data);
         }
       })
-      .catch((err) => console.error(err));  axios.get(tacompany)
+      .catch((err) => console.error(err));
+       axios.get(tacompany)
             .then((res) => {
               const data = res.data;
               console.log(data)
@@ -83,6 +76,16 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
             .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    if (company && company.length > 0) {
+      setValue("company", company[0]); // set first option
+    }
+  }, [company, setValue]);
+  useEffect(() => {
+    if (dynamicColumns.length > 0) {
+      GetDataTAble();
+    }
+  }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
     $(document).on("click", ".update-btn", function () {
@@ -104,13 +107,8 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     });
   }, [dynamicColumns, companyId]);
 
- useEffect(() => {
-   if (dynamicColumns.length > 0) {
-     GetDataTAble();
-   }
- }, [dynamicColumns]);
-
-  function GetDataTAble(company_id,start_date,end_date) {
+ 
+  function GetDataTAble(company_id,from_date,upto_date,rack_ca,rack_qc,rack_us) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -122,8 +120,8 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       serverSide: true,
       processing: true,
       responsive: true,
-      destroy:true,
       paging: true,
+      destroy:true,
       searching: true,
       ordering: true,
       pageLength: 25,
@@ -140,7 +138,6 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       ],
 
       ajax: function (data, callback) {
-       
         const params = new URLSearchParams();
         params.append("start", data.start);
         params.append("length", data.length);
@@ -148,8 +145,11 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id?company_id:"");
-        params.append("start_date", start_date?start_date:"");
-        params.append("end_date", end_date?end_date:"");
+        params.append("rack_ca", rack_ca?rack_ca:"");
+        params.append("rack_qc", rack_qc?rack_qc:"");
+        params.append("rack_us", rack_us?rack_us:"");
+        params.append("from_date", from_date?from_date:"");
+        params.append("upto_date", upto_date?upto_date:"");
         fetch(`${ta_group_TagroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
@@ -164,19 +164,15 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
               dynamicColumns.forEach((col, idx) => {
                 obj[`col_${idx}`] = row[idx + 3] || "";
               });
-
               return obj;
-
             });
             console.log(tableData);
-
             callback({
               draw: data.draw,
               recordsTotal: json.recordsTotal,
               recordsFiltered: json.recordsFiltered,
               data: tableData,
             });
-
           })
           .catch((err) => {
             console.error("Error fetching table data:", err);
@@ -198,27 +194,29 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     return `${year}-${month}-${day}`;
   };
   const onSubmit = (data) => {
-    setLoading(true);
-          const company_id = data.company?.value ?? "";
-          const start_date = data.from ? formatDate(data.from): "";
-          const end_date = data.to? formatDate(data.to): "";
-         
-           console.log("Submitting:", {
-              company_id,
-              start_date,
-              end_date,
-            });
-          
-            if ($.fn.DataTable.isDataTable("#example")) {
-              $("#example").DataTable().destroy();
-            }    
-            GetDataTAble(company_id, start_date, end_date);
-            setLoading(false);
+   const company_id = data.company?.value ?? "";
+     const from_date = data.from? formatDate(data.to): "";
+     const upto_date = data.to? formatDate(data.to): "";
+     const rack_ca = data.rack_ca? data.rack_ca: "";
+     const rack_qc = data.rack_qc? data.rack_qc: "";
+     const rack_us = data.rack_us? data.rack_us: "";
+   
+     console.log("Submitting:", {
+       company_id,
+       from_date,
+       upto_date,
+     });
+   
+     if ($.fn.DataTable.isDataTable("#example")) {
+       $("#example").DataTable().destroy();
+     }
+   
+     GetDataTAble(company_id, from_date, upto_date,rack_ca,rack_qc,rack_us);
   };
   return (
     <Fragment>
-        <Card>
-              <CardBody>
+      <Card>
+        <CardBody>
       <Row>
         <Col>
           <fieldset>
@@ -229,7 +227,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col xl="4" md="6" sm="12">
+                <Col xl="3" md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Company</InputGroupText>
@@ -242,7 +240,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                             options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select a company"
-                              menuPortalTarget={document.body}
+                            menuPortalTarget={document.body}
                                 menuPosition="fixed"
                                 styles={{
                                   menuPortal: (base) => ({
@@ -256,7 +254,37 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                     </InputGroup>
                   </FormGroup>
                 </Col>
-             
+             <Col   xl="3"  md="6" sm="12">
+ <InputText
+            name="rack_ca"
+            label="Rack On"
+            type="text"
+            register={register}
+            errors={errors}
+            // rules={ { required: "Required" }}
+            
+          />
+</Col>
+  <Col   xl="3"  md="6" sm="12">
+ <InputText
+            name="rack_qc"
+            label="Rack-QC,PQ"
+            type="text"
+            register={register}
+            errors={errors}
+            
+          />
+</Col>
+  <Col   xl="3"  md="6" sm="12">
+ <InputText
+            name="rack_us"
+            label="Rack-Other"
+            type="text"
+            register={register}
+            errors={errors}
+            
+          />
+</Col>
                 <Col xl="3" md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
@@ -327,17 +355,15 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       </Row>
       </CardBody>
       </Card>
-       <Card>
-              <CardBody>
-                       <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
+      <Card>
+                <CardBody>
+                         <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
       <Container fluid>
         <Row>
           <Col sm="12">
-           
-                <div className="text-end my-3">
+             <div className="text-end my-3">
                 <button className="btn btn-primary">Delete Rack Cent</button>
                 </div>
-                { <Loader loading={loading}/>}
                 <div className="table-responsive">
                   <table
                     id="example"
@@ -362,9 +388,9 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
         </Row>
       </Container>
       </CardBody>
-    </Card>
+      </Card>
     </Fragment>
   );
 };
 
-export default TaPetroRackCent;
+export default EssoOwnerRackList;
