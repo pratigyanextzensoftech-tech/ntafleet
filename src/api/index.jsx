@@ -7,6 +7,12 @@ export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
 export const companyall = `${baseurl}/api/company/all`;
 export const tacompany = `${baseurl}/api/company/taall`;
+export const fgcompany = `${baseurl}/api/company/fgall`;
+export const essocompany = `${baseurl}/api/company/essoall`;
+export const ulcompany = `${baseurl}/api/company/ulall`;
+export const irvcompany = `${baseurl}/api/company/irvall`;
+export const cencompany = `${baseurl}/api/company/cenall`;
+
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;
 
@@ -89,6 +95,14 @@ export const ta_group_TagroupInput = `${baseurl}/api/ta_group/ta_group_input`;
 export const ta_get_rowvalue = `${baseurl}/api/ta_cent/get_rowvalue`;
 export const ta_saverowvalue = `${baseurl}/api/ta_cent/upsert`;
 
+export const fg_group_input = `${baseurl}/api/rack_cent/fg_group_input`;
+export const fg_get_rowvalue = `${baseurl}/api/rack_cent/fg_row_value`;
+export const fg_saverowvalue = `${baseurl}/api/rack_cent/upsert`;
+
+export const ul_group_ulgroup = `${baseurl}/api/ul_loc_group/ul_group`;
+export const ul_group_ulgroupInput = `${baseurl}/api/ul_loc_group/ul_group_input`;
+export const ul_get_rowvalue = `${baseurl}/api/ul_cent/get_rowvalue`;
+export const ul_saverowvalue = `${baseurl}/api/ul_cent/upsert`;
 
 export const love_group_lovegroup = `${baseurl}/api/love_group/love_group`;
 export const love_group_lovegroupInput = `${baseurl}/api/love_group/love_group_input`;

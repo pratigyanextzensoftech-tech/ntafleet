@@ -19,7 +19,8 @@ import DatePicker from "react-datepicker";
 import {
   love_group_lovegroup as APINAME,
   love_group_lovegroupInput,
-  love_cent,tacompany
+  love_cent,
+  tacompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -34,7 +35,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
-  const [company,setCompany]=useState();
+  const [company, setCompany] = useState();
 
   const {
     register,
@@ -44,8 +45,8 @@ const LoveRackCent = ({ title, btnTitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm({
     defaultValues: {
-    company: null,
-  },
+      company: null,
+    },
   });
   useEffect(() => {
     fetch(APINAME)
@@ -62,57 +63,59 @@ const LoveRackCent = ({ title, btnTitle }) => {
       })
       .catch((err) => console.error(err));
 
-
-       axios.get(tacompany)
+    axios
+      .get(tacompany)
       .then((res) => {
         const data = res.data;
-        console.log(data)
-          const options = [
-  { value: '', label: 'All Companies' },
-  ...data.map(company => ({
-    value: company.company_id,
-    label: company.company_name,
-  }))
-];
+        console.log(data);
+        const options = [
+          { value: "", label: "All Companies" },
+          ...data.map((company) => ({
+            value: company.company_id,
+            label: company.company_name,
+          })),
+        ];
 
-     setCompany(options)
+        setCompany(options);
       })
       .catch((err) => console.error(err));
   }, []);
-useEffect(() => {
-  if (company && company.length > 0) {
-    setValue("company", company[0]); // set first option
-  }
-}, [company, setValue]);
-useEffect(() => {
-  if (dynamicColumns.length > 0) {
-    GetDataTAble();
-  }
-}, [dynamicColumns]);
+  useEffect(() => {
+    if (company && company.length > 0) {
+      setValue("company", company[0]); // set first option
+    }
+  }, [company, setValue]);
+  useEffect(() => {
+    if (dynamicColumns.length > 0) {
+      GetDataTAble();
+    }
+  }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
-   $(document).off("click", ".update-btn").on("click", ".update-btn", function () {
-    //setLoading(true);
-    const id = $(this).data("id");
-    const updateData = {}; 
-    dynamicGroupIds.forEach((groupid) => {
-      const inputId = `#c${id}g${groupid}`;
-      updateData[`group_${groupid}`] = $(inputId).val();
-    });
+    $(document)
+      .off("click", ".update-btn")
+      .on("click", ".update-btn", function () {
+        //setLoading(true);
+        const id = $(this).data("id");
+        const updateData = {};
+        dynamicGroupIds.forEach((groupid) => {
+          const inputId = `#c${id}g${groupid}`;
+          updateData[`group_${groupid}`] = $(inputId).val();
+        });
 
-    axios
-      .put(`${love_cent}/${id}`, updateData)
-      .then(() => {
-        toast.success("Data updated");
-         // setLoading(false);
-      })
-      .catch(() => {
-        toast.error("Error in data update");
+        axios
+          .put(`${love_cent}/${id}`, updateData)
+          .then(() => {
+            toast.success("Data updated");
+            // setLoading(false);
+          })
+          .catch(() => {
+            toast.error("Error in data update");
+          });
       });
-  });
   }, [dynamicColumns, companyId]);
 
-  function GetDataTAble(company_id,discount_type,from_date,upto_date) {
+  function GetDataTAble(company_id, discount_type, from_date, upto_date) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -125,7 +128,7 @@ useEffect(() => {
       processing: true,
       responsive: true,
       paging: true,
-      destroy:true,
+      destroy: true,
       searching: true,
       ordering: true,
       pageLength: 25,
@@ -141,22 +144,22 @@ useEffect(() => {
         },
       ],
 
-      ajax: function (data, callback) { 
+      ajax: function (data, callback) {
         const params = new URLSearchParams();
-        
+
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", company_id?company_id:"");
-        params.append("discount_type", discount_type?discount_type:"");
-        params.append("from_date", from_date?from_date:"");
-        params.append("upto_date", upto_date?upto_date:""); 
+        params.append("company_id", company_id ? company_id : "");
+        params.append("discount_type", discount_type ? discount_type : "");
+        params.append("from_date", from_date ? from_date : "");
+        params.append("upto_date", upto_date ? upto_date : "");
         fetch(`${love_group_lovegroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${love_group_lovegroupInput}?${params.toString()}`; 
+            const url = `${love_group_lovegroupInput}?${params.toString()}`;
             const tableData = json.data.map((row) => {
               const obj = {
                 company_name: row[0],
@@ -168,7 +171,7 @@ useEffect(() => {
               });
 
               return obj;
-            });  
+            });
 
             callback({
               draw: data.draw,
@@ -197,32 +200,26 @@ useEffect(() => {
     return `${year}-${month}-${day}`;
   };
 
-const onSubmit = (data) => {
-  const company_id = data.company?.value ?? "";
-  const discount_type = data.DiscountType?.value ?? "";
-  const from_date = data.from_date
-    ? formatDate(data.from_date)
-    : "";
-  const upto_date = data.upto_date
-    ? formatDate(data.upto_date)
-    : "";
+  const onSubmit = (data) => {
+    const company_id = data.company?.value ?? "";
+    const discount_type = data.DiscountType?.value ?? "";
+    const from_date = data.from_date ? formatDate(data.from_date) : "";
+    const upto_date = data.upto_date ? formatDate(data.upto_date) : "";
 
-  console.log("Submitting:", {
-    company_id,
-    discount_type,
-    from_date,
-    upto_date,
-  });
+    console.log("Submitting:", {
+      company_id,
+      discount_type,
+      from_date,
+      upto_date,
+    });
 
-  if ($.fn.DataTable.isDataTable("#example")) {
-    $("#example").DataTable().destroy();
-  }
+    if ($.fn.DataTable.isDataTable("#example")) {
+      $("#example").DataTable().destroy();
+    }
 
-  GetDataTAble(company_id, discount_type, from_date, upto_date);
+    GetDataTAble(company_id, discount_type, from_date, upto_date);
+  };
 
-};
-
-  
   return (
     <Fragment>
       <Card>

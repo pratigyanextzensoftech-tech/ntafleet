@@ -14,12 +14,7 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns";
 import Loader from "../../../Layout/Loader";
 import { toast } from "react-toastify";
-import {
-  tacompany,
-  ta_get_rowvalue,
-  ta_group_Tagroup as APINAME,
-  ta_saverowvalue,
-} from "../../../api";
+import { fgcompany, fg_get_rowvalue, fg_saverowvalue } from "../../../api";
 const UpdateFgRack = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
@@ -40,31 +35,24 @@ const UpdateFgRack = ({ title, btnTitle }) => {
     setloading(true);
     const pricingDate = document.getElementById("pricingDate").value;
     const idby = localStorage.getItem("userId");
-    const dated = formatDate(Date.now()); 
-    const gres = await fetch(APINAME);
-    const groups = await gres.json();
-    if (!Array.isArray(groups)) return;
-
-    const res = await fetch(tacompany);
+    const dated = formatDate(Date.now());
+    const res = await fetch(fgcompany);
     const company = await res.json();
     if (!Array.isArray(company)) return;
 
-    company.map((c, cid) => {
-      let payload = { company_id: c.company_id || 0 };
+    company.map((c, cid) => 
+      {
+      let payload = { company_id: c.company_id || 0 }; 
+      const rack_ca = document.getElementById(`rack_ca${c.company_id}`).value;
+      const rack_us = document.getElementById(`rack_us${c.company_id}`).value;
       payload["company_name"] = c.company_name;
       payload["pricing_date"] = pricingDate;
-      groups.map((g, gid) => {
-        const inputName = `group_${g.id}`;
-        const inputId = `c${c.company_id}g${g.id}`;
-        const rawVal = document.getElementById(inputId)?.value;
-        payload[inputName] = rawVal || 0.0;
-      });
+      payload["rack_ca"] = rack_ca;
+      payload["rack_us"] = rack_us;
       payload["idby"] = idby;
-      payload["dated"] = dated;
-      console.log(c.company_name + " : ", payload);
-
+      payload["dated"] = dated; 
       axios
-        .post(ta_saverowvalue, payload)
+        .post(fg_saverowvalue, payload)
         .then((res) => {
           console.log(res);
         })
@@ -82,12 +70,6 @@ const UpdateFgRack = ({ title, btnTitle }) => {
     setResetShow(true);
 
     try {
-      const res = await fetch(APINAME);
-      const groups = await res.json();
-      if (!Array.isArray(groups)) return;
-      setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
-      setGroupIds(groups.map((g) => g.id));
-      // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
         console.warn("pricingDate missing");
         return;
@@ -95,7 +77,7 @@ const UpdateFgRack = ({ title, btnTitle }) => {
 
       // 3️⃣ Fetch TA row values (FIXED URL)
       const rowRes = await fetch(
-        `${ta_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+        `${fg_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
       const rowData = await rowRes.json();
       if (!Array.isArray(rowData)) return;
@@ -210,31 +192,29 @@ const UpdateFgRack = ({ title, btnTitle }) => {
               <thead>
                 <tr>
                   <th width="300">Company Name</th>
-                  {dynamicColumns.map((col, idx) => (
-                    <th key={idx}>{col}</th>
-                  ))}
+                  <th>Rack_CA</th>
+                  <th>Rack_US</th>
                 </tr>
               </thead>
 
               <tbody>
-                {dynamicCompany.map((company) => {
-                  return (
-                    <tr key={company.company_id}>
-                      <td>{company.company_name}</td>
-                      {dynamicGroupIds.map((groupId) => {
-                        const groupKey = `group_${groupId}`;
-                        return (
-                          <td
-                            key={`${company.company_id}_${groupKey}`}
-                            dangerouslySetInnerHTML={{
-                              __html: company[groupKey],
-                            }}
-                          />
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
+                {dynamicCompany.map((company) => (
+                  <tr key={company.company_id}>
+                    <td>{company.company_name}</td>
+
+                    <td
+                      dangerouslySetInnerHTML={{
+                        __html: company.rack_ca ?? "",
+                      }}
+                    />
+
+                    <td
+                      dangerouslySetInnerHTML={{
+                        __html: company.rack_us ?? "",
+                      }}
+                    />
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

@@ -17,9 +17,9 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import {
-  ta_group_Tagroup as APINAME,
-  ta_group_TagroupInput,
-  ta_cent,tacompany
+  ul_group_ulgroup as APINAME,
+  ul_group_ulgroupInput,
+  ul_cent,ulcompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -59,7 +59,7 @@ const UlRackList = ({ title, btnTitle }) => {
       })
       .catch((err) => console.error(err));
 
-       axios.get(tacompany)
+       axios.get(ulcompany)
       .then((res) => {
         const data = res.data;
         console.log(data)
@@ -96,7 +96,7 @@ useEffect(() => {
         updateData[`group_${groupid}`] = value;
       });
 
-      axios.put(`${ta_cent}/${id}`, updateData)
+      axios.put(`${ul_cent}/${id}`, updateData)
         .then((response) => {
           toast.success("Data updated");
         })
@@ -147,10 +147,10 @@ useEffect(() => {
         params.append("company_id", company_id?company_id:"");
         params.append("from_date", from_date?from_date:"");
         params.append("upto_date", upto_date?upto_date:"");
-        fetch(`${ta_group_TagroupInput}?${params.toString()}`)
+        fetch(`${ul_group_ulgroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${ta_group_TagroupInput}?${params.toString()}`;
+            const url = `${ul_group_ulgroupInput}?${params.toString()}`;
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {

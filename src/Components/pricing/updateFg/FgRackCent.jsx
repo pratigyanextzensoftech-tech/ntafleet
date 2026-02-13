@@ -15,10 +15,10 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import {
-  ta_group_Tagroup as APINAME,
-  ta_group_TagroupInput,
-  ta_cent,tacompany
+import { 
+  fg_group_input,
+  ta_cent,
+  fgcompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -31,10 +31,11 @@ const FgRackCent = ({ title, btnTitle }) => {
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
-    const [company,setCompany]=useState();
+  const [company, setCompany] = useState();
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
+
   const {
     register,
     control,
@@ -43,8 +44,8 @@ const FgRackCent = ({ title, btnTitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm({
     defaultValues: {
-    company: null,
-  },
+      company: null,
+    },
   });
 
   useEffect(() => {
@@ -52,35 +53,25 @@ const FgRackCent = ({ title, btnTitle }) => {
       setValue("company", company[0]); // set first option
     }
   }, [company, setValue]);
+
   useEffect(() => {
-    fetch(APINAME)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setDynamicColumns(
-            data.map((item) => Number(item.ibp_adjustment).toFixed(4)),
-          );
-          setGroupIds(data.map((item) => item.id));
-        } else {
-          console.error("APINAME response is not an array:", data);
-        }
+ 
+    axios
+      .get(fgcompany)
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+        const options = [
+          { value: "", label: "All Companies" },
+          ...data.map((company) => ({
+            value: company.company_id,
+            label: company.company_name,
+          })),
+        ];
+
+        setCompany(options);
       })
       .catch((err) => console.error(err));
-       axios.get(tacompany)
-            .then((res) => {
-              const data = res.data;
-              console.log(data)
-                const options = [
-        { value: '', label: 'All Companies' },
-        ...data.map(company => ({
-          value: company.company_id,
-          label: company.company_name,
-        }))
-      ];
-      
-           setCompany(options)
-            })
-            .catch((err) => console.error(err));
   }, []);
 
   // Step 2: Initialize DataTable
@@ -88,11 +79,6 @@ const FgRackCent = ({ title, btnTitle }) => {
     $(document).on("click", ".update-btn", function () {
       const id = $(this).data("id");
       const updateData = {};
-      dynamicGroupIds.forEach((groupid) => {
-        const inputId = `#c${id}g${groupid}`;
-        const value = $(inputId).val();
-        updateData[`group_${groupid}`] = value;
-      });
 
       axios
         .put(`${ta_cent}/${id}`, updateData)
@@ -105,23 +91,26 @@ const FgRackCent = ({ title, btnTitle }) => {
     });
   }, [dynamicColumns, companyId]);
 
- useEffect(() => {
-   if (dynamicColumns.length > 0) {
-     GetDataTAble();
-   }
- }, [dynamicColumns]);
+  useEffect(() => {
+ 
+      GetDataTAble();
+   
+  }, []);
 
-  function GetDataTAble(company_id,pricingDate,rackUs,rackCa) {
+  function GetDataTAble(company_id, pricingDate, rackUs, rackCa) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
-      ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
+      { data: "rack_ca", title: "Rack_CA" },
+      { data: "rack_us", title: "Rack_US" },
+      { data: "added_by", title: "Added_By" },
+      { data: "added_on", title: "Added_On" }, 
       { data: "Action", title: "Action", orderable: false },
     ];
 
     $("#example").DataTable({
       serverSide: true,
-      destroy:true,
+      destroy: true,
       processing: true,
       responsive: true,
       paging: true,
@@ -147,25 +136,26 @@ const FgRackCent = ({ title, btnTitle }) => {
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", company_id?company_id:"");
+        params.append("company_id", company_id ? company_id : "");
         params.append("pricing_date", pricingDate);
         params.append("rack_us", rackUs);
         params.append("rack_ca", rackCa);
-        fetch(`${ta_group_TagroupInput}?${params.toString()}`)
+        fetch(`${fg_group_input}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${ta_group_TagroupInput}?${params.toString()}`;
+            const url = `${fg_group_input}?${params.toString()}`;
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {
                 company_name: row[0],
                 pricing_date: row[1],
-                Action: row[2],
+                rack_ca: row[2],
+                rack_us: row[3],
+                added_by: row[4],
+                added_on: row[5], 
+                Action: row[7],
               };
-              dynamicColumns.forEach((col, idx) => {
-                obj[`col_${idx}`] = row[idx + 3] || "";
-              });
-
+                
               return obj;
             });
             console.log(tableData);
@@ -198,23 +188,22 @@ const FgRackCent = ({ title, btnTitle }) => {
   };
   const onSubmit = (data) => {
     setLoading(true);
-      const company_id = data.company?.value ?? "";
-      const pricingDate = data.pricingDate ? formatDate(data.pricingDate): "";
-      const rackUs = data.rackUs? data.rackUs: "";
-      const rackCa = data.rackCa? data.rackCa: "";
-       console.log("Submitting:", {
-          company_id,
-          pricingDate,
-          rackUs,
-          rackCa,
-        });
-      
-        if ($.fn.DataTable.isDataTable("#example")) {
-          $("#example").DataTable().destroy();
-        }
-      
-        GetDataTAble(company_id, pricingDate, rackUs, rackCa);
-        setLoading(false)
+    const company_id = data.company?.value ?? "";
+    const pricingDate = data.pricingDate ? formatDate(data.pricingDate) : "";
+    const rackUs = data.rackUs ? data.rackUs : "";
+    const rackCa = data.rackCa ? data.rackCa : "";
+    console.log("Submitting:", {
+      company_id,
+      pricingDate,
+      rackUs,
+      rackCa,
+    });
+
+    if ($.fn.DataTable.isDataTable("#example")) {
+      $("#example").DataTable().destroy();
+    } 
+    GetDataTAble(company_id, pricingDate, rackUs, rackCa);
+    setLoading(false);
   };
   return (
     <Fragment>
@@ -258,11 +247,11 @@ const FgRackCent = ({ title, btnTitle }) => {
                       </FormGroup>
                     </Col>
 
-                   <Col xl="3" md="6" sm="12">
+                    <Col xl="3" md="6" sm="12">
                       <Row>
                         <FormGroup className="m-form__group">
                           <InputGroup>
-                            <Col  sm="4" xs="12">
+                            <Col sm="4" xs="12">
                               <InputGroupText>Pricing Date</InputGroupText>
                             </Col>
                             <Col sm="8" xs="12">
@@ -276,12 +265,11 @@ const FgRackCent = ({ title, btnTitle }) => {
                                     selected={field.value}
                                     onChange={(date) => field.onChange(date)}
                                     dateFormat="yyyy-MM-dd"
-                                     portalId="root"
+                                    portalId="root"
                                     popperPlacement="bottom-start"
                                   />
                                 )}
                               />
-                           
                             </Col>
                           </InputGroup>
                         </FormGroup>
@@ -298,10 +286,9 @@ const FgRackCent = ({ title, btnTitle }) => {
                             {...register("rackUs")}
                           />
                         </InputGroup>
-                       
                       </FormGroup>
                     </Col>
-                      <Col xl="3" md="6" sm="12">
+                    <Col xl="3" md="6" sm="12">
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText> Rack CA </InputGroupText>
@@ -311,10 +298,9 @@ const FgRackCent = ({ title, btnTitle }) => {
                             type="text"
                             {...register("rackCa")}
                           />
-                        </InputGroup>       
+                        </InputGroup>
                       </FormGroup>
                     </Col>
-
 
                     <Col className="ms-auto" xl="3" md="12" sm="12">
                       <div className="text-end">
@@ -359,9 +345,10 @@ const FgRackCent = ({ title, btnTitle }) => {
                       <tr>
                         <th>Company Name</th>
                         <th>Pricing Date</th>
-                        {dynamicColumns.map((col, idx) => (
-                          <th key={idx}>{col}</th>
-                        ))}
+                        <th>Rack_CA </th>
+                        <th>Rack_US </th>
+                        <th>Added_By </th>
+                        <th>Added_On </th> 
                         <th>Action</th>
                       </tr>
                     </thead>
