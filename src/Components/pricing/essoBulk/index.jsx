@@ -151,10 +151,6 @@ const Index = () => {
             </Card>
           </Col>
         </Row>
-      
- 
-      
-       
       </Container>
     </Fragment>
   );

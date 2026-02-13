@@ -1,12 +1,8 @@
-import UpdateFgRack from '../../Components/pricing/updateFg/UpdateFgRack';
-
-import UploadEssoGroupRackForm from '../../Components/pricing/essoGroup/UploadEssoGroupRackForm';
-import EssoGroupForm from '../../Components/pricing/essoGroup/EssoGroupForm';
-import CreateBulkForm from '../../Components/pricing/downloadBulk/CreateBulkForm';
-import EssoPricing from '../../Components/pricing/pricing_list/EssoPricing';
-import TaPetro from '../../Components/pricing/pricing_list/TaPetro';
-import LovePricing from '../../Components/pricing/pricing_list/LovePricing';
-import MultiDateForm from '../../Components/pricing/downloadBulk/MultiDateForm';
+import CreateBulkForm from './CreateBulkForm';
+import EssoPricing from './EssoPricing';
+import TaPetro from './TaPetro';
+import LovePricing from './LovePricing';
+import MultiDateForm from './MultiDateForm';
 export const DownloadBulkTab = [
   {
     id: '1',

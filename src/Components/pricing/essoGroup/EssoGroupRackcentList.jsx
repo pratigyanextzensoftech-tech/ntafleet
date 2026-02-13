@@ -14,13 +14,11 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { DiscountType } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
-import { useCompany } from "../../../Hooks/Dropdowns";
 import {
   ta_group_Tagroup as APINAME,
   ta_group_TagroupInput,
-  ta_cent,
+  ta_cent,tacompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -34,13 +32,19 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
-  const { data: company } = useCompany();
+     const [company,setCompany]=useState();
+  
   const {
     register,
     control,
+     setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+    company: null,
+  },
+  });
   useEffect(() => {
     fetch(APINAME)
       .then((res) => res.json())
@@ -54,8 +58,33 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         }
       })
       .catch((err) => console.error(err));
+       axios.get(tacompany)
+            .then((res) => {
+              const data = res.data;
+              console.log(data)
+                const options = [
+        { value: '', label: 'All Companies' },
+        ...data.map(company => ({
+          value: company.company_id,
+          label: company.company_name,
+        }))
+      ];
+      
+           setCompany(options)
+            })
+            .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    if (company && company.length > 0) {
+      setValue("company", company[0]); // set first option
+    }
+  }, [company, setValue]);
+  useEffect(() => {
+    if (dynamicColumns.length > 0) {
+      GetDataTAble();
+    }
+  }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
     $(document).on("click", ".update-btn", function () {
@@ -77,12 +106,8 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
     });
   }, [dynamicColumns, companyId]);
 
-  $(document).ready(function () {
-    $("#example").DataTable().clear().destroy();
-    GetDataTAble();
-  });
-
-  function GetDataTAble() {
+ 
+  function GetDataTAble(company_id,from_date,upto_date) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -95,6 +120,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
       processing: true,
       responsive: true,
       paging: true,
+      destroy:true,
       searching: true,
       ordering: true,
       pageLength: 25,
@@ -117,9 +143,9 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", companyId);
-        params.append("from_date", startDate);
-        params.append("upto_date", endDate);
+        params.append("company_id", company_id?company_id:"");
+        params.append("from_date", from_date?from_date:"");
+        params.append("upto_date", upto_date?upto_date:"");
         fetch(`${ta_group_TagroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
@@ -164,30 +190,25 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
     return `${year}-${month}-${day}`;
   };
   const onSubmit = (data) => {
-    setLoading(true);
-    const basePayload = {
-      company_id: data.company.value,
-      discount_type: data.discountType.value,
-      from: data?.from ? formatDate(data.from) : "",
-      to: data?.to ? formatDate(data.to) : "",
-    };
-
-    axios
-      .post(APINAME, basePayload, {
-        params: basePayload,
-      })
-      .then((res) => {
-        res.data.success
-          ? toast.success(res.data.message)
-          : toast.error(res.data.message);
-        setLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err);
-        setLoading(false);
-      });
-
-    console.log("payload", basePayload); // ✅ This will print your inputs
+   const company_id = data.company?.value ?? "";
+     const from_date = data.from
+       ? formatDate(data.to)
+       : "";
+     const upto_date = data.to
+       ? formatDate(data.to)
+       : "";
+   
+     console.log("Submitting:", {
+       company_id,
+       from_date,
+       upto_date,
+     });
+   
+     if ($.fn.DataTable.isDataTable("#example")) {
+       $("#example").DataTable().destroy();
+     }
+   
+     GetDataTAble(company_id, from_date, upto_date);
   };
   return (
     <Fragment>
@@ -216,6 +237,14 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
                             options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select a company"
+                            menuPortalTarget={document.body}
+                                menuPosition="fixed"
+                                styles={{
+                                  menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 99999,
+                                  }),
+                                }}
                           />
                         )}
                       />

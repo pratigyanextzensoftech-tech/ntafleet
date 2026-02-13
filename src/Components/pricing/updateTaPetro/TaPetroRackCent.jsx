@@ -14,13 +14,12 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { DiscountType } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import { useCompany } from "../../../Hooks/Dropdowns";
 import {
   ta_group_Tagroup as APINAME,
   ta_group_TagroupInput,
-  ta_cent,
+  ta_cent,tacompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -33,16 +32,27 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [company,setCompany]=useState();
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
-  const { data: company } = useCompany();
+ 
   const {
     register,
     control,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+    company: null,
+  },
+  });
+   useEffect(() => {
+      if (company && company.length > 0) {
+        setValue("company", company[0]); // set first option
+      }
+    }, [company, setValue]);
   useEffect(() => {
     fetch(APINAME)
       .then((res) => res.json())
@@ -56,7 +66,21 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
           console.error("APINAME response is not an array:", data);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err));  axios.get(tacompany)
+            .then((res) => {
+              const data = res.data;
+              console.log(data)
+                const options = [
+        { value: '', label: 'All Companies' },
+        ...data.map(company => ({
+          value: company.company_id,
+          label: company.company_name,
+        }))
+      ];
+      
+           setCompany(options)
+            })
+            .catch((err) => console.error(err));
   }, []);
 
   // Step 2: Initialize DataTable
@@ -80,12 +104,13 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     });
   }, [dynamicColumns, companyId]);
 
-  $(document).ready(function () {
-    $("#example").DataTable().clear().destroy();
-    GetDataTAble();
-  });
+ useEffect(() => {
+   if (dynamicColumns.length > 0) {
+     GetDataTAble();
+   }
+ }, [dynamicColumns]);
 
-  function GetDataTAble() {
+  function GetDataTAble(company_id,start_date,end_date) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -97,6 +122,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       serverSide: true,
       processing: true,
       responsive: true,
+      destroy:true,
       paging: true,
       searching: true,
       ordering: true,
@@ -121,9 +147,9 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", companyId);
-        params.append("from_date", startDate);
-        params.append("upto_date", endDate);
+        params.append("company_id", company_id?company_id:"");
+        params.append("start_date", start_date?start_date:"");
+        params.append("end_date", end_date?end_date:"");
         fetch(`${ta_group_TagroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
@@ -173,30 +199,21 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
   };
   const onSubmit = (data) => {
     setLoading(true);
-    const basePayload = {
-      company_id: data.company.value,
-      discount_type: data.discountType.value,
-      from: data?.from ? formatDate(data.from) : "",
-      to: data?.to ? formatDate(data.to) : "",
-    };
-
-    axios
-      .post(APINAME, basePayload, {
-        params: basePayload,
-      })
-      .then((res) => {
-        
-        res.data.success
-          ? toast.success(res.data.message)
-          : toast.error(res.data.message);
-        setLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err);
-        setLoading(false);
-      });
-
-    console.log("payload", basePayload); // ✅ This will print your inputs
+          const company_id = data.company?.value ?? "";
+          const start_date = data.from ? formatDate(data.from): "";
+          const end_date = data.to? formatDate(data.to): "";
+         
+           console.log("Submitting:", {
+              company_id,
+              start_date,
+              end_date,
+            });
+          
+            if ($.fn.DataTable.isDataTable("#example")) {
+              $("#example").DataTable().destroy();
+            }    
+            GetDataTAble(company_id, start_date, end_date);
+            setLoading(false);
   };
   return (
     <Fragment>
@@ -225,6 +242,14 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                             options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select a company"
+                              menuPortalTarget={document.body}
+                                menuPosition="fixed"
+                                styles={{
+                                  menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 99999,
+                                  }),
+                                }}
                           />
                         )}
                       />

@@ -8,12 +8,12 @@ export const BulkPricingTab = [
   {
     id: '1',
     label:"Create Bulk Pricing PDF",
-    component: <PricingCommon tableTitle="Pricing PDF List " listapi={pricing_pdf}  table={true} validation={true} invoiceType="" tax="" apiName={create_pricing_pdf} supplier={true} testingEmail={true} pricingDate={true} btnTitle="Create pricing Pdf" title="Create Bulk Pricing PDF "/>,
+    component: <PricingCommon taxOption={false}  tableTitle="Pricing PDF List " listapi={pricing_pdf}  table={true} validation={true} invoiceType="" tax="" apiName={create_pricing_pdf} supplier={true} testingEmail={true} pricingDate={true} btnTitle="Create pricing Pdf" title="Create Bulk Pricing PDF "/>,
   },
   {
     id: '2',
     label:"Mail Bulk Pricing PDF",
-    component: <MailPricingCommon tableTitle="Pricing PDF List " supplier="FJ" invoiceType={null} listapi={pricing_pdf} pricingDate={true} btnTitle="Search Pricing Pdf"   title="Mail Bulk Pricing PDF"/>,
+    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List " supplier="FJ" invoiceType={null} listapi={pricing_pdf} pricingDate={true} btnTitle="Search Pricing Pdf"   title="Mail Bulk Pricing PDF"/>,
   },
 
 ];

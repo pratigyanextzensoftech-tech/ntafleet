@@ -8,6 +8,7 @@ import useSelectableColumns from "../../../Hooks/useSelectableColumns";
 import {PricingTab} from '../../../Data/tab/PricingTab'
 import Swal from "sweetalert2";
 import axios from "axios";
+import PricingListCommon from "./PricingListCommon";
 import {
   ta_pricing_actual as TA_ACTUAL_API,
   ta_pricing as TA_CAPPED_API,
@@ -241,8 +242,9 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
     cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
+       for(let i=0;i<ids.length;i++){
       axios
-        .delete(`${deleteApi}/${stringId}`)
+        .delete(`${deleteApi}/${ids[i]}`)
         .then(() => {
           Swal.fire("Deleted!", "Record deleted successfully.", "success");
           refetch(); // ✅ refresh correct tab
@@ -250,6 +252,7 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
         .catch(() => {
           Swal.fire("Error!", "Failed to delete record.", "error");
         });
+      }
     }
   });
 };
@@ -257,9 +260,10 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
 const tabs = [
   {
     id: "1",
-    label: "Flying J",
+    label: "Flying J ",
     data: flyingJ,
     map: columnSets.flyingJ,
+    title:"Flying J Pricing List",
     deleteApi: pricing, // ✅ DELETE API
   },
   {
@@ -272,6 +276,7 @@ const tabs = [
     ), 
     data: taCapped,
     map: columnSets.taCapped,
+    title:"TA-Petro Pricing List (Capped) List ",
     deleteApi: TA_CAPPED_API,
   },
   {
@@ -285,6 +290,7 @@ const tabs = [
    ,
     data: taActual,
     map: columnSets.taActual,
+    title:"TA-Petro Pricing List (Actual) List",
     deleteApi: TA_ACTUAL_API,
   },
   {
@@ -292,6 +298,7 @@ const tabs = [
     label: "Esso",
     data: esso,
     map: columnSets.esso,
+    title:"ESSO Pricing List ",
     deleteApi: esso_pricing,
   },
   {
@@ -303,6 +310,7 @@ const tabs = [
     ),
     data: loveCapped,
     map: columnSets.loveCapped,
+    title:"LOVES Pricing List (Capped) List ",
     deleteApi: LOVE_CAPPED_API,
   },
   {
@@ -315,6 +323,7 @@ const tabs = [
     ), 
     data: loveActual,
     map: columnSets.loveActual,
+    title:"LOVES Pricing List (Actual) List ",
     deleteApi: LOVE_ACTUAL_API,
   },
   {
@@ -322,6 +331,7 @@ const tabs = [
     label: "Ultramar",
     data: ultramar,
     map: columnSets.ultramar,
+    title:"ULTRAMAR Pricing List ",
     deleteApi: ULTRAMAR_API,
   },
    {
@@ -329,18 +339,33 @@ const tabs = [
     label: "Irving",
     data: irving,
     map: columnSets.irving,
+    title:"Irving Pricing List",
     deleteApi: IRVING_API,
   },
 
 ];
+const handleSearch = async (payload, apiName) => {
+  try {
+    await axios.post(apiName, payload);
 
+    // 🔥 After success refresh matching table tab
+    const matchedTab = tabs.find(tab => tab.apiName === apiName);
+
+    if (matchedTab?.data?.fetchData) {
+      matchedTab.data.fetchData();
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+};
   // ✅ Define tab content dynamically
   const pricingListTableTab = tabs.map((tab) => ({
     id: tab.id,
     label: tab.label,
     component: (
       <DataTableComponent
-        title={tab.label}
+        title={tab.title}
         tableColumns={createColumns(tab.map, tab.data.data, { withCheckbox: true ,
     withActions: false,          // ✅ show action column
     showDownload: false,         // ✅ conditionally show download
@@ -365,6 +390,76 @@ const tabs = [
       />
     ),
   }));
+const PricingTab = [
+    {
+      id: '1',
+      label:"Flying J"  , 
+      component: <PricingListCommon apiName={pricing}  btnTitle="Search Data" />,
+    },
+    {
+      id: '2',
+      label:
+         (
+        <>
+         Ta-Petro  - <strong> [Capped]</strong>
+        </>
+      ), 
+       component: <PricingListCommon  supplier_ids="3" apiName={TA_CAPPED_API}  btnTitle="Search Data"/>,
+    },
+    {
+      id: '3',
+      label: 
+       (
+        <>
+         Ta-Petro  - <strong> [Actual]</strong>
+        </>
+      )
+     ,
+      component: <PricingListCommon  supplier_ids="3" apiName={TA_ACTUAL_API}  btnTitle="Search Data"/>,
+    },
+   {
+      id: '4',
+      label:" Esso ", 
+      component:  <PricingListCommon  supplier_ids="6" apiName={esso_pricing} btnTitle="Search Data"/>,
+    },
+     {
+      id: '5',
+      label:  (
+        <>
+        Love  - <strong> [Capped]</strong>
+        </>
+      )
+     ,
+      component: <PricingListCommon  supplier_ids="7"   apiName={LOVE_CAPPED_API}  btnTitle="Search Data" /> ,
+    },
+     {
+      id: '6',
+      label: 
+       (
+        <>
+         Love  - <strong> [Actual]</strong>
+        </>
+      ), 
+      component:  <PricingListCommon supplier_ids="7"  apiName={LOVE_ACTUAL_API}  btnTitle="Search Data"/>,
+    },
+     {
+      id: '7',
+      label: "Ultramar",
+      
+      component: <PricingListCommon  supplier_ids="10" apiName={ULTRAMAR_API} btnTitle="Search Data"/>,
+    },
+     {
+      id: '8',
+      label:
+         (
+        <>
+         Irving 
+        </>
+      ), 
+       component: <PricingListCommon  supplier_ids="5" apiName={IRVING_API}  btnTitle="Search Data"/>,
+    },
+    
+  ];
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Pricing Management" />
@@ -374,7 +469,7 @@ const tabs = [
             <Card>
               <HeaderCard title="Create Pricing PDF" />
               <CardBody>
-              <BasicTabCard tabContent={PricingTab} />
+              <BasicTabCard  tabContent={PricingTab} />
               </CardBody>
             </Card>
           </Col>
@@ -383,7 +478,7 @@ const tabs = [
           <Col sm="12">
             <Card>
               <CardBody>                              
-                <BasicTabCard tabContent={pricingListTableTab} />
+                <BasicTabCard  onSearch={handleSearch} tabContent={pricingListTableTab} />
               </CardBody>
             </Card>
           </Col>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { useNavigate, useLocation } from "react-router";
 
-const BasicTabCard = ({ tabContent, title }) => {
+const BasicTabCard = ({ tabContent, title,onSearch }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,9 +37,9 @@ const BasicTabCard = ({ tabContent, title }) => {
         {tabContent.map((tab) => (
           <TabPane className="mt-2" key={tab.id} tabId={String(tab.id)}>
             {BasicTab === String(tab.id) &&
-              (typeof tab.component === "function"
-                ? tab.component()
-                : tab.component)}
+             typeof tab.component === "function"
+  ? tab.component({ onSearch })
+  : React.cloneElement(tab.component, { onSearch })}
           </TabPane>
         ))}
       </TabContent>

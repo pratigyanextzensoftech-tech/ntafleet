@@ -13,18 +13,23 @@ import Select from "react-select";
 import { pricigSupplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-
+import { formatDate } from "../../../Hooks/Dropdowns";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 const CreateBulkForm = ({ title, btnTitle }) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  } = useForm({ defaultValues: {
+    supplier: null
+  }});
+  const {data:supplier}=useSupplier("3,6,7")
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+   const pricing_Date=data.pricingDate?formatDate(data.pricingDate):"";
+   const supplier=data.supplier?data.supplier.value:"";
+console.log(pricing_Date,supplier)
   };
   return (
     <Fragment>
@@ -79,7 +84,7 @@ const CreateBulkForm = ({ title, btnTitle }) => {
                       <Select
                         {...field}
                         className="form-control p-0 border-0"
-                        options={pricigSupplier}
+                        options={supplier}
                         placeholder="Select supplier"
                         onChange={(selectedOption) =>
                         field.onChange(selectedOption)
@@ -97,7 +102,6 @@ const CreateBulkForm = ({ title, btnTitle }) => {
                     )}
                   />
                 </InputGroup>
-
                 {errors.supplier && (
                   <span className="text-danger">
                     {errors.supplier?.message}

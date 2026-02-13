@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import {
   Col,
   Row,
@@ -11,22 +11,29 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+import { InVoiceSupplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-
-const TaPetro = ({ title, btnTitle }) => {
+import { formatDate } from "../../../Hooks/Dropdowns";
+import { useSupplier } from "../../../Hooks/Dropdowns";
+const EssoPricing = ({ title, btnTitle }) => {
   const {
     register,
+    setValue,
     control,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-
+  const {data:supplier}=useSupplier("6,")
+ useEffect(() => {
+      setValue("supplier", supplier[0]); 
+    },
+   [supplier, setValue]);
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
-  };
+    const pricing_Date=data.pricingDate?formatDate(data.pricingDate):"";
+    const supplier=data.supplier?data.supplier.value:"";
+ console.log(pricing_Date,supplier)
+   };
   return (
     <Fragment>
       <Row>
@@ -50,7 +57,6 @@ const TaPetro = ({ title, btnTitle }) => {
                           <Controller
                             name="pricingDate"
                             control={control}
-                            rules={{ required: " Required" }}
                             render={({ field }) => (
                               <DatePicker
                                 className={`form-control `}
@@ -64,11 +70,7 @@ const TaPetro = ({ title, btnTitle }) => {
                         </Col>
                       </InputGroup>
 
-                      {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
+                     
                     </FormGroup>
                   </Row>
                 </Col>
@@ -80,17 +82,17 @@ const TaPetro = ({ title, btnTitle }) => {
                         name="supplier"
                         control={control}
                         rules={{ required: "Supplier is required" }}
-                        defaultValue={supplier[5]}
                         render={({ field }) => (
                           <Select
                             {...field}
                             className="form-control p-0 border-0"
                             placeholder="Select supplier"
+                            options={supplier}
                             onChange={(selectedOption) =>
                               field.onChange(selectedOption)
                             }
                             value={field.value}
-                                menuPortalTarget={document.body}
+                              menuPortalTarget={document.body}
                           menuPosition="fixed"
                                  styles={{
                 menuPortal: base => ({
@@ -132,4 +134,4 @@ const TaPetro = ({ title, btnTitle }) => {
   );
 };
 
-export default TaPetro;
+export default EssoPricing;

@@ -11,11 +11,11 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import { formatDate } from "../../../Hooks/Dropdowns";
+import { formatDate } from "../../../Hooks/Dropdowns"; 
 import Loader from "../../../Layout/Loader";
-import { toast } from "react-toastify";
-import { fgcompany, fg_get_rowvalue, fg_saverowvalue } from "../../../api";
-const UpdateFgRack = ({ title, btnTitle }) => {
+import { toast } from 'react-toastify';
+import {tacompany, ta_get_rowvalue, ta_group_Tagroup as APINAME,ta_saverowvalue } from "../../../api"; 
+const UpdateUlOwner = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
@@ -31,45 +31,57 @@ const UpdateFgRack = ({ title, btnTitle }) => {
 
   /* ================= LOAD COMPANIES (ONCE) ================= */
 
-  async function SaveData() {
-    setloading(true);
-    const pricingDate = document.getElementById("pricingDate").value;
-    const idby = localStorage.getItem("userId");
-    const dated = formatDate(Date.now());
-    const res = await fetch(fgcompany);
-    const company = await res.json();
-    if (!Array.isArray(company)) return;
+  async function SaveData()
+  { 
+        setloading(true);
+        const pricingDate = document.getElementById("pricingDate").value;
+        const idby = localStorage.getItem("userId");
+        const dated = formatDate(Date.now());
 
-    company.map((c, cid) => 
-      {
-      let payload = { company_id: c.company_id || 0 }; 
-      const rack_ca = document.getElementById(`rack_ca${c.company_id}`).value;
-      const rack_us = document.getElementById(`rack_us${c.company_id}`).value;
-      payload["company_name"] = c.company_name;
-      payload["pricing_date"] = pricingDate;
-      payload["rack_ca"] = rack_ca;
-      payload["rack_us"] = rack_us;
-      payload["idby"] = idby;
-      payload["dated"] = dated; 
-      axios
-        .post(fg_saverowvalue, payload)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
-    toast.success("Rack Cent Updated Succesfully");
-    setloading(false);
+        const gres = await fetch(APINAME);
+        const groups = await gres.json();
+        if (!Array.isArray(groups)) return; 
+        
+       const res = await fetch(tacompany);
+        const company = await res.json();
+        if (!Array.isArray(company)) return; 
+        
+        company.map((c, cid) => 
+        { 
+
+            let payload = {company_id: c.company_id||0};
+            payload['company_name'] = c.company_name;
+            payload['pricing_date'] = pricingDate;
+            groups.map((g, gid) => 
+            {
+              const inputName = `group_${g.id}`;
+              const inputId = `c${c.company_id}g${g.id}`;
+              const rawVal = document.getElementById(inputId)?.value;
+              payload[inputName] =  rawVal|| 0.0000;  
+            }) 
+            payload['idby'] = idby;
+            payload['dated'] = dated; 
+            console.log(c.company_name+" : ",payload)
+            
+            axios.post(ta_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+        }) 
+       toast.success("Rack Cent Updated Succesfully");  
+       setloading(false);
   }
 
   /* ================= FORM SUBMIT ================= */
   const onSubmit = async (formData) => {
-    setloading(true);
+      setloading(true);
     setResetShow(true);
 
     try {
+      
+      const res = await fetch(APINAME);
+      const groups = await res.json();
+      if (!Array.isArray(groups)) return;
+      setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
+      setGroupIds(groups.map((g) => g.id));
+      // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
         console.warn("pricingDate missing");
         return;
@@ -77,7 +89,7 @@ const UpdateFgRack = ({ title, btnTitle }) => {
 
       // 3️⃣ Fetch TA row values (FIXED URL)
       const rowRes = await fetch(
-        `${fg_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+        `${ta_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
       const rowData = await rowRes.json();
       if (!Array.isArray(rowData)) return;
@@ -86,18 +98,18 @@ const UpdateFgRack = ({ title, btnTitle }) => {
     } catch (err) {
       console.error("Submit error:", err);
     }
-  };
+  }; 
   const handleReset = () => {
     reset();
     setResetShow(false);
-    setDynamicColumns([]);
+    setDynamicColumns([]); 
   };
 
   /* ================= RENDER ================= */
   return (
     <Fragment>
       <Row>
-        <Col>
+         <Col>
           <fieldset>
             <legend>{title}</legend>
             <Form
@@ -115,12 +127,12 @@ const UpdateFgRack = ({ title, btnTitle }) => {
                         </Col>
                         <Col sm="8" xs="12">
                           <Controller
-                            name="pricingDate"
+                            name="pricingDate" 
                             control={control}
                             rules={{ required: "Please Fill out this field" }}
                             render={({ field }) => (
                               <DatePicker
-                                id="pricingDate"
+                                  id="pricingDate"
                                 className={`form-control `}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
@@ -133,6 +145,8 @@ const UpdateFgRack = ({ title, btnTitle }) => {
                               {errors.pricingDate.message}
                             </span>
                           )}
+
+                          
                         </Col>
                       </InputGroup>
                     </FormGroup>
@@ -140,42 +154,30 @@ const UpdateFgRack = ({ title, btnTitle }) => {
                 </Col>
 
                 <Col className="ms-auto" lg="4" sm="12">
-                  {!resetShow ? (
+                  
+                  {!resetShow ?
                     <Btn
                       attrBtn={{
                         color: "primary",
-                        type: "submit",
+                        type: "submit", 
                       }}
-                    >
-                      {btnTitle}
-                    </Btn>
-                  ) : (
-                    ""
-                  )}
-                  {resetShow && (
-                    <button
-                      className="btn btn-secondary mx-2"
-                      onClick={handleReset}
-                    >
-                      Reset
-                    </button>
-                  )}
-                </Col>
-                <Col className="ms-auto" lg="4" sm="12">
-                  {resetShow ? (
-                    <div className="text-end">
+                    >{btnTitle} 
+                    </Btn>:''}
+                    {resetShow && (
                       <button
-                        className="btn btn-primary  mx-2"
-                        color="primary"
-                        type="button"
-                        onClick={() => SaveData()}
+                        className="btn btn-secondary mx-2"
+                        onClick={handleReset}
                       >
-                        Save Rack Pricing
+                        Reset
                       </button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                    )} 
+                </Col>
+                 <Col className="ms-auto" lg="4" sm="12"> 
+          {resetShow ?
+                   <div className="text-end">
+                    <button className="btn btn-primary  mx-2" color="primary" type="button" onClick={()=>SaveData()}>Save Rack Pricing</button>
+                  </div>
+                  :''}
                 </Col>
               </Row>
             </Form>
@@ -186,48 +188,43 @@ const UpdateFgRack = ({ title, btnTitle }) => {
       {/* ================= TABLE ================= */}
       {resetShow && (
         <>
-          <Loader loading={loading} />
+         <Loader loading={loading}/>
           <div className="table-responsive mt-3">
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th width="300">Company Name</th>
-                  <th>Rack_CA</th>
-                  <th>Rack_US</th>
+                  {dynamicColumns.map((col, idx) => (
+                    <th key={idx}>{col}</th>
+                  ))}
                 </tr>
               </thead>
 
               <tbody>
-                {dynamicCompany.map((company) => (
-                  <tr key={company.company_id}>
-                    <td>{company.company_name}</td>
-
-                    <td
-                      dangerouslySetInnerHTML={{
-                        __html: company.rack_ca ?? "",
-                      }}
-                    />
-
-                    <td
-                      dangerouslySetInnerHTML={{
-                        __html: company.rack_us ?? "",
-                      }}
-                    />
-                  </tr>
-                ))}
+                {dynamicCompany.map((company) => { 
+                  return (
+                    <tr key={company.company_id}>
+                      <td>{company.company_name}</td> 
+                      {dynamicGroupIds.map((groupId) => {
+                        const groupKey = `group_${groupId}`;
+                        return (
+                          <td
+                            key={`${company.company_id}_${groupKey}`}
+                            dangerouslySetInnerHTML={{
+                              __html: company[groupKey],
+                            }}
+                          />
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
           <div className="text-end">
-            <button
-              className="btn btn-primary  mx-2"
-              color="primary"
-              type="button"
-              onClick={() => SaveData()}
-            >
-              Save Rack Pricing
-            </button>
+            <button className="btn btn-primary  mx-2" color="primary" type="button" onClick={()=>SaveData()}>Save Rack Pricing</button>
           </div>
         </>
       )}
@@ -235,4 +232,4 @@ const UpdateFgRack = ({ title, btnTitle }) => {
   );
 };
 
-export default UpdateFgRack;
+export default UpdateUlOwner;

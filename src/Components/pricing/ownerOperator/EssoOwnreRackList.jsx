@@ -15,29 +15,30 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import {
-  ul_group_ulgroup as APINAME,
-  ul_group_ulgroupInput,
-  ul_cent,ulcompany,
+  ta_group_Tagroup as APINAME,
+  ta_group_TagroupInput,
+  ta_cent,tacompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
-const UlRackList = ({ title, btnTitle }) => {
+import InputText from "../../Forms/FormControl/formInput/InputText";
+import HeaderCard from "../../Common/Component/HeaderCard";
+const EssoOwnerRackList = ({ title, btnTitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
-   const [company,setCompany]=useState();
   const [loading, setLoading] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
+     const [company,setCompany]=useState();
   
   const {
     register,
     control,
-    setValue,
+     setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm({
@@ -58,33 +59,33 @@ const UlRackList = ({ title, btnTitle }) => {
         }
       })
       .catch((err) => console.error(err));
-
-       axios.get(ulcompany)
-      .then((res) => {
-        const data = res.data;
-        console.log(data)
-          const options = [
-  { value: '', label: 'All Companies' },
-  ...data.map(company => ({
-    value: company.company_id,
-    label: company.company_name,
-  }))
-];
-
-     setCompany(options)
-      })
-      .catch((err) => console.error(err));
+       axios.get(tacompany)
+            .then((res) => {
+              const data = res.data;
+              console.log(data)
+                const options = [
+        { value: '', label: 'All Companies' },
+        ...data.map(company => ({
+          value: company.company_id,
+          label: company.company_name,
+        }))
+      ];
+      
+           setCompany(options)
+            })
+            .catch((err) => console.error(err));
   }, []);
-useEffect(() => {
-  if (company && company.length > 0) {
-    setValue("company", company[0]); // set first option
-  }
-}, [company, setValue]);
-useEffect(() => {
-  if (dynamicColumns.length > 0) {
-    GetDataTAble();
-  }
-}, [dynamicColumns]);
+
+  useEffect(() => {
+    if (company && company.length > 0) {
+      setValue("company", company[0]); // set first option
+    }
+  }, [company, setValue]);
+  useEffect(() => {
+    if (dynamicColumns.length > 0) {
+      GetDataTAble();
+    }
+  }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
     $(document).on("click", ".update-btn", function () {
@@ -96,7 +97,7 @@ useEffect(() => {
         updateData[`group_${groupid}`] = value;
       });
 
-      axios.put(`${ul_cent}/${id}`, updateData)
+      axios.put(`${ta_cent}/${id}`, updateData)
         .then((response) => {
           toast.success("Data updated");
         })
@@ -106,9 +107,8 @@ useEffect(() => {
     });
   }, [dynamicColumns, companyId]);
 
-
-
-  function GetDataTAble(company_id,from_date,upto_date) {
+ 
+  function GetDataTAble(company_id,from_date,upto_date,rack_ca,rack_qc,rack_us) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -120,8 +120,8 @@ useEffect(() => {
       serverSide: true,
       processing: true,
       responsive: true,
-      destroy:true,
       paging: true,
+      destroy:true,
       searching: true,
       ordering: true,
       pageLength: 25,
@@ -145,12 +145,15 @@ useEffect(() => {
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id?company_id:"");
+        params.append("rack_ca", rack_ca?rack_ca:"");
+        params.append("rack_qc", rack_qc?rack_qc:"");
+        params.append("rack_us", rack_us?rack_us:"");
         params.append("from_date", from_date?from_date:"");
         params.append("upto_date", upto_date?upto_date:"");
-        fetch(`${ul_group_ulgroupInput}?${params.toString()}`)
+        fetch(`${ta_group_TagroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${ul_group_ulgroupInput}?${params.toString()}`;
+            const url = `${ta_group_TagroupInput}?${params.toString()}`;
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {
@@ -191,27 +194,24 @@ useEffect(() => {
     return `${year}-${month}-${day}`;
   };
   const onSubmit = (data) => {
-    
-    const company_id = data.company?.value ?? "";
-  const from_date = data.from
-    ? formatDate(data.to)
-    : "";
-  const upto_date = data.to
-    ? formatDate(data.to)
-    : "";
-
-  console.log("Submitting:", {
-    company_id,
-    from_date,
-    upto_date,
-  });
-
-  if ($.fn.DataTable.isDataTable("#example")) {
-    $("#example").DataTable().destroy();
-  }
-
-  GetDataTAble(company_id, from_date, upto_date);
-    
+   const company_id = data.company?.value ?? "";
+     const from_date = data.from? formatDate(data.to): "";
+     const upto_date = data.to? formatDate(data.to): "";
+     const rack_ca = data.rack_ca? data.rack_ca: "";
+     const rack_qc = data.rack_qc? data.rack_qc: "";
+     const rack_us = data.rack_us? data.rack_us: "";
+   
+     console.log("Submitting:", {
+       company_id,
+       from_date,
+       upto_date,
+     });
+   
+     if ($.fn.DataTable.isDataTable("#example")) {
+       $("#example").DataTable().destroy();
+     }
+   
+     GetDataTAble(company_id, from_date, upto_date,rack_ca,rack_qc,rack_us);
   };
   return (
     <Fragment>
@@ -227,7 +227,7 @@ useEffect(() => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <Row className="mt-3">
-                <Col xl="4" md="6" sm="12">
+                <Col xl="3" md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Company</InputGroupText>
@@ -240,7 +240,7 @@ useEffect(() => {
                             options={company}
                             className="form-control p-0 border-0"
                             placeholder="Select a company"
-                              menuPortalTarget={document.body}
+                            menuPortalTarget={document.body}
                                 menuPosition="fixed"
                                 styles={{
                                   menuPortal: (base) => ({
@@ -254,7 +254,37 @@ useEffect(() => {
                     </InputGroup>
                   </FormGroup>
                 </Col>
-             
+             <Col   xl="3"  md="6" sm="12">
+ <InputText
+            name="rack_ca"
+            label="Rack On"
+            type="text"
+            register={register}
+            errors={errors}
+            // rules={ { required: "Required" }}
+            
+          />
+</Col>
+  <Col   xl="3"  md="6" sm="12">
+ <InputText
+            name="rack_qc"
+            label="Rack-QC,PQ"
+            type="text"
+            register={register}
+            errors={errors}
+            
+          />
+</Col>
+  <Col   xl="3"  md="6" sm="12">
+ <InputText
+            name="rack_us"
+            label="Rack-Other"
+            type="text"
+            register={register}
+            errors={errors}
+            
+          />
+</Col>
                 <Col xl="3" md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
@@ -326,16 +356,14 @@ useEffect(() => {
       </CardBody>
       </Card>
       <Card>
-                      <CardBody>
-                               <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
+                <CardBody>
+                         <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
       <Container fluid>
         <Row>
           <Col sm="12">
-          <div className="text-end my-3">
+             <div className="text-end my-3">
                 <button className="btn btn-primary">Delete Rack Cent</button>
                 </div>
-            <Card>
-              <CardBody>
                 <div className="table-responsive">
                   <table
                     id="example"
@@ -355,14 +383,14 @@ useEffect(() => {
                     <tbody></tbody>
                   </table>
                 </div>
-              </CardBody>
-            </Card>
+             
           </Col>
         </Row>
       </Container>
-      </CardBody></Card>
+      </CardBody>
+      </Card>
     </Fragment>
   );
 };
 
-export default UlRackList;
+export default EssoOwnerRackList;
