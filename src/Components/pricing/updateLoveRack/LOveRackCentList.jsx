@@ -81,86 +81,99 @@ const LoveRackCent = ({ title, btnTitle }) => {
   });
   }, [dynamicColumns, companyId]);
 
-  $(document).ready(function () {
-    $("#example").DataTable().clear().destroy();
-    GetDataTAble();
-  });
+  // $(document).ready(function () {
+  //   $("#example").DataTable().clear().destroy();
+  //   GetDataTAble();
+  // });
 
-  function GetDataTAble(company_id='',discount_type='',from_date='',upto_date='') {
-    const columns = [
-      { data: "company_name", title: "Company Name" },
-      { data: "pricing_date", title: "Pricing Date" },
-      ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
-      { data: "Action", title: "Action", orderable: false },
-    ];
+function GetDataTAble(company_id = '', discount_type = '', from_date = '', upto_date = '') {
 
-    $("#example").DataTable({
-      serverSide: true,
-      processing: true,
-      responsive: true,
-      paging: true,
-      searching: true,
-      ordering: true,
-      pageLength: 25,
-      columns: columns,
-      columnDefs: [
-        {
-          targets: "_all",
-          orderable: false,
-        },
-        {
-          targets: [0, 1], // allow ordering only here
-          orderable: true,
-        },
-      ],
-
-      ajax: function (data, callback) { 
-        const params = new URLSearchParams();
-        params.append("start", data.start);
-        params.append("length", data.length);
-        params.append("search", data.search.value || "");
-        params.append("orderColumn", data.columns[data.order[0].column].data);
-        params.append("orderDir", data.order[0].dir);
-        params.append("company_id", company_id);
-        params.append("discount_type", discount_type);
-        params.append("from_date", from_date);
-        params.append("upto_date", upto_date); 
-        fetch(`${love_group_lovegroupInput}?${params.toString()}`)
-          .then((res) => res.json())
-          .then((json) => {
-            const url = `${love_group_lovegroupInput}?${params.toString()}`; 
-            const tableData = json.data.map((row) => {
-              const obj = {
-                company_name: row[0],
-                pricing_date: row[1],
-                Action: row[2],
-              };
-              dynamicColumns.forEach((col, idx) => {
-                obj[`col_${idx}`] = row[idx + 3] || "";
-              });
-
-              return obj;
-            });  
-
-            callback({
-              draw: data.draw,
-              recordsTotal: json.recordsTotal,
-              recordsFiltered: json.recordsFiltered,
-              data: tableData,
-            });
-          })
-          .catch((err) => {
-            console.error("Error fetching table data:", err);
-            callback({
-              draw: data.draw,
-              recordsTotal: 0,
-              recordsFiltered: 0,
-              data: [],
-            });
-          });
-      },
-    });
+  if ($.fn.DataTable.isDataTable("#example")) {
+    $("#example").DataTable().destroy();
+    $("#example").empty();
   }
+
+  const columns = [
+    { data: "company_name", title: "Company Name" },
+    { data: "pricing_date", title: "Pricing Date" },
+    ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
+    { data: "Action", title: "Action", orderable: false },
+  ];
+
+  $("#example").DataTable({
+    serverSide: true,
+    processing: true,
+    responsive: true,
+    paging: true,
+    searching: true,
+    ordering: true,
+    pageLength: 25,
+    columns: columns,
+    columnDefs: [
+      { targets: "_all", orderable: false },
+      { targets: [0, 1], orderable: true },
+    ],
+
+    ajax: function (data, callback) {
+
+      const orderColumn = data.order && data.order.length
+        ? data.columns[data.order[0].column].data
+        : "company_name";
+
+      const orderDir = data.order && data.order.length
+        ? data.order[0].dir
+        : "asc";
+
+      const params = new URLSearchParams();
+      params.append("start", data.start);
+      params.append("length", data.length);
+      params.append("search", data.search.value || "");
+      params.append("orderColumn", orderColumn);
+      params.append("orderDir", orderDir);
+      params.append("company_id", company_id);
+      params.append("discount_type", discount_type);
+      params.append("from_date", from_date);
+      params.append("upto_date", upto_date);
+
+      fetch(`${love_group_lovegroupInput}?${params.toString()}`)
+        .then(res => res.json())
+        .then(json => {
+
+          const tableData = json.data.map((row) => {
+            const obj = {
+              company_name: row[0],
+              pricing_date: row[1],
+              Action: row[2],
+            };
+
+            dynamicColumns.forEach((col, idx) => {
+              obj[`col_${idx}`] = row[idx + 3] || "";
+            });
+
+            return obj;
+          });
+
+          callback({
+            draw: data.draw,
+            recordsTotal: json.recordsTotal,
+            recordsFiltered: json.recordsFiltered,
+            data: tableData,
+          });
+
+        })
+        .catch(err => {
+          console.error("Error fetching table data:", err);
+          callback({
+            draw: data.draw,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: [],
+          });
+        });
+    }
+  });
+}
+
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
