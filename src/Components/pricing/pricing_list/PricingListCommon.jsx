@@ -68,8 +68,9 @@ const[loading,setLoading]=useState(false)
       pricing_date: data?.pricingDate,
       supplier_id: data?.supplier?.value || "",
     };
-
+setLoading(false)
     if (onSearch) {
+        console.log(payload);
       onSearch(payload, apiName);
     }
     // const basePayload = {
