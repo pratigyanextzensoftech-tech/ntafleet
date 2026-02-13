@@ -91,7 +91,7 @@ const[loading,setLoading]=useState(false)
       tax: tax? tax:"No"||"",
       pricing_date:data?.pricingDate? formatDate(data.pricingDate):"",
       invoice_type:discountType?data.DiscountType.value:"",
-      added_by:userId||""
+      added_by:userId||"",
     };
 
 axios

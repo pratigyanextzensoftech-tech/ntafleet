@@ -37,9 +37,9 @@ const BasicTabCard = ({ tabContent, title,onSearch }) => {
         {tabContent.map((tab) => (
           <TabPane className="mt-2" key={tab.id} tabId={String(tab.id)}>
             {BasicTab === String(tab.id) &&
-              (typeof tab.component === "function"
-                ? tab.component()
-                : tab.component)}
+             typeof tab.component === "function"
+  ? tab.component({ onSearch })
+  : React.cloneElement(tab.component, { onSearch })}
           </TabPane>
         ))}
       </TabContent>

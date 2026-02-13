@@ -1,4 +1,5 @@
 import PricingCommon from "../../Components/pricing/PricingCommon";
+import PricingListCommon from "../../Components/pricing/pricing_list/PricingListCommon";
 import {
   ta_pricing_actual as TA_ACTUAL_API,
   ta_pricing as TA_CAPPED_API,
@@ -13,7 +14,7 @@ export const PricingTab = [
   {
     id: '1',
     label:"Flying J"  , 
-    component: <PricingCommon table={false} apiName={pricing} pricingDate={true} supplier={true} btnTitle="Search Data" />,
+    component: <PricingListCommon apiName={pricing}  btnTitle="Search Data" />,
   },
   {
     id: '2',
@@ -23,7 +24,7 @@ export const PricingTab = [
        Ta-Petro  - <strong> [Capped]</strong>
       </>
     ), 
-     component: <PricingCommon table={false} supplier_ids="3" apiName={TA_CAPPED_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+     component: <PricingListCommon  supplier_ids="3" apiName={TA_CAPPED_API}  btnTitle="Search Data"/>,
   },
   {
     id: '3',
@@ -34,12 +35,12 @@ export const PricingTab = [
       </>
     )
    ,
-    component: <PricingCommon table={false} supplier_ids="3" apiName={TA_ACTUAL_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+    component: <PricingListCommon  supplier_ids="3" apiName={TA_ACTUAL_API}  btnTitle="Search Data"/>,
   },
  {
     id: '4',
     label:" Esso ", 
-    component:  <PricingCommon table={false} supplier_ids="6" apiName={esso_pricing} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+    component:  <PricingListCommon  supplier_ids="6" apiName={esso_pricing} btnTitle="Search Data"/>,
   },
    {
     id: '5',
@@ -49,7 +50,7 @@ export const PricingTab = [
       </>
     )
    ,
-    component: <PricingCommon table={false} supplier_ids="7"   apiName={LOVE_CAPPED_API} pricingDate={true} supplier={true} btnTitle="Search Data" /> ,
+    component: <PricingListCommon  supplier_ids="7"   apiName={LOVE_CAPPED_API}  btnTitle="Search Data" /> ,
   },
    {
     id: '6',
@@ -59,13 +60,13 @@ export const PricingTab = [
        Love  - <strong> [Actual]</strong>
       </>
     ), 
-    component:  <PricingCommon table={false} supplier_ids="7"  apiName={LOVE_ACTUAL_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+    component:  <PricingListCommon supplier_ids="7"  apiName={LOVE_ACTUAL_API}  btnTitle="Search Data"/>,
   },
    {
     id: '7',
     label: "Ultramar",
     
-    component: <PricingCommon table={false} supplier_ids="10" apiName={ULTRAMAR_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+    component: <PricingListCommon  supplier_ids="10" apiName={ULTRAMAR_API} btnTitle="Search Data"/>,
   },
    {
     id: '8',
@@ -75,7 +76,7 @@ export const PricingTab = [
        Irving 
       </>
     ), 
-     component: <PricingCommon table={false} supplier_ids="5" apiName={IRVING_API} pricingDate={true} supplier={true} btnTitle="Search Data"/>,
+     component: <PricingListCommon  supplier_ids="5" apiName={IRVING_API}  btnTitle="Search Data"/>,
   },
   
 ];
