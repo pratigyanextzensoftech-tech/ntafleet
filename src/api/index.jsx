@@ -104,6 +104,12 @@ export const ul_group_ulgroupInput = `${baseurl}/api/ul_loc_group/ul_group_input
 export const ul_get_rowvalue = `${baseurl}/api/ul_cent/get_rowvalue`;
 export const ul_saverowvalue = `${baseurl}/api/ul_cent/upsert`;
 
+export const irv_group_ulgroup = `${baseurl}/api/irv_loc_group/irv_group`;
+export const irv_group_ulgroupInput = `${baseurl}/api/irv_loc_group/irv_group_input`;
+export const irv_get_rowvalue = `${baseurl}/api/irv_cent/get_rowvalue`;
+export const irv_saverowvalue = `${baseurl}/api/irv_cent/upsert`;
+ 
+
 export const love_group_lovegroup = `${baseurl}/api/love_group/love_group`;
 export const love_group_lovegroupInput = `${baseurl}/api/love_group/love_group_input`;
 
