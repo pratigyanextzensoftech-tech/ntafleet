@@ -19,17 +19,13 @@ const Index = () => {
       const[filters,setFilters]=useState({})
       
    const columnsMap = {
-      "Invoice#": "invoice_id",
-      Company: "company_name",
-      "From": "from",
-      To: "to",
-      "Due Date": "due_date",
-      Total: "total",
-      "Retail Total": "retail_price",
-      Saving: "saving",
-      Country: "country",
-      Supplier: "supplier_id",
-      Status: "status",
+      "ID#": "id",
+      "Pricing Date": "pricing_date",
+      "Supplier": "supplier",
+      "Tax Type": "tax_type",
+      "Added_On": "dated",
+      Download: "",
+     
     };
    const {
         data,
@@ -130,32 +126,9 @@ const getTableColumns = (tableData,columnmap) => {
       wrap: true,
     })),
 
-    {
-      name: (
-        <div className="d-flex align-items-center">
-          <span className="me-2 fw-bold">Action</span>
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={(e) =>
-              handleSelectAll(e.target.checked, tableData)
-            }
-          />
-        </div>
-      ),
-      cell: (row) => (
-        <input
-          type="checkbox"
-          checked={selectedIds.includes(row["Invoice#"])}
-          onChange={() => handleSelectRow(row)}
-        />
-      ),
-      width: "120px",
-      ignoreRowClick: true,
-    },
   ];
 };
-    const SendBulkTable = [
+    const DownloadBulkTable = [
   {
     id: '1',
     label:"Download Bulk Price Sheet",
@@ -176,8 +149,8 @@ const getTableColumns = (tableData,columnmap) => {
        loading={essoLoading}
       handlePageChange={essoHandlePerChange}
       setData={handleSetData}
-      handlePerRowsChange={essoHandlePerROwChange} totalRows={essoTotalRow}  tableColumns={getTableColumns(filteredCombineData,columnsMap)} 
-    tableData={filteredessoData} paginationRowsPerPageOptions={[ 200,300]} table={showTable} />,
+      handlePerRowsChange={essoHandlePerROwChange} totalRows={essoTotalRow}  tableColumns={getTableColumns(filteredessoData,columnsMap)} 
+    tableData={filteredessoData} paginationRowsPerPageOptions={[ 200,300]}  />,
   },
 
   {
@@ -270,12 +243,11 @@ const handleSelectRow = (row) => {
   <Card>
     <HeaderCard title="Download Bulk Price Sheet" />
     <CardBody>
-      	<BasicTabCard tabContent={DownloadBulkTableTab} />
+      	<BasicTabCard tabContent={DownloadBulkTable} />
     </CardBody>
   </Card>
   </Col>
 </Row>
- 
       </Container>
     </Fragment>
   );

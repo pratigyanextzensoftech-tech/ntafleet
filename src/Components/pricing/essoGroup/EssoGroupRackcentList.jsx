@@ -16,9 +16,9 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import {
-  ta_group_Tagroup as APINAME,
-  ta_group_TagroupInput,
-  ta_cent,tacompany
+  esso_group_essogroup as APINAME,
+  esso_group_essogroupInput,
+  esso_cent,essocompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -50,7 +50,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
+          setDynamicColumns(data.map((item) => item.name));
           setGroupIds(data.map((item) => item.id));
         } 
         else {
@@ -58,7 +58,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         }
       })
       .catch((err) => console.error(err));
-       axios.get(tacompany)
+       axios.get(essocompany)
             .then((res) => {
               const data = res.data;
               console.log(data)
@@ -96,7 +96,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         updateData[`group_${groupid}`] = value;
       });
 
-      axios.put(`${ta_cent}/${id}`, updateData)
+      axios.put(`${esso_cent}/${id}`, updateData)
         .then((response) => {
           toast.success("Data updated");
         })
@@ -146,10 +146,10 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         params.append("company_id", company_id?company_id:"");
         params.append("from_date", from_date?from_date:"");
         params.append("upto_date", upto_date?upto_date:"");
-        fetch(`${ta_group_TagroupInput}?${params.toString()}`)
+        fetch(`${esso_group_essogroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${ta_group_TagroupInput}?${params.toString()}`;
+            const url = `${esso_group_essogroupInput}?${params.toString()}`;
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {

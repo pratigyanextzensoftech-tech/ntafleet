@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns"; 
 import Loader from "../../../Layout/Loader";
 import { toast } from 'react-toastify';
-import {tacompany, ta_get_rowvalue, ta_group_Tagroup as APINAME,ta_saverowvalue } from "../../../api"; 
+import {irvcompany, irv_get_rowvalue, irv_group_irvgroup as APINAME,irv_saverowvalue } from "../../../api"; 
 const UpdateIrving = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
@@ -42,7 +42,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
         const groups = await gres.json();
         if (!Array.isArray(groups)) return; 
         
-       const res = await fetch(tacompany);
+       const res = await fetch(irvcompany);
         const company = await res.json();
         if (!Array.isArray(company)) return; 
         
@@ -63,7 +63,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
             payload['dated'] = dated; 
             console.log(c.company_name+" : ",payload)
             
-            axios.post(ta_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+            axios.post(irv_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
         }) 
        toast.success("Rack Cent Updated Succesfully");  
        setloading(false);
@@ -79,7 +79,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
       const res = await fetch(APINAME);
       const groups = await res.json();
       if (!Array.isArray(groups)) return;
-      setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
+      setDynamicColumns(groups.map((g) => g.name));
       setGroupIds(groups.map((g) => g.id));
       // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
@@ -89,7 +89,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
 
       // 3️⃣ Fetch TA row values (FIXED URL)
       const rowRes = await fetch(
-        `${ta_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+        `${irv_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
       const rowData = await rowRes.json();
       if (!Array.isArray(rowData)) return;

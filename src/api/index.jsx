@@ -104,10 +104,19 @@ export const ul_group_ulgroupInput = `${baseurl}/api/ul_loc_group/ul_group_input
 export const ul_get_rowvalue = `${baseurl}/api/ul_cent/get_rowvalue`;
 export const ul_saverowvalue = `${baseurl}/api/ul_cent/upsert`;
 
-export const irv_group_ulgroup = `${baseurl}/api/irv_loc_group/irv_group`;
-export const irv_group_ulgroupInput = `${baseurl}/api/irv_loc_group/irv_group_input`;
+export const irv_group_irvgroup = `${baseurl}/api/irv_loc_group/irv_group`;
+export const irv_group_irvgroupInput = `${baseurl}/api/irv_loc_group/irv_group_input`;
 export const irv_get_rowvalue = `${baseurl}/api/irv_cent/get_rowvalue`;
 export const irv_saverowvalue = `${baseurl}/api/irv_cent/upsert`;
+
+export const esso_group_essogroup = `${baseurl}/api/loc_group_new/esso_group`;
+export const esso_group_essogroupCity = `${baseurl}/api/loc_group_new/esso_group_city`;
+export const esso_group_essogroupInput = `${baseurl}/api/loc_group_new/esso_group_input`;
+export const esso_group_essogroupInputCity = `${baseurl}/api/loc_group_new/esso_group_input_city`;
+
+// export const esso_get_rowvalue = `${baseurl}/api/esso_cent/get_rowvalue`;
+// export const esso_saverowvalue = `${baseurl}/api/esso_cent/upsert`;
+
  
 
 export const love_group_lovegroup = `${baseurl}/api/love_group/love_group`;
@@ -119,7 +128,7 @@ export const love_saverowvalue = `${baseurl}/api/love_cent/upsert`;
 
 export const esso_rack = `${baseurl}/api/esso_rack`;
 export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
-export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;
+export const esso_cent_auto = `${baseurl}/api/loc_group_new/esso_group_input_auto`;
 export const tcheck_upload = `${baseurl}/api/tcheck/upload`;
 export const smenu = `${baseurl}/api/smenu`;
 
@@ -141,6 +150,7 @@ export const create_pricing_pdf = `${baseurl}/api/pricing/create_pricing_pdf`;
 export const zero_discount = `${baseurl}/api/zero_discount`;
 
 export const esso_cent = `${baseurl}/api/esso_cent`;
+export const irv_cent = `${baseurl}/api/irv_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;
 export const love_cent = `${baseurl}/api/love_cent`;
 export const esso_city_cent = `${baseurl}/api/esso_city_cent`;
