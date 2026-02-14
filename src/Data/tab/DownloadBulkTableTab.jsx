@@ -7,7 +7,7 @@ export const DownloadBulkTableTab = [
   {
     id: '1',
     label: 'Create Bulk Price Sheet',
-    component: <DataTableComponent tableData={dummytabledata} tableColumns={tableColumns} title=" Download Bulk Price Sheet " btnTitle="Create Excel " />
+    component: <DataTableComponent tableData={dummytabledata} tableColumns={tableColumns} title=" Download Bulk Price Sheet "  />
 ,
   },
   {

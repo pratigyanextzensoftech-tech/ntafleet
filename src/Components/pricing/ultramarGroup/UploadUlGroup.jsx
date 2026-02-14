@@ -14,7 +14,7 @@ import Select from "react-select";
 import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
-const UploadIrving = ({ title, btnTitle }) => {
+const UploadUlGroup = ({ title, btnTitle }) => {
   const {
     register,
     control,
@@ -107,4 +107,4 @@ const UploadIrving = ({ title, btnTitle }) => {
   );
 };
 
-export default UploadIrving;
+export default UploadUlGroup;

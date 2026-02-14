@@ -50,7 +50,7 @@ const UlRackList = ({ title, btnTitle }) => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
+          setDynamicColumns(data.map((item) =>item.name));
           setGroupIds(data.map((item) => item.id));
         } 
         else {

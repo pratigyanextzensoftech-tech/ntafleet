@@ -182,6 +182,7 @@ const Index = () => {
               <CardBody>
                 <DownloadEssoCentForm
                   btnTitle="Search"
+                  title="Esso-cent"
                   onChange={handleChildChange}
                 />
               </CardBody>

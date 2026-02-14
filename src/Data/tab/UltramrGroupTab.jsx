@@ -1,9 +1,6 @@
-import UpdateFgRack from "../../Components/pricing/updateFg/UpdateFgRack";
-import EssoGroupForm from "../../Components/pricing/essoGroup/EssoGroupForm";
-import UploadEssoGroupRackForm from "../../Components/pricing/essoGroup/UploadEssoGroupRackForm";
-import PricingCommon from "../../Components/pricing/PricingCommon";
 import UpdateUltramar from "../../Components/pricing/ultramarGroup/UpdateUltramar";
 import UlRackList from "../../Components/pricing/ultramarGroup/UlRackList";
+import UploadUlGroup from "../../Components/pricing/ultramarGroup/UploadUlGroup";
 export const UltramarGroupTab = [
   {
     id: "1",
@@ -14,19 +11,17 @@ export const UltramarGroupTab = [
         btnTitle="Search Group"
       />
     ),
-        //  component: <PricingCommon  title="ULTRAMAR  Group Rack Entry" btnTitle="Search Group" apiname={""}/>
 
   },
   {
     id: "2",
     label: "Upload ULTRAMAR  Group Rack Cent ",
     component: (
-      <UploadEssoGroupRackForm
+      <UploadUlGroup
         title=" ULTRAMAR  Group Rack Entry"
-        btnTitle="Search Group"
+        btnTitle="Upload Rack Pricing"
       />
     ),
-            //  component: <PricingCommon csvFile={true} title="ULTRAMAR  Group Rack Entry" btnTitle="Search Group" apiname={""}/>
 
   },
   {

@@ -18,7 +18,7 @@ import DatePicker from "react-datepicker";
 import {
   ta_group_Tagroup as APINAME,
   ta_group_TagroupInput,
-  ta_cent,tacompany
+  ta_cent,irvcompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -64,7 +64,7 @@ const IrvingGroupList = ({ title, btnTitle }) => {
       })
       .catch((err) => console.error(err));
 
-         axios.get(tacompany)
+         axios.get(irvcompany)
       .then((res) => {
         const data = res.data;
           const options = [
