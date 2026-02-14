@@ -61,11 +61,9 @@ const[loading,setLoading]=useState(false)
  const userId=localStorage.getItem("userId")
 
  const onSubmit = (data) => {
-
-  // console.log(data)
     setLoading(true);
     const payload = {
-      pricing_date: data?.pricingDate,
+      pricing_date: formatDate(data?.pricingDate),
       supplier_id: data?.supplier?.value || "",
     };
 setLoading(false)
@@ -73,60 +71,6 @@ setLoading(false)
         console.log(payload);
       onSearch(payload, apiName);
     }
-    // const basePayload = {
-    //   supplier_id:  data?.supplier?.value||"",
-    //   supplier:data?.supplier?.label || "",
-    //   tax: tax? tax:"No"||"",
-    //   pricing_date:data?.pricingDate? formatDate(data.pricingDate):"",
-    //   invoice_type:discountType?data.DiscountType.value:"",
-    //   added_by:userId||"",
-
-      // idby:userId||0,
-      // loc_type:"",
-      // loc_id:0,
-      // travel_center:"",
-      // st:0,
-      // merchant_id:0,
-      // city_state:"",
-      // city:"",
-      // rack_id:0,
-      // product_dispensed:0,
-      // deal_eff_date:"",
-      // index:0,
-      // freight:0,
-      // fed_tax:0,
-      // state_tax:0,
-      // sales_tax:0,
-      // state_ust:0,
-      // other_tax:0,
-      // additive_car_fee:0,
-      // ibp_adjustment:0,
-      // ibp_fuel_price:0,
-      // retail_price:0,
-      // retail_factor:0,
-      // retail_fuel_price:0,
-      // fuel_price:0,
-      // saving_total:0,
-      // bulk_def_price:0
- 
-
-// axios
-//   .post(apiName, basePayload, {
-//     params: basePayload,
-//   })
-//   .then((res) => {
-//     res.data.success
-//       ? toast.success(res.data.message)
-//       : toast.error(res.data.message);
-
-//     setLoading(false);
-//   })
-//   .catch((err) => {
-//     toast.error(err.message || "Something went wrong");
-//     setLoading(false);
-//   });
-
-//     console.log("Final Payload Sent =>", basePayload);
  }
   
 

@@ -7,7 +7,7 @@ import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import useCompany from "../../../Hooks/useCompany";
 
-const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
+const DownloadEssoCentForm = ({ btnTitle, Data, onChange,title }) => {
   const [selectedValues, setSelectedValues] = useState([]);
   // const [showMessage, setShowMessage] = useState(true);
   const { companies: companyOptions, loading: companyLoading } = useCompany();
@@ -34,6 +34,7 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange }) => {
   };
   return (
     <fieldset className="inputField">
+        <legend>{title}</legend>
       <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-3">
           <Col  xl="4"   sm="12">

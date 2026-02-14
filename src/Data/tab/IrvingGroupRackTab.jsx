@@ -8,6 +8,7 @@ import UpdateEsso from '../../Components/pricing/essoGroup/UpdateEsso';
 import EssoGroupRackcentList from '../../Components/pricing/essoGroup/EssoGroupRackcentList';
 import UpdateIrving from '../../Components/pricing/irvingGroup/UpdateIrving';
 import IrvingGroupList from '../../Components/pricing/irvingGroup/IrvingGroupList';
+import UploadIrving from '../../Components/pricing/irvingGroup/UploadIrving';
 export const IrvingGroupRackTab = [
   {
     id: '1',
@@ -19,7 +20,7 @@ export const IrvingGroupRackTab = [
     id: '2',
     label: 'Upload Irving Group Rack Cent ',
     // component: <UploadEssoGroupRackForm title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" />,
-    component: <PricingCommon csvFile={true} title="Upload Irving Group Rack Cent " btnTitle="Upload Rack Pricing" apiname={""}/>,
+    component: <UploadIrving  title="Upload Irving Group Rack Cent " btnTitle="Upload Rack Pricing" apiname={""}/>,
   },
    {
     id: '3',

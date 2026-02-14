@@ -5,7 +5,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import BasicTabCard from "../../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import useSelectableColumns from "../../../Hooks/useSelectableColumns";
-import {PricingTab} from '../../../Data/tab/PricingTab'
+// import {PricingTab} from '../../../Data/tab/PricingTab'
 import Swal from "sweetalert2";
 import axios from "axios";
 import PricingListCommon from "./PricingListCommon";
@@ -190,8 +190,8 @@ irving: {
   const taActual = usePaginatedTable({
     apiUrl: TA_ACTUAL_API,
     columnsMap: columnSets.taActual,
-    
   });
+  console.log(taActual)
   const taCapped = usePaginatedTable({
     apiUrl: TA_CAPPED_API,
     columnsMap: columnSets.taCapped,
@@ -344,21 +344,7 @@ const tabs = [
   },
 
 ];
-const handleSearch = async (payload, apiName) => {
-  try {
-    await axios.post(apiName, payload);
 
-    // 🔥 After success refresh matching table tab
-    const matchedTab = tabs.find(tab => tab.apiName === apiName);
-
-    if (matchedTab?.data?.fetchData) {
-      matchedTab.data.fetchData();
-    }
-
-  } catch (err) {
-    console.log(err);
-  }
-};
   // ✅ Define tab content dynamically
   const pricingListTableTab = tabs.map((tab) => ({
     id: tab.id,
@@ -394,7 +380,7 @@ const PricingTab = [
     {
       id: '1',
       label:"Flying J"  , 
-      component: <PricingListCommon apiName={pricing}  btnTitle="Search Data" />,
+      component: <PricingListCommon title="Flying J " onSearch={flyingJ.handleSearch}  apiName={pricing}  btnTitle="Search Data" />,
     },
     {
       id: '2',
@@ -404,7 +390,7 @@ const PricingTab = [
          Ta-Petro  - <strong> [Capped]</strong>
         </>
       ), 
-       component: <PricingListCommon  supplier_ids="3" apiName={TA_CAPPED_API}  btnTitle="Search Data"/>,
+       component: <PricingListCommon title="Ta-Petro[Capped]" onSearch={taCapped.handleSearch}  supplier_ids="3" apiName={TA_CAPPED_API}  btnTitle="Search Data"/>,
     },
     {
       id: '3',
@@ -415,12 +401,12 @@ const PricingTab = [
         </>
       )
      ,
-      component: <PricingListCommon  supplier_ids="3" apiName={TA_ACTUAL_API}  btnTitle="Search Data"/>,
+      component: <PricingListCommon title="Ta-Petro [Actual]"  onSearch={taActual.handleSearch} supplier_ids="3" apiName={TA_ACTUAL_API}  btnTitle="Search Data"/>,
     },
    {
       id: '4',
       label:" Esso ", 
-      component:  <PricingListCommon  supplier_ids="6" apiName={esso_pricing} btnTitle="Search Data"/>,
+      component:  <PricingListCommon title="Esso" onSearch={esso.handleSearch}  supplier_ids="6" apiName={esso_pricing} btnTitle="Search Data"/>,
     },
      {
       id: '5',
@@ -430,7 +416,7 @@ const PricingTab = [
         </>
       )
      ,
-      component: <PricingListCommon  supplier_ids="7"   apiName={LOVE_CAPPED_API}  btnTitle="Search Data" /> ,
+      component: <PricingListCommon title="Love [Capped]" onSearch={loveCapped.handleSearch}  supplier_ids="7"   apiName={LOVE_CAPPED_API}  btnTitle="Search Data" /> ,
     },
      {
       id: '6',
@@ -440,13 +426,13 @@ const PricingTab = [
          Love  - <strong> [Actual]</strong>
         </>
       ), 
-      component:  <PricingListCommon supplier_ids="7"  apiName={LOVE_ACTUAL_API}  btnTitle="Search Data"/>,
+      component:  <PricingListCommon title="Love [Actual]" onSearch={loveActual.handleSearch} supplier_ids="7"  apiName={LOVE_ACTUAL_API}  btnTitle="Search Data"/>,
     },
      {
       id: '7',
       label: "Ultramar",
       
-      component: <PricingListCommon  supplier_ids="10" apiName={ULTRAMAR_API} btnTitle="Search Data"/>,
+      component: <PricingListCommon title="Ultramar" onSearch={ultramar.handleSearch}  supplier_ids="10" apiName={ULTRAMAR_API} btnTitle="Search Data"/>,
     },
      {
       id: '8',
@@ -456,7 +442,7 @@ const PricingTab = [
          Irving 
         </>
       ), 
-       component: <PricingListCommon  supplier_ids="5" apiName={IRVING_API}  btnTitle="Search Data"/>,
+       component: <PricingListCommon title="Irving" onSearch={irving.handleSearch}  supplier_ids="5" apiName={IRVING_API}  btnTitle="Search Data"/>,
     },
     
   ];
@@ -467,7 +453,7 @@ const PricingTab = [
          <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Create Pricing PDF" />
+              <HeaderCard title="Search Pricing PDF" />
               <CardBody>
               <BasicTabCard  tabContent={PricingTab} />
               </CardBody>
@@ -478,7 +464,7 @@ const PricingTab = [
           <Col sm="12">
             <Card>
               <CardBody>                              
-                <BasicTabCard  onSearch={handleSearch} tabContent={pricingListTableTab} />
+                <BasicTabCard   tabContent={pricingListTableTab} />
               </CardBody>
             </Card>
           </Col>
