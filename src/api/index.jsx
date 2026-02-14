@@ -12,15 +12,13 @@ export const essocompany = `${baseurl}/api/company/essoall`;
 export const ulcompany = `${baseurl}/api/company/ulall`;
 export const irvcompany = `${baseurl}/api/company/irvall`;
 export const cencompany = `${baseurl}/api/company/cenall`;
-
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;
-
 export const pmenu = `${baseurl}/api/pmenu`;
 export const pmenuAll = `${baseurl}/api/pmenu/all`; 
 export const login = `${baseurl}/api/admin/login`;
 export const loginlog = `${baseurl}/api/admin/user_log`;
- export const money_code = `${baseurl}/api/mond_code`;
+export const money_code = `${baseurl}/api/mond_code`;
 export const items = `${baseurl}/api/items`;
 export const itemsAll = `${baseurl}/api/items/all`;
 export const user_tracking = `${baseurl}/api/user_tracking`;
@@ -87,7 +85,6 @@ export const updateHistory = `${baseurl}/api/update_history`;
 export const owner_report = `${baseurl}/api/owner_report`;
 export const owner_report_downlod = `${baseurl}/api/owner_report/download`;
 export const loc_group_Essogroup = `${baseurl}/api/loc_group_new/esso_group`;
-
 export const Esso_cent_Data = `${baseurl}/api/loc_group_new/esso_group_input`;
 
 export const ta_group_Tagroup = `${baseurl}/api/ta_group/ta_group`;
@@ -104,6 +101,12 @@ export const ul_group_ulgroupInput = `${baseurl}/api/ul_loc_group/ul_group_input
 export const ul_get_rowvalue = `${baseurl}/api/ul_cent/get_rowvalue`;
 export const ul_saverowvalue = `${baseurl}/api/ul_cent/upsert`;
 
+export const irv_group_ulgroup = `${baseurl}/api/irv_loc_group/irv_group`;
+export const irv_group_ulgroupInput = `${baseurl}/api/irv_loc_group/irv_group_input`;
+export const irv_get_rowvalue = `${baseurl}/api/irv_cent/get_rowvalue`;
+export const irv_saverowvalue = `${baseurl}/api/irv_cent/upsert`;
+
+
 export const love_group_lovegroup = `${baseurl}/api/love_group/love_group`;
 export const love_group_lovegroupInput = `${baseurl}/api/love_group/love_group_input`;
 
@@ -116,7 +119,6 @@ export const esso_rack_all = `${baseurl}/api/esso_rack/all`;
 export const esso_cent_auto = `${baseurl}/api/esso_cent_auto`;
 export const tcheck_upload = `${baseurl}/api/tcheck/upload`;
 export const smenu = `${baseurl}/api/smenu`;
-
 export const Create_retail_invoice = `${baseurl}/api/invoice/create_retail_invoice`;
 export const Create_rack_invoice = `${baseurl}/api/invoice/create_rack_invoice`;
 
