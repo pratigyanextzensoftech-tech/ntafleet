@@ -95,6 +95,66 @@ const filteredessoData = applyFilters(esso, filters);
 const filteredtaPetroData = applyFilters(taPetro, filters);
 const filteredlovesData = applyFilters(lovesBulk, filters);
 const filteredmultidateData = applyFilters(multidate, filters);
+const getTableColumns = (tableData,columnmap) => {
+  return [
+    ...Object.keys(columnmap).map((label) => ({
+      name: (
+        <div className='w-100'>
+          <div className="fw-bold">{label}</div>
+          <input
+            type="text"
+            className="mt-2"
+            style={{
+              width: "100%",
+              height: "28px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) =>
+              handleFilterChange(label, e.target.value) // ✅ CLIENT SIDE
+            }
+          />
+        </div>
+      ),
+   selector: (row) => {
+    const key = columnmap[label];
+        const value= row.fulldata?.[key] ?? row[key] ?? "";   
+          if (key === "from" || key === "to" || key==="from_date" || key==='to_date') {
+           return value ? value.split(/[ T]/)[0]: "";
+        }
+        return value;
+   },
+      sortable: true,
+      wrap: true,
+    })),
+
+    {
+      name: (
+        <div className="d-flex align-items-center">
+          <span className="me-2 fw-bold">Action</span>
+          <input
+            type="checkbox"
+            checked={selectAll}
+            onChange={(e) =>
+              handleSelectAll(e.target.checked, tableData)
+            }
+          />
+        </div>
+      ),
+      cell: (row) => (
+        <input
+          type="checkbox"
+          checked={selectedIds.includes(row["Invoice#"])}
+          onChange={() => handleSelectRow(row)}
+        />
+      ),
+      width: "120px",
+      ignoreRowClick: true,
+    },
+  ];
+};
     const SendBulkTable = [
   {
     id: '1',
@@ -188,66 +248,7 @@ const handleSelectRow = (row) => {
     [column]: value.toLowerCase(),
   }));
 };
-const getTableColumns = (tableData,columnmap) => {
-  return [
-    ...Object.keys(columnmap).map((label) => ({
-      name: (
-        <div className='w-100'>
-          <div className="fw-bold">{label}</div>
-          <input
-            type="text"
-            className="mt-2"
-            style={{
-              width: "100%",
-              height: "28px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            onChange={(e) =>
-              handleFilterChange(label, e.target.value) // ✅ CLIENT SIDE
-            }
-          />
-        </div>
-      ),
-   selector: (row) => {
-    const key = columnmap[label];
-        const value= row.fulldata?.[key] ?? row[key] ?? "";   
-          if (key === "from" || key === "to" || key==="from_date" || key==='to_date') {
-           return value ? value.split(/[ T]/)[0]: "";
-        }
-        return value;
-   },
-      sortable: true,
-      wrap: true,
-    })),
 
-    {
-      name: (
-        <div className="d-flex align-items-center">
-          <span className="me-2 fw-bold">Action</span>
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={(e) =>
-              handleSelectAll(e.target.checked, tableData)
-            }
-          />
-        </div>
-      ),
-      cell: (row) => (
-        <input
-          type="checkbox"
-          checked={selectedIds.includes(row["Invoice#"])}
-          onChange={() => handleSelectRow(row)}
-        />
-      ),
-      width: "120px",
-      ignoreRowClick: true,
-    },
-  ];
-};
   return (
     <Fragment>
       <Breadcrumbs parent="Pricing" title="Download Bulk Price Sheet" />
