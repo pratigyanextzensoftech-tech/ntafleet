@@ -16,9 +16,9 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import {
-  ta_group_Tagroup as APINAME,
-  ta_group_TagroupInput,
-  ta_cent,irvcompany
+  irv_group_irvgroup as APINAME,
+  irv_group_irvgroupInput,
+  irv_cent,irvcompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -55,7 +55,7 @@ const IrvingGroupList = ({ title, btnTitle }) => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
+          setDynamicColumns(data.map((item) =>item.name));
           setGroupIds(data.map((item) => item.id));
         } 
         else {
@@ -93,15 +93,16 @@ const IrvingGroupList = ({ title, btnTitle }) => {
         updateData[`group_${groupid}`] = value;
       });
 
-      axios.put(`${ta_cent}/${id}`, updateData)
+      axios.put(`${irv_cent}/${id}`,updateData)
         .then((response) => {
-          toast.success("Data updated");
         })
         .catch((error) => {
           toast.error("Error In Data update");
         });
+                  toast.success("Data updated");
+
     });
-  }, [dynamicColumns, companyId]);
+  }, []);
 
 useEffect(() => {
     if (dynamicColumns.length > 0) {
@@ -147,10 +148,10 @@ useEffect(() => {
         params.append("company_id", company_id?company_id:"");
          params.append("from_date", from_date?from_date:"");
         params.append("upto_date", upto_date?upto_date:""); 
-       fetch(`${ta_group_TagroupInput}?${params.toString()}`)
+       fetch(`${irv_group_irvgroupInput}?${params.toString()}`)
                 .then((res) => res.json())
                 .then((json) => {
-                  const url = `${ta_group_TagroupInput}?${params.toString()}`;
+                  const url = `${irv_group_irvgroupInput}?${params.toString()}`;
                   console.log("🔗 API URL:", url);
                   const tableData = json.data.map((row) => {
                     const obj = {
