@@ -18,7 +18,7 @@ import DatePicker from "react-datepicker";
 import {
   esso_group_essogroup as APINAME,
   esso_group_essogroupInput,
-  esso_cent,essocompany
+  esso_cent_new,essocompany
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -50,7 +50,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) => item.name));
+          setDynamicColumns(data.map((item) => item.name+"<br/>"+item.prov));
           setGroupIds(data.map((item) => item.id));
         } 
         else {
@@ -96,7 +96,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         updateData[`group_${groupid}`] = value;
       });
 
-      axios.put(`${esso_cent}/${id}`, updateData)
+      axios.put(`${esso_cent_new}/${id}`, updateData)
         .then((response) => {
           toast.success("Data updated");
         })

@@ -114,8 +114,8 @@ export const esso_group_essogroupCity = `${baseurl}/api/loc_group_new/esso_group
 export const esso_group_essogroupInput = `${baseurl}/api/loc_group_new/esso_group_input`;
 export const esso_group_essogroupInputCity = `${baseurl}/api/loc_group_new/esso_group_input_city`;
 
-// export const esso_get_rowvalue = `${baseurl}/api/esso_cent/get_rowvalue`;
-// export const esso_saverowvalue = `${baseurl}/api/esso_cent/upsert`;
+export const esso_get_rowvalue = `${baseurl}/api/esso_cent_new/get_rowvalue`;
+export const esso_saverowvalue = `${baseurl}/api//esso_cent_new/upsert`;
 
  
 
