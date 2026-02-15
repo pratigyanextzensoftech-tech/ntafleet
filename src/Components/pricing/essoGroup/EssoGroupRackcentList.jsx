@@ -18,7 +18,8 @@ import DatePicker from "react-datepicker";
 import {
   esso_group_essogroup as APINAME,
   esso_group_essogroupInput,
-  esso_cent_new,essocompany
+  esso_cent_new,
+  essocompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -32,47 +33,49 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
-     const [company,setCompany]=useState();
-  
+  const [company, setCompany] = useState();
+
   const {
     register,
     control,
-     setValue,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm({
     defaultValues: {
-    company: null,
-  },
+      company: null,
+    },
   });
   useEffect(() => {
     fetch(APINAME)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) => item.name+"<br/>"+item.prov));
+          setDynamicColumns(
+            data.map((item) => item.name + "<br/>" + item.prov),
+          );
           setGroupIds(data.map((item) => item.id));
-        } 
-        else {
+        } else {
           console.error("APINAME response is not an array:", data);
         }
       })
       .catch((err) => console.error(err));
-       axios.get(essocompany)
-            .then((res) => {
-              const data = res.data;
-              console.log(data)
-                const options = [
-        { value: '', label: 'All Companies' },
-        ...data.map(company => ({
-          value: company.company_id,
-          label: company.company_name,
-        }))
-      ];
-      
-           setCompany(options)
-            })
-            .catch((err) => console.error(err));
+    axios
+      .get(essocompany)
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+        const options = [
+          { value: "", label: "All Companies" },
+          ...data.map((company) => ({
+            value: company.company_id,
+            label: company.company_name,
+          })),
+        ];
+
+        setCompany(options);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
@@ -87,27 +90,32 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
   }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
-      dynamicGroupIds.forEach((groupid) => {
-        const inputId = `#c${id}g${groupid}`;
-        const value = $(inputId).val();
-        updateData[`group_${groupid}`] = value;
-      });
 
-      axios.put(`${esso_cent_new}/${id}`, updateData)
-        .then((response) => {
-          toast.success("Data updated");
-        })
-        .catch((error) => {
-          toast.error("Error In Data update");
-        });
-    });
+     $(document).off("click", ".update-btn");  
+  $(document).on("click", ".update-btn", function () {
+    const id = $(this).data("id");
+    const updateData = {  }; 
+    dynamicGroupIds.forEach((groupid) => 
+      {
+      const inputId = `#c${id}g${groupid}`;
+      updateData[`group_${groupid}`] = $(inputId).val();
+     });
+ console.log(updateData);
+ 
+    axios
+      .put(`${esso_cent_new}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+      })
+      .catch(() => {
+        toast.error("Error In Data update");
+      });
+  });
+ 
+  return () => {   $(document).off("click", ".update-btn"); }; 
   }, [dynamicColumns, companyId]);
 
- 
-  function GetDataTAble(company_id,from_date,upto_date) {
+  function GetDataTAble(company_id, from_date, upto_date) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -120,7 +128,7 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
       processing: true,
       responsive: true,
       paging: true,
-      destroy:true,
+      destroy: true,
       searching: true,
       ordering: true,
       pageLength: 25,
@@ -143,9 +151,9 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", company_id?company_id:"");
-        params.append("from_date", from_date?from_date:"");
-        params.append("upto_date", upto_date?upto_date:"");
+        params.append("company_id", company_id ? company_id : "");
+        params.append("from_date", from_date ? from_date : "");
+        params.append("upto_date", upto_date ? upto_date : "");
         fetch(`${esso_group_essogroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
@@ -190,54 +198,49 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
     return `${year}-${month}-${day}`;
   };
   const onSubmit = (data) => {
-   const company_id = data.company?.value ?? "";
-     const from_date = data.from
-       ? formatDate(data.to)
-       : "";
-     const upto_date = data.to
-       ? formatDate(data.to)
-       : "";
-   
-     console.log("Submitting:", {
-       company_id,
-       from_date,
-       upto_date,
-     });
-   
-     if ($.fn.DataTable.isDataTable("#example")) {
-       $("#example").DataTable().destroy();
-     }
-   
-     GetDataTAble(company_id, from_date, upto_date);
+    const company_id = data.company?.value ?? "";
+    const from_date = data.from ? formatDate(data.to) : "";
+    const upto_date = data.to ? formatDate(data.to) : ""; 
+    console.log("Submitting:", {
+      company_id,
+      from_date,
+      upto_date,
+    });
+
+    if ($.fn.DataTable.isDataTable("#example")) {
+      $("#example").DataTable().destroy();
+    }
+
+    GetDataTAble(company_id, from_date, upto_date);
   };
   return (
     <Fragment>
       <Card>
         <CardBody>
-      <Row>
-        <Col>
-          <fieldset>
-            <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Row className="mt-3">
-                <Col xl="4" md="6" sm="12">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Company</InputGroupText>
-                      <Controller
-                        name="company"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={company}
-                            className="form-control p-0 border-0"
-                            placeholder="Select a company"
-                            menuPortalTarget={document.body}
+          <Row>
+            <Col>
+              <fieldset>
+                <legend>{title}</legend>
+                <Form
+                  className="px-2"
+                  noValidate=""
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <Row className="mt-3">
+                    <Col xl="4" md="6" sm="12">
+                      <FormGroup className="m-form__group">
+                        <InputGroup>
+                          <InputGroupText>Company</InputGroupText>
+                          <Controller
+                            name="company"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={company}
+                                className="form-control p-0 border-0"
+                                placeholder="Select a company"
+                                menuPortalTarget={document.body}
                                 menuPosition="fixed"
                                 styles={{
                                   menuPortal: (base) => ({
@@ -245,91 +248,95 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
                                     zIndex: 99999,
                                   }),
                                 }}
-                          />
-                        )}
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                </Col>
-             
-                <Col xl="3" md="6" sm="12">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>From</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="from"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
                               />
                             )}
                           />
-                        </Col>
-                      </InputGroup>
-                    </FormGroup>
-                  </Row>
-                </Col>
-                <Col xl="3" md="6" sm="12">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>Upto</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="to"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
-                              />
-                            )}
-                          />
-                        </Col>
-                      </InputGroup>
-                    </FormGroup>
-                  </Row>
-                </Col>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
 
-                <Col className="ms-auto" xl="2" md="2" sm="12">
-                  <div className="text-end">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        type: "submit",
-                      }}
-                    >
-                      {btnTitle}
-                    </Btn>
-                  </div>
-                </Col>
-              </Row>
-            </Form>
-          </fieldset>
-        </Col>
-      </Row>
-      </CardBody>
+                    <Col xl="3" md="6" sm="12">
+                      <Row>
+                        <FormGroup className="m-form__group">
+                          <InputGroup>
+                            <Col xs="4">
+                              <InputGroupText>From</InputGroupText>
+                            </Col>
+                            <Col xs="8">
+                              <Controller
+                                name="from"
+                                control={control}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    className={`form-control `}
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                  />
+                                )}
+                              />
+                            </Col>
+                          </InputGroup>
+                        </FormGroup>
+                      </Row>
+                    </Col>
+                    <Col xl="3" md="6" sm="12">
+                      <Row>
+                        <FormGroup className="m-form__group">
+                          <InputGroup>
+                            <Col xs="4">
+                              <InputGroupText>Upto</InputGroupText>
+                            </Col>
+                            <Col xs="8">
+                              <Controller
+                                name="to"
+                                control={control}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    className={`form-control `}
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                  />
+                                )}
+                              />
+                            </Col>
+                          </InputGroup>
+                        </FormGroup>
+                      </Row>
+                    </Col>
+
+                    <Col className="ms-auto" xl="2" md="2" sm="12">
+                      <div className="text-end">
+                        <Btn
+                          attrBtn={{
+                            color: "primary",
+                            type: "submit",
+                          }}
+                        >
+                          {btnTitle}
+                        </Btn>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </fieldset>
+            </Col>
+          </Row>
+        </CardBody>
       </Card>
       <Card>
-                <CardBody>
-                         <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
-      <Container fluid>
-        <Row>
-          <Col sm="12">
-             <div className="text-end my-3">
-                <button className="btn btn-primary">Delete Rack Cent</button>
+        <CardBody>
+          <HeaderCard
+            title="Rack Cent List"
+            download={true}
+            downloadHeading="Download"
+          />
+          <Container fluid>
+            <Row>
+              <Col sm="12">
+                <div className="text-end my-3">
+                  <button className="btn btn-primary">Delete Rack Cent</button>
                 </div>
                 <div className="table-responsive">
                   <table
@@ -350,11 +357,10 @@ const EssoGroupRackcentList = ({ title, btnTitle }) => {
                     <tbody></tbody>
                   </table>
                 </div>
-             
-          </Col>
-        </Row>
-      </Container>
-      </CardBody>
+              </Col>
+            </Row>
+          </Container>
+        </CardBody>
       </Card>
     </Fragment>
   );

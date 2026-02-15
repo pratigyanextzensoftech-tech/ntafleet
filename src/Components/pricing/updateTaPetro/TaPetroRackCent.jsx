@@ -108,9 +108,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       });
   });
 
-  return () => {
-    $(document).off("click", ".update-btn"); // 🧹 cleanup on unmount
-  };
+  return () => {   $(document).off("click", ".update-btn"); };
 }, [dynamicColumns, companyId]);
 
   useEffect(() => {

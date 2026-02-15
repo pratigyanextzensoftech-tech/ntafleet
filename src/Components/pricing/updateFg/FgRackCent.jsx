@@ -17,8 +17,9 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { 
   fg_group_input,
-  ta_cent,
+  fg_cent,
   fgcompany,
+  rack_cent,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -76,19 +77,25 @@ const FgRackCent = ({ title, btnTitle }) => {
 
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
 
-      axios
-        .put(`${ta_cent}/${id}`, updateData)
-        .then((response) => {
-          toast.success("Data updated");
-        })
-        .catch((error) => {
-          toast.error("Error In Data update");
-        });
-    });
+  $(document).off("click", ".update-btn");   
+  $(document).on("click", ".update-btn", function () {
+      const id = $(this).data("id");
+      const updateData = {}; 
+      const rack_ca = document.getElementById(`rack_ca${id}`).value;
+      const rack_us = document.getElementById(`rack_us${id}`).value;
+      updateData.rack_ca=rack_ca;
+      updateData.rack_us=rack_us; 
+    axios
+      .put(`${rack_cent}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+      })
+      .catch(() => {
+        toast.error("Error In Data update");
+      });
+  }); 
+  return () => {   $(document).off("click", ".update-btn"); }; 
   }, [dynamicColumns, companyId]);
 
   useEffect(() => {

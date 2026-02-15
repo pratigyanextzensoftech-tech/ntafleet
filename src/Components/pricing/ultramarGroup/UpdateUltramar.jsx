@@ -103,6 +103,8 @@ const UpdateUltramar = ({ title, btnTitle }) => {
     reset();
     setResetShow(false);
     setDynamicColumns([]); 
+     setDynamicCompany([]);
+ 
   };
 
   /* ================= RENDER ================= */

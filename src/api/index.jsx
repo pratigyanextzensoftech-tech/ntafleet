@@ -97,6 +97,7 @@ export const ta_saverowvalue = `${baseurl}/api/ta_cent/upsert`;
 export const fg_group_input = `${baseurl}/api/rack_cent/fg_group_input`;
 export const fg_get_rowvalue = `${baseurl}/api/rack_cent/fg_row_value`;
 export const fg_saverowvalue = `${baseurl}/api/rack_cent/upsert`;
+ 
 
 export const ul_group_ulgroup = `${baseurl}/api/ul_loc_group/ul_group`;
 export const ul_group_ulgroupInput = `${baseurl}/api/ul_loc_group/ul_group_input`;

@@ -102,7 +102,8 @@ const UpdateIrving = ({ title, btnTitle }) => {
   const handleReset = () => {
     reset();
     setResetShow(false);
-    setDynamicColumns([]); 
+    setDynamicCompany([]); 
+     setDynamicColumns([]); 
   };
 
   /* ================= RENDER ================= */

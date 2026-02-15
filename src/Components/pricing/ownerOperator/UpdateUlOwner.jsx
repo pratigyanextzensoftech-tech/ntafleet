@@ -76,8 +76,7 @@ const UpdateUlOwner = ({ title, btnTitle }) => {
         console.warn("pricingDate missing");
         return;
       }
-
-      // 3️⃣ Fetch TA row values (FIXED URL)
+ 
       const rowRes = await fetch(
         `${ulOwner_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
@@ -93,6 +92,8 @@ const UpdateUlOwner = ({ title, btnTitle }) => {
     reset();
     setResetShow(false);
     setDynamicColumns([]);
+     setDynamicCompany([]);
+ 
   };
 
   /* ================= RENDER ================= */

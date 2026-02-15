@@ -42,8 +42,7 @@ const UpdateEssoOwner = ({ title, btnTitle }) => {
 
     company.map((c, cid) => 
       {
-      let payload = { company_id: c.company_id || 0 }; 
-      console.log(payload)
+      let payload = { company_id: c.company_id || 0 };  
       const rack_ca = document.getElementById(`rack_ca${c.company_id}`).value;
       const rack_qc = document.getElementById(`rack_qc${c.company_id}`).value;
       const rack_us = document.getElementById(`rack_us${c.company_id}`).value;
@@ -94,6 +93,8 @@ const UpdateEssoOwner = ({ title, btnTitle }) => {
     reset();
     setResetShow(false);
     setDynamicColumns([]);
+     setDynamicCompany([]);
+ 
   };
 
   /* ================= RENDER ================= */

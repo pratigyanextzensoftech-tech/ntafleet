@@ -90,6 +90,7 @@ const UpdateFgRack = ({ title, btnTitle }) => {
   const handleReset = () => {
     reset();
     setResetShow(false);
+    setDynamicCompany([]);
     setDynamicColumns([]);
   };
 

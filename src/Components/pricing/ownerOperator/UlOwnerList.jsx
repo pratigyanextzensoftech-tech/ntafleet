@@ -15,7 +15,7 @@ import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import { 
+import {
   ul_group_owner_ulgroupInput,
   ul_owner_cent,
   ulOwnercompany,
@@ -54,7 +54,6 @@ const UlOwnerList = ({ title, btnTitle }) => {
   }, [company, setValue]);
 
   useEffect(() => {
- 
     axios
       .get(ulOwnercompany)
       .then((res) => {
@@ -75,32 +74,39 @@ const UlOwnerList = ({ title, btnTitle }) => {
 
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () 
-    {
-       const id = $(this).data("id");
-       const updateData = {id}; 
-        updateData[`rack_ca${id}`] = $(`#rack_ca${id}`).val();
-        updateData[`rack_us${id}`] = $(`#rack_us${id}`).val();
-        updateData[`rack_qc${id}`] = $(`#rack_qc${id}`).val();
-console.log(updateData);
+    $(document).off("click", ".update-btn");
+    $(document).on("click", ".update-btn", function () {
+      const id = $(this).data("id");
+      const updateData = {};
+      const rack_ca = document.getElementById(`rack_ca${id}`).value;
+      const rack_qc = document.getElementById(`rack_qc${id}`).value;
+      const rack_us = document.getElementById(`rack_us${id}`).value;
+      updateData.rack_ca = rack_ca;
+      updateData.rack_qc = rack_qc;
+      updateData.rack_us = rack_us;
+
+      dynamicGroupIds.forEach((groupid) => {
+        const inputId = `#c${id}g${groupid}`;
+        updateData[`group_${groupid}`] = $(inputId).val();
+      });
 
       axios
         .put(`${ul_owner_cent}/${id}`, updateData)
-        .then((response) => {
-          console.log(response);
-          
+        .then(() => {
           toast.success("Data updated");
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error("Error In Data update");
         });
     });
+
+    return () => {
+      $(document).off("click", ".update-btn");
+    };
   }, [dynamicColumns, companyId]);
 
   useEffect(() => {
- 
-      GetDataTAble();
-   
+    GetDataTAble();
   }, []);
 
   function GetDataTAble(company_id, pricingDate, rackUs, rackCa) {
@@ -112,7 +118,7 @@ console.log(updateData);
       { data: "rack_qc", title: "Rack-QC,PQ" },
       { data: "rack_us", title: "Rack-Other" },
       { data: "added_by", title: "Added_By" },
-      { data: "added_on", title: "Added_On" }, 
+      { data: "added_on", title: "Added_On" },
       { data: "Action", title: "Action", orderable: false },
     ];
 
@@ -156,17 +162,17 @@ console.log(updateData);
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {
-                company_id:row[0],
+                company_id: row[0],
                 company_name: row[2],
                 pricing_date: row[3],
                 rack_ca: row[4],
                 rack_qc: row[5],
                 rack_us: row[6],
                 added_by: row[7],
-                added_on: row[8], 
+                added_on: row[8],
                 Action: row[10],
               };
-                
+
               return obj;
             });
             console.log(tableData);
@@ -212,7 +218,7 @@ console.log(updateData);
 
     if ($.fn.DataTable.isDataTable("#example")) {
       $("#example").DataTable().destroy();
-    } 
+    }
     GetDataTAble(company_id, pricingDate, rackUs, rackCa);
     setLoading(false);
   };
@@ -360,7 +366,7 @@ console.log(updateData);
                         <th>Rack_CA </th>
                         <th>Rack_US </th>
                         <th>Added_By </th>
-                        <th>Added_On </th> 
+                        <th>Added_On </th>
                         <th>Action</th>
                       </tr>
                     </thead>

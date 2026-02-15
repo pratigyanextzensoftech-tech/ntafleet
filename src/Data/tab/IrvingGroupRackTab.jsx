@@ -16,12 +16,12 @@ export const IrvingGroupRackTab = [
     component: <UpdateIrving title=" Update Irving Group Rack Cent" btnTitle="Search Group" />
      
   },
-  {
-    id: '2',
-    label: 'Upload Irving Group Rack Cent ',
-    // component: <UploadEssoGroupRackForm title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" />,
-    component: <UploadIrving  title="Upload Irving Group Rack Cent " btnTitle="Upload Rack Pricing" apiname={""}/>,
-  },
+  // {
+  //   id: '2',
+  //   label: 'Upload Irving Group Rack Cent ',
+  //   // component: <UploadEssoGroupRackForm title="Upload ESSO Group Rack Cent " btnTitle="Upload Rack Pricing" />,
+  //   component: <UploadIrving  title="Upload Irving Group Rack Cent " btnTitle="Upload Rack Pricing" apiname={""}/>,
+  // },
    {
     id: '3',
     label: 'Irving Group  Cent List ',

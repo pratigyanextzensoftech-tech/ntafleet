@@ -25,9 +25,9 @@ export const EssoGroupRackTab = [
     component: <EssoGroupRackcentList tabletitle="ESSO Group Rack Cent List"  title="Filters " btnTitle="Search" />
    }
 ,
- {
-    id: '4',
-    label: 'ESSO Group Rack Cent List (New)',
-    component: <EssoGroupForm tabletitle="ESSO Group Rack Cent List (New)" title="Filters" btnTitle="Search " />
- }
+//  {
+//     id: '4',
+//     label: 'ESSO Group Rack Cent List (New)',
+//     component: <EssoGroupForm tabletitle="ESSO Group Rack Cent List (New)" title="Filters" btnTitle="Search " />
+//  }
 ];

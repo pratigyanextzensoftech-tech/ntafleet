@@ -87,23 +87,31 @@ useEffect(() => {
 }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
-      dynamicGroupIds.forEach((groupid) => {
-        const inputId = `#c${id}g${groupid}`;
-        const value = $(inputId).val();
-        updateData[`group_${groupid}`] = value;
-      });
 
-      axios.put(`${ul_cent}/${id}`, updateData)
-        .then((response) => {
-          toast.success("Data updated");
-        })
-        .catch((error) => {
-          toast.error("Error In Data update");
-        });
+    $(document).off("click", ".update-btn");  
+  $(document).on("click", ".update-btn", function () {
+    const id = $(this).data("id");
+    const updateData = {  };
+ 
+    dynamicGroupIds.forEach((groupid) => {
+      const inputId = `#c${id}g${groupid}`;
+      updateData[`group_${groupid}`] = $(inputId).val();
     });
+ 
+    axios
+      .put(`${ul_cent}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+      })
+      .catch(() => {
+        toast.error("Error In Data update");
+      });
+  });
+ 
+  return () => {   $(document).off("click", ".update-btn"); };
+
+
+    
   }, [dynamicColumns, companyId]);
 
 
