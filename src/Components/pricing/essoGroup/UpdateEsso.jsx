@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns"; 
 import Loader from "../../../Layout/Loader";
 import { toast } from 'react-toastify';
-import {tacompany, ta_get_rowvalue, ta_group_Tagroup as APINAME,ta_saverowvalue } from "../../../api"; 
+import {essocompany, esso_get_rowvalue, esso_group_essogroup as APINAME,esso_saverowvalue } from "../../../api"; 
 const UpdateEsso = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
@@ -42,7 +42,7 @@ const UpdateEsso = ({ title, btnTitle }) => {
         const groups = await gres.json();
         if (!Array.isArray(groups)) return; 
         
-       const res = await fetch(tacompany);
+       const res = await fetch(essocompany);
         const company = await res.json();
         if (!Array.isArray(company)) return; 
         
@@ -63,7 +63,7 @@ const UpdateEsso = ({ title, btnTitle }) => {
             payload['dated'] = dated; 
             console.log(c.company_name+" : ",payload)
             
-            axios.post(ta_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+            axios.post(esso_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
         }) 
        toast.success("Rack Cent Updated Succesfully");  
        setloading(false);
@@ -76,11 +76,22 @@ const UpdateEsso = ({ title, btnTitle }) => {
 
     try {
       
-      const res = await fetch(APINAME);
-      const groups = await res.json();
-      if (!Array.isArray(groups)) return;
-      setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
-      setGroupIds(groups.map((g) => g.id));
+     const res = await fetch(APINAME);
+const data = await res.json();
+if (Array.isArray(data)) {
+  setDynamicColumns(
+    data.map((g) => (
+      <>
+        {g.name}
+        <br />
+        {g.prov}
+      </>
+    ))
+  );
+
+  setGroupIds(data.map((g) => g.id));
+}
+
       // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
         console.warn("pricingDate missing");
@@ -89,7 +100,7 @@ const UpdateEsso = ({ title, btnTitle }) => {
 
       // 3️⃣ Fetch TA row values (FIXED URL)
       const rowRes = await fetch(
-        `${ta_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+        `${esso_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
       const rowData = await rowRes.json();
       if (!Array.isArray(rowData)) return;
