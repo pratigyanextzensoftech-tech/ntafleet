@@ -80,8 +80,7 @@ const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
       const groups = await res.json();
       if (!Array.isArray(groups)) return;
       setDynamicColumns(groups.map((g) => Number(g.ibp_adjustment).toFixed(4)));
-      setGroupIds(groups.map((g) => g.id));
-      // 2️⃣ Guard: pricingDate must exist
+      setGroupIds(groups.map((g) => g.id)); 
       if (!formData?.pricingDate) {
         console.warn("pricingDate missing");
         return;
@@ -102,6 +101,7 @@ const UpdateTaPetroRackCent = ({ title, btnTitle }) => {
   const handleReset = () => {
     reset();
     setResetShow(false);
+    setDynamicCompany([]);
     setDynamicColumns([]); 
   };
 

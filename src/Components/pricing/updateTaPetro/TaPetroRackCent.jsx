@@ -19,7 +19,8 @@ import { useCompany } from "../../../Hooks/Dropdowns";
 import {
   ta_group_Tagroup as APINAME,
   ta_group_TagroupInput,
-  ta_cent,tacompany
+  ta_cent,
+  tacompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -32,11 +33,11 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
-  const [company,setCompany]=useState();
+  const [company, setCompany] = useState();
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
   const [open, setOpen] = useState(false);
- 
+
   const {
     register,
     control,
@@ -45,72 +46,80 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm({
     defaultValues: {
-    company: null,
-  },
+      company: null,
+    },
   });
-   useEffect(() => {
-      if (company && company.length > 0) {
-        setValue("company", company[0]); // set first option
-      }
-    }, [company, setValue]);
+  useEffect(() => {
+    if (company && company.length > 0) {
+      setValue("company", company[0]); // set first option
+    }
+  }, [company, setValue]);
   useEffect(() => {
     fetch(APINAME)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) => Number(item.ibp_adjustment).toFixed(4)));
+          setDynamicColumns(
+            data.map((item) => Number(item.ibp_adjustment).toFixed(4)),
+          );
           setGroupIds(data.map((item) => item.id));
-
-        } 
-        else {
+        } else {
           console.error("APINAME response is not an array:", data);
         }
       })
-      .catch((err) => console.error(err));  axios.get(tacompany)
-            .then((res) => {
-              const data = res.data;
-              console.log(data)
-                const options = [
-        { value: '', label: 'All Companies' },
-        ...data.map(company => ({
-          value: company.company_id,
-          label: company.company_name,
-        }))
-      ];
-      
-           setCompany(options)
-            })
-            .catch((err) => console.error(err));
+      .catch((err) => console.error(err));
+    axios
+      .get(tacompany)
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+        const options = [
+          { value: "", label: "All Companies" },
+          ...data.map((company) => ({
+            value: company.company_id,
+            label: company.company_name,
+          })),
+        ];
+
+        setCompany(options);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   // Step 2: Initialize DataTable
-  useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
-      dynamicGroupIds.forEach((groupid) => {
-        const inputId = `#c${id}g${groupid}`;
-        const value = $(inputId).val();
-        updateData[`group_${groupid}`] = value;
-      });
-
-      axios.put(`${ta_cent}/${id}`, updateData)
-        .then((response) => {
-          toast.success("Data updated");
-        })
-        .catch((error) => {
-          toast.error("Error In Data update");
-        });
-    });
-  }, [dynamicColumns, companyId]);
-
  useEffect(() => {
-   if (dynamicColumns.length > 0) {
-     GetDataTAble();
-   }
- }, [dynamicColumns]);
+  $(document).off("click", ".update-btn");   
+  $(document).on("click", ".update-btn", function () {
+    const id = $(this).data("id");
+    const updateData = {  };
 
-  function GetDataTAble(company_id,start_date,end_date) {
+    dynamicGroupIds.forEach((groupid) => {
+      const inputId = `#c${id}g${groupid}`;
+      updateData[`group_${groupid}`] = $(inputId).val();
+    });
+
+    axios
+      .put(`${ta_cent}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+      })
+      .catch(() => {
+        toast.error("Error In Data update");
+      });
+  });
+
+  return () => {
+    $(document).off("click", ".update-btn"); // 🧹 cleanup on unmount
+  };
+}, [dynamicColumns, companyId]);
+
+  useEffect(() => {
+    if (dynamicColumns.length > 0) {
+      GetDataTAble();
+    }
+  }, [dynamicColumns]);
+
+  function GetDataTAble(company_id, start_date, end_date) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -122,7 +131,7 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       serverSide: true,
       processing: true,
       responsive: true,
-      destroy:true,
+      destroy: true,
       paging: true,
       searching: true,
       ordering: true,
@@ -140,16 +149,15 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
       ],
 
       ajax: function (data, callback) {
-       
         const params = new URLSearchParams();
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
-        params.append("company_id", company_id?company_id:"");
-        params.append("start_date", start_date?start_date:"");
-        params.append("end_date", end_date?end_date:"");
+        params.append("company_id", company_id ? company_id : "");
+        params.append("start_date", start_date ? start_date : "");
+        params.append("end_date", end_date ? end_date : "");
         fetch(`${ta_group_TagroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
@@ -166,7 +174,6 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
               });
 
               return obj;
-
             });
             console.log(tableData);
 
@@ -176,7 +183,6 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
               recordsFiltered: json.recordsFiltered,
               data: tableData,
             });
-
           })
           .catch((err) => {
             console.error("Error fetching table data:", err);
@@ -199,50 +205,50 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
   };
   const onSubmit = (data) => {
     setLoading(true);
-          const company_id = data.company?.value ?? "";
-          const start_date = data.from ? formatDate(data.from): "";
-          const end_date = data.to? formatDate(data.to): "";
-         
-           console.log("Submitting:", {
-              company_id,
-              start_date,
-              end_date,
-            });
-          
-            if ($.fn.DataTable.isDataTable("#example")) {
-              $("#example").DataTable().destroy();
-            }    
-            GetDataTAble(company_id, start_date, end_date);
-            setLoading(false);
+    const company_id = data.company?.value ?? "";
+    const start_date = data.from ? formatDate(data.from) : "";
+    const end_date = data.to ? formatDate(data.to) : "";
+
+    console.log("Submitting:", {
+      company_id,
+      start_date,
+      end_date,
+    });
+
+    if ($.fn.DataTable.isDataTable("#example")) {
+      $("#example").DataTable().destroy();
+    }
+    GetDataTAble(company_id, start_date, end_date);
+    setLoading(false);
   };
   return (
     <Fragment>
-        <Card>
-              <CardBody>
-      <Row>
-        <Col>
-          <fieldset>
-            <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Row className="mt-3">
-                <Col xl="4" md="6" sm="12">
-                  <FormGroup className="m-form__group">
-                    <InputGroup>
-                      <InputGroupText>Company</InputGroupText>
-                      <Controller
-                        name="company"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            {...field}
-                            options={company}
-                            className="form-control p-0 border-0"
-                            placeholder="Select a company"
-                              menuPortalTarget={document.body}
+      <Card>
+        <CardBody>
+          <Row>
+            <Col>
+              <fieldset>
+                <legend>{title}</legend>
+                <Form
+                  className="px-2"
+                  noValidate=""
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <Row className="mt-3">
+                    <Col xl="4" md="6" sm="12">
+                      <FormGroup className="m-form__group">
+                        <InputGroup>
+                          <InputGroupText>Company</InputGroupText>
+                          <Controller
+                            name="company"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={company}
+                                className="form-control p-0 border-0"
+                                placeholder="Select a company"
+                                menuPortalTarget={document.body}
                                 menuPosition="fixed"
                                 styles={{
                                   menuPortal: (base) => ({
@@ -250,94 +256,97 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                                     zIndex: 99999,
                                   }),
                                 }}
-                          />
-                        )}
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                </Col>
-             
-                <Col xl="3" md="6" sm="12">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>From</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="from"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
                               />
                             )}
                           />
-                        </Col>
-                      </InputGroup>
-                    </FormGroup>
-                  </Row>
-                </Col>
-                <Col xl="3" md="6" sm="12">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>Upto</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="to"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
-                              />
-                            )}
-                          />
-                        </Col>
-                      </InputGroup>
-                    </FormGroup>
-                  </Row>
-                </Col>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
 
-                <Col className="ms-auto" xl="2" md="2" sm="12">
-                  <div className="text-end">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        type: "submit",
-                      }}
-                    >
-                      {btnTitle}
-                    </Btn>
-                  </div>
-                </Col>
-              </Row>
-            </Form>
-          </fieldset>
-        </Col>
-      </Row>
-      </CardBody>
+                    <Col xl="3" md="6" sm="12">
+                      <Row>
+                        <FormGroup className="m-form__group">
+                          <InputGroup>
+                            <Col xs="4">
+                              <InputGroupText>From</InputGroupText>
+                            </Col>
+                            <Col xs="8">
+                              <Controller
+                                name="from"
+                                control={control}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    className={`form-control `}
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                  />
+                                )}
+                              />
+                            </Col>
+                          </InputGroup>
+                        </FormGroup>
+                      </Row>
+                    </Col>
+                    <Col xl="3" md="6" sm="12">
+                      <Row>
+                        <FormGroup className="m-form__group">
+                          <InputGroup>
+                            <Col xs="4">
+                              <InputGroupText>Upto</InputGroupText>
+                            </Col>
+                            <Col xs="8">
+                              <Controller
+                                name="to"
+                                control={control}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    className={`form-control `}
+                                    selected={field.value}
+                                    onChange={(date) => field.onChange(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                  />
+                                )}
+                              />
+                            </Col>
+                          </InputGroup>
+                        </FormGroup>
+                      </Row>
+                    </Col>
+
+                    <Col className="ms-auto" xl="2" md="2" sm="12">
+                      <div className="text-end">
+                        <Btn
+                          attrBtn={{
+                            color: "primary",
+                            type: "submit",
+                          }}
+                        >
+                          {btnTitle}
+                        </Btn>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </fieldset>
+            </Col>
+          </Row>
+        </CardBody>
       </Card>
-       <Card>
-              <CardBody>
-                       <HeaderCard title="Rack Cent List" download={true} downloadHeading="Download"/>
-      <Container fluid>
-        <Row>
-          <Col sm="12">
-           
+      <Card>
+        <CardBody>
+          <HeaderCard
+            title="Rack Cent List"
+            download={true}
+            downloadHeading="Download"
+          />
+          <Container fluid>
+            <Row>
+              <Col sm="12">
                 <div className="text-end my-3">
-                <button className="btn btn-primary">Delete Rack Cent</button>
+                  <button className="btn btn-primary">Delete Rack Cent</button>
                 </div>
-                { <Loader loading={loading}/>}
+                {<Loader loading={loading} />}
                 <div className="table-responsive">
                   <table
                     id="example"
@@ -357,12 +366,11 @@ const TaPetroRackCent = ({ title, btnTitle }) => {
                     <tbody></tbody>
                   </table>
                 </div>
-             
-          </Col>
-        </Row>
-      </Container>
-      </CardBody>
-    </Card>
+              </Col>
+            </Row>
+          </Container>
+        </CardBody>
+      </Card>
     </Fragment>
   );
 };
