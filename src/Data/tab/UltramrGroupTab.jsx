@@ -7,7 +7,7 @@ export const UltramarGroupTab = [
     label: "Update ULTRAMAR  Group Rack Cent",
     component: (
       <UpdateUltramar
-        title=" ULTRAMAR  Group Rack Entry"
+        title="Update ULTRAMAR  Group Rack Entry"
         btnTitle="Search Group"
       />
     ),
@@ -18,7 +18,7 @@ export const UltramarGroupTab = [
     label: "Upload ULTRAMAR  Group Rack Cent ",
     component: (
       <UploadUlGroup
-        title=" ULTRAMAR  Group Rack Entry"
+        title="Upload ULTRAMAR  Group Rack Entry"
         btnTitle="Upload Rack Pricing"
       />
     ),

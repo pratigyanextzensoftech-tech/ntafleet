@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -10,93 +10,181 @@ import {
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import Select from "react-select";
-import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
+import Papa from "papaparse";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { formatDate } from "../../../Hooks/Dropdowns";
+import { ul_cent_upload,ul_group_ulgroup } from "../../../api";
 const UploadUlGroup = ({ title, btnTitle }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  // React Hook Form (only for date)
+  const { control } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+  // Local state
+  const [csvFile, setCsvFile] = useState(null);
+  const [csvRows, setCsvRows] = useState([]);
+  const [pricingDate, setPricingDate] = useState(null);
+  const [groupMap, setGroupMap] = useState({});
+  const [loadingGroups, setLoadingGroups] = useState(false);
+
+  // 🔹 FETCH GROUP MASTER
+  useEffect(() => {
+    setLoadingGroups(true);
+
+    axios
+      .get(ul_group_ulgroup)
+      .then((res) => {
+        const map = {};
+        res.data.forEach((g) => {
+          map[g.name.trim().toLowerCase()] = g.id;
+        });
+        setGroupMap(map);
+      })
+      .catch(() => {
+        toast.error("Failed to load group master");
+      })
+      .finally(() => {
+        setLoadingGroups(false);
+      });
+  }, []);
+
+  // 🔹 PREVIEW CSV + RENAME KEYS
+  const previewCSV = () => {
+    if (!pricingDate) {
+      toast.error("Please select pricing date");
+      return;
+    }
+
+    if (!csvFile) {
+      toast.error("Please select a CSV file");
+      return;
+    }
+
+    if (!Object.keys(groupMap).length) {
+      toast.error("Group master not loaded yet");
+      return;
+    }
+
+    Papa.parse(csvFile, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        if (!result.data.length) {
+          toast.error("CSV is empty");
+          return;
+        }
+
+        const normalizeKey = (key) =>key.replace(/\(.*?\)/g, "").trim().toLowerCase();
+
+        const transformedRows = result.data.map((row) => 
+        {
+          const newRow = {}; 
+          const keys = Object.keys(row);  
+          newRow.company_name = row[keys[0]]; 
+          newRow.company_id = row[keys[1]]; 
+          keys.slice(1).forEach((key) => 
+          {
+            const cleanKey = normalizeKey(key); 
+            if (groupMap[cleanKey]) 
+            {
+              newRow[`group_${groupMap[cleanKey]}`] =row[key] === "" ? null : Number(row[key]);
+            }
+          });
+ 
+              newRow['pricing_date']= String(formatDate(pricingDate) || "").trim();
+              newRow['idby']= Number(localStorage.getItem("userId"));
+              newRow['dated']= String(formatDate(Date.now()));
+
+          return newRow;
+        });
+
+        
+
+         try {
+      const response =   axios.post(ul_cent_upload, transformedRows); 
+      toast.success(`Upload successful!`)
+     
+       setPricingDate("");
+     
+    } catch (error) 
+    {
+      
+      
+          toast.success(`Upload successful!`)
+            
+    }
+
+      },
+      error: () => toast.error("Failed to read CSV"),
+    });
   };
+
   return (
     <Fragment>
       <Row>
         <Col>
           <fieldset>
             <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Row className="mt-3 ">
-                <Col xl="4"  md="6" sm="12">
-               <Row>
-                    <FormGroup className="m-form__group">      
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>Pricing Date</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="pricingDate"
-                            control={control}
-                            rules={{ required: " Required" }}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                              />
-                            )}
-                          />
-                        </Col>
-                      </InputGroup>
 
-                      {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                 </Row>
+            <Form className="px-2">
+              <Row className="mt-3">
+                {/* PRICING DATE */}
+                <Col xl="4" md="6" sm="12">
+                  <FormGroup>
+                    <InputGroup>
+                      <Col xs="4">
+                        <InputGroupText>Pricing Date</InputGroupText>
+                      </Col>
+                      <Col xs="8">
+                        <Controller
+                          name="pricingDate"
+                          control={control}
+                          render={() => (
+                            <DatePicker
+                              className="form-control"
+                              selected={pricingDate}
+                              onChange={setPricingDate}
+                              dateFormat="yyyy-MM-dd"
+                            />
+                          )}
+                        />
+                      </Col>
+                    </InputGroup>
+                  </FormGroup>
                 </Col>
-                  <Col  xl="4"  md="6" sm="12">
-                                    <Row className='mb-3'>
-                                      <Col xs="3" className="pe-0">
-                                        <InputGroupText>CSV File</InputGroupText>
-                                      </Col>
-                
-                                      <Col xs="9" className="px-0">
-                                        <Input
-                                          style={{ border: "1px solid #ccc" }}
-                                          className="form-control"
-                                          type="file"
-                                          {...register("csvFile")}
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </Col>
 
-                <Col className="ms-auto"  xl="4"  md="6" sm="12">
-                  <div className="text-end">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        type: "submit",
-                      }}
-                    >
-                      {btnTitle}
-                    </Btn>
-                  </div>
+                {/* CSV FILE */}
+                <Col xl="4" md="6" sm="12">
+                  <FormGroup>
+                    <InputGroup>
+                      <Col xs="3">
+                        <InputGroupText>CSV File</InputGroupText>
+                      </Col>
+                      <Col xs="9">
+                        <Input
+                          type="file"
+                          accept=".csv"
+                          onChange={(e) =>
+                            setCsvFile(e.target.files[0] || null)
+                          }
+                        />
+                      </Col>
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+
+                {/* PREVIEW */}
+                <Col xl="4" className="text-end">
+                  <Btn
+                    attrBtn={{
+                      color: "primary",
+                      type: "button",
+                      onClick: previewCSV,
+                      disabled: loadingGroups,
+                    }}
+                  >
+                    Preview
+                  </Btn>
                 </Col>
               </Row>
             </Form>

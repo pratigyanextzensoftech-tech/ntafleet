@@ -103,6 +103,7 @@ export const ul_group_ulgroup = `${baseurl}/api/ul_loc_group/ul_group`;
 export const ul_group_ulgroupInput = `${baseurl}/api/ul_loc_group/ul_group_input`;
 export const ul_get_rowvalue = `${baseurl}/api/ul_cent/get_rowvalue`;
 export const ul_saverowvalue = `${baseurl}/api/ul_cent/upsert`;
+export const ul_cent_upload= `${baseurl}/api/ul_cent/ul_upload`;
 
 export const irv_group_irvgroup = `${baseurl}/api/irv_loc_group/irv_group`;
 export const irv_group_irvgroupInput = `${baseurl}/api/irv_loc_group/irv_group_input`;
@@ -163,6 +164,7 @@ export const zero_discount = `${baseurl}/api/zero_discount`;
 export const esso_cent = `${baseurl}/api/esso_cent`;
 export const irv_cent = `${baseurl}/api/irv_cent`;
 export const esso_cent_new = `${baseurl}/api/esso_cent_new`;
+export const esso_cent_upload = `${baseurl}/api/esso_cent_new/esso_upload`;
 export const love_cent = `${baseurl}/api/love_cent`;
 export const esso_city_cent = `${baseurl}/api/esso_city_cent`;
 export const esso_group_cent = `${baseurl}/api/esso_group_cent`;
