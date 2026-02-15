@@ -129,7 +129,7 @@ const renameKeys = (row, keyMap) => {
         ...renamed,
         supplier: String(data.supplier?.label || "").trim(),
         pricing_date: String(formatDate(pricingDate) || "").trim(),
-        idby: Number(localStorage.getItem("UserId")),
+        idby: Number(localStorage.getItem("userId")),
         dated: Date.now(),
       };
     });

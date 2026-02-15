@@ -88,6 +88,7 @@ export const owner_report = `${baseurl}/api/owner_report`;
 export const owner_report_downlod = `${baseurl}/api/owner_report/download`;
 export const loc_group_Essogroup = `${baseurl}/api/loc_group_new/esso_group`;
 export const Esso_cent_Data = `${baseurl}/api/loc_group_new/esso_group_input`;
+export const Esso_csv_upload = `${baseurl}/api/esso_cent_new/upload`;
 
 export const ta_group_Tagroup = `${baseurl}/api/ta_group/ta_group`;
 export const ta_group_TagroupInput = `${baseurl}/api/ta_group/ta_group_input`;
