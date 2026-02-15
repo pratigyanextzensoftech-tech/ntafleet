@@ -111,11 +111,7 @@ export const esso_group_essogroupCity = `${baseurl}/api/loc_group_new/esso_group
 export const esso_group_essogroupInput = `${baseurl}/api/loc_group_new/esso_group_input`;
 export const esso_group_essogroupInputCity = `${baseurl}/api/loc_group_new/esso_group_input_city`;
 
-<<<<<<< HEAD
-// export const esso_get_rowvalue = `${baseurl}/api/esso_cent/get_rowvalue`;
-// export const esso_saverowvalue = `${baseurl}/api/esso_cent/upsert`;
- 
-=======
+
 export const esso_get_rowvalue = `${baseurl}/api/esso_cent_new/get_rowvalue`;
 export const esso_saverowvalue = `${baseurl}/api/esso_cent_new/upsert`;
 
@@ -127,11 +123,7 @@ export const esso_owner_cent = `${baseurl}/api/owner_rack_cent`;
 export const ul_group_owner_ulgroupInput = `${baseurl}/api/owner_rack_cent/esso_group_input`;
 export const ulOwner_get_rowvalue = `${baseurl}/api/owner_rack_cent/esso_row_value`;
 export const ul_owner_saverowvalue = `${baseurl}/api/owner_rack_cent/upsert`;
-export const ul_owner_cent = `${baseurl}/api/owner_rack_cent`;
-
-
->>>>>>> aa78810ded8c5319353bcb0e1a0d2fe02a4ed956
-
+export const ul_owner_cent = `${baseurl}/api/owner_rack_cent`; 
 export const love_group_lovegroup = `${baseurl}/api/love_group/love_group`;
 export const love_group_lovegroupInput = `${baseurl}/api/love_group/love_group_input`;
 
