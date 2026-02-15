@@ -18,7 +18,7 @@ import DatePicker from "react-datepicker";
 import { 
   ul_group_owner_ulgroupInput,
   ul_owner_cent,
-  essocompany,
+  ulOwnercompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -56,7 +56,7 @@ const UlOwnerList = ({ title, btnTitle }) => {
   useEffect(() => {
  
     axios
-      .get(essocompany)
+      .get(ulOwnercompany)
       .then((res) => {
         const data = res.data;
         console.log(data);
@@ -75,13 +75,20 @@ const UlOwnerList = ({ title, btnTitle }) => {
 
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
+    $(document).on("click", ".update-btn", function () 
+    {
+       const id = $(this).data("id");
+       const updateData = {id}; 
+        updateData[`rack_ca${id}`] = $(`#rack_ca${id}`).val();
+        updateData[`rack_us${id}`] = $(`#rack_us${id}`).val();
+        updateData[`rack_qc${id}`] = $(`#rack_qc${id}`).val();
+console.log(updateData);
 
       axios
         .put(`${ul_owner_cent}/${id}`, updateData)
         .then((response) => {
+          console.log(response);
+          
           toast.success("Data updated");
         })
         .catch((error) => {
@@ -149,14 +156,15 @@ const UlOwnerList = ({ title, btnTitle }) => {
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {
-                company_name: row[0],
-                pricing_date: row[1],
-                rack_ca: row[2],
-                rack_qc: row[3],
-                rack_us: row[4],
-                added_by: row[5],
-                added_on: row[6], 
-                Action: row[8],
+                company_id:row[0],
+                company_name: row[2],
+                pricing_date: row[3],
+                rack_ca: row[4],
+                rack_qc: row[5],
+                rack_us: row[6],
+                added_by: row[7],
+                added_on: row[8], 
+                Action: row[10],
               };
                 
               return obj;
@@ -346,6 +354,7 @@ const UlOwnerList = ({ title, btnTitle }) => {
                   >
                     <thead>
                       <tr>
+                        <th>Sr.</th>
                         <th>Company Name</th>
                         <th>Pricing Date</th>
                         <th>Rack_CA </th>

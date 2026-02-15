@@ -18,7 +18,7 @@ import DatePicker from "react-datepicker";
 import { 
   esso_group_owner_essogroupInput,
   esso_owner_cent,
-  essocompany,
+  essoOwnercompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
@@ -56,7 +56,7 @@ const EssoOwnerRackList = ({ title, btnTitle }) => {
   useEffect(() => {
  
     axios
-      .get(essocompany)
+      .get(essoOwnercompany)
       .then((res) => {
         const data = res.data;
         console.log(data);
@@ -149,14 +149,15 @@ const EssoOwnerRackList = ({ title, btnTitle }) => {
             console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {
-                company_name: row[0],
-                pricing_date: row[1],
-                rack_ca: row[2],
-                rack_qc: row[3],
-                rack_us: row[4],
-                added_by: row[5],
-                added_on: row[6], 
-                Action: row[8],
+               company_id:row[0],
+                company_name: row[2],
+                pricing_date: row[3],
+                rack_ca: row[4],
+                rack_qc: row[5],
+                rack_us: row[6],
+                added_by: row[7],
+                added_on: row[8], 
+                Action: row[10],
               };
                 
               return obj;
@@ -346,6 +347,7 @@ const EssoOwnerRackList = ({ title, btnTitle }) => {
                   >
                     <thead>
                       <tr>
+                        <th>SR NO</th>
                         <th>Company Name</th>
                         <th>Pricing Date</th>
                         <th>Rack_CA </th>

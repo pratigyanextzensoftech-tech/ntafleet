@@ -7,6 +7,8 @@ export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
 export const companyall = `${baseurl}/api/company/all`;
 export const tacompany = `${baseurl}/api/company/taall`;
+export const essoOwnercompany = `${baseurl}/api/company/essoownerall`;
+export const ulOwnercompany = `${baseurl}/api/company/ulownerall`;
 export const fgcompany = `${baseurl}/api/company/fgall`;
 export const essocompany = `${baseurl}/api/company/essoall`;
 export const ulcompany = `${baseurl}/api/company/ulall`;
@@ -122,10 +124,11 @@ export const essoOwner_get_rowvalue = `${baseurl}/api/owner_rack_cent/esso_row_v
 export const esso_owner_saverowvalue = `${baseurl}/api/owner_rack_cent/upsert`;
 export const esso_owner_cent = `${baseurl}/api/owner_rack_cent`;
 
-export const ul_group_owner_ulgroupInput = `${baseurl}/api/owner_rack_cent/esso_group_input`;
-export const ulOwner_get_rowvalue = `${baseurl}/api/owner_rack_cent/esso_row_value`;
-export const ul_owner_saverowvalue = `${baseurl}/api/owner_rack_cent/upsert`;
-export const ul_owner_cent = `${baseurl}/api/owner_rack_cent`;
+export const ul_group_owner_ulgroupInput = `${baseurl}/api/ul_owner_rack_cent/ul_group_input`;
+export const ulOwner_get_rowvalue = `${baseurl}/api/ul_owner_rack_cent/ul_row_value`;
+export const ul_owner_saverowvalue = `${baseurl}/api/ul_owner_rack_cent/upsert`;
+export const ul_owner_cent = `${baseurl}/api/ul_owner_rack_cent`;
+
 
 
 

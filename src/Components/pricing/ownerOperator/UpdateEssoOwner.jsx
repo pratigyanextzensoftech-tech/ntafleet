@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns";
 import Loader from "../../../Layout/Loader";
 import { toast } from "react-toastify";
-import { essocompany, essoOwner_get_rowvalue, esso_owner_saverowvalue } from "../../../api";
+import { essoOwnercompany, essoOwner_get_rowvalue, esso_owner_saverowvalue } from "../../../api";
 const UpdateEssoOwner = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
@@ -36,15 +36,15 @@ const UpdateEssoOwner = ({ title, btnTitle }) => {
     const pricingDate = document.getElementById("pricingDate").value;
     const idby = localStorage.getItem("userId");
     const dated = formatDate(Date.now());
-    const res = await fetch(essocompany);
+    const res = await fetch(essoOwnercompany);
     const company = await res.json();
     if (!Array.isArray(company)) return;
 
     company.map((c, cid) => 
       {
       let payload = { company_id: c.company_id || 0 }; 
+      console.log(payload)
       const rack_ca = document.getElementById(`rack_ca${c.company_id}`).value;
-      console.log(rack_ca)
       const rack_qc = document.getElementById(`rack_qc${c.company_id}`).value;
       const rack_us = document.getElementById(`rack_us${c.company_id}`).value;
       payload["company_name"] = c.company_name;

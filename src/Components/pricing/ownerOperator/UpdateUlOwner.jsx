@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns";
 import Loader from "../../../Layout/Loader";
 import { toast } from "react-toastify";
-import { ulcompany, ulOwner_get_rowvalue, ul_owner_saverowvalue } from "../../../api";
+import { ulOwnercompany, ulOwner_get_rowvalue, ul_owner_saverowvalue } from "../../../api";
 const UpdateUlOwner = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
@@ -36,7 +36,7 @@ const UpdateUlOwner = ({ title, btnTitle }) => {
     const pricingDate = document.getElementById("pricingDate").value;
     const idby = localStorage.getItem("userId");
     const dated = formatDate(Date.now());
-    const res = await fetch(ulcompany);
+    const res = await fetch(ulOwnercompany);
     const company = await res.json();
     if (!Array.isArray(company)) return;
 
