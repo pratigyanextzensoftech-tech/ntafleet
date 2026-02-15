@@ -76,11 +76,22 @@ const UpdateEsso = ({ title, btnTitle }) => {
 
     try {
       
-      const res = await fetch(APINAME);
-      const groups = await res.json();
-      if (!Array.isArray(groups)) return;
-      setDynamicColumns(groups.map((g) => g.name+"<br/>"+g.prov));
-      setGroupIds(groups.map((g) => g.id));
+     const res = await fetch(APINAME);
+const data = await res.json();
+if (Array.isArray(data)) {
+  setDynamicColumns(
+    data.map((g) => (
+      <>
+        {g.name}
+        <br />
+        {g.prov}
+      </>
+    ))
+  );
+
+  setGroupIds(data.map((g) => g.id));
+}
+
       // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
         console.warn("pricingDate missing");
