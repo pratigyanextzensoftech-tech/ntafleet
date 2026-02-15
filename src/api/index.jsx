@@ -42,6 +42,7 @@ export const country_all = `${baseurl}/api/country/all`;
 export const moneycode_invoice = `${baseurl}/api/moneycode_invoice`;
 export const linamar_esso_loc = `${baseurl}/api/linamar_esso_loc`;
 export const fual_card = `${baseurl}/api/fual_card`;
+export const fual_card_update = `${baseurl}/api/fual_card/card_update_otp`;
 export const efs_fual_card = `${baseurl}/api/efs_fual_card`; 
 export const salesman = `${baseurl}/api/salesman`;
 export const salesmanAll = `${baseurl}/api/salesman/all`; 

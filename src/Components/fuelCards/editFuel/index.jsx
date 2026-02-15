@@ -30,7 +30,7 @@ import { useCountry } from "../../../Hooks/Dropdowns";
 import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
+import { fual_card as APINAME,fual_card_update } from "../../../api"; // your fuel card API endpoint
 import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
 const Index = () => {
   const { data: supplierOption } = useSupplier();
@@ -79,15 +79,7 @@ const Index = () => {
 
   const onSubmit = (formData) => {
     console.log("Form Data:", formData);
-    const Data={
-      newData:formData,
-      oldData:rowData
-    }
-    // ✅ This will print your inputs
-    navigate(`/edit-information/${rowData.card_id}`, {
-      state: { data: Data }
-    });
-    const payload = {
+        const payload = {
       card_no: formData.cardNo,
       policy: formData.policyNo,
       unit_number: formData.unitNo,
@@ -99,10 +91,36 @@ const Index = () => {
       d_mobile2: formData.driverMobile2,
       status: formData.cardStatus.label,
       supplier_name: formData.supplier.label,
-      cardno: "",
+      cardno: formData.cardNo.slice(-5),
       company_name: formData.company.label,
       update_otp: "",
     };
+     const otpres=   axios.put(`${fual_card_update}/${rowData.card_id}`, payload)
+      .then((res) => {
+        console.log(res);
+
+        toast.success("Update successfully!");
+
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message);
+      });
+
+    const Data={
+      newData:payload,
+      oldData:rowData,
+      otpres:otpres.data
+    }
+    console.log(payload)
+
+  
+    navigate(`/edit-information/${rowData.card_id}`, {
+      state: { data: Data }
+    });
+    
+        
+
       //     axios.put(`${APINAME}/${rowData.card_id}`, payload)
       // .then((res) => {
       //   console.log(res);

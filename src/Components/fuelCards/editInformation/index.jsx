@@ -1,16 +1,69 @@
-import React,{Fragment} from 'react'
+import React,{Fragment,useEffect,useState} from 'react'
 import { Breadcrumbs } from '../../../AbstractElements'
 import { Container,Table } from 'reactstrap'
 import { useLocation } from 'react-router'
+import axios from 'axios'
+import { fual_card as APINAME } from "../../../api"; 
+import { toast } from 'react-toastify'
 const Index = () => {
-     const { state } = useLocation();
-     const oldData = state.data.oldData;
-     const NewData=state.data.newData
-     console.log(state);
+  const { state } = useLocation();
+  const oldData = state?.data?.oldData;
+
+  const [fuelCards, setFuelCards] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${APINAME}/${oldData.card_id}`); 
+        setFuelCards(res.data);  // ✅ real data
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (oldData?.card_id) {
+      fetchData();
+    }
+
+  }, [oldData]);
+
      
+ 
+    
+     const NewData=state.data.newData
+     const otpres=state.data.otpres
+     console.log(state);
+
      console.log(oldData);
      console.log(NewData)
-     
+       const onSubmit= async ()=>{
+
+       
+       const otpData = document.getElementById("otp").value; 
+
+        if(fuelCards.update_otp===otpData)
+        {
+            axios.put(`${APINAME}/${oldData.card_id}`, NewData)
+            .then((res) => 
+                {
+               
+                toast.success("Update successfully!"); 
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error(err.message);
+            });
+        }
+        else
+        {
+
+             toast.error("OTP Not Matched");
+        }
+
+
+
+   
+     } 
   return (
     <Fragment>
         <Breadcrumbs parent="Fuel Card" title="Fuel Card Information " />
@@ -34,59 +87,60 @@ const Index = () => {
                   <tr className='border-bottom-primary'>
                     <th>CardNumber</th>
                     <th>{oldData?.card_no}</th>
-                    <th>{NewData?.cardNo}</th>
+                    <th>{NewData?.card_no}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Company</th>
                     <th>{oldData.company_name}</th>
-                    <th>{NewData.company.label}</th>
+                    <th>{NewData.company_name}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Pollicy Number</th>
                     <th>{oldData.policy}</th>
-                    <th>{NewData.policyNo}</th>
+                    <th>{NewData.policy}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Unit Number</th>
                     <th>{oldData.unit_number}</th>
-                    <th>{NewData.unitNo}</th>
+                    <th>{NewData.unit_number}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Pin Number</th>
                     <th>{oldData.pin_number}</th>
-                    <th>{NewData.pinNo}</th>
+                    <th>{NewData.pin_number}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Driver Name</th>
                     <th>{oldData.driver_name}</th>
-                    <th>{NewData.driverName}</th>
+                    <th>{NewData.driver_name}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Driver  Mobile1 </th>
                     <th>{oldData.d_mobile1}</th>
-                    <th>{NewData.driverMobile}</th>
+                    <th>{NewData.d_mobile1}</th>
                 </tr>
                 <tr className='border-bottom-primary'>
                     <th>Driver  Mobile2</th>
                     <th>{oldData.d_mobile2}</th>
-                    <th>{NewData.driverMobile2}</th>
+                    <th>{NewData.d_mobile2}</th>
                 </tr>
                   <tr className='border-bottom-primary'>
                     <th>Card Status</th>
                     <th>{oldData.status}</th>
-                    <th>{NewData.cardStatus.value}</th>
+                    <th>{NewData.status}</th>
                 </tr>
                 </tbody>
                 </table>
+            
                 </div>
                   <div className=' my-4 text-center'>
           <p>Please Enter OTP for Update Card {oldData.card_no} is below</p>
           <div className='row cardInformation  gx-0 '>
             <div className='col-sm-6 '>
-                    <input className='form-control1 ' type="text" placeholder='Enter Otp' />
+                    <input className='form-control1 ' type="text" id="otp" placeholder='Enter Otp' />
             </div>
                <div className='col-sm-6 my-sm-0  my-2'>
-                <button className='btn btn-primary' type="submit">Submit OTP</button>
+                <button onClick={onSubmit} className='btn btn-primary' type="submit">Submit OTP</button>
             </div>
           </div>
           </div>
