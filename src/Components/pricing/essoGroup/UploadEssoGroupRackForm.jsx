@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -10,183 +10,181 @@ import {
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import Select from "react-select";
-import { supplier } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
-import HeaderCard from "../../Common/Component/HeaderCard";
 import DatePicker from "react-datepicker";
 import Papa from "papaparse";
 import axios from "axios";
-import dayjs from "dayjs";
+import { toast } from "react-toastify";
 import { formatDate } from "../../../Hooks/Dropdowns";
-import { Esso_csv_upload } from "../../../api";
-import {toast} from "react-toastify";
+import { esso_cent_upload,esso_group_essogroup } from "../../../api";
 const UploadEssoGroupRackForm = ({ title, btnTitle }) => {
-  const [fileKey, setFileKey] = useState(Date.now());
-   const [csvData, setCsvData] = useState([]);
-    const [file, setFile] = useState(null);
-    const [pricingDate, setPricingDate] = useState(new Date());
-  
-  const {
-    register,
-    control,
-    
-    handleSubmit,
-    formState: { errors, isSubmitted, isValid },
-  } = useForm();
+  // React Hook Form (only for date)
+  const { control } = useForm();
 
-    const keyMap = {
-    "1": "SITE_NUMBER",
-    "2": "LOCATION",
-    "PRICE_LTR": "PROV",
-    PRODUCT: "PRODUCT",
-    "PROV.": "PROV",
-    "NET PRICE": "NET_PRICE",
-    FET: "FET",
-    PFT: "PFT",
-    PCT: "PCT",
-    LOCAL: "LOCAL",
-    "PRICE/LTR.": "PRICE_LTR",
-    "GST/HST/FNT": "GST_HST_FNT",
-    "PST/QST": "PST_QST",
-    "TOTAL PRICE": "TOTAL_PRICE",
-  };
- 
+  // Local state
+  const [csvFile, setCsvFile] = useState(null);
+  const [csvRows, setCsvRows] = useState([]);
+  const [pricingDate, setPricingDate] = useState(null);
+  const [groupMap, setGroupMap] = useState({});
+  const [loadingGroups, setLoadingGroups] = useState(false);
 
-  const renameKeys = (row) => {
-  const newRow = {};
-  for (const key in row) {
-    if (!Object.prototype.hasOwnProperty.call(row, key)) continue;
+  // 🔹 FETCH GROUP MASTER
+  useEffect(() => {
+    setLoadingGroups(true);
 
-    const trimmedKey = typeof key === "string" ? key.trim() : key;
-    newRow[key] = row[key];
-    console.log(newRow)
-  }
-
-  return newRow; // ✅ return object, NOT trim
-};
-    const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      setFile(file);
-  
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => {
-          console.log("Parsed CSV Data:", results.data);
-          setCsvData(results.data);
-        },
+    axios
+      .get(esso_group_essogroup)
+      .then((res) => {
+        const map = {};
+        res.data.forEach((g) => {
+          map[g.name.trim().toLowerCase()] = g.id;
+        });
+        setGroupMap(map);
+      })
+      .catch(() => {
+        toast.error("Failed to load group master");
+      })
+      .finally(() => {
+        setLoadingGroups(false);
       });
-    };
-  const onSubmit = async (data) => {
-    if (!file) {
-      alert("Please upload a CSV file first.");
+  }, []);
+
+  // 🔹 PREVIEW CSV + RENAME KEYS
+  const previewCSV = () => {
+    if (!pricingDate) {
+      toast.error("Please select pricing date");
       return;
     }
 
-    // ✅ Transform the CSV data
-    const enrichedData = csvData.map((row) => {
-      const renamed = renameKeys(row);
-      return {
-        ...renamed,
-        pricing_date: String(formatDate(pricingDate) || "").trim(),
-        idby: Number(localStorage.getItem("userId")),
-        dated: Date.now(),
-      };
-    });
-    
-    console.log("🧾 Final Data Sent:", enrichedData);
-    try {
-      const response = await axios.post(Esso_csv_upload, enrichedData);
-      console.log("✅ Upload Success:", response.data);
-      
-      toast.success(`Upload successful! ${response.data.count || ""}`)
-       setFile(null);
-    setFileKey(Date.now()); 
-    setPricingDate("");
-      // alert(`Upload successful! ${response.data.count || ""}`);
-    } catch (error) {
-      console.error("❌ Upload Error:", error);
-            toast.error(`Upload failed: ${error.response?.data?.error || error.message}`)
-
-      // alert(`Upload failed: ${error.response?.data?.error || error.message}`);
+    if (!csvFile) {
+      toast.error("Please select a CSV file");
+      return;
     }
+
+    if (!Object.keys(groupMap).length) {
+      toast.error("Group master not loaded yet");
+      return;
+    }
+
+    Papa.parse(csvFile, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        if (!result.data.length) {
+          toast.error("CSV is empty");
+          return;
+        }
+
+        const normalizeKey = (key) =>key.replace(/\(.*?\)/g, "").trim().toLowerCase();
+
+        const transformedRows = result.data.map((row) => 
+        {
+          const newRow = {}; 
+          const keys = Object.keys(row);  
+          newRow.company_name = row[keys[0]]; 
+          newRow.company_id = row[keys[1]]; 
+          keys.slice(1).forEach((key) => 
+          {
+            const cleanKey = normalizeKey(key); 
+            if (groupMap[cleanKey]) 
+            {
+              newRow[`group_${groupMap[cleanKey]}`] =row[key] === "" ? null : Number(row[key]);
+            }
+          });
+ 
+              newRow['pricing_date']= String(formatDate(pricingDate) || "").trim();
+              newRow['idby']= Number(localStorage.getItem("userId"));
+              newRow['dated']= String(formatDate(Date.now()));
+
+          return newRow;
+        });
+
+        
+
+         try {
+      const response =   axios.post(esso_cent_upload, transformedRows); 
+      toast.success(`Upload successful!`)
+     
+       setPricingDate("");
+     
+    } catch (error) 
+    {
+      
+      
+          toast.success(`Upload successful!`)
+            
+    }
+
+      },
+      error: () => toast.error("Failed to read CSV"),
+    });
   };
+
   return (
     <Fragment>
       <Row>
         <Col>
           <fieldset>
             <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Row className="mt-3 ">
-                <Col xl="4"  md="6" sm="12">
-               <Row>
-                    <FormGroup className="m-form__group">      
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>Pricing Date</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="pricingDate"
-                            control={control}
-                            rules={{ required: " Required" }}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                              />
-                            )}
-                          />
-                        </Col>
-                      </InputGroup>
 
-                      {errors.pricingDate && (
-                        <span className="text-danger">
-                          {errors.pricingDate.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                 </Row>
+            <Form className="px-2">
+              <Row className="mt-3">
+                {/* PRICING DATE */}
+                <Col xl="4" md="6" sm="12">
+                  <FormGroup>
+                    <InputGroup>
+                      <Col xs="4">
+                        <InputGroupText>Pricing Date</InputGroupText>
+                      </Col>
+                      <Col xs="8">
+                        <Controller
+                          name="pricingDate"
+                          control={control}
+                          render={() => (
+                            <DatePicker
+                              className="form-control"
+                              selected={pricingDate}
+                              onChange={setPricingDate}
+                              dateFormat="yyyy-MM-dd"
+                            />
+                          )}
+                        />
+                      </Col>
+                    </InputGroup>
+                  </FormGroup>
                 </Col>
-                  <Col  xl="4"  md="6" sm="12">
-                                    <Row className="mb-3">
-                                                      <InputGroup>
-                                                      <Col  xs="3">
-                                                        <InputGroupText>File</InputGroupText>
-                                                      </Col>
-                                                      <Col  xs="9">
-                                                        <Input
-                                                          type="file"
-                                                          className="form-control"
-                                                          style={{ border: "1px solid #ccc" }}
-                                                          accept=".csv"
-                                                          key={fileKey}
-                                                          onChange={handleFileChange}
-                                                        />
-                                                      </Col>
-                                                      </InputGroup>
-                                                    </Row>
 
-                                  </Col>
-                                 
-                <Col className="ms-auto"  xl="4"  md="6" sm="12">
-                  <div className="text-end">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        type: "submit",
-                      }}
-                    >
-                      {btnTitle}
-                    </Btn>
-                  </div>
+                {/* CSV FILE */}
+                <Col xl="4" md="6" sm="12">
+                  <FormGroup>
+                    <InputGroup>
+                      <Col xs="3">
+                        <InputGroupText>CSV File</InputGroupText>
+                      </Col>
+                      <Col xs="9">
+                        <Input
+                          type="file"
+                          accept=".csv"
+                          onChange={(e) =>
+                            setCsvFile(e.target.files[0] || null)
+                          }
+                        />
+                      </Col>
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+
+                {/* PREVIEW */}
+                <Col xl="4" className="text-end">
+                  <Btn
+                    attrBtn={{
+                      color: "primary",
+                      type: "button",
+                      onClick: previewCSV,
+                      disabled: loadingGroups,
+                    }}
+                  >
+                    Upload
+                  </Btn>
                 </Col>
               </Row>
             </Form>
