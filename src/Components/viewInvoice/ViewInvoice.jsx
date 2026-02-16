@@ -20,16 +20,29 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import $ from "jquery";
-import { FaTrashAlt, FaDownload, FaEye, FaEnvelope,FaFileExcel,FaFileCsv,FaFilePdf  } from "react-icons/fa";
-import {Dropdown,DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
+import {
+  FaTrashAlt,
+  FaDownload,
+  FaEye,
+  FaEnvelope,
+  FaFileExcel,
+  FaFileCsv,
+  FaFilePdf,
+} from "react-icons/fa";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
-    const [btntp, setbtntp] = useState('INV');
+  const [btntp, setbtntp] = useState("INV");
   const [tableColumns, setTableColumns] = useState([]);
   const [filters, setFilters] = useState({});
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const toggle = () => setDropdownOpen((prev) => !prev);
+  const toggle = () => setDropdownOpen((prev) => !prev);
 
   const columnsMap = {
     "Invoice#": "invoice_id",
@@ -65,9 +78,18 @@ const ViewInvoice = () => {
   };
 
   const getTableSetter = (source) => {
-    if (source === combine_invoice) {setbtntp("INV"); return setData;}
-    if (source === owner_invoice) {setbtntp("OWNER"); return handleSetData;}
-    if (source === customized_invoice) {setbtntp("CUS");return setCustomizedData;}
+    if (source === combine_invoice) {
+      setbtntp("INV");
+      return setData;
+    }
+    if (source === owner_invoice) {
+      setbtntp("OWNER");
+      return handleSetData;
+    }
+    if (source === customized_invoice) {
+      setbtntp("CUS");
+      return setCustomizedData;
+    }
     return setData;
   };
 
@@ -98,11 +120,14 @@ const ViewInvoice = () => {
         );
         let api;
 
-        if (fullRow.tp === "Retail")api = invoice;
-        else if (fullRow.tp === "Rack")api =retail_invoice;
+        if (fullRow.tp === "Retail") api = invoice;
+        else if (fullRow.tp === "Rack") api = retail_invoice;
         else if (source === owner_invoice) api = owner_invoice;
-        else if (source === customized_invoice) api = customized_invoice
-        else {api = invoice; setbtntp("INV");}
+        else if (source === customized_invoice) api = customized_invoice;
+        else {
+          api = invoice;
+          setbtntp("INV");
+        }
         // 3️⃣ API call
 
         const update_status = {
@@ -227,12 +252,22 @@ const ViewInvoice = () => {
       }),
     );
   };
-const handleDownload=(type,filters)=>{
-  console.log(type);
-  console.log(filters);
-  
-  
 
+  function handleDownload(type, filters) {
+   
+const ids = []; 
+$('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val());});
+
+if (ids.length === 0) {  alert('Please select at least one item');  return;}
+
+ const IDSUP = ids.join(',');  
+const from = $('#from').val();
+const to = $('#to').val();
+const country = $('input[name="country"]').val();
+const company_id = $('input[name="company"]').val();
+const invcat = $('input[name="category"]').val();
+const invoice_type = $('input[name="invoiceType"]').val();
+const show_hide = $('input[name="invoiceShow"]').val();  
 }
   const filteredCombineData = applyFilters(data, filters);
   const filteredOwnerData = applyFilters(ownerdata, filters);
@@ -283,45 +318,61 @@ const handleDownload=(type,filters)=>{
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
-             renderDropdown={() => (
-    <>
-       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle
-        tag="span"
-        className="px-2 text-white"
-        style={{ cursor: "pointer" }}
-      >
-        <i className="fa fa-download me-1"></i> Download
-      </DropdownToggle>
+          renderDropdown={() => (
+            <>
+              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                <DropdownToggle
+                  tag="span"
+                  className="px-2 text-white"
+                  style={{ cursor: "pointer" }}
+                >
+                  <i className="fa fa-download me-1"></i> Download
+                </DropdownToggle>
 
-      <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary" onClick={()=>handleDownload("excel")}>
-          <FaFileExcel/> Download Excel
-        </DropdownItem>
+                <DropdownMenu style={{ minWidth: 160 }}>
+                  <DropdownItem
+                    className="text-primary"
+                    onClick={() => handleDownload("EXCEL",filters)}
+                  >
+                    <FaFileExcel /> Download Excel
+                  </DropdownItem>
 
-        <DropdownItem className="text-danger" onClick={()=>handleDownload("csv")}>
-          <FaFileCsv/> Download CSV
-        </DropdownItem>
+                  <DropdownItem
+                    className="text-danger"
+                    onClick={() => handleDownload("CSV",filters)}
+                  >
+                    <FaFileCsv /> Download CSV
+                  </DropdownItem>
 
-        <DropdownItem className="text-success" onClick={()=>handleDownload("quickBook_Csv")}>
-        <FaFileCsv/>  Download Quickbooks CSV
-        </DropdownItem>
+                  <DropdownItem
+                    className="text-success"
+                    onClick={() => handleDownload("QUICKBOOK_CSV",filters)}
+                  >
+                    <FaFileCsv /> Download Quickbooks CSV
+                  </DropdownItem>
 
-        <DropdownItem className="text-warning" onClick={()=>handleDownload("canada_quickBook")}>
-          <FaFilePdf/>  Download Canada Quickbooks
-        </DropdownItem>
-            <DropdownItem className="text-primary" onClick={()=>handleDownload("csv_new")}>
-          <FaFileCsv/>   Download Quickbooks CSV new
-        </DropdownItem>
-            <DropdownItem className="text-danger" onClick={()=>handleDownload("DetaledQuickBook_Csv")}>
-          <FaFileCsv/>  Download Detailed Quickbooks CSV 
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-
-    </>
-  )}
-
+                  <DropdownItem
+                    className="text-warning"
+                    onClick={() => handleDownload("CANADA_QUICKBOOK",filters)}
+                  >
+                    <FaFilePdf /> Download Canada Quickbooks
+                  </DropdownItem>
+                  <DropdownItem
+                    className="text-primary"
+                    onClick={() => handleDownload("CSV_NEW",filters)}
+                  >
+                    <FaFileCsv /> Download Quickbooks CSV new
+                  </DropdownItem>
+                  <DropdownItem
+                    className="text-danger"
+                    onClick={() => handleDownload("DETAILED_QUICKBOOK_CSV",filters)}
+                  >
+                    <FaFileCsv /> Download Detailed Quickbooks CSV
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </>
+          )}
         />
       ),
     },
@@ -341,38 +392,37 @@ const handleDownload=(type,filters)=>{
           paginationTotalRows={ownerTotalRow}
           onChangeRowsPerPage={ownerHandlePerROwChange}
           onChangePage={ownerHandlePerChange}
-             renderDropdown={() => (
-    <>
-       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle
-        tag="span"
-        className="px-2 text-white"
-        style={{ cursor: "pointer" }}
-      >
-        <i className="fa fa-download me-1"></i> Download
-      </DropdownToggle>
+          renderDropdown={() => (
+            <>
+              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                <DropdownToggle
+                  tag="span"
+                  className="px-2 text-white"
+                  style={{ cursor: "pointer" }}
+                >
+                  <i className="fa fa-download me-1"></i> Download
+                </DropdownToggle>
 
-      <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary">
-          <FaFileExcel/> Download Excel
-        </DropdownItem>
+                <DropdownMenu style={{ minWidth: 160 }}>
+                  <DropdownItem className="text-primary">
+                    <FaFileExcel /> Download Excel
+                  </DropdownItem>
 
-        <DropdownItem className="text-danger">
-          <FaFileCsv/> Download CSV
-        </DropdownItem>
+                  <DropdownItem className="text-danger">
+                    <FaFileCsv /> Download CSV
+                  </DropdownItem>
 
-        <DropdownItem className="text-success">
-        <FaFileCsv/>  Download Quickbooks CSV
-        </DropdownItem>
+                  <DropdownItem className="text-success">
+                    <FaFileCsv /> Download Quickbooks CSV
+                  </DropdownItem>
 
-        <DropdownItem className="text-warning">
-          <FaFilePdf/>  Download Canada Quickbooks
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-
-    </>
-  )}
+                  <DropdownItem className="text-warning">
+                    <FaFilePdf /> Download Canada Quickbooks
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </>
+          )}
         />
       ),
     },
@@ -392,39 +442,37 @@ const handleDownload=(type,filters)=>{
           paginationTotalRows={customizedTotalRow}
           onChangeRowsPerPage={customizedHandlePerRowsChange}
           onChangePage={customizedHandlePageChange}
-               renderDropdown={() => (
-    <>
-       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle
-        tag="span"
-        className="px-2 text-white"
-        style={{ cursor: "pointer" }}
-      >
-        <i className="fa fa-download me-1"></i> Download
-      </DropdownToggle>
+          renderDropdown={() => (
+            <>
+              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                <DropdownToggle
+                  tag="span"
+                  className="px-2 text-white"
+                  style={{ cursor: "pointer" }}
+                >
+                  <i className="fa fa-download me-1"></i> Download
+                </DropdownToggle>
 
-      <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary">
-          <FaFileExcel/> Download Excel
-        </DropdownItem>
+                <DropdownMenu style={{ minWidth: 160 }}>
+                  <DropdownItem className="text-primary">
+                    <FaFileExcel /> Download Excel
+                  </DropdownItem>
 
-        <DropdownItem className="text-danger">
-          <FaFileCsv/> Download CSV
-        </DropdownItem>
+                  <DropdownItem className="text-danger">
+                    <FaFileCsv /> Download CSV
+                  </DropdownItem>
 
-        <DropdownItem className="text-success">
-        <FaFileCsv/>  Download Quickbooks CSV
-        </DropdownItem>
+                  <DropdownItem className="text-success">
+                    <FaFileCsv /> Download Quickbooks CSV
+                  </DropdownItem>
 
-        <DropdownItem className="text-warning">
-          <FaFilePdf/>  Download Canada Quickbooks
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-
-    </>
-  )}
-
+                  <DropdownItem className="text-warning">
+                    <FaFilePdf /> Download Canada Quickbooks
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </>
+          )}
         />
       ),
     },
@@ -459,12 +507,12 @@ const handleDownload=(type,filters)=>{
               />
             </div>
           ),
-      selector: (row) => {
-        if (key === "From " || key === "To") {
-          return row[key].split(" ")[0];
-        }
-        return row[key];
-      },
+          selector: (row) => {
+            if (key === "From " || key === "To") {
+              return row[key].split(" ")[0];
+            }
+            return row[key];
+          },
           sortable: true,
           width: colWidth,
           wrap: true,
@@ -547,7 +595,7 @@ const handleDownload=(type,filters)=>{
     cols.push({
       name: "Action",
       cell: (row) => (
-        <div className="position-relative dropdown-action" >
+        <div className="position-relative dropdown-action">
           <button
             className="btn btn-sm btn-primary px-2"
             onClick={() =>
@@ -572,7 +620,9 @@ const handleDownload=(type,filters)=>{
             >
               <a
                 href="#"
-                onClick={() => downloadPdf(row.fulldata.download_link,btntp,row)}
+                onClick={() =>
+                  downloadPdf(row.fulldata.download_link, btntp, row)
+                }
                 rel="noopener noreferrer"
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}
@@ -580,16 +630,15 @@ const handleDownload=(type,filters)=>{
                 <FaDownload /> Download
               </a>
 
-          <Link
-  to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="dropdown-item d-flex align-items-center text-success"
-  style={{ padding: "8px 12px", gap: "8px" }}
->
-  <FaEye /> View
-</Link>
-
+              <Link
+                to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dropdown-item d-flex align-items-center text-success"
+                style={{ padding: "8px 12px", gap: "8px" }}
+              >
+                <FaEye /> View
+              </Link>
 
               <button
                 className="dropdown-item d-flex align-items-center text-primary"
