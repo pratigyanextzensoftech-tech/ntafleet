@@ -99,7 +99,7 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
   /* =======================
      Download Handler
   ======================== */
-  const Download = (row, TYPE) => {
+  function Download  (row, TYPE)  {
         console.log(row);
         
     switch (USEFOR) {
