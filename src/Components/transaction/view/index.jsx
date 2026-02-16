@@ -10,6 +10,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { download } from "../../../api";
 import $ from "jquery";
 import qs from "qs"; // npm install qs
 import {
@@ -349,10 +350,12 @@ const handleDelete = (e, row) => {
     function handleDownload(type, filters) {
    
 const ids = []; 
-$('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val());});
+let esso_ftp='';
+$('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val()); if($(this).val()==='100'){esso_ftp="Yes";} });
 
 if (ids.length === 0) {  alert('Please select at least one item');  return;}
  const IDSUP = ids.join(',');  
+  
 const from = $('#from').val();
 const to = $('#to').val();
 const state_prov = $('input[name="state_prov"]').val();
@@ -362,8 +365,10 @@ const company = $('input[name="company"]').val();
 const currency = $('input[name="currency"]').val();  
 const items = $('input[name="items"]').val();  
 const status = $('input[name="status"]').val();  
-const invoice_type = $('input[name="invoice_type"]').val();  
+const invoice_type = $('input[name="invoice_type"]').val(); 
+
 console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoice_type)
+ window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
 
 } 
 
@@ -418,7 +423,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
           <FaFileCsv/> Download CSV
         </DropdownItem>
 
-        <DropdownItem className="text-success"   onClick={() => handleDownload("CSV_NEW",filters)}>
+        <DropdownItem className="text-success"   onClick={() => handleDownload("NewCSV",filters)}>
         <FaFileCsv/> Download New CSV
         </DropdownItem>
 
