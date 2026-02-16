@@ -48,24 +48,29 @@ const Index = () => {
 
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document).on("click", ".update-btn", function () {
-      const id = $(this).data("id");
-      const updateData = {};
-      dynamicGroupIds.forEach((groupid) => {
-        const inputId = `#c${id}g${groupid}`;
-        const value = $(inputId).val();
-        updateData[`group_${groupid}`] = value;
-      });
 
-      axios
-        .put(`${esso_cent_auto}/${id}`, updateData)
-        .then((response) => {
-          toast.success("Data updated");
-        })
-        .catch((error) => {
-          toast.error("Error In Data update");
-        });
+     $(document).off("click", ".update-btn");  
+  $(document).on("click", ".update-btn", function () {
+    const id = $(this).data("id");
+    const updateData = {  };
+ 
+    dynamicGroupIds.forEach((groupid) => {
+      const inputId = `#c${id}g${groupid}`;
+      updateData[`group_${groupid}`] = $(inputId).val();
     });
+ 
+    axios
+      .put(`${esso_cent_auto}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+      })
+      .catch(() => {
+        toast.error("Error In Data update");
+      });
+  });
+ 
+  return () => {   $(document).off("click", ".update-btn"); }; 
+   
   }, [dynamicColumns, companyId]);
 
   $(document).ready(function () {
@@ -80,7 +85,7 @@ const Index = () => {
       const end_date = $("#end_date").val();
       const URL = `${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`;
       console.log(URL);
-      //window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self");
+      window.open(`${esso_cent_auto}/auto_esso_excel?company_id=${companyId}&start_date=${startDate}&end_date=${endDate}`, "_self");
     });
 
     // ✅ CSV Download
