@@ -2,6 +2,8 @@ const baseurl="https://newapi.ntafleetsolutions.com"
 const api = `${process.env.PUBLIC_URL}/api`;
 export const MenuApi=`${baseurl}/api/usermenu`;
 
+export const download=`${baseurl}/api/download`;
+
 export const discount_sheet = `${baseurl}/api/discount_sheet`;
 export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;

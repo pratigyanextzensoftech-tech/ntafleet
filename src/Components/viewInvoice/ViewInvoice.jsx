@@ -9,6 +9,7 @@ import {
   customized_invoice,
   retail_invoice,
   invoice,
+  download,
 } from "../../api";
 import OwnerOperator from "../viewInvoice/OwnerOperator";
 import ViewInvoiceForm from "../viewInvoice/ViewInvoiceForm";
@@ -268,6 +269,9 @@ const company_id = $('input[name="company"]').val();
 const invcat = $('input[name="category"]').val();
 const invoice_type = $('input[name="invoiceType"]').val();
 const show_hide = $('input[name="invoiceShow"]').val();  
+
+ window.open(`${download}?type=INVOICE&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&country=${country}&company_id=${company_id}&invcat=${invcat}&invoice_type=${invoice_type}&show_hide=${show_hide}`, "_self");
+
 }
   const filteredCombineData = applyFilters(data, filters);
   const filteredOwnerData = applyFilters(ownerdata, filters);
@@ -332,7 +336,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
                 <DropdownMenu style={{ minWidth: 160 }}>
                   <DropdownItem
                     className="text-primary"
-                    onClick={() => handleDownload("EXCEL",filters)}
+                    onClick={() => handleDownload("Excel",filters)}
                   >
                     <FaFileExcel /> Download Excel
                   </DropdownItem>
@@ -346,26 +350,26 @@ const show_hide = $('input[name="invoiceShow"]').val();
 
                   <DropdownItem
                     className="text-success"
-                    onClick={() => handleDownload("QUICKBOOK_CSV",filters)}
+                    onClick={() => handleDownload("Quickbooks",filters)}
                   >
                     <FaFileCsv /> Download Quickbooks CSV
                   </DropdownItem>
 
                   <DropdownItem
                     className="text-warning"
-                    onClick={() => handleDownload("CANADA_QUICKBOOK",filters)}
+                    onClick={() => handleDownload("Canada_Quickbooks",filters)}
                   >
                     <FaFilePdf /> Download Canada Quickbooks
                   </DropdownItem>
                   <DropdownItem
                     className="text-primary"
-                    onClick={() => handleDownload("CSV_NEW",filters)}
+                    onClick={() => handleDownload("Quickbooks_New",filters)}
                   >
                     <FaFileCsv /> Download Quickbooks CSV new
                   </DropdownItem>
                   <DropdownItem
                     className="text-danger"
-                    onClick={() => handleDownload("DETAILED_QUICKBOOK_CSV",filters)}
+                    onClick={() => handleDownload("Quickbooks_Detailed",filters)}
                   >
                     <FaFileCsv /> Download Detailed Quickbooks CSV
                   </DropdownItem>
