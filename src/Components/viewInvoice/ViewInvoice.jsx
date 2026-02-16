@@ -270,10 +270,7 @@ const invcat = $('input[name="category"]').val();
 const invoice_type = $('input[name="invoiceType"]').val();
 const show_hide = $('input[name="invoiceShow"]').val();  
 
-<<<<<<< HEAD
-=======
  window.open(`${download}?type=INVOICE&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&country=${country}&company_id=${company_id}&invcat=${invcat}&invoice_type=${invoice_type}&show_hide=${show_hide}`, "_self");
->>>>>>> a972bfd7a4de5e720a3c9b432d8377cd95767dd3
 
 }
   const filteredCombineData = applyFilters(data, filters);
