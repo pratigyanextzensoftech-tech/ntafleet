@@ -55,13 +55,7 @@ const UserHeader = () => {
         </div>
       </div>
       <UL attrUL={{ className: "simple-list profile-dropdown onhover-show-div" }}>
-        <LI
-          attrLI={{
-            onClick: () => UserMenuRedirect(`${process.env.PUBLIC_URL}/app/users/profile/${layoutURL}`),
-          }}>
-          <User />
-          <span>{Account} </span>
-        </LI>
+       
        
         <LI attrLI={{ onClick: Logout }}>
           <LogIn />

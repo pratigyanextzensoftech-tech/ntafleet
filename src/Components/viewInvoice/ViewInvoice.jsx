@@ -20,13 +20,16 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import $ from "jquery";
-import { FaTrashAlt, FaDownload, FaEye, FaEnvelope } from "react-icons/fa";
-
+import { FaTrashAlt, FaDownload, FaEye, FaEnvelope,FaFileExcel,FaFileCsv,FaFilePdf  } from "react-icons/fa";
+import {Dropdown,DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
 const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
     const [btntp, setbtntp] = useState('INV');
   const [tableColumns, setTableColumns] = useState([]);
   const [filters, setFilters] = useState({});
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggle = () => setDropdownOpen((prev) => !prev);
 
   const columnsMap = {
     "Invoice#": "invoice_id",
@@ -224,7 +227,13 @@ const ViewInvoice = () => {
       }),
     );
   };
+const handleDownload=(type,filters)=>{
+  console.log(type);
+  console.log(filters);
+  
+  
 
+}
   const filteredCombineData = applyFilters(data, filters);
   const filteredOwnerData = applyFilters(ownerdata, filters);
   const filteredCustomizedData = applyFilters(customizedData, filters);
@@ -274,6 +283,45 @@ const ViewInvoice = () => {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
+             renderDropdown={() => (
+    <>
+       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <DropdownToggle
+        tag="span"
+        className="px-2 text-white"
+        style={{ cursor: "pointer" }}
+      >
+        <i className="fa fa-download me-1"></i> Download
+      </DropdownToggle>
+
+      <DropdownMenu   style={{ minWidth: 160 }}>
+        <DropdownItem className="text-primary" onClick={()=>handleDownload("excel")}>
+          <FaFileExcel/> Download Excel
+        </DropdownItem>
+
+        <DropdownItem className="text-danger" onClick={()=>handleDownload("csv")}>
+          <FaFileCsv/> Download CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-success" onClick={()=>handleDownload("quickBook_Csv")}>
+        <FaFileCsv/>  Download Quickbooks CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-warning" onClick={()=>handleDownload("canada_quickBook")}>
+          <FaFilePdf/>  Download Canada Quickbooks
+        </DropdownItem>
+            <DropdownItem className="text-primary" onClick={()=>handleDownload("csv_new")}>
+          <FaFileCsv/>   Download Quickbooks CSV new
+        </DropdownItem>
+            <DropdownItem className="text-danger" onClick={()=>handleDownload("DetaledQuickBook_Csv")}>
+          <FaFileCsv/>  Download Detailed Quickbooks CSV 
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+
+    </>
+  )}
+
         />
       ),
     },
@@ -293,6 +341,38 @@ const ViewInvoice = () => {
           paginationTotalRows={ownerTotalRow}
           onChangeRowsPerPage={ownerHandlePerROwChange}
           onChangePage={ownerHandlePerChange}
+             renderDropdown={() => (
+    <>
+       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <DropdownToggle
+        tag="span"
+        className="px-2 text-white"
+        style={{ cursor: "pointer" }}
+      >
+        <i className="fa fa-download me-1"></i> Download
+      </DropdownToggle>
+
+      <DropdownMenu   style={{ minWidth: 160 }}>
+        <DropdownItem className="text-primary">
+          <FaFileExcel/> Download Excel
+        </DropdownItem>
+
+        <DropdownItem className="text-danger">
+          <FaFileCsv/> Download CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-success">
+        <FaFileCsv/>  Download Quickbooks CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-warning">
+          <FaFilePdf/>  Download Canada Quickbooks
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+
+    </>
+  )}
         />
       ),
     },
@@ -312,6 +392,39 @@ const ViewInvoice = () => {
           paginationTotalRows={customizedTotalRow}
           onChangeRowsPerPage={customizedHandlePerRowsChange}
           onChangePage={customizedHandlePageChange}
+               renderDropdown={() => (
+    <>
+       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <DropdownToggle
+        tag="span"
+        className="px-2 text-white"
+        style={{ cursor: "pointer" }}
+      >
+        <i className="fa fa-download me-1"></i> Download
+      </DropdownToggle>
+
+      <DropdownMenu   style={{ minWidth: 160 }}>
+        <DropdownItem className="text-primary">
+          <FaFileExcel/> Download Excel
+        </DropdownItem>
+
+        <DropdownItem className="text-danger">
+          <FaFileCsv/> Download CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-success">
+        <FaFileCsv/>  Download Quickbooks CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-warning">
+          <FaFilePdf/>  Download Canada Quickbooks
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+
+    </>
+  )}
+
         />
       ),
     },

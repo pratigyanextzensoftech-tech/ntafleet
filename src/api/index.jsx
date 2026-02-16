@@ -151,6 +151,12 @@ export const CreateRackInvoice = `${baseurl}/api/invoice/create_rack_invoice`;
 export const CreateEssoInvoice = `${baseurl}/api/invoice/create_esso_invoice`;
 export const CreateEssoOwnerInvoice = `${baseurl}/api/invoice/create_esso_owner_invoice`;
 export const CreateEssoCustomizedInvoice = `${baseurl}/api/invoice/create_esso_customized_invoice`;
+
+export const CreateCenInvoice = `${baseurl}/api/invoice/create_cen_invoice`;
+export const CreateCenOwnerInvoice = `${baseurl}/api/invoice/create_cen_owner_invoice`;
+export const CreateCenCustomizedInvoice = `${baseurl}/api/invoice/create_cen_customized_invoice`
+
+
 export const CreateUttramarInvoice = `${baseurl}/api/invoice/create_uttramar_invoice`;
 export const CreateUttramarOwnerInvoice = `${baseurl}/api/invoice/create_uttramar_owner_invoice`;
 export const CreateUttramarCustomizedInvoice = `${baseurl}/api/invoice/create_uttramar_customized_invoice`;

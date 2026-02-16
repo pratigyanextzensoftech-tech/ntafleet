@@ -27,6 +27,7 @@ const DataTableComponent = ({
   ShowloadData,
   loadData,
   paginationRowsPerPageOptions,
+  renderDropdown
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [toggleDelete, setToggleDelete] = useState(false);
@@ -107,7 +108,8 @@ const DataTableComponent = ({
               {title && (
                 <HeaderCard
                   title={title}
-                  downloadHeading={downloadHeading}
+                  // downloadHeading={downloadHeading}
+                  renderDropdown={renderDropdown}
                   download={download}
                   fileHeading={fileHeading}
                   file={file}

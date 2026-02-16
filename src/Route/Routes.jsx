@@ -82,7 +82,7 @@ import CreateUltramar from '../Components/createUltramar/CreateUltramar';
 import CreateRepeat from '../Components/createRepeat/CreateRepeat';
 import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
-
+import CreateCenInvoice from '../Components/CreateCenInvoice/Index.jsx'
 //Reports
 import ViewReports from '../Components/reports/viewReports/index';
 import SalesmanVol from '../Components/reports/salesmanVolume/index';
@@ -169,6 +169,8 @@ export const routes = [
     { path: `/irving_group_rack_price`, Component: <IrvingGroup /> },
     { path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
     { path: `/download_bulk_excel`, Component: <DownloadBulk /> },
+    { path: `/cen_bulk_price`, Component: <DownloadBulk /> },
+    { path: `/cen_group_price`, Component: <DownloadBulk /> },
     //Items
     { path: `/add_items`, Component: <AddItems /> },
     { path: `/view_items`, Component: <AddItems /> },
@@ -213,6 +215,7 @@ export const routes = [
     { path: `/send_bulk_mail`, Component: <SendBulk /> },
     { path: `/compare_invoice`, Component: <CompareInvoice /> },
     { path: `/create_irv_invoice`, Component: <CreateIrving /> },
+    { path: `/create_cen_invoice`, Component: <CreateCenInvoice /> },
     //Report 
     { path: `/view_Reports`, Component: <ViewReports /> },
     { path: `/salesman_report`, Component: <SalesmanVol /> },

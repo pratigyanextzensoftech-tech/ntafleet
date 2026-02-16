@@ -7,9 +7,17 @@ import { transactions,tranaction_total } from "../../../api";
 import ViewForm from "./ViewForm";
 import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import qs from "qs"; // npm install qs
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
+
 const ActionDropdown = ({ row, onEdit, onDelete }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -67,7 +75,11 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
       const[Edit,setEdit]=useState(false)
+
+  const toggle = () => setDropdownOpen((prev) => !prev);
   
 const navigate = useNavigate();
 const [selectedRow, setSelectedRow] = useState(null);
@@ -360,13 +372,44 @@ const handleDelete = (e, row) => {
           tableData={filteredData}
           tableColumns={tableColumns}
           loading={loading}
-          downloadHeading="Download"
           download={true}
           pagination
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
+        renderDropdown={() => (
+    <>
+       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <DropdownToggle
+        tag="span"
+        className="px-2 text-white"
+        style={{ cursor: "pointer" }}
+      >
+        <i className="fa fa-download me-1"></i> Download
+      </DropdownToggle>
+
+      <DropdownMenu   style={{ minWidth: 160 }}>
+        <DropdownItem className="text-primary">
+          <FaFileExcel/> Download Excel
+        </DropdownItem>
+
+        <DropdownItem className="text-danger">
+          <FaFileCsv/> Download CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-success">
+        <FaFileCsv/> Download New CSV
+        </DropdownItem>
+
+        <DropdownItem className="text-info">
+          <FaFilePdf/> Download Pdf
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+
+    </>
+  )}
         />
       </Container>
     </Fragment>

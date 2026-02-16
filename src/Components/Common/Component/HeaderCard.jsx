@@ -15,7 +15,8 @@ const HeaderCard = ({
   ShowdwonloadCsv,
   downloadCsv,
   loadData,
-  ShowloadData
+  ShowloadData,
+  renderDropdown
 }) => {
   return (
     <Fragment>
@@ -30,12 +31,13 @@ const HeaderCard = ({
 
   {/* RIGHT SIDE */}
   <div className="ms-auto d-flex gap-2">
-    {download && (
+    {downloadHeading && (
       <button className="btn text-white" onClick={onClick}>
         <i className="fa fa-download me-1"></i>
         {downloadHeading}
       </button>
     )}
+    {renderDropdown && renderDropdown()}
 
     {file && (
       <button className="btn text-white" onClick={onClick}>

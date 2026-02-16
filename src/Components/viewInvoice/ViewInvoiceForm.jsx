@@ -83,8 +83,6 @@ const{data:country}=useCountry()
 
   return (
     <Fragment>
-         
-         
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <Row>
                 <Col xs="12">
