@@ -7,13 +7,23 @@ import {
   FaFilePdf,
   FaEnvelope,
   FaEnvelopeOpenText,
+   FaTrashAlt,
+  FaFileExcel,
+  FaFileCsv,
 } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { Link } from "react-router-dom";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 export default function useSelectableColumns(download_link, USEFOR = "",checkboxTitle) {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filters, setFilters] = useState({});
   const [selectAll, setSelectAll] = useState(false);
+  
   const [openRowId, setOpenRowId] = useState(null);
 
   /* =======================
@@ -90,6 +100,8 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
      Download Handler
   ======================== */
   const Download = (row, TYPE) => {
+        console.log(row);
+        
     switch (USEFOR) {
       case "REPORT":
         window.open(`${download_link}/${row.Report_ID}/${TYPE}`, "_self");
@@ -251,7 +263,7 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
     if (onDownload) {
       cols.push({
             name: (
-          <div>
+          <div className="position-relative dropdown-action">
             <div className="fw-bold text-start">Download</div>
             <input
               type="text"
@@ -273,12 +285,61 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
           </div>
         ),
         cell: (row) => (
-          <button
-            className="btn btn-primary d-flex align-items-center gap-1"
-            onClick={() => Download(row, "EXCEL")}
-          >
-            Download <IoMdDownload />
-          </button>
+ <div className="position-relative d-inline-block">
+  <button
+    className="btn btn-sm btn-primary"
+    onClick={(e) => {
+      e.stopPropagation();
+      setOpenRowId(openRowId === row.id ? null : row.id);
+    }}
+  >
+    <FaDownload /> Download
+  </button>
+
+  {openRowId === row.id && (
+    <div
+      className="position-absolute border rounded shadow bg-white"
+      style={{
+        top: "100%",
+        right: 0,
+        marginTop: "6px",
+        minWidth: 160,
+        zIndex: 1000,
+        padding: "8px 0",
+      }}
+    >
+      <button
+        className="dropdown-item text-success p-2" onClick={() => Download(row, "EXCEL")}
+      >
+        <FaFileExcel /> Download EXCEL
+      </button>
+
+      <button className="dropdown-item text-info p-2" onClick={() => Download(row, "CSV")}
+      >
+        <FaFileCsv /> Download CSV
+      </button>
+
+      <button className="dropdown-item text-danger p-2" onClick={() => Download(row, "EMAIL_PDF")}>
+        <FaEnvelope /> Email Pricing PDF
+      </button>
+      <button 
+       className="dropdown-item text-primary p-2" onClick={() => Download(row, "PDF")}>
+
+        <FaFilePdf /> Download PDF
+      </button>
+    </div>
+  )}
+</div>
+
+
+
+
+          // <button
+          //   className="btn btn-primary d-flex align-items-center gap-1"
+          //   onClick={() => Download(row, "EXCEL")}
+          // >
+          //   Download <IoMdDownload />
+          // </button>
         ),
         width: "180px",
         ignoreRowClick: true,

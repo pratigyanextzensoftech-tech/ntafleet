@@ -10,6 +10,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import $ from "jquery";
 import qs from "qs"; // npm install qs
 import {
   Dropdown,
@@ -345,7 +346,26 @@ const handleDelete = (e, row) => {
     fetchTotals(formData)
   };
 
-  
+    function handleDownload(type, filters) {
+   
+const ids = []; 
+$('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val());});
+
+if (ids.length === 0) {  alert('Please select at least one item');  return;}
+ const IDSUP = ids.join(',');  
+const from = $('#from').val();
+const to = $('#to').val();
+const state_prov = $('input[name="state_prov"]').val();
+const unit = $('input[name="unit"]').val();
+const card_no = $('input[name="card_no"]').val();
+const company = $('input[name="company"]').val();
+const currency = $('input[name="currency"]').val();  
+const items = $('input[name="items"]').val();  
+const status = $('input[name="status"]').val();  
+const invoice_type = $('input[name="invoice_type"]').val();  
+console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoice_type)
+
+} 
 
   return (
     <Fragment>
@@ -390,19 +410,19 @@ const handleDelete = (e, row) => {
       </DropdownToggle>
 
       <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary">
+        <DropdownItem className="text-primary"   onClick={() => handleDownload("EXCEL",filters)}>
           <FaFileExcel/> Download Excel
         </DropdownItem>
 
-        <DropdownItem className="text-danger">
+        <DropdownItem className="text-danger"   onClick={() => handleDownload("CSV",filters)}>
           <FaFileCsv/> Download CSV
         </DropdownItem>
 
-        <DropdownItem className="text-success">
+        <DropdownItem className="text-success"   onClick={() => handleDownload("CSV_NEW",filters)}>
         <FaFileCsv/> Download New CSV
         </DropdownItem>
 
-        <DropdownItem className="text-info">
+        <DropdownItem className="text-info"   onClick={() => handleDownload("PDF",filters)}>
           <FaFilePdf/> Download Pdf
         </DropdownItem>
       </DropdownMenu>

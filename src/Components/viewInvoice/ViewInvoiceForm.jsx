@@ -85,7 +85,6 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
               control={control}
               render={({ field }) => {
                 const { onChange } = field;
-
                 const handleSupplierChange = (e) => {
                   const val = Number(e.target.value);
                   const checked = e.target.checked;

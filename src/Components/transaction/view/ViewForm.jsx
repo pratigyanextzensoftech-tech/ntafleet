@@ -135,7 +135,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                   </Label>
                 </span>
               </legend>
-                                <Row>
+                                <Row  className="chk">
 
                 {supplier.map((item, index) => (
                   <Col key={index} xxl="3"  xl="4" md="4" sm="6">
@@ -180,6 +180,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                   render={({ field }) => (
                     <DatePicker
                       className="form-control"
+                       id="from"
                       selected={field.value}
                       onChange={field.onChange}
                       dateFormat="yyyy-MM-dd"
@@ -206,6 +207,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                       className="form-control"
                       selected={field.value}
                       onChange={field.onChange}
+                       id="to"
                       dateFormat="yyyy-MM-dd"
                     />
                   )}

@@ -268,6 +268,8 @@ const company_id = $('input[name="company"]').val();
 const invcat = $('input[name="category"]').val();
 const invoice_type = $('input[name="invoiceType"]').val();
 const show_hide = $('input[name="invoiceShow"]').val();  
+
+
 }
   const filteredCombineData = applyFilters(data, filters);
   const filteredOwnerData = applyFilters(ownerdata, filters);
