@@ -99,7 +99,6 @@ const FgRackCent = ({ title, btnTitle }) => {
   }, [dynamicColumns, companyId]);
 
   useEffect(() => {
- 
       GetDataTAble();
    
   }, []);

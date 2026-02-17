@@ -5,11 +5,12 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import { tableColumns, dummytabledata } from "../../../Data/Table/Defaultdata";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import CompanyInfoForm from "./CompanyInfoForm";
-import { fual_card, fual_card_update } from "../../../api";
+import { company_info, company } from "../../../api";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import $ from "jquery";
 import { toast } from "react-toastify";
+import Loader from "../../../Layout/Loader";
 const CompanyInfo = () => {
     const {
       register,
@@ -23,17 +24,17 @@ const CompanyInfo = () => {
       },
     });
    const [loading, setLoading] = useState(false);
+ 
  useEffect(() => {
   $(document).off("click", ".update-btn");   
   $(document).on("click", ".update-btn", function () {
       const id = $(this).data("id");
       const updateData = {}; 
-      const rack_ca = document.getElementById(`rack_ca${id}`).value;
-      const rack_us = document.getElementById(`rack_us${id}`).value;
-      updateData.rack_ca=rack_ca;
-      updateData.rack_us=rack_us; 
+      const remarks = document.getElementById(`c${id}`).value;
+
+      updateData.remarks=remarks;
     axios
-      .put(`${fual_card}/${id}`, updateData)
+      .put(`${company}/${id}`, updateData)
       .then(() => {
         toast.success("Data updated");
       })
@@ -46,12 +47,13 @@ const CompanyInfo = () => {
     function GetDataTAble(company_id, pricingDate, rackUs, rackCa) {
     const columns = [
       { data: "company_name", title: "Company Name" },
-      { data: "pricing_date", title: "Pricing Date" },
-      { data: "rack_ca", title: "Rack_CA" },
-      { data: "rack_us", title: "Rack_US" },
-      { data: "added_by", title: "Added_By" },
-      { data: "added_on", title: "Added_On" }, 
-      { data: "Action", title: "Action", orderable: false },
+      { data: "qty7US", title: "Volume US(7days)" },
+      { data: "qty7Canada", title: "Volume CA(7days)" },
+      { data: "qty28US", title: "Volume US(28days)" },
+      { data: "qty28Canada", title: "Volume CA(28days)" },
+      { data: "company_status", title: "Status" },
+      { data: "remarks", title: "Remarks" },
+      { data: "action", title: "Action", orderable: false },
     ];
 
     $("#example").DataTable({
@@ -83,27 +85,24 @@ const CompanyInfo = () => {
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id ? company_id : "");
-        params.append("pricing_date", pricingDate);
-        params.append("rack_us", rackUs);
-        params.append("rack_ca", rackCa);
-        fetch(`${fual_card_update}?${params.toString()}`)
+      
+        fetch(`${company_info}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${fual_card_update}?${params.toString()}`;
+            console.log(json.data[0])
+            const url = `${company_info}?${params.toString()}`;
             console.log("🔗 API URL:", url);
-            const tableData = json.data.map((row) => {
-              // const obj = {
-              //   company_name: row[0],
-              //   pricing_date: row[1],
-              //   rack_ca: row[2],
-              //   rack_us: row[3],
-              //   added_by: row[4],
-              //   added_on: row[5], 
-              //   Action: row[7],
-              // };
-                
-              // return obj;
-            });
+           const tableData = json.data.map((row) => ({    
+  company_name: row.company_name,
+  qty7US: row.qty7US,
+  qty7Canada: row.qty7Canada,
+  qty28US: row.qty28US,
+  qty28Canada: row.qty28Canada,
+  company_status: row.company_status,
+  remarks: row.remarks,
+  action: row.action,
+}));
+
             console.log(tableData);
 
             callback({
@@ -164,6 +163,44 @@ const CompanyInfo = () => {
             </Card>
           </Col>
         </Row> 
+          <Card>
+                <CardBody>
+                  <HeaderCard
+                    title="Rack Cent List"
+                    download={true}
+                    downloadHeading="Download"
+                  />
+                    <Row>
+                      <Col sm="12">
+                        <div className="text-end my-3">
+                          <button className="btn btn-primary">Delete Rack Cent</button>
+                        </div>
+                        {<Loader loading={loading} />}
+                        <div className="table-responsive">
+                          <table
+                            id="example"
+                            className="display table table-striped table-bordered nowrap"
+                            style={{ width: "100%" }}
+                          >
+                            <thead>
+                              <tr>
+                                <th>Company Name</th>
+                                <th>Volume US(7days)</th>
+                                <th>Volume CA(7days) </th>
+                                <th>Volume US(28days) </th>
+                                <th>Volume CA(28days) </th>
+                                <th>Status </th> 
+                                <th>Remarks </th> 
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+                        </div>
+                      </Col>
+                    </Row>
+                </CardBody>
+              </Card>
     
       </Container>
     </Fragment>
