@@ -78,7 +78,6 @@ const Index = () => {
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
       const[Edit,setEdit]=useState(false)
 
   const toggle = () => setDropdownOpen((prev) => !prev);
@@ -136,20 +135,23 @@ const columnWidths = {
   Currency: "100px",
 };
    const handleFilterChange = (column, value) => {
+    console.log(column)
   setFilters((prev) => ({
     ...prev,
     [column]: value.toLowerCase(),
   }));
+   fetchData(currentPage, perPage, filters);
+    fetchTotals(filters);
 };
-  const filteredData = data.filter((row) =>
-  Object.keys(filters).every((key) => {
-    if (!filters[key]) return true;
-    return (
-      row[key] &&
-      row[key].toString().toLowerCase().includes(filters[key])
-    );
-  })
-);
+//   const filteredData = data.filter((row) =>
+//   Object.keys(filters).every((key) => {
+//     if (!filters[key]) return true;
+//     return (
+//       row[key] &&
+//       row[key].toString().toLowerCase().includes(filters[key])
+//     );
+//   })
+// );
   const fetchTotals = async (formData) => {
     try {
 
@@ -394,7 +396,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
         <DataTableComponent
           title="Transactions List"
           totalData={totals}
-          tableData={filteredData}
+          tableData={data}
           tableColumns={tableColumns}
           loading={loading}
           download={true}

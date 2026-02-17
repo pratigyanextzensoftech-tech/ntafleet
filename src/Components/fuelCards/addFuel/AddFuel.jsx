@@ -29,7 +29,7 @@ const AddFuel = ({btnTitle}) => {
       useEffect(() => {
         
          axios
-        .get(`${supplierById}/6,9,8,1,5,7,4,3,10`)
+        .get(`${supplierById}/6,9,8,1,5,7,4,3,10,11`)
         .then((res) => {
           const formatted = res.data.map((s) => ({
             value: s.id,

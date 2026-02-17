@@ -48,7 +48,7 @@ useEffect(() => {
       email: selectedRow.email,
       phone: selectedRow.phone,
       company: selectedRow.company,
-      password: selectedRow.password,
+      // password: selectedRow.password,
        status: {
           value: slectedStatus.value,
           label: slectedStatus.label
@@ -69,7 +69,7 @@ const onSubmit = async (formData) => {
     email: formData.email,
     phone: formData.phone,
     company: formData.company,
-    password: formData.password,
+    password:Edit==true? formData.newPassword :formData.password,
     status: formData.status?.value, // dropdown gives {label, value}
     company_login: formData.company_login?.label,
     gender: "",
@@ -101,6 +101,7 @@ const onSubmit = async (formData) => {
       status:"",
       company_login:""
     }); 
+    setEdit(false)
        if (onDataAdded) onDataAdded(res.data); 
     }
 
@@ -168,9 +169,9 @@ const onSubmit = async (formData) => {
 
           <Col xl="4"  md="6" sm="12">
             <InputText
-              name="password"
-              label={!editUser?"Password":"New Password"}
-              placeholder={!editUser?"Enter Password":"Enter New Password"}
+              name={Edit===false?"password":"newPassword"}
+              label={Edit==false?"Password":"New Password"}
+              placeholder={Edit==false?"Enter Password":"Enter New Password"}
               type="password"
               register={register}
               errors={errors}

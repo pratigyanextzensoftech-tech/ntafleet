@@ -222,8 +222,7 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
                 marginTop: 5,
                 minWidth: 140,
                 padding: "12px 12px",
-              }}>
-              
+              }}>        
                   <Link
                               // to={`/viewInvoice/ViewPdf/${btoa(row.id)}`}
                               to={row.fulldata.download_link }
@@ -285,7 +284,7 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
           </div>
         ),
         cell: (row) => (
- <div className="position-relative d-inline-block">
+ <div className="position-relative dropdown-action ">
   <button
     className="btn btn-sm btn-primary"
     onClick={(e) => {
@@ -309,21 +308,19 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
       }}
     >
       <button
-        className="dropdown-item text-success p-2" onClick={() => Download(row, "EXCEL")}
+        className="dropdown-item d-flex text-success p-2" onClick={() => Download(row, "EXCEL")}
       >
         <FaFileExcel /> Download EXCEL
       </button>
 
-      <button className="dropdown-item text-info p-2" onClick={() => Download(row, "CSV")}
+      <button className="dropdown-item d-flex text-info p-2" onClick={() => Download(row, "CSV")}
       >
         <FaFileCsv /> Download CSV
       </button>
 
-      <button className="dropdown-item text-danger p-2" onClick={() => Download(row, "EMAIL_PDF")}>
-        <FaEnvelope /> Email Pricing PDF
-      </button>
+     
       <button 
-       className="dropdown-item text-primary p-2" onClick={() => Download(row, "PDF")}>
+       className="dropdown-item d-flex text-primary p-2" onClick={() => Download(row, "PDF")}>
 
         <FaFilePdf /> Download PDF
       </button>

@@ -8,12 +8,21 @@ import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import { fual_card } from "../../../api"; // your fuel card API endpoint
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useCompany,useSupplier } from "../../../Hooks/Dropdowns";
+import { Controller } from "react-hook-form";
+import Select from "react-select";
+import { cardStatus } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
+import { useForm } from "react-hook-form";
+import { Row, Col, Card, CardBody } from "reactstrap";
+import ViewForm from "./ViewForm";
 const ViewFuelCards = () => {
   const [fuelCards, setFuelCards] = useState([]);
     const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(true);
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
+  const {data:company}=useCompany("")
+  const {data:supplier}=useSupplier("")
   const [selectedRow, setSelectedRow] = useState(null);
   const[Edit,setEdit]=useState(false)
   // Pagination states
@@ -21,25 +30,41 @@ const ViewFuelCards = () => {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
+    const {
+      control,
+      reset,
+      handleSubmit,
+      formState: { errors },
+    } = useForm({ });
 const navigate=useNavigate()
   // Build column definitions
 
-const filteredData = fuelCards.filter((row) =>
-  Object.keys(filters).every((key) => {
-    if (!filters[key]) return true;
-    return (
-      row[key] &&
-      row[key].toString().toLowerCase().includes(filters[key])
-    );
-  })
-);
+// const filteredData = fuelCards.filter((row) =>
+//   Object.keys(filters).every((key) => {
+//     if (!filters[key]) return true;
+//     return (
+//       row[key] &&
+//       row[key].toString().toLowerCase().includes(filters[key])
+//     );
+//   })
+// );
+  const handleSearch = (formData) => {
+    console.log("🔍 Filters received:", formData);
+    setFilters(formData); // save filters
+    setCurrentPage(1); // reset to first page
+    fetchData(1, perPage, formData); // fetch new data immediately
+  };
 
 const handleFilterChange = (column, value) => {
-  setFilters((prev) => ({
-    ...prev,
+  const updatedFilters = {
+    ...filters,
     [column]: value.toLowerCase(),
-  }));
+  };
+
+  setFilters(updatedFilters);
+  fetchData(currentPage, perPage, updatedFilters);
 };
+
   useEffect(() => {
     const columns = [
       { key: "card", label: "Card",width:"200px" },
@@ -103,34 +128,16 @@ const handleFilterChange = (column, value) => {
       },
     ].map((col) => ({
       name: (
-        <div>
+      
           <div
-            className="d-flex align-items-end justify-content-start"
+            className="d-flex align-items-center justify-content-start"
             style={{ height: "40px" }}
           >
             {col.label}
+            
           </div>
-
-          {/* ✅ show search only if searchable !== false */}
-       {col.searchable !== false && (
-            <input
-              type="text"
-            className="mt-2"
-            style={{
-              width: "100%",                   
-              height: "28px",
-              border:"none",
-              borderRadius:"5px",
-              boxSizing: "border-box"
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-              onChange={(e) =>
-              handleFilterChange(col.key, e.target.value)
-              }
-            />
-          )}
-        </div>
+  
+      
       ),
       selector: (row) => row[col.key],
       sortable: true,
@@ -143,15 +150,15 @@ const handleFilterChange = (column, value) => {
     }));
 
     setTableColumns(columns);
-  }, [openRowId]);
+  }, [openRowId, company, supplier, cardStatus]);
 
   // Fetch paginated data
-  const fetchData = async (page = 1, perPage = 10) => {
+  const fetchData = async (page = 1, perPage = 10,filters = {}) => {
     setLoading(true);
     try {
       const start = (page - 1) * perPage;
       const length = perPage;
-      const params = { draw, start, length };
+      const params = { draw, start, length,  ...filters   };
 
       const res = await axios.get(fual_card, { params });
       const responseData = Array.isArray(res.data)
@@ -263,11 +270,25 @@ const handleFilterChange = (column, value) => {
     <Fragment>
       <Breadcrumbs parent="Fuel Cards" title="View Fuel Cards" />
       <Container fluid> 
+         <Row>
+          <Col sm="12">
+            <Card>
+              <HeaderCard title="Filter" />
+              <CardBody>
+                <ViewForm
+                  btnTitle="Search Data"
+                  btnTitle1="Reset"
+                  onSearch={handleSearch}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <DataTableComponent
           title="Fuel Card List"
           loading={loading}
           tableColumns={tableColumns}
-          tableData={filteredData}
+          tableData={fuelCards}
           downloadHeading="Download"
           download={true}
           pagination
