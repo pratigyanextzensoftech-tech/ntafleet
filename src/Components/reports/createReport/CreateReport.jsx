@@ -137,16 +137,16 @@ const CreateReport = ({
     if (isValid) {
       setShowMessage(false);
     }
-    // axios.post(api_name, payload, { headers: { "Content-Type": "application/json" },      })
-    //   .then((res) => {    toast.success(res.data.message);
-    //    // reset();
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     toast.error("Something went wrong");
-    //     setLoading(false);
-    //   })
-    //   .finally(() => setLoading(false));
+    axios.post(api_name, payload, { headers: { "Content-Type": "application/json" },      })
+      .then((res) => {    toast.success(res.data.message);
+       // reset();
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+        setLoading(false);
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
