@@ -77,7 +77,6 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   useEffect(() => {
   if (supplier && supplier.length > 0) {
     const allValues = supplier.map((s) => String(s.value));
-
     setSelectedValues(allValues);
     setValue("supplier", allValues);   // ✅ important
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import {
   chooseSupplierCheckBox,
@@ -29,20 +29,22 @@ import {
 
 const SearchForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
-
   const { data: companyOptions } = useCompany();
   const { data: items } = useItems();
   const { data: supplier } = useSupplierAll();
-
+const sevenDaysAgo = new Date();
+const today = new Date();
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   const {
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      from: null,
-      to: null,
+       from: sevenDaysAgo,
+      to: today,
       state_prov: "",
       unit: "",
       card_no: "",
@@ -72,6 +74,13 @@ const SearchForm = ({ btnTitle, btnTitle1, onSearch }) => {
 
     if (onSearch) onSearch(fullData);
   };
+  useEffect(() => {
+  if (supplier && supplier.length > 0) {
+    const allValues = supplier.map((s) => String(s.value));
+    setSelectedValues(allValues);
+    setValue("supplier", allValues);   // ✅ important
+  }
+}, [supplier, setValue]);
 
   const handleReset = () => {
     reset();
@@ -135,7 +144,7 @@ const SearchForm = ({ btnTitle, btnTitle1, onSearch }) => {
                   </Label>
                 </span>
               </legend>
-                                <Row>
+                                <Row  className="chk">
 
                 {supplier.map((item, index) => (
                   <Col key={index} xxl="3"  xl="4" md="4" sm="6">
@@ -180,6 +189,7 @@ const SearchForm = ({ btnTitle, btnTitle1, onSearch }) => {
                   render={({ field }) => (
                     <DatePicker
                       className="form-control"
+                       id="from"
                       selected={field.value}
                       onChange={field.onChange}
                       dateFormat="yyyy-MM-dd"
@@ -206,6 +216,7 @@ const SearchForm = ({ btnTitle, btnTitle1, onSearch }) => {
                       className="form-control"
                       selected={field.value}
                       onChange={field.onChange}
+                       id="to"
                       dateFormat="yyyy-MM-dd"
                     />
                   )}

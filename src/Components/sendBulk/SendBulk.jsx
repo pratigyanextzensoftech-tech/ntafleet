@@ -107,7 +107,7 @@ console.log(rows)
       "Retail Total": "retail_price",
       Saving: "saving",
       Country: "country",
-      Supplier: "supplier_id",
+      Supplier: "supplier_name",
       Status: "status",
     };
      const OwnercolumnsMap = {
@@ -122,7 +122,7 @@ console.log(rows)
       Fees: "fees",
       "Tr Count": "tr_count",
       Country: "country",
-      Supplier: "supplier_id",
+      Supplier: "supplier_name",
       Status: "status",
     };
     const moneyCodecolumnsMap = {

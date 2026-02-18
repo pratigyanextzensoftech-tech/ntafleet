@@ -170,9 +170,9 @@ const CompanyInfo = () => {
                   />
                     <Row>
                       <Col sm="12">
-                        <div className="text-end my-3">
+                        {/* <div className="text-end my-3">
                           <button className="btn btn-primary">Delete Rack Cent</button>
-                        </div>
+                        </div> */}
                         {<Loader loading={loading} />}
                         <div className="table-responsive">
                           <table
@@ -199,7 +199,6 @@ const CompanyInfo = () => {
                     </Row>
                 </CardBody>
               </Card>
-    
       </Container>
     </Fragment>
   );

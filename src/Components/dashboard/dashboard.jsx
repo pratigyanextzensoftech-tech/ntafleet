@@ -10,13 +10,16 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { download } from "../../api";
+import $ from "jquery";
+import qs from "qs"; // npm install qs
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import qs from "qs"; // npm install qs
+
 const ActionDropdown = ({ row, onEdit, onDelete }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -74,9 +77,10 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [draw, setDraw] = useState(1);
   const [filters, setFilters] = useState({});
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-  
+  const [dropdownOpen, setDropdownOpen] = useState(false);
       const[Edit,setEdit]=useState(false)
+
+  const toggle = () => setDropdownOpen((prev) => !prev);
   
 const navigate = useNavigate();
 const [selectedRow, setSelectedRow] = useState(null);
@@ -89,7 +93,6 @@ const [selectedRow, setSelectedRow] = useState(null);
     fee: 0,
     amtreal: 0,
   });
-  const toggle = () => setDropdownOpen((prev) => !prev);
 
   // ✅ Column mapping between UI and API
 const columnsMap = {
@@ -132,20 +135,23 @@ const columnWidths = {
   Currency: "100px",
 };
    const handleFilterChange = (column, value) => {
+    console.log(column)
   setFilters((prev) => ({
     ...prev,
     [column]: value.toLowerCase(),
   }));
+   fetchData(currentPage, perPage, filters);
+    fetchTotals(filters);
 };
-  const filteredData = data.filter((row) =>
-  Object.keys(filters).every((key) => {
-    if (!filters[key]) return true;
-    return (
-      row[key] &&
-      row[key].toString().toLowerCase().includes(filters[key])
-    );
-  })
-);
+//   const filteredData = data.filter((row) =>
+//   Object.keys(filters).every((key) => {
+//     if (!filters[key]) return true;
+//     return (
+//       row[key] &&
+//       row[key].toString().toLowerCase().includes(filters[key])
+//     );
+//   })
+// );
   const fetchTotals = async (formData) => {
     try {
 
@@ -343,7 +349,30 @@ const handleDelete = (e, row) => {
     fetchTotals(formData)
   };
 
+    function handleDownload(type, filters) {
+   
+const ids = []; 
+let esso_ftp='';
+$('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val()); if($(this).val()==='100'){esso_ftp="Yes";} });
+
+if (ids.length === 0) {  alert('Please select at least one item');  return;}
+ const IDSUP = ids.join(',');  
   
+const from = $('#from').val();
+const to = $('#to').val();
+const state_prov = $('input[name="state_prov"]').val();
+const unit = $('input[name="unit"]').val();
+const card_no = $('input[name="card_no"]').val();
+const company = $('input[name="company"]').val();
+const currency = $('input[name="currency"]').val();  
+const items = $('input[name="items"]').val();  
+const status = $('input[name="status"]').val();  
+const invoice_type = $('input[name="invoice_type"]').val(); 
+
+console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoice_type)
+ window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
+
+} 
 
   return (
     <Fragment>
@@ -367,7 +396,7 @@ const handleDelete = (e, row) => {
         <DataTableComponent
           title="Transactions List"
           totalData={totals}
-          tableData={filteredData}
+          tableData={data}
           tableColumns={tableColumns}
           loading={loading}
           download={true}
@@ -376,7 +405,7 @@ const handleDelete = (e, row) => {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
-            renderDropdown={() => (
+        renderDropdown={() => (
     <>
        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
       <DropdownToggle
@@ -388,19 +417,19 @@ const handleDelete = (e, row) => {
       </DropdownToggle>
 
       <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary">
+        <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel",filters)}>
           <FaFileExcel/> Download Excel
         </DropdownItem>
 
-        <DropdownItem className="text-danger">
+        <DropdownItem className="text-danger"   onClick={() => handleDownload("CSV",filters)}>
           <FaFileCsv/> Download CSV
         </DropdownItem>
 
-        <DropdownItem className="text-success">
+        <DropdownItem className="text-success"   onClick={() => handleDownload("NewCSV",filters)}>
         <FaFileCsv/> Download New CSV
         </DropdownItem>
 
-        <DropdownItem className="text-info">
+        <DropdownItem className="text-info"   onClick={() => handleDownload("PDF",filters)}>
           <FaFilePdf/> Download Pdf
         </DropdownItem>
       </DropdownMenu>
