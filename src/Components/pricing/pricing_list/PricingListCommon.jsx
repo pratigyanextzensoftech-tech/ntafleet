@@ -65,6 +65,7 @@ const[loading,setLoading]=useState(false)
     const payload = {
       pricing_date: formatDate(data?.pricingDate),
       supplier_id: data?.supplier?.value || "",
+      supplier: data?.supplier?.label || "",
     };
 setLoading(false)
     if (onSearch) {
