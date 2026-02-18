@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import Select from "react-select";
 import {
   groupBy,
@@ -58,6 +58,7 @@ const CreateReport = ({
     register,
     control,
     reset,
+    setValue,
     handleSubmit,
     isValid,
     formState: { errors },
@@ -84,6 +85,14 @@ const CreateReport = ({
       city: "", // required
     },
   });
+  useEffect(() => {
+  if (supplier?.length > 0) {
+    const allSupplierValues = supplier.map((s) =>
+      String(s.value)
+    );
+    setValue("supplier", allSupplierValues); // 🔥 select all
+  }
+}, [supplier]);
   const formatDate = (date) => {
     if (!date) return "";
     const d = new Date(date);
@@ -137,10 +146,12 @@ const CreateReport = ({
     if (isValid) {
       setShowMessage(false);
     }
+        setLoading(true);
     axios.post(api_name, payload, { headers: { "Content-Type": "application/json" },      })
-      .then((res) => {    toast.success(res.data.message);
-       // reset();
+      .then((res) => {  
+      //  reset();
         setLoading(false);
+        toast.success("Succesfully Create Report")
       })
       .catch((err) => {
         toast.error("Something went wrong");
@@ -166,10 +177,10 @@ const CreateReport = ({
                         <InputGroupText>Company</InputGroupText>
                         <Controller
                           name="company"
-                          rules={{
-                            required: true,
-                            message: "company Name is required",
-                          }}
+                          // rules={{
+                          //   required: true,
+                          //   message: "company Name is required",
+                          // }}
                           control={control}
                           render={({ field }) => (
                             <Select
@@ -182,11 +193,11 @@ const CreateReport = ({
                         />
                       </InputGroup>
 
-                      {errors.company && (
+                      {/* {errors.company && (
                         <span className="text-danger">
                           {errors.company?.message}
                         </span>
-                      )}
+                      )} */}
                     </FormGroup>
                   </Col> 
                   <Col  xxl="3"  md="6" sm="12">
@@ -271,7 +282,7 @@ const CreateReport = ({
                         <InputGroupText>Export Type</InputGroupText>
                         <Controller
                           name="exportType"
-                          rules={{ required: "Export type is required" }}
+                          // rules={{ required: "Export type is required" }}
                           control={control}
                           render={({ field }) => (
                             <Select
@@ -282,11 +293,11 @@ const CreateReport = ({
                           )}
                         />
                       </InputGroup>
-                      {errors.exportType && (
+                      {/* {errors.exportType && (
                         <span className="text-danger">
                           {errors.exportType.message}
                         </span>
-                      )}
+                      )} */}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -294,11 +305,7 @@ const CreateReport = ({
 <Controller
   name="supplier"
   control={control}
-  rules={{
-    validate: (value) =>
-      (value && value.length > 0) ||
-      "Please select at least one supplier",
-  }}
+ 
   render={({ field }) => {
     const { value, onChange } = field;
 
@@ -382,11 +389,11 @@ const CreateReport = ({
             ))}
           </Row>
 
-          {errors.supplier && (
+          {/* {errors.supplier && (
             <span className="text-danger">
               {errors.supplier.message}
             </span>
-          )}
+          )} */}
         </fieldset>
       </>
     );
