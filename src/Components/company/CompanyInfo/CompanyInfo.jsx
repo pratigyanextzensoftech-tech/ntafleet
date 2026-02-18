@@ -1,50 +1,59 @@
-import React, { Fragment,useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import { tableColumns, dummytabledata } from "../../../Data/Table/Defaultdata";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import CompanyInfoForm from "./CompanyInfoForm";
-import { company_info, company } from "../../../api";
+import { company_info, company } from "../../../api"; 
+import { useCompany } from "../../../Hooks/Dropdowns";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 import $ from "jquery";
 import { toast } from "react-toastify";
 import Loader from "../../../Layout/Loader";
-const CompanyInfo = () => {
-    const {
-      register,
-      control,
-      setValue,
-      handleSubmit,
-      formState: { errors, isSubmitted, isValid },
-    } = useForm({
-      defaultValues: {
-        company: null,
-      },
-    });
-   const [loading, setLoading] = useState(false);
+import Select from "react-select";
  
- useEffect(() => {
-  $(document).off("click", ".update-btn");   
-  $(document).on("click", ".update-btn", function () {
+
+
+const CompanyInfo = () => {
+
+  const {data:companyData}=useCompany()
+  const {
+    register,
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors, isSubmitted, isValid },
+  } = useForm({
+    defaultValues: {
+      company: null,
+    },
+  });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    $(document).off("click", ".update-btn");
+    $(document).on("click", ".update-btn", function () {
       const id = $(this).data("id");
-      const updateData = {}; 
+      const updateData = {};
       const remarks = document.getElementById(`c${id}`).value;
 
-      updateData.remarks=remarks;
-    axios
-      .put(`${company}/${id}`, updateData)
-      .then(() => {
-        toast.success("Data updated");
-      })
-      .catch(() => {
-        toast.error("Error In Data update");
-      });
-  }); 
-  return () => {   $(document).off("click", ".update-btn"); }; 
+      updateData.remarks = remarks;
+      axios
+        .put(`${company}/${id}`, updateData)
+        .then(() => {
+          toast.success("Data updated");
+        })
+        .catch(() => {
+          toast.error("Error In Data update");
+        });
+    });
+    return () => {
+      $(document).off("click", ".update-btn");
+    };
   }, []);
-    function GetDataTAble(company_id, company_status) {
+  function GetDataTAble(company_id, company_status) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "qty7US", title: "Volume US(7days)" },
@@ -56,7 +65,7 @@ const CompanyInfo = () => {
       { data: "action", title: "Action", orderable: false },
     ];
 
-    $("#example").DataTable({
+    $("#data_list").DataTable({
       serverSide: true,
       destroy: true,
       processing: true,
@@ -64,7 +73,7 @@ const CompanyInfo = () => {
       paging: true,
       searching: true,
       ordering: true,
-      pageLength: 25,
+      pageLength: 10,
       columns: columns,
       columnDefs: [
         {
@@ -86,23 +95,23 @@ const CompanyInfo = () => {
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id ? company_id : "");
         params.append("company_status", company_status ? company_status : "");
-      
+
         fetch(`${company_info}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            console.log(json.data[0])
+            console.log(json.data[0]);
             const url = `${company_info}?${params.toString()}`;
             console.log("🔗 API URL:", url);
-           const tableData = json.data.map((row) => ({    
-  company_name: row.company_name,
-  qty7US: row.qty7US,
-  qty7Canada: row.qty7Canada,
-  qty28US: row.qty28US,
-  qty28Canada: row.qty28Canada,
-  company_status: row.company_status,
-  remarks: row.remarks,
-  action: row.action,
-}));
+            const tableData = json.data.map((row) => ({
+              company_name: row.company_name,
+              qty7US: row.qty7US,
+              qty7Canada: row.qty7Canada,
+              qty28US: row.qty28US,
+              qty28Canada: row.qty28Canada,
+              company_status: row.company_status,
+              remarks: row.remarks,
+              action: row.action,
+            }));
 
             console.log(tableData);
 
@@ -127,24 +136,24 @@ const CompanyInfo = () => {
   }
 
   useEffect(() => {
- 
-      GetDataTAble();
-   
+    GetDataTAble();
   }, []);
-    const onSubmit = (data) => {
-      console.log(data)
+  const onSubmit = (data) => {
+    console.log(data);
     setLoading(true);
-    const company_id = data.company_id? data.company_id:"";
-    const company_status = data.company_status.value? data.company_status.value: "";
+    const company_id = data.company_id ? data.company_id : "";
+    const company_status = data.company_status.value
+      ? data.company_status.value
+      : "";
     console.log("Submitting:", {
       company_id,
       company_status,
     });
 
-    if ($.fn.DataTable.isDataTable("#example")) {
-      $("#example").DataTable().destroy();
-    } 
-    GetDataTAble(company_id,company_status);
+    if ($.fn.DataTable.isDataTable("#data_list")) {
+      $("#data_list").DataTable().destroy();
+    }
+    GetDataTAble(company_id, company_status);
     setLoading(false);
   };
   return (
@@ -156,49 +165,80 @@ const CompanyInfo = () => {
             <Card>
               <HeaderCard title="Filter" />
               <CardBody>
-                <CompanyInfoForm btnTtitle="Search Data" btnTtitle1="Reset"  onSearch={onSubmit}/>
+                <CompanyInfoForm
+                  btnTtitle="Search Data"
+                  btnTtitle1="Reset"
+                  onSearch={onSubmit}
+                />
               </CardBody>
             </Card>
           </Col>
-        </Row> 
-          <Card>
-                <CardBody>
-                  <HeaderCard
-                    title="Rack Cent List"
-                    download={true}
-                    downloadHeading="Download"
-                  />
-                    <Row>
-                      <Col sm="12">
-                        {/* <div className="text-end my-3">
+        </Row>
+        <Card>
+          <CardBody>
+            <HeaderCard
+              title="Rack Cent List"
+              download={false}
+              downloadHeading=""
+            />
+            <Row>
+              <Col sm="12">
+                {/* <div className="text-end my-3">
                           <button className="btn btn-primary">Delete Rack Cent</button>
                         </div> */}
-                        {<Loader loading={loading} />}
-                        <div className="table-responsive">
-                          <table
-                            id="example"
-                            className="display table table-striped table-bordered nowrap"
-                            style={{ width: "100%" }}
-                          >
-                            <thead>
-                              <tr>
-                                <th>Company Name</th>
-                                <th>Volume US(7days)</th>
-                                <th>Volume CA(7days) </th>
-                                <th>Volume US(28days) </th>
-                                <th>Volume CA(28days) </th>
-                                <th>Status </th> 
-                                <th>Remarks </th> 
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody></tbody>
-                          </table>
-                        </div>
-                      </Col>
-                    </Row>
-                </CardBody>
-              </Card>
+                {<Loader loading={loading} />}
+                <div className="table-responsive">
+                  <table
+                    id="data_list"
+                    className="display table table-striped table-bordered nowrap"
+                    style={{ width: "100%" }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>Company Name</th>
+                        <th>Volume US(7days)</th>
+                        <th>Volume CA(7days) </th>
+                        <th>Volume US(28days) </th>
+                        <th>Volume CA(28days) </th>
+                        <th>Status </th>
+                        <th>Remarks </th>
+                        <th>Action</th>
+                      </tr>
+                    
+                    </thead>
+                    <thead>
+                      <tr>
+                    {/* <th> <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={companyData}
+                      className="form-control p-0 border-0"
+                      placeholder="Select  Company"
+                    />
+                  )}
+                /></th> */}
+                    <th><input type="text" id="1" className="input-search"/></th>
+                    <th><input type="text" id="1" className="input-search"/></th>
+                    <th><input type="text" id="2" className="input-search"/></th>
+                    <th><input type="text" id="3" className="input-search"/></th>
+                    <th><input type="text" id="4" className="input-search"/></th>
+                    <th><input type="text" id="5" className="input-search"/></th>
+                    <th><input type="text" id="6" className="input-search"/></th>
+                   
+                    
+                    <td></td>
+                  </tr>
+</thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </Col>
+            </Row>
+          </CardBody>
+        </Card>
       </Container>
     </Fragment>
   );
