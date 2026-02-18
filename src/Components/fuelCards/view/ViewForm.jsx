@@ -58,7 +58,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
 
   const onSubmit = (data) => {
     const fullData = {
-      supplier_id: selectedValues.join(","),
+      supplier_id: data.supplier.value ||"",
       card_no: data.card_no || "",
       policy: data.policy || "",
       unit_number: data.unit || "",
@@ -79,91 +79,43 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      {/* Supplier Checkboxes */}
-      <Controller
-        name="supplier"
-        control={control}
-        render={({ field }) => {
-          const { onChange } = field;
+                      <Row>
+               <Col  xxl="3" xl="4"  md="6" sm="12">
+                                           <FormGroup className="m-form__group">
+                                             <InputGroup>
+                                               <InputGroupText>Supplier</InputGroupText>
+                         
+                                               <Controller
+                                                 name="supplier"
+                                                 control={control}
+                                                 defaultValue={null}
+                                                 render={({ field }) => {
+                                                   // Auto select if only one option exists                                                  
+                                                   return (
+                                                     <Select
+                                                       {...field}
+                                                       options={supplier}
+                                                       className="form-control p-0 border-0"
+                                                       placeholder="Select supplier"
+                                                       value={field.value}
+                                                       onChange={(val) => field.onChange(val)}
+                                                         menuPortalTarget={document.body}
+                                                   menuPosition="fixed"
+                                                          styles={{
+                                         menuPortal: base => ({
+                                           ...base,
+                                           zIndex: 99999
+                                         })
+                                       }}
+                                                     />
+                                                   );
+                                                 }}
+                                               />
+                                             </InputGroup>
+                        
+                                           </FormGroup>
+                                         </Col>
 
-          const handleSupplierChange = (e) => {
-            const val = String(e.target.value);
-            const checked = e.target.checked;
-
-            // Select ALL
-            if (val === "All") {
-              if (checked) {
-                const allValues = supplier.map((s) => String(s.value));
-                setSelectedValues(allValues);
-                onChange(allValues);
-              } else {
-                setSelectedValues([]);
-                onChange([]);
-              }
-              return;
-            }
-
-            // Individual toggle
-            setSelectedValues((prev) => {
-              const updated = prev.includes(val)
-                ? prev.filter((v) => v !== val)
-                : [...prev, val];
-
-              onChange(updated);
-              return updated;
-            });
-          };
-
-          const allSelected = selectedValues.length === supplier.length;
-
-          return (
-            <fieldset className="inputField">
-              <legend>
-                Choose Supplier
-                <span className="ms-3">
-                  <input
-                    id="supplier-all"
-                    type="checkbox"
-                    value="All"
-                    checked={allSelected}
-                    onChange={handleSupplierChange}
-                  />
-                  <Label for="supplier-all" className="ms-1">
-                    Select All
-                  </Label>
-                </span>
-              </legend>
-                                <Row  className="chk">
-
-                {supplier.map((item, index) => (
-                  <Col key={index} xxl="3"  xl="4" md="4" sm="6">
-                    <div className="checkbox checkbox-dark">
-                      <input
-                        id={`supplier-checkbox-${index}`}
-                        type="checkbox"
-                        value={String(item.value)}
-                        checked={selectedValues.includes(String(item.value))}
-                        onChange={handleSupplierChange}
-                      />
-                      <Label
-                        for={`supplier-checkbox-${index}`}
-                        className="ms-2"
-                      >
-                        {item.label}
-                      </Label>
-                    </div>
-                  </Col>
-                ))}
-                  </Row>
-
-              {errors.supplier && (
-                <span className="text-danger">{errors.supplier.message}</span>
-              )}
-            </fieldset>
-          );
-        }}
-      />
-<Row>
       {/* Row 1 */}
          <Col xxl="3"  xl="4" md="6" sm="12">
           <FormGroup>
@@ -247,7 +199,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="status"
-            label="Invoice Status"
+            label="Card Status"
             control={control}
             options={cardStatus}
           />

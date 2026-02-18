@@ -44,7 +44,7 @@ const CompanyInfo = () => {
   }); 
   return () => {   $(document).off("click", ".update-btn"); }; 
   }, []);
-    function GetDataTAble(company_id, pricingDate, rackUs, rackCa) {
+    function GetDataTAble(company_id, company_status) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "qty7US", title: "Volume US(7days)" },
@@ -85,6 +85,7 @@ const CompanyInfo = () => {
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id ? company_id : "");
+        params.append("company_status", company_status ? company_status : "");
       
         fetch(`${company_info}?${params.toString()}`)
           .then((res) => res.json())
@@ -131,22 +132,19 @@ const CompanyInfo = () => {
    
   }, []);
     const onSubmit = (data) => {
+      console.log(data)
     setLoading(true);
-    // const company_id = data.company?.value ?? "";
-    // const pricingDate = data.pricingDate ? formatDate(data.pricingDate) : "";
-    // const rackUs = data.rackUs ? data.rackUs : "";
-    // const rackCa = data.rackCa ? data.rackCa : "";
-    // console.log("Submitting:", {
-    //   company_id,
-    //   pricingDate,
-    //   rackUs,
-    //   rackCa,
-    // });
+    const company_id = data.company_id? data.company_id:"";
+    const company_status = data.company_status.value? data.company_status.value: "";
+    console.log("Submitting:", {
+      company_id,
+      company_status,
+    });
 
     if ($.fn.DataTable.isDataTable("#example")) {
       $("#example").DataTable().destroy();
     } 
-    // GetDataTAble(company_id, pricingDate, rackUs, rackCa);
+    GetDataTAble(company_id,company_status);
     setLoading(false);
   };
   return (
@@ -158,7 +156,7 @@ const CompanyInfo = () => {
             <Card>
               <HeaderCard title="Filter" />
               <CardBody>
-                <CompanyInfoForm btnTtitle="Search Data" btnTtitle1="Reset"  onSubmit={handleSubmit(onSubmit)}/>
+                <CompanyInfoForm btnTtitle="Search Data" btnTtitle1="Reset"  onSearch={onSubmit}/>
               </CardBody>
             </Card>
           </Col>

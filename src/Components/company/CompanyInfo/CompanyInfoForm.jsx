@@ -33,10 +33,8 @@ const CompanyInfoForm = ({  btnTtitle, btnTtitle1,onSearch }) => {
  const onSubmit = (data) => {
 const payload={
     company_id:data?.company?.value?data.company?.value:"",
-    company_name:data?.company?.label?data?.company?.label:"",
-    status:data.status?data?.status:"",
+    company_status:data.status?data?.status:"",
 }
-        console.log("Form Data:", data);  // ✅ This will print your inputs
                  if (onSearch) onSearch(payload);
     };
   return (

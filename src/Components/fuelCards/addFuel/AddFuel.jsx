@@ -123,11 +123,9 @@ update_otp:""
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Unit Number  </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('unitNo', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="number"  {...register('unitNo')} />
                             </InputGroup>
-                            {errors.unitNo && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                          
                           </FormGroup>
                         </Col>
                        <Col xl='4' md="6">
@@ -200,11 +198,9 @@ update_otp:""
                           <FormGroup className=" m-form__group">
                             <InputGroup>
                               <InputGroupText>  Driver Name </InputGroupText>
-                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverName', { required: true })} />
+                              <input style={{border:"1px solid #ccc"}} className="form-control" type="text"  {...register('driverName')} />
                             </InputGroup>
-                            {errors.driverName && (
-                              <span className="text-danger"> Required</span>
-                            )}
+                          
                           </FormGroup>
                         </Col>
                      <Col xl='4' md="6">

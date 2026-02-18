@@ -417,7 +417,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
       </DropdownToggle>
 
       <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary"   onClick={() => handleDownload("EXCEL",filters)}>
+        <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel",filters)}>
           <FaFileExcel/> Download Excel
         </DropdownItem>
 
