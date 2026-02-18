@@ -46,7 +46,7 @@ const handleFilterChange = (column, value) => {
     { key: "address", label: "Address", width: "250px" },
     { key: "suspicious", label: "Suspicious Company", width: "200px" },
     { key: "lastLogin", label: "Last Login", width: "170px" },
-    { key: "loginBefore", label: "Login Before", width: "170px" },
+    { key: "loginbefore", label: "Login Before", width: "170px" },
     { key: "latitude", label: "Latitude", width: "120px" },
     { key: "Status", label: "Status", width: "120px" },
       {
@@ -161,7 +161,7 @@ const handleFilterChange = (column, value) => {
         address: item.address,
         suspicious: item.susp_comp,
         lastLogin: item.last_login,
-        loginBefore: "",
+        loginbefore:item.loginbefore,
         latitude: item.lat,
         longitude: item.lang,
         Status: item.company_status,
