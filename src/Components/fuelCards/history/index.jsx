@@ -58,6 +58,7 @@ const Index = () => {
         totalRows,
         loading,
         handlePageChange,
+          fetchData,
         handlePerRowsChange,
         handleSearch, // ✅ Added
         setData,
@@ -106,20 +107,7 @@ const Index = () => {
 const update_status={ efs_done_by: userId,efs_done:newvalue}
        console.log(update_status)
         axios.put(`${api}/${fullRow.id}`, update_status).catch(() => {
-          setData((prev) =>
-          prev.map((row) =>
-            row.fulldata.id === fullRow.id
-              ? {
-                  ...row,
-                  fulldata: {
-                    ...row.fulldata,
-                    efs_done:newvalue,
-                    efs_done_by: userId,
-                  },
-                }
-              : row
-          )
-        );
+             fetchData();
       }       
     );
   };
