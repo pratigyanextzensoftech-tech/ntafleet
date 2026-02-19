@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect,useMemo } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
@@ -36,14 +36,78 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-const ViewInvoice = () => {
+const ViewIndex = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [btntp, setbtntp] = useState("INV");
-  const [tableColumns, setTableColumns] = useState([]);
+  const [activeTab, setActiveTab] = useState("1");
+
+  // const [tableColumns, setTableColumns] = useState([]);
   const [filters, setFilters] = useState({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prev) => !prev);
+
+  const getApiByTab = (tabId) => {
+  switch (tabId) {
+    case "1":
+      return combine_invoice;
+    case "2":
+      return owner_invoice;
+    case "3":
+      return customized_invoice;
+    default:
+      return combine_invoice;
+  }
+};
+
+  const loadDataTable = (apiUrl) => {
+  if ($.fn.DataTable.isDataTable("#example")) {
+    $("#example").DataTable().destroy();
+  }
+
+  $("#example").DataTable({
+    processing: true,
+    serverSide: true,
+    responsive: true,
+    pageLength: 25,
+    ajax: {
+      url: apiUrl,
+      type: "GET",
+      data: function (d) {
+        return {
+          start: d.start,
+          length: d.length,
+          search: d.search.value,
+          orderColumn: d.columns[d.order[0].column].data,
+          orderDir: d.order[0].dir,
+        };
+      },
+    },
+    columns: [
+      { data: "invoice_id", title: "Invoice#" },
+      { data: "company_name", title: "Company" },
+      { data: "from", title: "From" },
+      { data: "to", title: "To" },
+      { data: "due_date", title: "Due Date" },
+      { data: "total", title: "Total" },
+      { data: "country", title: "Country" },
+      {
+        data: null,
+        title: "Action",
+        render: function (data, type, row) {
+          return `
+            <button class="btn btn-sm btn-primary view-btn" data-id="${row.invoice_id}">View</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${row.invoice_id}">Delete</button>
+          `;
+        },
+      },
+    ],
+  });
+};
+useEffect(() => {
+  const api = getApiByTab(activeTab);
+  loadDataTable(api);
+}, [activeTab]);
 
   const columnsMap = {
     "Invoice#": "invoice_id",
@@ -179,7 +243,6 @@ const ViewInvoice = () => {
       supplier: row.fulldata.supplier_id,
       invoiceType:
         api === combine_invoice
-        
           ? row?.fulldata?.tp
           : api === owner_invoice
             ? "OWNER"
@@ -306,6 +369,118 @@ const show_hide = $('input[name="invoiceShow"]').val();
       ),
     },
   ];
+   const tableColumns = useMemo(() => {
+  const cols = Object.keys(columnsMap)
+    .filter((key) => key !== "Id")
+    .map((key) => ({
+      name: key,
+      selector: (row) => row[key],
+      sortable: true,
+      width: columnWidths[key],
+      wrap: true,
+    }));
+    cols.push({
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            Show/Hide
+          </div>
+        
+        </div>
+      ),
+      cell: (row) => (
+        <select
+          className="form-select form-select-sm"
+          id={`mails_${row.fulldata.invoice_id}`}
+          value={String(row.fulldata.mails)} 
+          onChange={(e) => handleShowHideChange(row.fulldata, row.source)}
+       >
+         <option value="1">Show</option>          <option value="0">Hide</option>
+        </select>
+      ),
+   width: "100px",
+    });
+
+    cols.push({
+      name: (
+        <div style={{ width: "100%" }}>
+          <div className="d-flex align-items-end justify-content-start">
+            Status
+          </div>
+        
+        </div>
+      ),
+      cell: (row) => (
+        <select
+          className="form-select form-select-sm"
+          id={`admin_status_${row.fulldata.invoice_id}`}
+          value={row.fulldata.admin_status}
+          onChange={(e) => handleShowHideChange(row.fulldata, row.source)}
+        >
+          <option value="Open">Open</option>
+          <option value="Entered">Entered</option>
+          <option value="Close">Close</option>
+        </select>
+      ),
+      width: "120px",
+    });
+
+
+  cols.push({
+    name: "Action",
+    cell: (row) => (
+      <Dropdown
+        isOpen={openRowId === row["Invoice#"]}
+        toggle={() =>
+          setOpenRowId(
+            openRowId === row["Invoice#"] ? null : row["Invoice#"]
+          )
+        }
+        direction="up"
+      >
+        <DropdownToggle caret size="sm">
+          Action
+        </DropdownToggle>
+
+        <DropdownMenu  style={{ zIndex: 9999 }}   end>
+          <DropdownItem
+            toggle={false}
+            onClick={(e) => {
+              e.stopPropagation();
+              downloadPdf(
+                row.fulldata.download_link,
+                btntp,
+                row
+                
+              );
+            }}
+          >
+            <FaDownload className="me-2" /> Download
+          </DropdownItem>
+
+           <DropdownItem
+          className="text-primary"          onClick={() => handleMail(row)}        >
+          <FaEnvelope className="me-2" /> Email
+        </DropdownItem>
+        <DropdownItem
+          className="text-primary"
+          onClick={() => handleMail(row)}>    
+          <FaEnvelope className="me-2" /> Regenerate Invoice</DropdownItem>
+       <DropdownItem divider />
+        <DropdownItem   
+        className="text-danger" 
+          onClick={() => handleDelete(row)}>
+          <FaTrashAlt className="me-2" /> Delete       </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    ),
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  });
+
+  return cols;
+}, [columnsMap, columnWidths, openRowId]);
   const View_Invoice_Table = [
     {
       id: "1",
@@ -483,208 +658,202 @@ const show_hide = $('input[name="invoiceShow"]').val();
     },
   ];
 
-  useEffect(() => {
-    const cols = Object.keys(columnsMap)
-      .filter((key) => key !== "Id")
-      .map((key) => {
-        const colWidth = columnWidths[key];
-        const colWidthPx = parseInt(colWidth, 10);
-        return {
-          name: (
-            <div style={{ width: "100%" }}>
-              <div className="d-flex align-items-end justify-content-start">
-                {key}
-              </div>
-              <input
-                type="text"
-                className="mt-2"
-                style={{
-                  width: "100%",
-                  // maxWidth: colWidthPx - 10 + "px",// small padding
-                  height: "28px",
-                  border: "none",
-                  borderRadius: "5px",
-                  boxSizing: "border-box",
-                }}
-                onClick={(e) => e.stopPropagation()}
-                onMouseDown={(e) => e.stopPropagation()}
-                onChange={(e) => handleFilterChange(key, e.target.value)}
-              />
-            </div>
-          ),
-          selector: (row) => {
-            if (key === "From " || key === "To") {
-              return row[key].split(" ")[0];
-            }
-            return row[key];
-          },
-          sortable: true,
-          width: colWidth,
-          wrap: true,
-        };
-      });
-    cols.push({
-      name: (
-        <div style={{ width: "100%" }}>
-          <div className="d-flex align-items-end justify-content-start">
-            Show/Hide
-          </div>
-          <input
-            type="text"
-            className="mt-2"
-            style={{
-              width: "100%",
-              // maxWidth: colWidthPx - 10 + "px",// small padding
-              height: "28px",
-              border: "none",
-              borderRadius: "5px",
-              boxSizing: "border-box",
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            onChange={(e) => handleFilterChange("Show/Hide", e.target.value)}
-          />
-        </div>
-      ),
-      cell: (row) => (
-        <select
-          className="form-select form-select-sm"
-          id={`mails_${row.fulldata.invoice_id}`}
-          value={String(row.fulldata.mails)} // ✅ correct source
-          onChange={(e) => handleShowHideChange(row.fulldata, row.source)}
-        >
-          <option value="1">Show</option>
-          <option value="0">Hide</option>
-        </select>
-      ),
-      width: "100px",
-    });
+//   useEffect(() => {
+//    const cols = Object.keys(columnsMap)
+//       .filter((key) => key !== "Id")
+//       .map((key) => {
+//         const colWidth = columnWidths[key];
+//         const colWidthPx = parseInt(colWidth, 10);
+//         return {
+//           name: (
+//             <div style={{ width: "100%" }}>
+//               <div className="d-flex align-items-end justify-content-start">
+//                 {key}
+//               </div>
+//               <input
+//                 type="text"
+//                 className="mt-2"
+//                 style={{
+//                   width: "100%",
+//                   // maxWidth: colWidthPx - 10 + "px",// small padding
+//                   height: "28px",
+//                   border: "none",
+//                   borderRadius: "5px",
+//                   boxSizing: "border-box",
+//                 }}
+//                 onClick={(e) => e.stopPropagation()}
+//                 onMouseDown={(e) => e.stopPropagation()}
+//                 onChange={(e) => handleFilterChange(key, e.target.value)}
+//               />
+//             </div>
+//           ),
+//           selector: (row) => {
+//             if (key === "From " || key === "To") {
+//               return row[key].split(" ")[0];
+//             }
+//             return row[key];
+//           },
+//           sortable: true,
+//           width: colWidth,
+//           wrap: true,
+//         };
+//       });
+//     cols.push({
+//       name: (
+//         <div style={{ width: "100%" }}>
+//           <div className="d-flex align-items-end justify-content-start">
+//             Show/Hide
+//           </div>
+//           <input
+//             type="text"
+//             className="mt-2"
+//             style={{
+//               width: "100%",
+//  maxWidth: colWidthPx - 10 + "px",// small padding
+//               height: "28px",
+//               border: "none",
+//               borderRadius: "5px",
+//               boxSizing: "border-box",
+//             }}
+//             onClick={(e) => e.stopPropagation()}
+//             onMouseDown={(e) => e.stopPropagation()}
+//             onChange={(e) => handleFilterChange("Show/Hide", e.target.value)}
+//           />
+//         </div>
+//       ),
+//       cell: (row) => (
+//         <select
+//           className="form-select form-select-sm"
+//           id={`mails_${row.fulldata.invoice_id}`}
+//           value={String(row.fulldata.mails)} 
+//           onChange={(e) => handleShowHideChange(row.fulldata, row.source)}
+//        >
+//          <option value="1">Show</option>          <option value="0">Hide</option>
+//         </select>
+//       ),
+//    width: "100px",
+//     });
 
-    cols.push({
-      name: (
-        <div style={{ width: "100%" }}>
-          <div className="d-flex align-items-end justify-content-start">
-            Status
-          </div>
-          <input
-            type="text"
-            className="mt-2"
-            style={{
-              width: "100%",
-              // maxWidth: colWidthPx - 10 + "px",// small padding
-              height: "28px",
-              border: "none",
-              borderRadius: "5px",
-              boxSizing: "border-box",
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            onChange={(e) => handleFilterChange("Show/Status", e.target.value)}
-          />
-        </div>
-      ),
-      cell: (row) => (
-        <select
-          className="form-select form-select-sm"
-          id={`admin_status_${row.fulldata.invoice_id}`}
-          value={row.fulldata.admin_status}
-          onChange={(e) => handleShowHideChange(row.fulldata, row.source)}
-        >
-          <option value="Open">Open</option>
-          <option value="Entered">Entered</option>
-          <option value="Close">Close</option>
-        </select>
-      ),
-      width: "120px",
-    });
-    cols.push({
-      name: "Action",
-      cell: (row) => (
-        <div className="position-relative dropdown-action">
-          <button
-            className="btn btn-sm btn-primary px-2"
-            onClick={() =>
-              setOpenRowId(
-                openRowId === row["Invoice#"] ? null : row["Invoice#"],
-              )
-            }
-          >
-            Action
-          </button>
+//     cols.push({
+//       name: (
+//         <div style={{ width: "100%" }}>
+//           <div className="d-flex align-items-end justify-content-start">
+//             Status
+//           </div>
+//           <input
+//             type="text"
+//             className="mt-2"
+//             style={{
+//               width: "100%",
+//               // maxWidth: colWidthPx - 10 + "px",
+//               height: "28px",
+//               border: "none",
+//               borderRadius: "5px",
+//               boxSizing: "border-box",
+//             }}
+//             onClick={(e) => e.stopPropagation()}
+//             onMouseDown={(e) => e.stopPropagation()}
+//             onChange={(e) => handleFilterChange("Show/Status", e.target.value)}
+//           />
+//         </div>
+//       ),
+//       cell: (row) => (
+//         <select
+//           className="form-select form-select-sm"
+//           id={`admin_status_${row.fulldata.invoice_id}`}
+//           value={row.fulldata.admin_status}
+//           onChange={(e) => handleShowHideChange(row.fulldata, row.source)}
+//         >
+//           <option value="Open">Open</option>
+//           <option value="Entered">Entered</option>
+//           <option value="Close">Close</option>
+//         </select>
+//       ),
+//       width: "120px",
+//     });
+//  cols.push({
+//   name: "Action",
+//   cell: (row) => (
+//     <Dropdown
+//       isOpen={openRowId === row["Invoice#"]}
+//       toggle={() =>
+//         setOpenRowId(
+//           openRowId === row["Invoice#"] ? null : row["Invoice#"]
+//         )
+//       }
+//       direction="up"  
+//     >
+//       <DropdownToggle 
+//         caret
+//         size="sm"
+//         color="white"
+//         className="px-2 bg-primaty"
+//       >
+//         Action
+//       </DropdownToggle>
 
-          {openRowId === row["Invoice#"] && (
-            <div
-              className="position-absolute bg-white border rounded shadow"
-              style={{
-                zIndex: 1000,
-                right: 0,
-                marginTop: 5,
-                minWidth: 160,
-                padding: "5px 0",
-              }}
-            >
-              <a
-                href="#"
-                onClick={() =>
-                  downloadPdf(row.fulldata.download_link, btntp, row)
-                }
-                rel="noopener noreferrer"
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaDownload /> Download
-              </a>
+//       <DropdownMenu end style={{ minWidth: 160 }}>
 
-              <Link
-                to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="dropdown-item d-flex align-items-center text-success"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaEye /> View
-              </Link>
 
-              <button
-                className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleMail(row)}
-              >
-                <FaEnvelope /> Email
-              </button>
-              <button
-                className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleMail(row)}
-              >
-                <FaEnvelope /> Regenrate Invoice
-              </button>
 
-              <button
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
-              >
-                <FaTrashAlt /> Delete
-              </button>
-            </div>
-          )}
-        </div>
-      ),
-    });
 
-    setTableColumns(cols);
-  }, [openRowId]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".dropdown-action")) {
-        setOpenRowId(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+//         <DropdownItem
+//           tag={Link}
+//           to={`/viewInvoice/ViewPdf/${btoa(
+//             row.fulldata.invoice_id
+//           )}`}
+//           target="_blank"
+//           className="text-success"
+//         >
+//           <FaEye className="me-2" /> View
+//         </DropdownItem>
+
+//         <DropdownItem
+//           className="text-primary"
+//           onClick={() => handleMail(row)}
+//         >
+//           <FaEnvelope className="me-2" /> Email
+//         </DropdownItem>
+
+//         <DropdownItem
+//           className="text-primary"
+//           onClick={() => handleMail(row)}
+//         >
+//           <FaEnvelope className="me-2" /> Regenerate Invoice
+//         </DropdownItem>
+
+//         <DropdownItem divider />
+
+//         <DropdownItem
+//           className="text-danger"
+//           onClick={() => handleDelete(row)}
+//         >
+//           <FaTrashAlt className="me-2" /> Delete
+//         </DropdownItem>
+//       </DropdownMenu>
+//     </Dropdown>
+//   ),
+//   ignoreRowClick: true,
+//   allowOverflow: true,
+//   button: true,
+//   minWidth: "160px",
+// });
+
+
+//     setTableColumns(cols);
+//   }, [openRowId]);
+
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (!event.target.closest(".dropdown-action")) {
+  //       setOpenRowId(null);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
 
   const handleDelete = (row) => {
     console.log(data);
@@ -713,6 +882,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
       }
     });
   };
+
   return (
     <Fragment>
       <Breadcrumbs parent="Invoice" title="View Invoice" />
@@ -742,4 +912,4 @@ const show_hide = $('input[name="invoiceShow"]').val();
   );
 };
 
-export default ViewInvoice;
+export default ViewIndex;

@@ -18,7 +18,13 @@
   color: #000000;
   text-align: left;
 }
+.dataTables_wrapper {
+  overflow: visible !important;
+}
 
+.table-responsive {
+  overflow: visible !important;
+}
  
 table.dataTable input, table.dataTable select { 
 	height: 24px!important; 

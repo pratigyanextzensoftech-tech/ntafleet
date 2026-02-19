@@ -20,7 +20,7 @@ const HeaderCard = ({
 }) => {
   return (
     <Fragment>
-   <CardHeader className={`d-flex align-items-center ${mainClasses || ""}`}>
+   <CardHeader style={{"zIndex":"0"}} className={`d-flex align-items-center ${mainClasses || ""}`}>
   
   {/* LEFT SIDE */}
   <div>
