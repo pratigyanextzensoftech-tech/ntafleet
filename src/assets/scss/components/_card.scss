@@ -3,6 +3,24 @@
 ==========================**/
 //Card css
 
+.table-responsive,
+.dataTables_wrapper,
+.card-body {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    padding-bottom: 260px; /* reserve dropdown space */
+}
+
+table,
+tbody,
+tr,
+td {
+    overflow: visible !important;
+}
+
+.dropdown-menu {
+    z-index: 9999;
+}
 
 #data_list .dt-column-title {
 	font-weight: bold;

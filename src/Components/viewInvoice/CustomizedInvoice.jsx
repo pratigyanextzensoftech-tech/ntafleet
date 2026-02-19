@@ -1,10 +1,9 @@
 import React, { Fragment } from "react";
 import Select from "react-select";
 import {
-  
   InvoiceCategory,
   InvoiceShow,
-  customizedTypeType
+  customizedTypeType,
 } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import {
   Row,
@@ -17,17 +16,22 @@ import {
   InputGroupText,
   Container,
 } from "reactstrap";
-import { InvoiceType, useCompany,useCountry,useSupplier } from "../../Hooks/Dropdowns";
+import {
+  InvoiceType,
+  useCompany,
+  useCountry,
+  useSupplier,
+} from "../../Hooks/Dropdowns";
 
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 
-const CustomizedInvoice = ({ title,onSearch }) => {
-   const{data:country}=useCountry()
-    const {data:supplier}=useSupplier("3,6")
-    const invoiceTypes=InvoiceType("")
-    const{data:company}=useCompany()
+const CustomizedInvoice = ({ title, onSearch }) => {
+  const { data: country } = useCountry();
+  const { data: supplier } = useSupplier("3,6");
+  const invoiceTypes = InvoiceType("");
+  const { data: company } = useCompany();
   const {
     register,
     control,
@@ -35,33 +39,31 @@ const CustomizedInvoice = ({ title,onSearch }) => {
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
-   const formatDate = (date) => {
+  const formatDate = (date) => {
     if (!date) return "";
     const d = new Date(date);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
       2,
-      "0"
+      "0",
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-   const onSubmit = (data) => {
-      const payload={
-                supplier_id:data?.supplier?.value || "",
-                  from: data.from ? formatDate(data.from): "",
-                        to: data.to ? formatDate(data.to) : "",
-                          company_id: data?.company?.value || "",
-                          country:data?.country?.label ||"",
-                           invoice_type: data?.invType?.value || "",
-                        invcat:data?.invCat?.value||"",
-                        show_hide:data?.show?.value?data?.show?.value:"",
-                        cust_inv_type:data?.customised?.value?data?.customised?.value:"",
-  
-  
-      }
-      console.log("payload:", payload);
-      if (onSearch) onSearch(payload );
-      // here you can trigger API call and show table data
+  const onSubmit = (data) => {
+    const payload = {
+      supplier_id: data?.supplier?.value || "",
+      from: data.from ? formatDate(data.from) : "",
+      to: data.to ? formatDate(data.to) : "",
+      company_id: data?.company?.value || "",
+      country: data?.country?.label || "",
+      invoice_type: data?.invType?.value || "",
+      invcat: data?.invCat?.value || "",
+      show_hide: data?.show?.value ? data?.show?.value : "",
+      cust_inv_type: data?.customised?.value ? data?.customised?.value : "",
     };
+    console.log("payload:", payload);
+    if (onSearch) onSearch(payload);
+    // here you can trigger API call and show table data
+  };
 
   return (
     <Fragment>
@@ -71,7 +73,7 @@ const CustomizedInvoice = ({ title,onSearch }) => {
             <legend>{title}</legend>
             <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
               <Row className="mt-3">
-                <Col xxl="3"  xl="4"  md="6" sm="12">
+                <Col xxl="3" xl="4" md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
@@ -88,18 +90,17 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
-
+                                portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />
                         </Col>
                       </InputGroup>
-
-                   
                     </FormGroup>
                   </Row>
                 </Col>
-                <Col xxl="3"  xl="4"  md="6" sm="12">
+                <Col xxl="3" xl="4" md="6" sm="12">
                   <Row>
                     <FormGroup className="m-form__group">
                       <InputGroup>
@@ -116,57 +117,52 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
-                                 portalId="root"
+                                portalId="root"
                                 popperPlacement="bottom-start"
                               />
                             )}
                           />
                         </Col>
                       </InputGroup>
-
-                    
                     </FormGroup>
                   </Row>
                 </Col>
 
-                    <Col xxl="3"  xl="4"  md="6" sm="12">
-                               <FormGroup className="m-form__group">
-                                 <InputGroup>
-                                   <InputGroupText>Supplier</InputGroupText>
-                                   <Controller
-                                     name="supplier"
-                                     control={control}
-                                     defaultValue={null}
-                                      render={({ field }) => {
-                                                              // Auto select if only one option exists
-                                                         
-                                                               
-                                                              return (
-                                                                <Select
-                                                                  {...field}
-                                                                  options={supplier}
-                                                                  className="form-control p-0 border-0"
-                                                                  placeholder="Select supplier"
-                                                                  value={field.value}
-                                                                  onChange={(val) => field.onChange(val)}
-                                                                     menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
-                                                                />
-                                                              );
-                                                            }}
-                                   />
-                                 </InputGroup>
-             
-                               
-                               </FormGroup>
-                             </Col>
-                   <Col xxl="3"  xl="4"  md="6" sm="12">
+                <Col xxl="3" xl="4" md="6" sm="12">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Supplier</InputGroupText>
+                      <Controller
+                        name="supplier"
+                        control={control}
+                        defaultValue={null}
+                        render={({ field }) => {
+                          // Auto select if only one option exists
+
+                          return (
+                            <Select
+                              {...field}
+                              options={supplier}
+                              className="form-control p-0 border-0"
+                              placeholder="Select supplier"
+                              value={field.value}
+                              onChange={(val) => field.onChange(val)}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                              styles={{
+                                menuPortal: (base) => ({
+                                  ...base,
+                                  zIndex: 99999,
+                                }),
+                              }}
+                            />
+                          );
+                        }}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+                <Col xxl="3" xl="4" md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Country</InputGroupText>
@@ -174,107 +170,100 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                         name="country"
                         control={control}
                         defaultValue={null}
+                        render={({ field }) => {
+                          // Auto select if only one option exists
+                          if (country?.length === 1 && field.value === null) {
+                            field.onChange(country[0]);
+                          }
 
-  render={({ field }) => {
-                                                 // Auto select if only one option exists
-                                                 if (
-                                                   country?.length === 1   &&
-                                                   field.value === null
-                                                 ) {
-                                                   field.onChange(country[0]);
-                                                 }
-                                                  
-                                                 return (                        <Select
-                            {...field}
-                            options={country}
-                            className="form-control p-0 border-0"
-                            placeholder="Select Country"
-                               menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
-                          />
-  )}}
+                          return (
+                            <Select
+                              {...field}
+                              options={country}
+                              className="form-control p-0 border-0"
+                              placeholder="Select Country"
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                              styles={{
+                                menuPortal: (base) => ({
+                                  ...base,
+                                  zIndex: 99999,
+                                }),
+                              }}
+                            />
+                          );
+                        }}
                       />
                     </InputGroup>
-
                   </FormGroup>
                 </Col>
-              
-             <Col xxl="3"  xl="4"  md="6" sm="12">
-                             <FormGroup className="m-form__group">
-                               <InputGroup>
-                                 <InputGroupText>Invoice Type</InputGroupText>
-                                 <Controller
-                                   name="invType"
-                                   control={control}
-                                     defaultValue={null}
-           
-                                 render={({ field }) => {
-                                                            // Auto select if only one option exists
-                                                            if (
-                                                              invoiceTypes?.length === 1   &&
-                                                              field.value === null
-                                                            ) {
-                                                              field.onChange(invoiceTypes);
-                                                            }
-                                                             
-                                                            return ( 
-                                     <Select
-                                       {...field}
-                                       options={invoiceTypes}
-                                       className="form-control p-0 border-0"
-                                          menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
-                                     />
-                                   )}
-                                 }
-                                 />
-                               </InputGroup>
-                             
-                             </FormGroup>
-                           </Col>
 
-                 <Col xxl="3"  xl="4"  md="6" sm="12">
-                           <FormGroup className="m-form__group">
-                             <InputGroup>
-                               <InputGroupText>Company</InputGroupText>
-                               <Controller
-                                 name="company"
-                                 control={control}
-                                 render={({ field }) => (
-                                   <Select
-                                     {...field}
-                                     options={company}
-                                     className="form-control p-0 border-0"
-                                     placeholder="Select Company Name"
-                                        menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
-                                   />
-                                 )}
-                               />
-                             </InputGroup>
-         
-                            
-                           </FormGroup>
-                         </Col>
-                <Col xxl="3"  xl="4"  md="6" sm="12">
+                <Col xxl="3" xl="4" md="6" sm="12">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Invoice Type</InputGroupText>
+                      <Controller
+                        name="invType"
+                        control={control}
+                        defaultValue={null}
+                        render={({ field }) => {
+                          // Auto select if only one option exists
+                          if (
+                            invoiceTypes?.length === 1 &&
+                            field.value === null
+                          ) {
+                            field.onChange(invoiceTypes);
+                          }
+
+                          return (
+                            <Select
+                              {...field}
+                              options={invoiceTypes}
+                              className="form-control p-0 border-0"
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                              styles={{
+                                menuPortal: (base) => ({
+                                  ...base,
+                                  zIndex: 99999,
+                                }),
+                              }}
+                            />
+                          );
+                        }}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+
+                <Col xxl="3" xl="4" md="6" sm="12">
+                  <FormGroup className="m-form__group">
+                    <InputGroup>
+                      <InputGroupText>Company</InputGroupText>
+                      <Controller
+                        name="company"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={company}
+                            className="form-control p-0 border-0"
+                            placeholder="Select Company Name"
+                            menuPortalTarget={document.body}
+                            menuPosition="fixed"
+                            styles={{
+                              menuPortal: (base) => ({
+                                ...base,
+                                zIndex: 99999,
+                              }),
+                            }}
+                          />
+                        )}
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+                <Col xxl="3" xl="4" md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Customised Type</InputGroupText>
@@ -286,23 +275,21 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                             {...field}
                             options={customizedTypeType}
                             className="form-control p-0 border-0"
-                               menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
+                            menuPortalTarget={document.body}
+                            menuPosition="fixed"
+                            styles={{
+                              menuPortal: (base) => ({
+                                ...base,
+                                zIndex: 99999,
+                              }),
+                            }}
                           />
                         )}
                       />
                     </InputGroup>
-
-                   
                   </FormGroup>
                 </Col>
-                <Col xxl="3"  xl="4"  md="6" sm="12">
+                <Col xxl="3" xl="4" md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice Category</InputGroupText>
@@ -314,24 +301,22 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                             {...field}
                             options={InvoiceCategory}
                             className="form-control p-0 border-0"
-                               menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
+                            menuPortalTarget={document.body}
+                            menuPosition="fixed"
+                            styles={{
+                              menuPortal: (base) => ({
+                                ...base,
+                                zIndex: 99999,
+                              }),
+                            }}
                           />
                         )}
                       />
                     </InputGroup>
-
-                  
                   </FormGroup>
                 </Col>
-               
-                <Col xxl="3"  xl="4"  md="6" sm="12">
+
+                <Col xxl="3" xl="4" md="6" sm="12">
                   <FormGroup className="m-form__group">
                     <InputGroup>
                       <InputGroupText>Invoice(Show/Hide) </InputGroupText>
@@ -343,23 +328,21 @@ const CustomizedInvoice = ({ title,onSearch }) => {
                             {...field}
                             options={InvoiceShow}
                             className="form-control p-0 border-0"
-                               menuPortalTarget={document.body}
-                          menuPosition="fixed"
-                                 styles={{
-                menuPortal: base => ({
-                  ...base,
-                  zIndex: 99999
-                })
-              }}
+                            menuPortalTarget={document.body}
+                            menuPosition="fixed"
+                            styles={{
+                              menuPortal: (base) => ({
+                                ...base,
+                                zIndex: 99999,
+                              }),
+                            }}
                           />
                         )}
                       />
                     </InputGroup>
-
-                  
                   </FormGroup>
                 </Col>
-                <Col className="ms-auto" xxl="3"  xl="4"  md="6" sm="12">
+                <Col className="ms-auto" xxl="3" xl="4" md="6" sm="12">
                   <div className="text-end ">
                     <Btn
                       attrBtn={{
