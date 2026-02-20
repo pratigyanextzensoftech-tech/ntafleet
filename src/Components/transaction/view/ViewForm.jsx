@@ -21,15 +21,14 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import {
-  useCompany,
   useItems,
   formatDate,
   useSupplierAll,
 } from "../../../Hooks/Dropdowns";
-
+import useCompany from "../../../Hooks/useCompany";
 const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
-  const { data: companyOptions } = useCompany();
+  const { companies } = useCompany();
   const { data: items } = useItems();
   const { data: supplier } = useSupplierAll();
 const sevenDaysAgo = new Date();
@@ -271,7 +270,7 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
             name="company"
             label="Company"
             control={control}
-            options={companyOptions}
+            options={companies}
           />
         </Col>
 

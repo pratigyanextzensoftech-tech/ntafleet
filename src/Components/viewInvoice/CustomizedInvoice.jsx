@@ -18,10 +18,10 @@ import {
 } from "reactstrap";
 import {
   InvoiceType,
-  useCompany,
   useCountry,
   useSupplier,
 } from "../../Hooks/Dropdowns";
+import useCompany from "../../Hooks/useCompany";
 
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
@@ -31,7 +31,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
   const { data: country } = useCountry();
   const { data: supplier } = useSupplier("3,6");
   const invoiceTypes = InvoiceType("");
-  const { data: company } = useCompany();
+  const { companies } = useCompany();
   const {
     register,
     control,
@@ -246,7 +246,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={company}
+                            options={companies}
                             className="form-control p-0 border-0"
                             placeholder="Select Company Name"
                             menuPortalTarget={document.body}

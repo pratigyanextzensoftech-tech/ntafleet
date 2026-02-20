@@ -229,6 +229,8 @@ const [fileKey, setFileKey] = useState(Date.now());
                               }}
                               dateFormat="yyyy-MM-dd"
                               placeholderText="Select Pricing Date"
+                                portalId="root"
+                              popperPlacement="bottom-start"
                             />
                           )}
                         />
@@ -261,6 +263,14 @@ const [fileKey, setFileKey] = useState(Date.now());
                               field.onChange(selectedOption)
                             }
                             value={field.value}
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />

@@ -13,6 +13,8 @@ const DatePickerInput = ({
   name,
   control,
   placeholder,
+    portalId,
+  popperPlacement,
   label,
   errors = {},
   required,
@@ -36,6 +38,8 @@ const DatePickerInput = ({
                 selected={field.value}
                 onChange={(date) => field.onChange(date)}
                   dateFormat="yyyy-MM-dd" 
+                  portalId={portalId}
+                  popperPlacement={popperPlacement}
               />
             )}
           />

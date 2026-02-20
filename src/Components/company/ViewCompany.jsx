@@ -12,7 +12,6 @@ const ViewCompany = () => {
   const [companyData, setCompanyData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
-
   const [tableColumns, setTableColumns] = useState([]);
   const [openRowId, setOpenRowId] = useState(null);
   const [totalRows, setTotalRows] = useState(0);

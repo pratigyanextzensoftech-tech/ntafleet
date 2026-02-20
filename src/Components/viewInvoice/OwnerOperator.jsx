@@ -14,13 +14,14 @@ import {
 } from "reactstrap";
 import { Btn } from "../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import { InvoiceType, useCompany,useCountry,useSupplier } from "../../Hooks/Dropdowns";
+import { InvoiceType,useCountry,useSupplier } from "../../Hooks/Dropdowns";
+import useCompany from "../../Hooks/useCompany";
 import DatePicker from "react-datepicker";
 const OwnerOperator = ({ title,onSearch }) => {
   const{data:country}=useCountry("1")
   const {data:supplier}=useSupplier("6,10")
   const invoiceTypes=InvoiceType("RG")
-  const{data:company}=useCompany()
+  const{companies}=useCompany()
   const {
     register,
     control,
@@ -256,7 +257,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={company}
+                            options={companies}
                             className="form-control p-0 border-0"
                             placeholder="Select Company "
                               menuPortalTarget={document.body}

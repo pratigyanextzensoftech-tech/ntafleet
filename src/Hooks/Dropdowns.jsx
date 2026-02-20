@@ -113,20 +113,31 @@ export const formatDate = (date) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart( 2, "0" )}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
-export  const downloadPdf = async (url,invoiceName,data) => {
-  console.log(invoiceName)
-  const res = await fetch(url);
-  const blob = await res.blob();
-  const filename=url.split("/").pop().split("?")[0];
-  const blobUrl = window.URL.createObjectURL(blob);
-  const link = document.createElement("a"); 
-  link.href = blobUrl;
-  link.download = filename || "invoice.pdf"; 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link); 
-  window.URL.revokeObjectURL(blobUrl);
+export const downloadPdf = async (url, invoiceName, data) => {
+  try {
+    console.log(invoiceName);
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to download");
+
+    const blob = await res.blob();
+    const filename = url.split("/").pop().split("?")[0];
+
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = filename || "invoice.pdf";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.error("Download failed:", err);
+  }
 };
+
 
 export const useItems = () =>
   useDropdown(itemsAll, (i) => ({

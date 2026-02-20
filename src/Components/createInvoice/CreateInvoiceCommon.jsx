@@ -180,7 +180,10 @@ setShowTable(true)
                           render={({ field }) => (
                             <Select
                               {...field}
-                              options={companies}
+                              options={[
+        { label: "All Company", value: "" },   // 👈 added
+        ...(companies )
+      ]}
                               className="form-control p-0 border-0"
                               placeholder="Select Company"
                                 menuPortalTarget={document.body}

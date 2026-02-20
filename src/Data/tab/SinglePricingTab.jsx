@@ -162,5 +162,19 @@ export const SinglepricingTab = (fetchers) => [
       />
     ),
   },
+   {
+    id: "10",
+    label: "Cenovus Pdf",
+   component: () => (
+      <SinglePdfCommon
+        supplier_id= "11" 
+        // invoice_type= "Actual" 
+        title="Create Cenovus Pricing PDF"
+        btnTtitle="Create Cenovus Pricing PDF"
+        onDataAdded={fetchers.ulPdf}  
+        api_name={create_pricing_pdf}     
+      />
+    ),
+  },
 ];
 

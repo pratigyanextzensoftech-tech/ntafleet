@@ -138,6 +138,14 @@ console.log(formData)
                     placeholder="Select Discount "
                     value={field.value}
                     onChange={(val) => field.onChange(val)}
+                        menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                   />
                 )}
               />
@@ -165,6 +173,14 @@ console.log(formData)
                     placeholder="Select Tax Applied"
                     value={field.value}
                     onChange={(val) => field.onChange(val)}
+                        menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                   />
                 )}
               />

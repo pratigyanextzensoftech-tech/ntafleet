@@ -24,6 +24,7 @@ import PriceList from '../Components/pricing/pricing_list/index';
 import SinglePricing from '../Components/pricing/singlePricingPdf/index';
 import BulkPrice from '../Components/pricing/bulk_price/index';
 import EssoBulk from '../Components/pricing/essoBulk/index';
+import CenBulk from '../Components/pricing/cen_bulk/index.jsx';
 import LoveBulk from '../Components/pricing/loveBulk/index';
 import Ultramar from '../Components/pricing/ultramar/index'
 import TaPetroBulk from '../Components/pricing/taPetroBulk/index';
@@ -32,6 +33,7 @@ import UpdateTaPetro from '../Components/pricing/updateTaPetro/index';
 import UpdateLoveRack from '../Components/pricing/updateLoveRack/index';
 import OwnerOperator from '../Components/pricing/ownerOperator/index';
 import EssoGroup from '../Components/pricing/essoGroup/index';
+import CenGroup from '../Components/pricing/cenGroup/index';
 import IrvingGroup from '../Components/pricing/irvingGroup/index';
 import UltramarGroup from '../Components/pricing/ultramarGroup/index';
 import DownloadBulk from '../Components/pricing/downloadBulk/index';
@@ -169,8 +171,8 @@ export const routes = [
     { path: `/irving_group_rack_price`, Component: <IrvingGroup /> },
     { path: `/ultramarGroup_rack_pric`, Component: <UltramarGroup /> },
     { path: `/download_bulk_excel`, Component: <DownloadBulk /> },
-    { path: `/cen_bulk_price`, Component: <DownloadBulk /> },
-    { path: `/cen_group_price`, Component: <DownloadBulk /> },
+    { path: `/cen_bulk_pricing`, Component: <CenBulk /> },
+    { path: `/cen_group_pricing`, Component: <CenGroup /> },
     //Items
     { path: `/add_items`, Component: <AddItems /> },
     { path: `/view_items`, Component: <AddItems /> },

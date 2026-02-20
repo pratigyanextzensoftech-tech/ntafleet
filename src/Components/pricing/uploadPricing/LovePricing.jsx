@@ -99,6 +99,14 @@ useEffect(() => {
                               field.onChange(selectedOption)
                             }
                             value={field.value}
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />

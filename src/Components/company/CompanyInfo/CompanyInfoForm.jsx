@@ -19,9 +19,9 @@ import {
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import { useCompany } from "../../../Hooks/Dropdowns";
+import useCompany from "../../../Hooks/useCompany";
 const CompanyInfoForm = ({  btnTtitle, btnTtitle1,onSearch }) => {
-  const {data:companyData}=useCompany()
+  const {companies}=useCompany()
   const {
     register,
     control,
@@ -51,9 +51,17 @@ const payload={
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={companyData}
+                      options={companies}
                       className="form-control p-0 border-0"
                       placeholder="Select  Name"
+                          menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                     />
                   )}
                 />
@@ -75,6 +83,14 @@ const payload={
                       options={companyStatus}
                       className="form-control p-0 border-0"
                       placeholder="Select  Status"
+                          menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                     />
                   )}
                 />

@@ -280,6 +280,8 @@ useEffect(() => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
+                                  portalId="root"
+                                 popperPlacement="bottom-start"
                               />
                             )}
                           />
@@ -305,6 +307,8 @@ useEffect(() => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
+                                  portalId="root"
+                                popperPlacement="bottom-start"
                               />
                             )}
                           />

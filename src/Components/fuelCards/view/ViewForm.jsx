@@ -22,16 +22,15 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
 import {
-  useCompany,
   useItems,
   formatDate,
   useSupplierAll,
 } from "../../../Hooks/Dropdowns";
-
+import useCompany from "../../../Hooks/useCompany";
 const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const [selectedValues, setSelectedValues] = useState([]);
 
-  const { data: companyOptions } = useCompany();
+  const { companies } = useCompany();
   const { data: items } = useItems();
   const { data: supplier } = useSupplierAll();
 
@@ -187,7 +186,16 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             name="company"
             label="Company"
             control={control}
-            options={companyOptions}
+            options={companies}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
+                      styles={{
+                        menuPortal: (base) => ({
+                          ...base,
+                          zIndex: 99999,
+                        }),
+                      }}
+
           />
         </Col>
 
@@ -202,6 +210,14 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
             label="Card Status"
             control={control}
             options={cardStatus}
+            menuPortalTarget={document.body}
+                      menuPosition="fixed"
+                      styles={{
+                        menuPortal: (base) => ({
+                          ...base,
+                          zIndex: 99999,
+                        }),
+                      }}
           />
         </Col>
 

@@ -56,6 +56,8 @@ const formatDate = (date) => {
         label="Date"
         errors={errors}
         required=" Date is required"
+        portalId="root"
+        popperPlacement="bottom-start"
       />     
                         </Row>
                     </Col>

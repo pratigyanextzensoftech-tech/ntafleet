@@ -15,8 +15,8 @@ import Papa from "papaparse";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../Hooks/Dropdowns";
-import { ul_cent_upload,ul_group_ulgroup } from "../../../api";
-const UploadUlGroup = ({ title, btnTitle }) => {
+import { cen_cent_upload,cen_group_cengroup } from "../../../api";
+const UploadCenGroupRackForm = ({ title, btnTitle }) => {
   // React Hook Form (only for date)
   const { control } = useForm();
 
@@ -32,7 +32,7 @@ const UploadUlGroup = ({ title, btnTitle }) => {
     setLoadingGroups(true);
 
     axios
-      .get(ul_group_ulgroup)
+      .get(cen_group_cengroup)
       .then((res) => {
         const map = {};
         res.data.forEach((g) => {
@@ -101,17 +101,12 @@ const UploadUlGroup = ({ title, btnTitle }) => {
         
 
          try {
-      const response =   axios.post(ul_cent_upload, transformedRows); 
+      const response =   axios.post(cen_cent_upload, transformedRows); 
       toast.success(`Upload successful!`)
-     
        setPricingDate("");
-     
     } catch (error) 
-    {
-      
-      
-          toast.success(`Upload successful!`)
-            
+    {     
+        toast.success(`Upload successful!`)        
     }
 
       },
@@ -145,8 +140,8 @@ const UploadUlGroup = ({ title, btnTitle }) => {
                               selected={pricingDate}
                               onChange={setPricingDate}
                               dateFormat="yyyy-MM-dd"
-                                portalId="root"
-                                popperPlacement="bottom-start"
+                               portalId="root"
+                              popperPlacement="bottom-start"
                             />
                           )}
                         />
@@ -197,4 +192,4 @@ const UploadUlGroup = ({ title, btnTitle }) => {
   );
 };
 
-export default UploadUlGroup;
+export default UploadCenGroupRackForm;

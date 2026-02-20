@@ -44,6 +44,9 @@ const formatDate = (date) => {
               placeholder="Select start date" // ✅ fixed spelling
               errors={errors}
               required="start Date is required"
+               portalId="root"
+              popperPlacement="bottom-start"
+
             />
           </Col>
           <Col xl="3"  md="6" sm="12">
@@ -54,6 +57,8 @@ const formatDate = (date) => {
               placeholder="Select end date" // ✅ fixed spelling
               errors={errors}
               required="End Date is required"
+               portalId="root"
+              popperPlacement="bottom-start"
             />
           </Col>
 
@@ -67,6 +72,19 @@ const formatDate = (date) => {
               placeholder="Select Country"
               // loading={companyLoading}
               options={country}
+               menuPortalTarget={document.body}
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
+
             />
           </Col>
 
@@ -78,8 +96,22 @@ const formatDate = (date) => {
               control={control}
               rules={{ required: "supplier is required" }}
               placeholder="Select supplier"
+
               // loading={companyLoading}
               options={supplier}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
             />
           </Col>
         </Row>

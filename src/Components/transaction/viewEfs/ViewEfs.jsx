@@ -7,12 +7,13 @@ import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import { supplierById } from '../../../api';
 import { toast } from "react-toastify";
-import { useCompany,useItems } from '../../../Hooks/Dropdowns';
+import { useItems } from '../../../Hooks/Dropdowns';
+import useCompany from '../../../Hooks/useCompany';
 import axios from 'axios';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 const ViewEfs = ({btnTitle,btnTitle1,onSearch}) => {
     const[supplierData,setSupplierData]=useState([])
-    const {data:company}=useCompany()
+    const {companies}=useCompany()
     const {data:items}=useItems()
     const {
         register,
@@ -165,7 +166,7 @@ useEffect(() => {
                                         render={({ field }) => (
                                             <Select
                                                 {...field}
-                                                options={company}
+                                                options={companies}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Company "
                                             />
