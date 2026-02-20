@@ -85,11 +85,11 @@ const ViewInvoice = () => {
     }
     if (source === owner_invoice) {
       setbtntp("OWNER");
-      return handleSetData;
+      return setData;
     }
     if (source === customized_invoice) {
       setbtntp("CUS");
-      return setCustomizedData;
+      return setData;
     }
     return setData;
   };
@@ -129,7 +129,7 @@ const ViewInvoice = () => {
           api = invoice;
           setbtntp("INV");
         }
-        // 3️⃣ API call
+       
 
         const update_status = {
           id: fullRow.invoice_id,
@@ -208,7 +208,13 @@ const ViewInvoice = () => {
       }
     });
   };
-
+let API_URL="";
+const tab=getActiveTabFromUrl();
+  if(tab==1)
+  {API_URL= combine_invoice;}
+  else if(tab==2){API_URL= owner_invoice;}
+  else if(tab==3){API_URL= customized_invoice;}
+ 
   const {
     data,
     totalRows,
@@ -217,27 +223,10 @@ const ViewInvoice = () => {
     handlePerRowsChange,
     handleSearch, // ✅ Added
     setData,
-  } = usePaginatedTable({ apiUrl: combine_invoice, columnsMap });
+  } = usePaginatedTable({ apiUrl: API_URL, columnsMap });
 
-  const {
-    data: ownerdata,
-    totalRows: ownerTotalRow,
-    loading: ownerLoading,
-    handlePageChange: ownerHandlePerChange,
-    handlePerRowsChange: ownerHandlePerROwChange,
-    handleSearch: ownerHandleSearch, // ✅ Added
-    setData: handleSetData,
-  } = usePaginatedTable({ apiUrl: owner_invoice, columnsMap });
+   
 
-  const {
-    data: customizedData,
-    totalRows: customizedTotalRow,
-    loading: customizedLoading,
-    handlePageChange: customizedHandlePageChange,
-    handlePerRowsChange: customizedHandlePerRowsChange,
-    handleSearch: customizedHandleSearch,
-    setData: setCustomizedData,
-  } = usePaginatedTable({ apiUrl: customized_invoice, columnsMap });
   const handleFilterChange = (column, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -274,15 +263,14 @@ const show_hide = $('input[name="invoiceShow"]').val();
  window.open(`${download}?type=INVOICE&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&country=${country}&company_id=${company_id}&invcat=${invcat}&invoice_type=${invoice_type}&show_hide=${show_hide}`, "_self");
 
 }
-  const filteredCombineData = applyFilters(data, filters);
-  const filteredOwnerData = applyFilters(ownerdata, filters);
-  const filteredCustomizedData = applyFilters(customizedData, filters);
+  const filteredCombineData = applyFilters(data, filters); 
+
   const View_Invoice = [
     {
       id: "1",
       label: "View Invoices",
       component: (
-        <ViewInvoiceForm title="Invoice Filters" onSearch={handleSearch} />
+        <ViewInvoiceForm title="Invoice Filters" onSearch={handleSearch} apiUrl={combine_invoice} />
       ),
     },
     {
@@ -290,8 +278,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
       label: "View Owner Operator Invoices",
       component: (
         <OwnerOperator
-          title="Owner Operator Invoice Filters"
-          onSearch={ownerHandleSearch}
+          title="Owner Operator Invoice Filters"  onSearch={handleSearch} apiUrl={owner_invoice}
         />
       ),
     },
@@ -301,7 +288,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
       component: (
         <CustomizedInvoice
           title="Customised Invoice Filters"
-          onSearch={customizedHandleSearch}
+          onSearch={handleSearch} apiUrl={customized_invoice}
         />
       ),
     },
@@ -387,16 +374,16 @@ const show_hide = $('input[name="invoiceShow"]').val();
       component: (
         <DataTableComponent
           title="Invoices List "
-          tableColumns={tableColumns}
+           tableColumns={tableColumns}
+          tableData={filteredCombineData}
+          loading={loading}
           downloadHeading="Download"
           download={true}
-          tableData={filteredOwnerData}
-          loading={ownerLoading}
           pagination
           paginationServer
-          paginationTotalRows={ownerTotalRow}
-          onChangeRowsPerPage={ownerHandlePerROwChange}
-          onChangePage={ownerHandlePerChange}
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
           renderDropdown={() => (
             <>
               <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -437,16 +424,16 @@ const show_hide = $('input[name="invoiceShow"]').val();
       component: (
         <DataTableComponent
           title="Invoices List "
+          tableColumns={tableColumns}
+          tableData={filteredCombineData}
+          loading={loading}
           downloadHeading="Download"
           download={true}
-          tableColumns={tableColumns}
-          tableData={filteredCustomizedData}
-          loading={customizedLoading}
           pagination
           paginationServer
-          paginationTotalRows={customizedTotalRow}
-          onChangeRowsPerPage={customizedHandlePerRowsChange}
-          onChangePage={customizedHandlePageChange}
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
           renderDropdown={() => (
             <>
               <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -738,8 +725,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
           </Col>
         </Row>
       </Container>
-    </Fragment>
+    </Fragment> 
   );
-};
-
+}; 
 export default ViewInvoice;
