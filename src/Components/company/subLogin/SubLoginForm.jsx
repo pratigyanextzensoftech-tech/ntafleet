@@ -20,13 +20,13 @@ import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Select from "react-select";
-import { useCompany } from "../../../Hooks/Dropdowns";
+import useCompany from "../../../Hooks/useCompany";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { sub_company as APINAME } from "../../../api";
 
 const SubLoginForm = ({ btnTtitle,onDataAdded,selectedRow,Edit,setEdit,setSelectedRow }) => {
-  const{data}=useCompany()
+  const{companies}=useCompany()
   const {
     register,
     control,
@@ -49,14 +49,14 @@ const SubLoginForm = ({ btnTtitle,onDataAdded,selectedRow,Edit,setEdit,setSelect
 useEffect(() => {
   if (Edit && selectedRow) {
 console.log(selectedRow)
-  const selectedCompany = data?.find(
+  const selectedCompany = companies?.find(
       (item) => item.value === selectedRow.company_id
     );
     const cardDiscount = companyLoginAccess?.find(
       (item) => item.value === selectedRow.card_discount == '0' ? "Yes" : "No"
     );
   
-console.log(data)
+console.log(companies)
     reset({
       Name: selectedRow.name,
       email: selectedRow.email,
@@ -247,6 +247,14 @@ added_on: new Date()
                         placeholder="Select  "
          value={field.value}
       onChange={(val) => field.onChange(val)}
+                                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
            
                       />
                     )}
@@ -270,11 +278,19 @@ added_on: new Date()
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={data}
+                        options={companies}
                         className="form-control p-0 border-0"
                         placeholder="Select Company "
                        value={field.value}
       onChange={(val) => field.onChange(val)}
+                                menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                       />
                     )}
                   />

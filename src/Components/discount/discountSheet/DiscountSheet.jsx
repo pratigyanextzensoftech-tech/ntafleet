@@ -53,7 +53,6 @@ const formatDate = (date) => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
    const onSubmit = (formData) => {
-
      const payload = {
       company_id:formData.company.value,
       company_name:formData.company.label,
@@ -175,6 +174,21 @@ idby:localStorage.getItem("userId")
               placeholder="Select Company"
               // loading={companyLoading}
               options={companyOptions}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
+
+
             />
           </Col>
           <Col xxl="4"  lg="6"  md="6" sm="12">
@@ -185,6 +199,8 @@ idby:localStorage.getItem("userId")
               placeholder="Select start date" // ✅ fixed spelling
               errors={errors}
               required="start Date is required"
+              portalId="root"
+              popperPlacement="bottom-start"
             />
           </Col>
           <Col xxl="4" lg="6"  md="6" sm="12">
@@ -195,6 +211,8 @@ idby:localStorage.getItem("userId")
               placeholder="Select end date" // ✅ fixed spelling
               errors={errors}
               required="End Date is required"
+                portalId="root"
+              popperPlacement="bottom-start"
             />
           </Col>
 

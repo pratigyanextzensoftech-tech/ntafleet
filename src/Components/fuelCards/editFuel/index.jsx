@@ -28,16 +28,21 @@ import HeaderCard from "../../Common/Component/HeaderCard";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import { useCountry } from "../../../Hooks/Dropdowns";
 import { useLocation,useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { fual_card } from "../../../api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { fual_card as APINAME,fual_card_update } from "../../../api"; // your fuel card API endpoint
 import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
 const Index = () => {
   const { data: supplierOption } = useSupplier();
+  const[oldData,setOldData]=useState([])
   const { state } = useLocation();
   const navigate=useNavigate()
-  const rowData = state?.data;
-  console.log("Received Edit Data:", rowData);
+   const { id } = useParams();
+    const Id = atob(decodeURIComponent(id));
+  // const rowData = state?.data;
+  console.log("Received Edit Data:", Id);
   const { data } = useCompany();
   const {
     register,
@@ -46,36 +51,43 @@ const Index = () => {
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
-  useEffect(() => {
-    if (rowData) {
-      console.log(rowData);
+ useEffect(() => {
+  const fetchFuelCard = async () => {
+    try {
+      const res = await axios.get(`${fual_card}/${Id}`);
+      if (res.data) {
+        reset({
+          cardNo: res.data.card_no,
+          policyNo: res.data.policy,
+          unitNo: res.data.unit_number,
+          pinNo: res.data.pin_number,
+          driverName: res.data.driver_name,
+          driverMobile: res.data.d_mobile1,
+          driverMobile2: res.data.d_mobile2,
 
-      reset({
-        cardNo: rowData.card_no,
-        policyNo: rowData.policy,
-        unitNo: rowData.unit_number,
-        pinNo: rowData.pin_number,
-        driverName: rowData.driver_name,
-        driverMobile: rowData.d_mobile1,
-        driverMobile2: rowData.d_mobile2,
-
-        company: {
-          value: rowData.company_id,
-          label: rowData.company_name,
-        },
-        supplier: {
-          value: rowData.supplier_id,
-          label: rowData.supplier_name,
-        },
-        cardStatus: {
-          value: rowData.status,
-          label: rowData.status,
-        },
-
-        // SELECT needs full object
-      });
+          company: {
+            value: res.data.company_id,
+            label: res.data.company_name,
+          },
+          supplier: {
+            value: res.data.supplier_id,
+            label: res.data.supplier_name,
+          },
+          cardStatus: {
+            value: res.data.status,
+            label: res.data.status,
+          },
+        });
+setOldData(res.data)
+      }
+    } catch (error) {
+      console.error("Error fetching full row data", error);
     }
-  }, [rowData, reset]);
+  };
+  if (Id) {
+    fetchFuelCard();
+  }
+}, [Id, reset]);
 
   const onSubmit = (formData) => {
     console.log("Form Data:", formData);
@@ -95,43 +107,39 @@ const Index = () => {
       company_name: formData.company.label,
       update_otp: "",
     };
-     const otpres=   axios.put(`${fual_card_update}/${rowData.card_id}`, payload)
+     const otpres=   axios.put(`${fual_card_update}/${Id}`, payload)
       .then((res) => {
         console.log(res);
-
         toast.success("Update successfully!");
-
+  
       })
       .catch((err) => {
         console.log(err);
         toast.error(err.message);
       });
 
-    const Data={
+        const Data={
       newData:payload,
-      oldData:rowData,
+      oldData:oldData,
       otpres:otpres.data
     }
     console.log(payload)
 
-  
-    navigate(`/edit-information/${rowData.card_id}`, {
+    navigate(`/edit-information/${Id}`, {
       state: { data: Data }
     });
     
-        
+      
+          axios.put(`${APINAME}/${Id}`, payload)
+      .then((res) => {
+        console.log(res);
+        toast.success("Update successfully1!");
 
-      //     axios.put(`${APINAME}/${rowData.card_id}`, payload)
-      // .then((res) => {
-      //   console.log(res);
-
-      //   toast.success("Update successfully!");
-
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      //   toast.error(err.message);
-      // });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message);
+      });
   };
   return (
     <Fragment>

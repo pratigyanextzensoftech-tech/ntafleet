@@ -17,7 +17,8 @@ import {
   love_pricing_actual as LOVE_ACTUAL_API,
   ul_pricing as ULTRAMAR_API,
   irv_pricing as IRVING_API,
-  pricing
+  pricing,
+  cen_pricing
 } from "../../../api";
 import usePaginatedTable from "../../../Hooks/usePagination";
 
@@ -183,7 +184,26 @@ irving: {
        "QST":"qst",
        "Tax_Price":"in_tax_price",
        "Total_Cost":"total_cost"
-}
+},
+cenovus: {
+    id: "id",
+    Date: "pricing_date",
+    Supplier: "supplier",
+    "SITE NUMBER": "SITE_NUMBER",
+    LOCATION: "LOCATION",
+    "PROV.": "PROV",
+    PRODUCT: "PRODUCT",
+    "NET PRICE": "NET_PRICE",
+    FET: "FET",
+    PFT: "PFT",
+    PCT: "PCT",
+    LOCAL: "PCT",
+    "PRICE/LTR.": "PRICE_LTR",
+    "GST/HST/FNT": "GST_HST_FNT",
+    "PST/QST": "PST_QST",
+    "TOTAL PRICE": "TOTAL_PRICE",
+  },
+
 
   }
     const perPageValue=200
@@ -222,6 +242,10 @@ irving: {
    const irving = usePaginatedTable({
     apiUrl: IRVING_API,
     columnsMap: columnSets.irving,
+  });
+  const cenovus = usePaginatedTable({
+    apiUrl: cen_pricing,
+    columnsMap: columnSets.cenovus,
   });
 const handleDelete = ({ ids = [], deleteApi, refetch }) => {
   if (!ids.length) {
@@ -342,6 +366,14 @@ const tabs = [
     title:"Irving Pricing List",
     deleteApi: IRVING_API,
   },
+   {
+    id: "9",
+    label: "Cenovus",
+    data:cenovus ,
+    map: columnSets.cenovus,
+    title:"Irving Pricing List",
+    deleteApi: IRVING_API,
+  },
 
 ];
 
@@ -443,6 +475,16 @@ const PricingTab = [
         </>
       ), 
        component: <PricingListCommon title="Irving" onSearch={irving.handleSearch}  supplier_ids="5" apiName={IRVING_API}  btnTitle="Search Data"/>,
+    },
+    {
+      id: '9',
+      label:
+         (
+        <>
+         Cenovus 
+        </>
+      ), 
+       component: <PricingListCommon title="Cenovus" onSearch={cenovus.handleSearch}  supplier_ids="11" apiName={IRVING_API}  btnTitle="Search Data"/>,
     },
     
   ];

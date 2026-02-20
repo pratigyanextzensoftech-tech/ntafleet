@@ -5,10 +5,10 @@ import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Co
 import { Btn } from '../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
-import { useCompany } from '../../Hooks/Dropdowns';
+import useCompany from '../../Hooks/useCompany';
 const ViewMoneyCodeForm = ({onSearch}) => {
     const [selectedValues, setSelectedValues] = useState([]);
-    const{data:company}=useCompany()
+    const{companies}=useCompany()
     const {
         register,
         control,
@@ -140,7 +140,7 @@ onSearch(basePayload)
                                 render={({ field }) => (
                                     <Select
                                         {...field}
-                                        options={company}
+                                        options={companies}
                                         className="form-control p-0 border-0"
                                         placeholder="Select Company "
                                     />

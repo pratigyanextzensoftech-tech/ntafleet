@@ -110,6 +110,20 @@ added_on:new Date()
               placeholder="Select Company"
               // loading={companyLoading}
               options={companyOptions}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
+
             />
           </Col>
           <Col  xl="4"  md="6" sm="12">
@@ -118,6 +132,8 @@ added_on:new Date()
               control={control} // ✅ make sure this is passed
               label="Start Date"
               placeholder="Select start date" // ✅ fixed spelling
+               portalId="root"
+              popperPlacement="bottom-start"
              
             />
           </Col>
@@ -127,6 +143,8 @@ added_on:new Date()
               control={control} // ✅ make sure this is passed
               label="End Date"
               placeholder="Select end date" // ✅ fixed spelling
+               portalId="root"
+              popperPlacement="bottom-start"
              
             />
           </Col>
@@ -141,6 +159,19 @@ added_on:new Date()
               placeholder="Select Country"
               // loading={companyLoading}
               options={country}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
 
 />
           </Col>
@@ -153,6 +184,19 @@ added_on:new Date()
               placeholder="Select supplier"
               // loading={companyLoading}
               options={supplierData}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
             />
           </Col>
 

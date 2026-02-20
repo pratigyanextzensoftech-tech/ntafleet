@@ -104,6 +104,19 @@ idby:localStorage.getItem("userId")
               placeholder="Select supplier"
               // loading={companyLoading}
               options={supplier}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
             />
           </Col>
        

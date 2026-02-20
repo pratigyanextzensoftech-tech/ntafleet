@@ -14,20 +14,18 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
-import { DiscountType } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import DatePicker from "react-datepicker";
 import {
-  love_group_lovegroup as APINAME,
-  love_group_lovegroupInput,
-  love_cent,
-  tacompany,
+  cen_group_cengroup as APINAME,
+  cen_group_cengroupInput,
+  cen_cent_new,
+  cencompany,
 } from "../../../api";
 import $ from "jquery";
 import axios from "axios";
 import { toast } from "react-toastify";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import Loader from "../../../Layout/Loader";
-const LoveRackCent = ({ title, btnTitle }) => {
+const CenGroupRackcentList = ({ title, btnTitle }) => {
   const [companyId, setCompnyId] = useState("");
   const [startDate, setStatrtDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -54,7 +52,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
       .then((data) => {
         if (Array.isArray(data)) {
           setDynamicColumns(
-            data.map((item) => Number(item.pumping_fee).toFixed(4)),
+            data.map((item) => item.name + "<br/>" + item.prov),
           );
           setGroupIds(data.map((item) => item.id));
         } else {
@@ -62,9 +60,8 @@ const LoveRackCent = ({ title, btnTitle }) => {
         }
       })
       .catch((err) => console.error(err));
-
     axios
-      .get(tacompany)
+      .get(cencompany)
       .then((res) => {
         const data = res.data;
         console.log(data);
@@ -80,6 +77,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
       })
       .catch((err) => console.error(err));
   }, []);
+
   useEffect(() => {
     if (company && company.length > 0) {
       setValue("company", company[0]); // set first option
@@ -92,30 +90,32 @@ const LoveRackCent = ({ title, btnTitle }) => {
   }, [dynamicColumns]);
   // Step 2: Initialize DataTable
   useEffect(() => {
-    $(document)
-      .off("click", ".update-btn")
-      .on("click", ".update-btn", function () {
-        //setLoading(true);
-        const id = $(this).data("id");
-        const updateData = {};
-        dynamicGroupIds.forEach((groupid) => {
-          const inputId = `#c${id}g${groupid}`;
-          updateData[`group_${groupid}`] = $(inputId).val();
-        });
 
-        axios
-          .put(`${love_cent}/${id}`, updateData)
-          .then(() => {
-            toast.success("Data updated");
-            // setLoading(false);
-          })
-          .catch(() => {
-            toast.error("Error in data update");
-          });
+     $(document).off("click", ".update-btn");  
+  $(document).on("click", ".update-btn", function () {
+    const id = $(this).data("id");
+    const updateData = {  }; 
+    dynamicGroupIds.forEach((groupid) => 
+      {
+      const inputId = `#c${id}g${groupid}`;
+      updateData[`group_${groupid}`] = $(inputId).val();
+     });
+ console.log(updateData);
+ 
+    axios
+      .put(`${cen_cent_new}/${id}`, updateData)
+      .then(() => {
+        toast.success("Data updated");
+      })
+      .catch(() => {
+        toast.error("Error In Data update");
       });
+  });
+ 
+  return () => {   $(document).off("click", ".update-btn"); }; 
   }, [dynamicColumns, companyId]);
 
-  function GetDataTAble(company_id, discount_type, from_date, upto_date) {
+  function GetDataTAble(company_id, from_date, upto_date) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "pricing_date", title: "Pricing Date" },
@@ -146,20 +146,19 @@ const LoveRackCent = ({ title, btnTitle }) => {
 
       ajax: function (data, callback) {
         const params = new URLSearchParams();
-
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
         params.append("orderColumn", data.columns[data.order[0].column].data);
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id ? company_id : "");
-        params.append("discount_type", discount_type ? discount_type : "");
         params.append("from_date", from_date ? from_date : "");
         params.append("upto_date", upto_date ? upto_date : "");
-        fetch(`${love_group_lovegroupInput}?${params.toString()}`)
+        fetch(`${cen_group_cengroupInput}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
-            const url = `${love_group_lovegroupInput}?${params.toString()}`;
+            const url = `${cen_group_cengroupInput}?${params.toString()}`;
+            console.log("🔗 API URL:", url);
             const tableData = json.data.map((row) => {
               const obj = {
                 company_name: row[0],
@@ -169,10 +168,9 @@ const LoveRackCent = ({ title, btnTitle }) => {
               dynamicColumns.forEach((col, idx) => {
                 obj[`col_${idx}`] = row[idx + 3] || "";
               });
-
               return obj;
             });
-
+            console.log(tableData);
             callback({
               draw: data.draw,
               recordsTotal: json.recordsTotal,
@@ -199,16 +197,12 @@ const LoveRackCent = ({ title, btnTitle }) => {
     const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-
   const onSubmit = (data) => {
     const company_id = data.company?.value ?? "";
-    const discount_type = data.DiscountType?.value ?? "";
-    const from_date = data.from_date ? formatDate(data.from_date) : "";
-    const upto_date = data.upto_date ? formatDate(data.upto_date) : "";
-
+    const from_date = data.from ? formatDate(data.to) : "";
+    const upto_date = data.to ? formatDate(data.to) : ""; 
     console.log("Submitting:", {
       company_id,
-      discount_type,
       from_date,
       upto_date,
     });
@@ -217,9 +211,8 @@ const LoveRackCent = ({ title, btnTitle }) => {
       $("#example").DataTable().destroy();
     }
 
-    GetDataTAble(company_id, discount_type, from_date, upto_date);
+    GetDataTAble(company_id, from_date, upto_date);
   };
-
   return (
     <Fragment>
       <Card>
@@ -234,7 +227,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <Row className="mt-3">
-                    <Col xl="3" md="6" sm="12">
+                    <Col xl="4" md="6" sm="12">
                       <FormGroup className="m-form__group">
                         <InputGroup>
                           <InputGroupText>Company</InputGroupText>
@@ -246,7 +239,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                                 {...field}
                                 options={company}
                                 className="form-control p-0 border-0"
-                                placeholder="Select Company"
+                                placeholder="Select a company"
                                 menuPortalTarget={document.body}
                                 menuPosition="fixed"
                                 styles={{
@@ -261,36 +254,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col xl="3" md="6" sm="12">
-                      <FormGroup className="m-form__group">
-                        <InputGroup>
-                          <InputGroupText>Discount Type</InputGroupText>
 
-                          <Controller
-                            name="DiscountType"
-                            control={control}
-                            render={({ field }) => (
-                              <Select
-                                {...field}
-                                className="form-control p-0 border-0"
-                                options={DiscountType}
-                                placeholder="Select Discount "
-                                onChange={field.onChange}
-                                value={field.value}
-                                menuPortalTarget={document.body}
-                                menuPosition="fixed"
-                                styles={{
-                                  menuPortal: (base) => ({
-                                    ...base,
-                                    zIndex: 99999,
-                                  }),
-                                }}
-                              />
-                            )}
-                          />
-                        </InputGroup>
-                      </FormGroup>
-                    </Col>
                     <Col xl="3" md="6" sm="12">
                       <Row>
                         <FormGroup className="m-form__group">
@@ -300,7 +264,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                             </Col>
                             <Col xs="8">
                               <Controller
-                                name="from_date"
+                                name="from"
                                 control={control}
                                 render={({ field }) => (
                                   <DatePicker
@@ -308,7 +272,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                                     selected={field.value}
                                     onChange={(date) => field.onChange(date)}
                                     dateFormat="yyyy-MM-dd"
-                                    portalId="root"
+                                     portalId="root"
                                     popperPlacement="bottom-start"
                                   />
                                 )}
@@ -327,7 +291,7 @@ const LoveRackCent = ({ title, btnTitle }) => {
                             </Col>
                             <Col xs="8">
                               <Controller
-                                name="upto_date"
+                                name="to"
                                 control={control}
                                 render={({ field }) => (
                                   <DatePicker
@@ -335,8 +299,8 @@ const LoveRackCent = ({ title, btnTitle }) => {
                                     selected={field.value}
                                     onChange={(date) => field.onChange(date)}
                                     dateFormat="yyyy-MM-dd"
-                                      portalId="root"
-                                      popperPlacement="bottom-start"
+                                     portalId="root"
+                                    popperPlacement="bottom-start"
                                   />
                                 )}
                               />
@@ -378,7 +342,6 @@ const LoveRackCent = ({ title, btnTitle }) => {
                 <div className="text-end my-3">
                   <button className="btn btn-primary">Delete Rack Cent</button>
                 </div>
-                {<Loader loading={loading} />}
                 <div className="table-responsive">
                   <table
                     id="example"
@@ -407,4 +370,4 @@ const LoveRackCent = ({ title, btnTitle }) => {
   );
 };
 
-export default LoveRackCent;
+export default CenGroupRackcentList;

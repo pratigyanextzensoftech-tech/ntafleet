@@ -145,6 +145,8 @@ const UploadEssoGroupRackForm = ({ title, btnTitle }) => {
                               selected={pricingDate}
                               onChange={setPricingDate}
                               dateFormat="yyyy-MM-dd"
+                               portalId="root"
+                              popperPlacement="bottom-start"
                             />
                           )}
                         />

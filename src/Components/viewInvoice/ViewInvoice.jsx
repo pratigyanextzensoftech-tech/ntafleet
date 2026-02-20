@@ -179,7 +179,6 @@ const ViewInvoice = () => {
       supplier: row.fulldata.supplier_id,
       invoiceType:
         api === combine_invoice
-        
           ? row?.fulldata?.tp
           : api === owner_invoice
             ? "OWNER"

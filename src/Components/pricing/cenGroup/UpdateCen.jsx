@@ -14,8 +14,8 @@ import DatePicker from "react-datepicker";
 import { formatDate } from "../../../Hooks/Dropdowns"; 
 import Loader from "../../../Layout/Loader";
 import { toast } from 'react-toastify';
-import {irvcompany, irv_get_rowvalue, irv_group_irvgroup as APINAME,irv_saverowvalue } from "../../../api"; 
-const UpdateIrving = ({ title, btnTitle }) => {
+import {cencompany, cen_get_rowvalue, cen_group_cengroup as APINAME,cen_saverowvalue } from "../../../api"; 
+const UpdateCen = ({ title, btnTitle }) => {
   const [resetShow, setResetShow] = useState(false);
   const [dynamicColumns, setDynamicColumns] = useState([]);
   const [dynamicGroupIds, setGroupIds] = useState([]);
@@ -42,7 +42,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
         const groups = await gres.json();
         if (!Array.isArray(groups)) return; 
         
-       const res = await fetch(irvcompany);
+       const res = await fetch(cencompany);
         const company = await res.json();
         if (!Array.isArray(company)) return; 
         
@@ -63,7 +63,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
             payload['dated'] = dated; 
             console.log(c.company_name+" : ",payload)
             
-            axios.post(irv_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
+            axios.post(cen_saverowvalue, payload).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)});
         }) 
        toast.success("Rack Cent Updated Succesfully");  
        setloading(false);
@@ -76,11 +76,22 @@ const UpdateIrving = ({ title, btnTitle }) => {
 
     try {
       
-      const res = await fetch(APINAME);
-      const groups = await res.json();
-      if (!Array.isArray(groups)) return;
-      setDynamicColumns(groups.map((g) => g.name));
-      setGroupIds(groups.map((g) => g.id));
+     const res = await fetch(APINAME);
+const data = await res.json();
+if (Array.isArray(data)) {
+  setDynamicColumns(
+    data.map((g) => (
+      <>
+        {g.name}
+        <br />
+        {g.prov}
+      </>
+    ))
+  );
+
+  setGroupIds(data.map((g) => g.id));
+}
+
       // 2️⃣ Guard: pricingDate must exist
       if (!formData?.pricingDate) {
         console.warn("pricingDate missing");
@@ -89,7 +100,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
 
       // 3️⃣ Fetch TA row values (FIXED URL)
       const rowRes = await fetch(
-        `${irv_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
+        `${cen_get_rowvalue}?pricing_date=${formatDate(formData.pricingDate)}`,
       );
       const rowData = await rowRes.json();
       if (!Array.isArray(rowData)) return;
@@ -102,8 +113,7 @@ const UpdateIrving = ({ title, btnTitle }) => {
   const handleReset = () => {
     reset();
     setResetShow(false);
-    setDynamicCompany([]); 
-     setDynamicColumns([]); 
+    setDynamicColumns([]); 
   };
 
   /* ================= RENDER ================= */
@@ -138,8 +148,9 @@ const UpdateIrving = ({ title, btnTitle }) => {
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
-                                portalId="root"
-                                popperPlacement="bottom-start"
+                                 portalId="root"
+                                 popperPlacement="bottom-start"
+                                
                               />
                             )}
                           />
@@ -235,4 +246,4 @@ const UpdateIrving = ({ title, btnTitle }) => {
   );
 };
 
-export default UpdateIrving;
+export default UpdateCen;

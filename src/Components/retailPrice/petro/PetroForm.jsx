@@ -55,6 +55,8 @@ const PetroForm = ({ btnTitle, btnTitle1, onSearch }) => {
               label=" From "
               errors={errors}
               required=" Date is required"
+              portalId="root"
+              popperPlacement="bottom-start"
             />
 
           </Row>
@@ -67,6 +69,8 @@ const PetroForm = ({ btnTitle, btnTitle1, onSearch }) => {
               label="To "
               errors={errors}
               required=" Date is required"
+              portalId="root"
+              popperPlacement="bottom-start"
             />
 
           </Row>

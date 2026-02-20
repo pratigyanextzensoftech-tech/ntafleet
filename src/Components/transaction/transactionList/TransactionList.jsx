@@ -18,11 +18,12 @@ import {
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import { useCompany,useItems,formatDate } from "../../../Hooks/Dropdowns";
+import { useItems,formatDate } from "../../../Hooks/Dropdowns";
+import useCompany from "../../../Hooks/useCompany";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
   const[supplierData,setSupplierData]=useState()
-  const {data:company}=useCompany()
+  const {companies}=useCompany()
   const{data:items}=useItems() 
 
   const {
@@ -173,7 +174,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={company}
+                    options={companies}
                     className="form-control p-0 border-0"
                     placeholder="Select Company "
                   />

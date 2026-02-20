@@ -14,6 +14,7 @@ import Select from "react-select";
 import { cardStatus } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import { useForm } from "react-hook-form";
 import { Row, Col, Card, CardBody } from "reactstrap";
+import { Link } from "react-router-dom";
 import ViewForm from "./ViewForm";
 const ViewFuelCards = () => {
   const [fuelCards, setFuelCards] = useState([]);
@@ -104,13 +105,20 @@ const handleFilterChange = (column, value) => {
                   padding: "5px 0",
                 }}
               >
-                <button
+                {/* <button
                   className="dropdown-item d-flex align-items-center"
                   style={{ padding: "8px 12px", gap: "8px" }}
                   onClick={(e) => handleEdit(e,row)}
                 >
                   <FaEdit /> Edit
-                </button>
+                </button> */}
+                <Link
+  to={`/edit-fuelCards/${btoa(row.id)}`}
+  className="dropdown-item d-flex align-items-center"
+  style={{ padding: "8px 12px", gap: "8px" }}
+>
+  <FaEdit /> Edit
+</Link>
                 <button
                   className="dropdown-item d-flex align-items-center text-danger"
                   style={{ padding: "8px 12px", gap: "8px" }}
@@ -192,7 +200,7 @@ const handleFilterChange = (column, value) => {
 
   // Initial load
   useEffect(() => {
-    fetchData(currentPage, perPage);
+    fetchData(currentPage, perPage,filters);
   }, [perPage]);
 
   // Pagination handlers
@@ -296,6 +304,8 @@ const handleFilterChange = (column, value) => {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}
           onChangePage={handlePageChange}
+                    
+                    
         />
       </Container>
     </Fragment>

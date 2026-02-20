@@ -242,8 +242,12 @@ useEffect(() => {
                               onChange={(date) => {
                                 setPricingDate(date);
                                 field.onChange(date);
+                              
                               }}
                               dateFormat="yyyy-MM-dd"
+                                portalId="root"
+                                popperPlacement="bottom-start"
+
                             />
                           )}
                         />
@@ -277,6 +281,14 @@ useEffect(() => {
                               field.onChange(selectedOption)
                             }
                             value={field.value}
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />

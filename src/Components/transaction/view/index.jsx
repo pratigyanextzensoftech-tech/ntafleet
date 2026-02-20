@@ -5,7 +5,7 @@ import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { transactions,tranaction_total } from "../../../api";
 import ViewForm from "./ViewForm";
-import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaSignInAlt,FaFile } from "react-icons/fa";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -303,7 +303,6 @@ const columnWidths = {
     console.log(row)
   try {
     const response = await axios.get(`${transactions}/${row.id}`);
-
     setSelectedRow(response.data);
     setEdit(true);
     const encodedId = btoa(row.id); // encode ID
@@ -417,6 +416,9 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
       </DropdownToggle>
 
       <DropdownMenu   style={{ minWidth: 160 }}>
+          <DropdownItem className="text-success"   onClick={() => handleDownload("DAT",filters)}>
+        <FaFile/> Download DAT
+        </DropdownItem>
         <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel",filters)}>
           <FaFileExcel/> Download Excel
         </DropdownItem>

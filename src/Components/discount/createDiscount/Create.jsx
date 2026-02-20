@@ -97,6 +97,19 @@ added_on:new Date()
               placeholder="Select Company"
               // loading={companyLoading}
               options={companyOptions}
+               menuPortalTarget={document.body}
+              menuPosition="fixed"
+                           styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
             />
           </Col>
           <Col xl="4"  md="6" sm="12">
@@ -107,6 +120,8 @@ added_on:new Date()
               placeholder="Select start date" // ✅ fixed spelling
               errors={errors}
               required="start Date is required"
+              portalId="root"
+              popperPlacement="bottom-start"
             />
           </Col>
           <Col xl="4"  md="6" sm="12">
@@ -117,6 +132,8 @@ added_on:new Date()
               placeholder="Select end date" // ✅ fixed spelling
               errors={errors}
               required="End Date is required"
+              portalId="root"
+              popperPlacement="bottom-start"
             />
           </Col>
        
@@ -131,6 +148,22 @@ added_on:new Date()
               // loading={companyLoading}
               autoSelectFirst={false}
               options={country}
+               menuPortalTarget={document.body}
+
+                                  menuPosition="fixed"
+
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
+              
             />
           </Col>
           <Col xl="4"  md="6" sm="12">
@@ -144,6 +177,19 @@ added_on:new Date()
               placeholder="Select supplier"
               // loading={companyLoading}
               options={supplier}
+               menuPortalTarget={document.body}
+                                  menuPosition="fixed"
+                                 styles={{
+
+                menuPortal: base => ({
+
+                  ...base,
+
+                  zIndex: 99999
+
+                })
+
+              }}
             />
           </Col>
 

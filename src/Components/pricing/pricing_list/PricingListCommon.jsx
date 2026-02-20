@@ -73,9 +73,6 @@ setLoading(false)
       onSearch(payload, apiName);
     }
  }
-  
-
-
   return (
     <Fragment>
             {loading && <Loader loading={true} />}

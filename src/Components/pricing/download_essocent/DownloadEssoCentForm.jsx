@@ -45,6 +45,14 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange,title }) => {
               id="company_id"
               placeholder="All Company" 
               options={companyOptions}
+                 menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
             />
           </Col>
 
@@ -55,6 +63,8 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange,title }) => {
                 name="fromDate"
                 control={control}
                 label="Pricing Form Date"
+                portalId="root"
+               popperPlacement="bottom-start"
               />
             </Row>
           </Col>
@@ -66,6 +76,8 @@ const DownloadEssoCentForm = ({ btnTitle, Data, onChange,title }) => {
                 name="uptoDate"
                 control={control}
                 label="Pricing Upto Date"
+                portalId="root"
+                  popperPlacement="bottom-start"
               />
             </Row>
           </Col>

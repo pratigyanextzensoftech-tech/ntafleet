@@ -21,6 +21,7 @@ import CompanyDropDown from "../../Forms/FormControl/formInput/DropDown";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
+import useCompanyDropDown from "../../../Hooks/useCompany";
 import InputText from "../../Forms/FormControl/formInput/InputText";
 import Loader from "../../../Layout/Loader";
 const SinglePdfCommon = ({
@@ -34,9 +35,9 @@ const SinglePdfCommon = ({
   api_name
 }) => {
   const { data: companies } = useCompany("", invoice_type);
+  const { companies:company } = useCompanyDropDown();
   const { data: supplierData } = useSupplier(supplier_id);
   const [loading, setLoading] = useState(false);
-
   const {
     register,
     control,
@@ -106,7 +107,7 @@ const SinglePdfCommon = ({
                   <CompanyDropDown
                     label="Company"
                     name="Company"
-                    options={companies}
+                    options={company}
                     control={control}
               rules={{ required: "Company is required" }}
                errors={errors}

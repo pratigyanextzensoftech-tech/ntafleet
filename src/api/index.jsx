@@ -64,7 +64,9 @@ export const ta_pricing_actual = `${baseurl}/api/ta_pricing_actual`;
 export const ta_pricing_actual_upload = `${baseurl}/api/ta_pricing_actual/upload`;
 export const ul_pricing = `${baseurl}/api/ul_pricing`;
 export const irv_pricing = `${baseurl}/api/irv_pricing`;
+export const cen_pricing = `${baseurl}/api/cen_pricing`;
 export const  irv_pricing_pdf= `${baseurl}/api/irv_pricing_pdf`;
+export const  cen_pricing_pdf= `${baseurl}/api/cen_pricing_pdf`;
 export const ul_pricing_upload = `${baseurl}/api/ul_pricing/upload`;
 export const love_pricing = `${baseurl}/api/love_pricing`;
 export const love_pricing_actual = `${baseurl}/api/love_pricing_actual`;
@@ -124,6 +126,15 @@ export const esso_group_essogroupInputCity = `${baseurl}/api/loc_group_new/esso_
 
 export const esso_get_rowvalue = `${baseurl}/api/esso_cent_new/get_rowvalue`;
 export const esso_saverowvalue = `${baseurl}/api/esso_cent_new/upsert`;
+
+export const cen_get_rowvalue = `${baseurl}/api/cen_cent_new/get_rowvalue`;
+export const cen_saverowvalue = `${baseurl}/api/cen_cent_new/upsert`;
+export const cen_group_cengroupInput = `${baseurl}/api/loc_group_new/cen_group_input`;
+
+export const cen_group_cengroup = `${baseurl}/api/loc_group_new/cen_group`;
+export const cen_cent_upload = `${baseurl}/api/cen_cent_new/cen_upload`;
+export const cen_cent_new = `${baseurl}/api/cen_cent_new`;
+
 
 export const esso_group_owner_essogroupInput = `${baseurl}/api/owner_rack_cent/esso_group_input`;
 export const essoOwner_get_rowvalue = `${baseurl}/api/owner_rack_cent/esso_row_value`;
