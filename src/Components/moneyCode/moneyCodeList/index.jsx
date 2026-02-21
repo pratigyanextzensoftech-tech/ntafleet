@@ -11,6 +11,7 @@ import { money_code } from '../../../api';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Index = () => {
   const [moneyCodes, setMoneyCodes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,22 +90,6 @@ const Index = () => {
     setCurrentPage(page);
   };
 
-  const handleEdit = async(row) =>
-    
-    {console.log("Edit:", row)
-      try {
-        const response = await axios.get(`${money_code}/${row.id}`);
-    console.log(response.data)
-        const encodedId = btoa(row.id); // encode ID
-        // setSelectedRows(response.data);
-     navigate(`/editMoney_code_List/${encodedId}`, {
-      state: { data: response.data }
-    });
-  } catch (error) {
-    console.error("Error fetching full row data", error);
-  }
-  };
-  
  const handleDelete = (e,row) => {
   e.preventDefault()
             
@@ -307,13 +292,13 @@ const HeaderWithFilter = (label, key) => (
                 padding: "5px 0",
               }}
             >
-              <button
+                <Link
+                to={`/editMoney_code_List/${btoa(row.id)}`}
                 className="dropdown-item d-flex align-items-center"
                 style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleEdit(row)}
               >
                 <FaEdit /> Edit
-              </button>
+              </Link>
 
               <button
                 className="dropdown-item d-flex align-items-center text-danger"

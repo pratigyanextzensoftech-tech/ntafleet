@@ -138,7 +138,7 @@ import CreateIrving from '../Components/createIrving/CreateIrving.jsx';
 
 export const routes = [
     //Dashboard
-    { path: `/dashboard`, Component: <Dashboard /> },
+    { path: `/dashboard`, Component: <ViewTransaction /> },
     { path: `/report_dashboard`, Component: <Report_Dashboard /> },
     { path: `/graph_dashboard`, Component: <Ggraph_Dashboard /> },
     //Discount

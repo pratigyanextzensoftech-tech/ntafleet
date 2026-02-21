@@ -105,13 +105,6 @@ const handleFilterChange = (column, value) => {
                   padding: "5px 0",
                 }}
               >
-                {/* <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={(e) => handleEdit(e,row)}
-                >
-                  <FaEdit /> Edit
-                </button> */}
                 <Link
   to={`/edit-fuelCards/${btoa(row.id)}`}
   className="dropdown-item d-flex align-items-center"

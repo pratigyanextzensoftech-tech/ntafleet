@@ -12,12 +12,13 @@ import {Breadcrumbs} from '../../../AbstractElements';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import { useCompany } from '../../../Hooks/Dropdowns';
 import DatePickerInput from '../../Forms/FormControl/formInput/DatePickerInput';
-import { useLocation } from "react-router-dom";
-const EditMoneyCodeForm = ({btntitle}) => {
-      const { state } = useLocation();
-      const editData = state?.data ?? null;
-        console.log(state.data)
+import { useParams } from "react-router-dom";
+import Loader from '../../../Layout/Loader';
+const EditMoneyCodeForm = () => {
+       const { id } = useParams();
+          const Id = atob(decodeURIComponent(id));
     const [selectedValues, setSelectedValues] = useState([]);
+    const[loading,setLoading]=useState(false)
     const{data}=useCompany()
     const {
         register,
@@ -44,61 +45,77 @@ const toDateObject = (value) => {
 };
 
    useEffect(() => {
+    const fetchFuelCard = async () => {
+    try {
+              setLoading(true)
+      const res = await axios.get(`${money_code}/${Id}`);
+      console.log(res.data);
+        if (res.data) {
+
     reset({
       company: {
-        value: editData.company_id,
-        label: editData.company_name,
+        value: res.data.company_id,
+        label: res.data.company_name,
       },
       status: MoneyCodeStatus.find(
-        (s) => s.value === String(editData.status)
+        (s) => s.value === String(res.data.status)
       ),
-      ref: editData.Ref,
-      voided: editData.Voided,
-      issueType: editData.IssueType,
-      issueBy: editData.IssuedBy,
-      issueTo: editData.IssuedTo,
-      issueDate: toDateObject(editData?.IssuedDate) ,
-      Fee: editData.Fee,
-      originalAmt: editData.OriginalAmt,
-      billdate: toDateObject(editData?.BillDate) ,
-      checkNum: editData.CheckNum,
-      dateUsed: editData.DateUsed,
-      amountUsed: editData.AmountUsed,
-      currency: editData.Currency,
-      oneTime: editData.OneTime,
-      exactAmount: editData.ExactAmt,
-      expireDate: editData.ExpireDate,
-      name: editData.Name,
-      city: editData.City,
-      state: editData.State,
-      phone: editData.Phone,
-      license: editData.DriverLicense,
-      driverState: editData.DriverState,
-      driverId: editData.DriverId,
-      hubometer: editData.Hubometer,
-      refeerHours: editData.ReeferHours,
-      licenseState: editData.LicenseState,
-      LicenseNo: editData.LicenseNumber,
-      Odometer: editData.Odometer,
-      PONo: editData.PONumber,
-      TripNo: editData.TripNumber,
-      trailNo: editData.TrailerNumber,
-      unitNo: editData.UnitNumber,
-      ControlNo: editData.ControlNumber,
-      Birthday: editData.Birthday,
-      ReeferTempatur: editData.ReeferTempatur,
-      pinNo: editData.PINNumber,
-      Subfleet: editData.Subfleet,
-      Billing_Id: editData.BillingId,
-      firstInitial: editData.FirstInital,
-      LastName: editData.LastName,
-      driverName: editData.DriverName,
-      SSN: editData.SSN,
-      notes: editData.Notes,
-      mail_attachment: editData.mail_attachment,
+      ref: res.data.Ref,
+      voided: res.data.Voided,
+      issueType: res.data.IssueType,
+      issueBy: res.data.IssuedBy,
+      issueTo: res.data.IssuedTo,
+      issueDate: toDateObject(res.data?.IssuedDate) ,
+      Fee: res.data.Fee,
+      originalAmt: res.data.OriginalAmt,
+      billdate: toDateObject(res.data?.BillDate) ,
+      checkNum: res.data.CheckNum,
+      dateUsed: res.data.DateUsed,
+      amountUsed: res.data.AmountUsed,
+      currency: res.data.Currency,
+      oneTime: res.data.OneTime,
+      exactAmount: res.data.ExactAmt,
+      expireDate: res.data.ExpireDate,
+      name: res.data.Name,
+      city: res.data.City,
+      state: res.data.State,
+      phone: res.data.Phone,
+      license: res.data.DriverLicense,
+      driverState: res.data.DriverState,
+      driverId: res.data.DriverId,
+      hubometer: res.data.Hubometer,
+      refeerHours: res.data.ReeferHours,
+      licenseState: res.data.LicenseState,
+      LicenseNo: res.data.LicenseNumber,
+      Odometer: res.data.Odometer,
+      PONo: res.data.PONumber,
+      TripNo: res.data.TripNumber,
+      trailNo: res.data.TrailerNumber,
+      unitNo: res.data.UnitNumber,
+      ControlNo: res.data.ControlNumber,
+      Birthday: res.data.Birthday,
+      ReeferTempatur: res.data.ReeferTempatur,
+      pinNo: res.data.PINNumber,
+      Subfleet: res.data.Subfleet,
+      Billing_Id: res.data.BillingId,
+      firstInitial: res.data.FirstInital,
+      LastName: res.data.LastName,
+      driverName: res.data.DriverName,
+      SSN: res.data.SSN,
+      notes: res.data.Notes,
+      mail_attachment: res.data.mail_attachment,
     });
-  
-}, [ reset]);
+}              setLoading(false)
+
+    }
+    catch (error) {
+      console.error("Error fetching full row data", error);
+    }
+}
+ if (Id) {
+    fetchFuelCard();
+  }
+}, [ Id,reset]);
 
     const onSubmit = (formData) => {
     
@@ -106,7 +123,7 @@ const toDateObject = (value) => {
    
   company_id: formData.company?.value || formData.company,
 company_name: formData.company?.label || formData.company,
-  status: formData.status?.value || formData.status,
+  status: formData.status?.value || formData.status.value,
   Ref:formData.ref||"",
   Voided:formData.voided||"",
   IssueType:formData.issueType||"",
@@ -154,11 +171,11 @@ PONumber:formData.PONo|| "",
     c: null,
     dated: new Date().toISOString().slice(0, 19).replace("T", " "),
          }
-        
-          axios.put(`${money_code}/${editData.id}`, payload)
+         setLoading(true)
+          axios.put(`${money_code}/${Id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
-        //   if (onDataAdded) onDataAdded();
+    setLoading(false)
         
         })
         .catch((err) => {
@@ -187,6 +204,7 @@ PONumber:formData.PONo|| "",
     }
     return (
  <Fragment>
+   {loading===true && ( < Loader loading={loading}/> )}
       <Breadcrumbs parent='Money Code' title=' Edit MoneyCode ' />
       <Container fluid={true}>
         <Row>
@@ -201,7 +219,6 @@ PONumber:formData.PONo|| "",
                             <InputGroup >
                                 <InputGroupText>Company</InputGroupText>
                                 <Controller name="company"
-                                    rules={!editData?{ required: "company Name is required" }:""}
                                     control={control}
                                     render={({ field }) => (
                                         <Select
@@ -214,9 +231,7 @@ PONumber:formData.PONo|| "",
                                 />
                             </InputGroup>
 
-                            {errors.company && (
-                                <span className="text-danger">{errors.company?.message}</span>
-                            )}
+                          
                         </FormGroup>
                     </Col>       
  <Col xxl="3"  md="6" sm="12">
@@ -224,7 +239,6 @@ PONumber:formData.PONo|| "",
                             <InputGroup >
                                 <InputGroupText>Status</InputGroupText>
                                 <Controller name="status"
-                                    rules={!editData?{ required: "Status is required" }:""}
 
                                     control={control}
                                     render={({ field }) => (
@@ -233,14 +247,13 @@ PONumber:formData.PONo|| "",
                                             options={MoneyCodeStatus}
                                             className="form-control p-0 border-0"
                                             placeholder="Select status"
+                                         
                                         />
                                     )}
                                 />
                             </InputGroup>
 
-                            {errors.status && (
-                                <span className="text-danger">{errors.status?.message}</span>
-                            )}
+                          
                         </FormGroup>
                     </Col>
          <Col xxl="3"  md="6" sm="12">
@@ -681,7 +694,7 @@ PONumber:formData.PONo|| "",
                 </Col>
 <Col  xxl="2"  md="12" sm="12" >
                     <div className='text-end'>
-                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{!editData?btntitle:"Update Moneycode"}</Btn>
+                            <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >Update Moneycode</Btn>
                     </div>
             </Col>
               </Row> 

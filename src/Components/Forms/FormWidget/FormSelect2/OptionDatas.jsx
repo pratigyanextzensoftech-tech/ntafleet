@@ -309,7 +309,7 @@ export const cardStatus = [
     { value: '3', label: 'Lost' },
 ]
 export const MoneyCodeStatus = [
-    { label: 'Select Status', isDisabled: true },
+    { label: 'Select Status', value: '' },
     { value: 'Billed', label: 'Billed' },
     { value: ' Not Billed', label: 'Not Billed' },
 

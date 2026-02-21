@@ -11,13 +11,13 @@ import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useCountry,useSupplier,useCompany } from '../../../Hooks/Dropdowns';
 import { useLocation } from "react-router-dom";
 import { transactions } from '../../../api';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import Loader from '../../../Layout/Loader';
 import { toast } from 'react-toastify'; 
+import { FaLessThanEqual } from 'react-icons/fa';
 const EditUnknownTransaction = () => {
-     const { state } = useLocation();
-  const rowData = state?.data;
-    console.log("Received Edit Data:", rowData);
+  const[loading,setLoading]=useState(false)
   const {data} =useCountry()
   const {data:supplierData}=useSupplier()
   const {data:CompanyData}=useCompany()
@@ -29,72 +29,80 @@ const EditUnknownTransaction = () => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
+    const { id } = useParams();
+        const Id = atob(decodeURIComponent(id));
 useEffect(() => {
-  if ( rowData) {
-    console.log(rowData)
+    const fetchFuelCard = async () => {
+    try {
+      setLoading(true)
+      const res = await axios.get(`${transactions}/${Id}`);
+       if ( res.data) {
+    console.log(res.data)
     const selectedCountry = data?.find(
-          (item) => item.label === rowData.country
+          (item) => item.label === res.data.country
         );
        const selectedCurrency = currency?.find(
           (item) => 
-            item.label === rowData.currency
+            item.label === res.data.currency
 
         ); 
 const selectedSupplier = supplierData?.find(
-          (item) => item.label === rowData.supplier_name
+          (item) => item.label === res.data.supplier_name
         );
         
         const selectedCompany = CompanyData?.find(
-          (item) => item.label === rowData.company_name
+          (item) => item.label === res.data.company_name
         );
           const selectedRackInvoice = YesNo?.find(
-          (item) => item.label === rowData.retail_invoice
+          (item) => item.label === res.data.retail_invoice
         );
         const invoiceStatus=InvoiceStatus?.find(
-          (item) => item.value == rowData.inv == 0 ? "Invoiced" : "Not Invoiced"
+          (item) => item.value == res.data.inv 
         );
+        console.log(invoiceStatus);
+        
     reset({
-      card1: rowData.card_no,
-      card2: rowData.cardNumber,
-      transDate: rowData.tran_date,
-      transTime: rowData.tran_time,
-      invoice: rowData.invoice,
-      unit: rowData.unit,
-      drierName: rowData.driver_name,
-      odometer: rowData.odometer,
-      loc: rowData.location_name,
-      city: rowData.city,
-      stateProv: rowData.state_prov,
-      fee: rowData.fees,
-      item: rowData.item,
-      efs: rowData.efs_unit_price,
-      tax: rowData.tax_unit_price,
-      unitPrice: rowData.unit_price ,
-      rackPrice: rowData.retail_price,
-      qty: rowData.qty,
-      discountCent: rowData.discount_cent,
-      amount: rowData.amt,
-      taxAmt: rowData.tax_amt ||rowData.amt,
-      db : rowData.db,
+      card1: res.data.card_no,
+      card2: res.data.cardNumber,
+      transDate: res.data.tran_date,
+      transTime: res.data.tran_time,
+      invoice: res.data.invoice,
+      unit: res.data.unit,
+      drierName: res.data.driver_name,
+      odometer: res.data.odometer,
+      loc: res.data.location_name,
+      city: res.data.city,
+      stateProv: res.data.state_prov,
+      fee: res.data.fees,
+      item: res.data.item,
+      efs: res.data.efs_unit_price,
+      tax: res.data.tax_unit_price,
+      unitPrice: res.data.unit_price ,
+      rackPrice: res.data.retail_price,
+      qty: res.data.qty,
+      discountCent: res.data.discount_cent,
+      amount: res.data.amt,
+      taxAmt: res.data.tax_amt ||res.data.amt,
+      db : res.data.db,
       rackInvoice: selectedRackInvoice,
-      conversationRate: rowData.rate,
+      conversationRate: res.data.rate,
       status: invoiceStatus,
       
       supplier: 
-    { value: rowData.supplier_id ,label: rowData.supplier_name }
+    { value: res.data.supplier_id ,label: res.data.supplier_name }
   ,
 
          company: {
-          value:rowData.company_id ,
-          label: rowData.company_name
+          value:res.data.company_id ,
+          label: res.data.company_name
          },
          currency:{
           value:selectedCurrency ?selectedCurrency.value:null,
-          label:rowData.currency
+          label:res.data.currency
          },
          country:{
             value:selectedCountry ?selectedCountry.value:null,
-          label:rowData.country
+          label:res.data.country
          }
         // company_login:{
         //    value: companylogin.value,
@@ -102,10 +110,18 @@ const selectedSupplier = supplierData?.find(
         // }
     });
   }
-}, [ rowData]);
+  setLoading(false)
+  } catch (error) {
+    console.error("Error fetching full row data", error);
+  }
+}
+  if (Id) {
+    fetchFuelCard();
+  }
+}, [ Id, reset]);
    
 const onSubmit = (formData) => {
-    
+    setLoading(true)
      const payload = {
   card_no: formData.card1,
   cardNumber: formData.card2,
@@ -149,9 +165,10 @@ const onSubmit = (formData) => {
 };
 console.log(payload)
         
-          axios.put(`${transactions}/${rowData.id}`, payload)
+          axios.put(`${transactions}/${Id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
+           setLoading(false)
         
         })
         .catch((err) => {
@@ -164,6 +181,7 @@ console.log(payload)
             
     return (
           <Fragment>
+                     {loading===true && ( < Loader loading={loading}/> )}
       <Breadcrumbs parent="Transaction" title="Edit Unknown Transaction " /> 
       <Container fluid={true}>
         <Row>
