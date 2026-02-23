@@ -12,6 +12,13 @@
 	padding: 10px 0;
 	top: 1px;
 }
+.dataTables_wrapper {
+  width: 100%;
+}
+
+table.dataTable {
+  width: 100% !important;
+}
 .dropdown-menu .dropdown-item {
   color: #2b2b2b;
   opacity: 1 !important;

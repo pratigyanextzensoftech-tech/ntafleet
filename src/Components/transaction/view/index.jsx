@@ -5,7 +5,6 @@ import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { transactions,tranaction_total } from "../../../api";
 import ViewForm from "./ViewForm";
-import { FaEdit, FaTrashAlt, FaSignInAlt,FaFile } from "react-icons/fa";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +12,8 @@ import Swal from "sweetalert2";
 import { download } from "../../../api";
 import $ from "jquery";
 import qs from "qs"; // npm install qs
+import { FaEdit, FaTrashAlt, FaSignInAlt,FaFile } from "react-icons/fa";
+
 import {
   Dropdown,
   DropdownToggle,

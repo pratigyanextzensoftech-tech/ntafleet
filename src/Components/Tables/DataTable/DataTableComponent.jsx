@@ -108,7 +108,7 @@ const DataTableComponent = ({
               {title && (
                 <HeaderCard
                   title={title}
-                  // downloadHeading={downloadHeading}
+                  downloadHeading={downloadHeading}
                   renderDropdown={renderDropdown}
                   download={download}
                   fileHeading={fileHeading}

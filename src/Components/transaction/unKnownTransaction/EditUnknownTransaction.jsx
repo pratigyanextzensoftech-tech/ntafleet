@@ -31,6 +31,8 @@ const EditUnknownTransaction = () => {
     } = useForm();
     const { id } = useParams();
         const Id = atob(decodeURIComponent(id));
+        console.log(Id);
+        
 useEffect(() => {
     const fetchFuelCard = async () => {
     try {

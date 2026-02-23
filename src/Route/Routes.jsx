@@ -56,7 +56,7 @@ import HistoryFuel from '../Components/fuelCards/history/index';
 import EditInformation from '../Components/fuelCards/editInformation/index.jsx'
 
 //Transaction
-import ViewTransaction from '../Components/transaction/view/index'
+import ViewTransaction from '../Components/transaction/view/ViewTransaction.jsx'
 import UploadTransaction from '../Components/transaction/upload/index'
 import TransactionList from '../Components/transaction/transactionList/index';
 import UnknownTransaction from '../Components/transaction/unKnownTransaction/index';
@@ -135,7 +135,6 @@ import EditUnknownTransaction from '../Components/transaction/unKnownTransaction
 import EditMoneyCodeForm from '../Components/moneyCode/addMoneyCode/EditMoneyCode';
 import Notification from '../Components/notification/index';
 import CreateIrving from '../Components/createIrving/CreateIrving.jsx';
-
 export const routes = [
     //Dashboard
     { path: `/dashboard`, Component: <ViewTransaction /> },
@@ -200,7 +199,7 @@ export const routes = [
     { path: `/to_retail_transaction`, Component: < RetailToRack /> },
     { path: `/view_efs_transaction`, Component: < ViewEfs /> },
     { path: `/update_unit`, Component: < UpdateUnit /> },
-    { path: `/edit-unknown/:id`, Component: < EditUnknownTransaction /> },
+    { path: `/edit-transaction/:id`, Component: < EditUnknownTransaction /> },
     //Invoice
     { path: `/view_invoice`, Component: <ViewInvoice /> },
     { path: `/viewInvoice/ViewPdf/:id`, Component: <ViewPdf /> },
