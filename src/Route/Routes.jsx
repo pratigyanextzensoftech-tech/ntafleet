@@ -69,7 +69,7 @@ import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
 
 //Invoice
 
-import ViewInvoice from '../Components/viewInvoice/ViewInvoice';
+import ViewInvoice from '../Components/viewInvoice/ViewIndex.jsx';
 
 import ViewPdf from '../Components/viewInvoice/ViewPdf.jsx';
 import CreateInvoice from '../Components/createInvoice/CreateInvoice';

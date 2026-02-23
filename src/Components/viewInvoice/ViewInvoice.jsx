@@ -313,7 +313,6 @@ const show_hide = $('input[name="invoiceShow"]').val();
           tableColumns={tableColumns}
           tableData={filteredCombineData}
           loading={loading}
-          downloadHeading="Download"
           download={true}
           pagination
           paginationServer
