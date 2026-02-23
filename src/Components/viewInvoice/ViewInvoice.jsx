@@ -25,6 +25,7 @@ import {
   FaTrashAlt,
   FaDownload,
   FaEye,
+  FaSync,
   FaEnvelope,
   FaFileExcel,
   FaFileCsv,
@@ -39,6 +40,7 @@ import {
 const ViewInvoice = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [btntp, setbtntp] = useState("INV");
+
   const [tableColumns, setTableColumns] = useState([]);
   const [filters, setFilters] = useState({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -93,6 +95,15 @@ const ViewInvoice = () => {
     }
     return setData;
   };
+  const getBtnType = () => {
+  const activeTab = getActiveTabFromUrl();
+
+  if (activeTab === "1") return "INV";
+  if (activeTab === "2") return "OWNER";
+  if (activeTab === "3") return "CUS";
+
+  return "INV";
+};
 
   const handleShowHideChange = (fullRow, source) => {
     const mails = $("#mails_" + fullRow.invoice_id).val();
@@ -584,80 +595,61 @@ const show_hide = $('input[name="invoiceShow"]').val();
       width: "120px",
     });
     cols.push({
-      name: "Action",
-      cell: (row) => (
-        <div className="position-relative dropdown-action">
-          <button
-            className="btn btn-sm btn-primary px-2"
-            onClick={() =>
-              setOpenRowId(
-                openRowId === row["Invoice#"] ? null : row["Invoice#"],
-              )
-            }
-          >
-            Action
-          </button>
+  name: "Action",
+  cell: (row) => (
+    <div className="d-flex align-items-center gap-3">
 
-          {openRowId === row["Invoice#"] && (
-            <div
-              className="position-absolute bg-white border rounded shadow"
-              style={{
-                zIndex: 1000,
-                right: 0,
-                marginTop: 5,
-                minWidth: 160,
-                padding: "5px 0",
-              }}
-            >
-              <a
-                href="#"
-                onClick={() =>
-                  downloadPdf(row.fulldata.download_link, btntp, row)
-                }
-                rel="noopener noreferrer"
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaDownload /> Download
-              </a>
+      {/* Download */}
+      <FaDownload
+        className="text-danger cursor-pointer"
+        title="Download"
+        onClick={() =>
+          downloadPdf(row.fulldata.download_link, btntp, row)
+        }
+        style={{ cursor: "pointer" }}
+      />
 
-              <Link
-                to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="dropdown-item d-flex align-items-center text-success"
-                style={{ padding: "8px 12px", gap: "8px" }}
-              >
-                <FaEye /> View
-              </Link>
+      {/* View */}
+    <Link
+  to={`/viewInvoice/ViewPdf/${btoa(row.fulldata.invoice_id)}?type=${getBtnType()}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <FaEye
+    className="text-success"
+    title="View"
+    style={{ cursor: "pointer" }}
+  />
+</Link>
 
-              <button
-                className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleMail(row)}
-              >
-                <FaEnvelope /> Email
-              </button>
-              <button
-                className="dropdown-item d-flex align-items-center text-primary"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleMail(row)}
-              >
-                <FaEnvelope /> Regenrate Invoice
-              </button>
 
-              <button
-                className="dropdown-item d-flex align-items-center text-danger"
-                style={{ padding: "8px 12px", gap: "8px" }}
-                onClick={() => handleDelete(row)}
-              >
-                <FaTrashAlt /> Delete
-              </button>
-            </div>
-          )}
-        </div>
-      ),
-    });
+      {/* Email */}
+      <FaEnvelope
+        className="text-primary cursor-pointer"
+        title="Email"
+        onClick={() => handleMail(row)}
+        style={{ cursor: "pointer" }}
+      />
+
+      {/* Regenerate */}
+      <FaSync
+        className="text-info cursor-pointer"
+        title="Regenerate Invoice"
+        // onClick={() => handleRegenerate(row)}
+        style={{ cursor: "pointer" }}
+      />
+
+      {/* Delete */}
+      <FaTrashAlt
+        className="text-danger cursor-pointer"
+        title="Delete"
+        onClick={() => handleDelete(row)}
+        style={{ cursor: "pointer" }}
+      />
+
+    </div>
+  ),
+});
 
     setTableColumns(cols);
   }, [openRowId]);

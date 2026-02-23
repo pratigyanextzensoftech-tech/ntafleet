@@ -5,7 +5,6 @@ import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { transactions,tranaction_total } from "../../../api";
 import ViewForm from "./ViewForm";
-import { FaEdit, FaTrashAlt, FaSignInAlt,FaFile } from "react-icons/fa";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -13,14 +12,16 @@ import Swal from "sweetalert2";
 import { download } from "../../../api";
 import $ from "jquery";
 import qs from "qs"; // npm install qs
+import { FaEdit, FaTrashAlt, FaSignInAlt,FaFile } from "react-icons/fa";
+
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-
-const ActionDropdown = ({ row, onEdit, onDelete }) => {
+import { Link } from "react-router-dom";
+const ActionDropdown = ({ row, onDelete }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -48,13 +49,20 @@ const ActionDropdown = ({ row, onEdit, onDelete }) => {
           className="position-absolute bg-white border rounded shadow"
           style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 120, padding: "5px 0" }}
         >
-          <button
+          {/* <button
             className="dropdown-item d-flex align-items-center"
             style={{ padding: "8px 12px", gap: "8px" }}
             onClick={() => onEdit(row)}
           >
             <FaEdit /> Edit
-          </button>
+          </button> */}
+               <Link
+            to={`/edit-unknown/${btoa(row.id)}`}
+            className="dropdown-item d-flex align-items-center"
+            style={{ padding: "8px 12px", gap: "8px" }}
+          >
+            <FaEdit /> Edit
+          </Link>
 
           <button
             className="dropdown-item d-flex align-items-center text-danger"
@@ -231,7 +239,6 @@ const columnWidths = {
        cell: row => (
          <ActionDropdown
            row={row}
-           onEdit={(e)=>handleEdit(e,row)}
            onDelete={(e)=>handleDelete(e,row)}
          />
        ),
@@ -299,21 +306,7 @@ const columnWidths = {
     fetchData(page, newPerPage, filters);
   };
 
-  const handleEdit = async (e, row) => {
-    console.log(row)
-  try {
-    const response = await axios.get(`${transactions}/${row.id}`);
-    setSelectedRow(response.data);
-    setEdit(true);
-    const encodedId = btoa(row.id); // encode ID
-    navigate(`/edit-unknown/${encodedId}`, {
-      state: { data: response.data }
-    });
 
-  } catch (error) {
-    console.error("Error fetching full row data", error);
-  }
-};
 const handleDelete = (e, row) => {
     e.preventDefault();
     Swal.fire({
@@ -416,9 +409,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
       </DropdownToggle>
 
       <DropdownMenu   style={{ minWidth: 160 }}>
-          <DropdownItem className="text-success"   onClick={() => handleDownload("DAT",filters)}>
-        <FaFile/> Download DAT
-        </DropdownItem>
+        
         <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel",filters)}>
           <FaFileExcel/> Download Excel
         </DropdownItem>
@@ -429,6 +420,9 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
 
         <DropdownItem className="text-success"   onClick={() => handleDownload("NewCSV",filters)}>
         <FaFileCsv/> Download New CSV
+        </DropdownItem>
+          <DropdownItem className="text-primary"   onClick={() => handleDownload("DAT",filters)}>
+        <FaFile/> Download DAT
         </DropdownItem>
 
         <DropdownItem className="text-info"   onClick={() => handleDownload("PDF",filters)}>

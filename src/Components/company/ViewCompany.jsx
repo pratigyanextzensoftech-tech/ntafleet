@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
-import { FaEdit, FaTrashAlt, FaSignInAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaSignInAlt,FaFileExcel,FaFileCsv } from "react-icons/fa";
 import axios from "axios";
 import { Container } from "reactstrap";
 import { company } from "../../api";
@@ -8,8 +8,17 @@ import DataTableComponent from "../Tables/DataTable/DataTableComponent";
 import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { download } from "../../api";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
+import $ from 'jquery'
 const ViewCompany = () => {
   const [companyData, setCompanyData] = useState([]);
+   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({});
   const [tableColumns, setTableColumns] = useState([]);
@@ -18,6 +27,7 @@ const ViewCompany = () => {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [draw, setDraw] = useState(1);
+  const toggle = () => setDropdownOpen((prev) => !prev);
 
   const edit=useNavigate();
   const filteredData = companyData.filter((row) =>
@@ -42,7 +52,7 @@ const handleFilterChange = (column, value) => {
     { key: "companyName", label: "Company Name", width: "280px" },
     { key: "firstName", label: "First Name", width: "150px" },
     { key: "lastName", label: "Last Name", width: "130px" },
-    { key: "address", label: "Address", width: "250px" },
+    { key: "address", label: "Address", width: "270px" },
     { key: "suspicious", label: "Suspicious Company", width: "200px" },
     { key: "lastLogin", label: "Last Login", width: "170px" },
     { key: "loginbefore", label: "Login Before", width: "170px" },
@@ -247,6 +257,28 @@ const handleFilterChange = (column, value) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+      function handleDownload(type) {
+  const ids = []; 
+  let esso_ftp='';
+  $('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val()); if($(this).val()==='100'){esso_ftp="Yes";} });
+  
+  if (ids.length === 0) {  alert('Please select at least one item');  return;}
+   const IDSUP = ids.join(',');  
+  const from = $('#from').val();
+  const to = $('#to').val();
+  const state_prov = $('input[name="state_prov"]').val();
+  const unit = $('input[name="unit"]').val();
+  const card_no = $('input[name="card_no"]').val();
+  const company = $('input[name="company"]').val();
+  const currency = $('input[name="currency"]').val();  
+  const items = $('input[name="items"]').val();  
+  const status = $('input[name="status"]').val();  
+  const invoice_type = $('input[name="invoice_type"]').val(); 
+  
+  console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoice_type)
+   window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
+  
+  } 
   return (
     <Fragment>
       <Breadcrumbs parent="Invoice" title="Company List" />
@@ -256,9 +288,33 @@ const handleFilterChange = (column, value) => {
           loading={loading}
           tableColumns={tableColumns}
           tableData={filteredData}
-            downloadHeading="Download"
           download={true}
           pagination
+            renderDropdown={() => (
+           <>
+              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+             <DropdownToggle
+               tag="span"
+               className="px-2 text-white"
+               style={{ cursor: "pointer" }}
+             >
+               <i className="fa fa-download me-1"></i> Download
+             </DropdownToggle>
+       
+             <DropdownMenu   style={{ minWidth: 160 }}>
+               
+               <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel")}>
+                 <FaFileExcel/> Download Excel
+               </DropdownItem>
+       
+               <DropdownItem className="text-danger"   onClick={() => handleDownload("CSV")}>
+                 <FaFileCsv/> Download CSV
+               </DropdownItem>
+             </DropdownMenu>
+           </Dropdown>
+       
+           </>
+         )}
           paginationServer
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={handlePerRowsChange}

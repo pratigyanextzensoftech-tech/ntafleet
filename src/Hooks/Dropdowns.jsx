@@ -115,7 +115,10 @@ export const formatDate = (date) => {
 
 export const downloadPdf = async (url, invoiceName, data) => {
   try {
+    console.log(url);
     console.log(invoiceName);
+    console.log(data);
+    
 
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to download");

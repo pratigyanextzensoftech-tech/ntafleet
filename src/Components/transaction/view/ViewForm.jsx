@@ -134,6 +134,7 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
                   <input
                     id="supplier-all"
                     type="checkbox"
+                    name="supplier"
                     value="All"
                     checked={allSelected}
                     onChange={handleSupplierChange}
@@ -144,6 +145,7 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
                 </span>
               </legend>
                                 <Row  className="chk">
+                                  
 
                 {supplier.map((item, index) => (
                   <Col key={index} xxl="3"  xl="4" md="4" sm="6">
@@ -151,6 +153,7 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
                       <input
                         id={`supplier-checkbox-${index}`}
                         type="checkbox"
+                        name="supplier"
                         value={String(item.value)}
                         checked={selectedValues.includes(String(item.value))}
                         onChange={handleSupplierChange}
@@ -184,6 +187,7 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
               <Col xs="9">
                 <Controller
                   name="from"
+                  id="from"
                   control={control}
                   render={({ field }) => (
                     <DatePicker

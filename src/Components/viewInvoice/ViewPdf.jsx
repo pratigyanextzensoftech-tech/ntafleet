@@ -3,7 +3,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { Row, Col, Card, Container } from "reactstrap";
 import HeaderCard from "../Common/Component/HeaderCard";
 import { Breadcrumbs } from "../../AbstractElements";
-import { combine_invoice } from "../../api";
+import { combine_invoice,owner_invoice,customized_invoice } from "../../api";
 import axios from "axios";
 
 const ViewPdf = () => {
@@ -21,15 +21,28 @@ const ViewPdf = () => {
   console.log("Invoice ID:", invoiceId);
   console.log("Button Type:", type);
 
+
   useEffect(() => {
-    axios
-      .get(`${combine_invoice}/${invoiceId}`, {
-        params: { type: type }, // 👈 sending type to backend (optional)
-      })
-      .then((res) => {
-        setDownloadLink(res.data.download_link);
-      });
-  }, [invoiceId, type]); // ✅ add dependencies
+  let API_URL = combine_invoice; // default
+
+  if (type === "INV") {
+    API_URL = combine_invoice;
+  } else if (type === "OWNER") {
+    API_URL = owner_invoice;
+  } else if (type === "CUS") {
+    API_URL = customized_invoice;
+  }
+
+  axios
+    .get(`${API_URL}/${invoiceId}`)
+    .then((res) => {
+      setDownloadLink(res.data.download_link);
+    })
+    .catch((err) => {
+      console.error("Error fetching invoice:", err);
+    });
+
+}, [invoiceId, type]);
 
   return (
     <Fragment>

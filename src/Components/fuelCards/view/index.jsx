@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit,FaTrashAlt,FaFileExcel,FaFileCsv, FaFilePdf} from "react-icons/fa";
 import { Container } from "reactstrap";
 import axios from "axios";
 import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
@@ -16,7 +16,14 @@ import { useForm } from "react-hook-form";
 import { Row, Col, Card, CardBody } from "reactstrap";
 import { Link } from "react-router-dom";
 import ViewForm from "./ViewForm";
-const ViewFuelCards = () => {
+import $ from "jquery";
+import { download } from "../../../api";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";const ViewFuelCards = () => {
   const [fuelCards, setFuelCards] = useState([]);
     const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(true);
@@ -26,6 +33,7 @@ const ViewFuelCards = () => {
   const {data:supplier}=useSupplier("")
   const [selectedRow, setSelectedRow] = useState(null);
   const[Edit,setEdit]=useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   // Pagination states
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -39,7 +47,7 @@ const ViewFuelCards = () => {
     } = useForm({ });
 const navigate=useNavigate()
   // Build column definitions
-
+const toggle = () => setDropdownOpen((prev) => !prev);
 // const filteredData = fuelCards.filter((row) =>
 //   Object.keys(filters).every((key) => {
 //     if (!filters[key]) return true;
@@ -105,13 +113,6 @@ const handleFilterChange = (column, value) => {
                   padding: "5px 0",
                 }}
               >
-                {/* <button
-                  className="dropdown-item d-flex align-items-center"
-                  style={{ padding: "8px 12px", gap: "8px" }}
-                  onClick={(e) => handleEdit(e,row)}
-                >
-                  <FaEdit /> Edit
-                </button> */}
                 <Link
   to={`/edit-fuelCards/${btoa(row.id)}`}
   className="dropdown-item d-flex align-items-center"
@@ -273,7 +274,21 @@ const handleFilterChange = (column, value) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+    function handleDownload(type) {
+  
+const supplier = $('input[name="supplier"]').val();
+const unit = $('input[name="unit"]').val();
+const card_no = $('input[name="card_no"]').val();
+const policy = $('input[name="policy"]').val();
+const pin = $('input[name="pin"]').val();
+const driver_name = $('input[name="driver_name"]').val();
+const company = $('input[name="company"]').val();
+const status = $('input[name="status"]').val();  
 
+console.log(unit,card_no,company,status)
+ window.open(`${download}?type=CARD&format=${type}&supplier_id=${supplier}&unit=${unit}&card_no=${card_no}&policy=${policy}&pin=${pin}&driver_name=${driver_name}&company_id=${company}&status=${status}`, "_self");
+
+} 
   return (
     <Fragment>
       <Breadcrumbs parent="Fuel Cards" title="View Fuel Cards" />
@@ -297,8 +312,37 @@ const handleFilterChange = (column, value) => {
           loading={loading}
           tableColumns={tableColumns}
           tableData={fuelCards}
-          downloadHeading="Download"
+           renderDropdown={() => (
+           <>
+              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+             <DropdownToggle
+               tag="span"
+               className="px-2 text-white"
+               style={{ cursor: "pointer" }}
+             >
+               <i className="fa fa-download me-1"></i> Download
+             </DropdownToggle>
+       
+             <DropdownMenu   style={{ minWidth: 160 }}>
+               
+               <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel")}>
+                 <FaFileExcel/> Download Excel
+               </DropdownItem>
+       
+               <DropdownItem className="text-danger"   onClick={() => handleDownload("CSV")}>
+                 <FaFileCsv/> Download CSV
+               </DropdownItem>
+       
+               <DropdownItem className="text-info"   onClick={() => handleDownload("PDF")}>
+                 <FaFilePdf/> Download Pdf
+               </DropdownItem>
+             </DropdownMenu>
+           </Dropdown>
+       
+           </>
+         )}
           download={true}
+
           pagination
           paginationServer
           paginationTotalRows={totalRows}

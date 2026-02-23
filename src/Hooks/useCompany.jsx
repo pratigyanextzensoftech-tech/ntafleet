@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { companyall } from "../api/index"; // make sure this is correct URL
 
-const useCompany = () => {
+const 
+useCompany = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -34,9 +34,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { fual_card as APINAME,fual_card_update } from "../../../api"; // your fuel card API endpoint
 import { useCompany, useSupplier } from "../../../Hooks/Dropdowns";
+import Loader from "../../../Layout/Loader";
 const Index = () => {
   const { data: supplierOption } = useSupplier();
   const[oldData,setOldData]=useState([])
+  const[loading,setLoading]=useState(false)
   const { state } = useLocation();
   const navigate=useNavigate()
    const { id } = useParams();
@@ -54,6 +56,7 @@ const Index = () => {
  useEffect(() => {
   const fetchFuelCard = async () => {
     try {
+      setLoading(true)
       const res = await axios.get(`${fual_card}/${Id}`);
       if (res.data) {
         reset({
@@ -78,6 +81,7 @@ const Index = () => {
             label: res.data.status,
           },
         });
+        setLoading(false)
 setOldData(res.data)
       }
     } catch (error) {
@@ -90,6 +94,7 @@ setOldData(res.data)
 }, [Id, reset]);
 
   const onSubmit = (formData) => {
+    setLoading(true)
     console.log("Form Data:", formData);
         const payload = {
       card_no: formData.cardNo,
@@ -111,7 +116,8 @@ setOldData(res.data)
       .then((res) => {
         console.log(res);
         toast.success("Update successfully!");
-  
+      setLoading(false)
+
       })
       .catch((err) => {
         console.log(err);
@@ -143,6 +149,7 @@ setOldData(res.data)
   };
   return (
     <Fragment>
+         {loading===true && ( < Loader loading={loading}/> )}
       <Breadcrumbs parent="Transaction" title="Edit Unknown Transaction " />
       <Container fluid={true}>
         <Row>

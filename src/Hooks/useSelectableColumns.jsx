@@ -104,6 +104,7 @@ export default function useSelectableColumns(download_link, USEFOR = "",checkbox
         
     switch (USEFOR) {
       case "REPORT":
+        
         window.open(`${download_link}/${row.Report_ID}/${TYPE}`, "_self");
         break;
       case "OWNER_REPORT":
