@@ -38,7 +38,6 @@ const OwnerOperator = ({ title,onSearch }) => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
  
-
   const onSubmit = (data) => {
      const payload={
                   supplier_id:data.supplier.value || "",
@@ -79,6 +78,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                               <DatePicker
                                 className={`form-control `}
                                 selected={field.value}
+                                id="from"
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
                                  portalId="root"
@@ -109,6 +109,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                               <DatePicker
                                 className={`form-control digits`}
                                 selected={field.value}
+                                 id="to"
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
                                  portalId="root"
@@ -145,6 +146,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                                                  return (
                                                    <Select
                                                      {...field}
+                                                     name="supplier"
                                                      options={supplier}
                                                      className="form-control p-0 border-0"
                                                      placeholder="Select supplier"
@@ -189,6 +191,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                                                  return (                        <Select
                             {...field}
                             options={country}
+                              id="country"
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                               menuPortalTarget={document.body}
@@ -229,6 +232,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                           <Select
                             {...field}
                             options={invoiceTypes}
+                             id="invoice_type"
                             className="form-control p-0 border-0"
                               menuPortalTarget={document.body}
                           menuPosition="fixed"
@@ -258,6 +262,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                           <Select
                             {...field}
                             options={companies}
+                           id="company_id"
                             className="form-control p-0 border-0"
                             placeholder="Select Company "
                               menuPortalTarget={document.body}
@@ -291,6 +296,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                             className="form-control p-0 border-0"
                                    value={field.value}              // IMPORTANT for controlled select
         onChange={(val) => field.onChange(val)}
+           id="invcat"
           menuPortalTarget={document.body}
                           menuPosition="fixed"
                                  styles={{
@@ -319,6 +325,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                           <Select
                             {...field}
                             options={InvoiceShow}
+                             id="show_hide"
                             className="form-control p-0 border-0"
                                    value={field.value}              // IMPORTANT for controlled select
         onChange={(val) => field.onChange(val)}

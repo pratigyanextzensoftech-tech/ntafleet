@@ -54,7 +54,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
 
   const onSubmit = (data) => {
     const payload = {
-      supplier_id: selectedValues.join(",") || "",
+      supplier_id: selectedValues.join(",") ,
       from: data.from ? formatDate(data.from) : "",
       to: data.to ? formatDate(data.to) : "",
       company_id: data?.company?.value || "",
@@ -123,6 +123,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                         <input
                           id="supplier-all"
                           type="checkbox"
+                            name="supplier"
                           value={0}
                           checked={allSelected}
                           onChange={handleSupplierChange}
@@ -140,6 +141,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                             <input
                               id={`supplier-checkbox-${index}`}
                               type="checkbox"
+                              name="supplier"
                               value={item.value}
                               checked={selectedValues.includes(item.value)}
                               onChange={handleSupplierChange}
@@ -229,14 +231,14 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                 <InputGroupText>Company</InputGroupText>
                 <Controller
                   name="company"
-                  id="company_id"
+                
                   control={control}
                   render={({ field }) => (
                     <Select
                       {...field}
                       options={companies}
                       className="form-control p-0 border-0"
-                      
+                      id="company_id"
                       placeholder="Select Company"
                       menuPortalTarget={document.body}
                       menuPosition="fixed"
@@ -317,6 +319,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                 <Controller
                   name="category"
                   control={control}
+                  
                   render={({ field }) => (
                     <Select
                       {...field}
