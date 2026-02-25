@@ -193,7 +193,7 @@ const DataTableComponent = ({
                     )}
                   </>
                 )}
-                <div style={{ overflowX: "auto" }}>
+                <div style={{ overflowX: "auto", position: "relative" }}>
                   <DataTable
                     data={data}
                     columns={tableColumns}

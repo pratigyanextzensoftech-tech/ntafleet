@@ -25,55 +25,40 @@ const ActionDropdown = ({ row, onDelete }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  // useEffect(() => {
+  //   const handleClickOutside = (e) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+  //       setOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
 
   return (
-    <div ref={dropdownRef} className="position-relative dropdown-action">
-      <button
-        className="btn btn-sm btn-primary px-2"
-        onClick={() => setOpen(prev => !prev)}
-      >
-        Action
-      </button>
+ <Dropdown isOpen={open} toggle={() => setOpen(prev => !prev)}>
+  <DropdownToggle color="white" size="sm" className="px-2" caret>
+    Action
+  </DropdownToggle>
 
-      {open && (
-        <div
-          className="position-absolute bg-white border rounded shadow"
-          style={{ zIndex: 1000, right: 0, marginTop: 5, minWidth: 120, padding: "5px 0" }}
-        >
-          {/* <button
-            className="dropdown-item d-flex align-items-center"
-            style={{ padding: "8px 12px", gap: "8px" }}
-            onClick={() => onEdit(row)}
-          >
-            <FaEdit /> Edit
-          </button> */}
-               <Link
-            to={`/edit-unknown/${btoa(row.id)}`}
-            className="dropdown-item d-flex align-items-center"
-            style={{ padding: "8px 12px", gap: "8px" }}
-          >
-            <FaEdit /> Edit
-          </Link>
+  <DropdownMenu end container="body">
+    <DropdownItem
+      tag={Link}
+      to={`/edit-transaction/${btoa(row.id)}`}
+      className="d-flex align-items-center"
+    >
+      <FaEdit className="me-2" /> Edit
+    </DropdownItem>
 
-          <button
-            className="dropdown-item d-flex align-items-center text-danger"
-            style={{ padding: "8px 12px", gap: "8px" }}
-            onClick={(e) => onDelete(e, row)}
-          >
-            <FaTrashAlt /> Delete
-          </button>
-        </div>
-      )}
-    </div>
+    <DropdownItem
+      className="text-danger d-flex align-items-center"
+      onClick={(e) => onDelete(e, row)}
+    >
+      <FaTrashAlt className="me-2" /> Delete
+    </DropdownItem>
+   
+  </DropdownMenu>
+</Dropdown>
   );
 };
 const Index = () => {
@@ -243,6 +228,7 @@ const columnWidths = {
          />
        ),
        ignoreRowClick: true,
+        right: true,
        allowOverflow: true,
        button: true,
      });

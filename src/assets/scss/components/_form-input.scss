@@ -15,17 +15,40 @@
 .dataTables_wrapper {
   width: 100%;
 }
+.rdt_TableCell:first-child{
+ position: sticky !important;
+  left: 0;
+}
 
-table.dataTable {
-  width: 100% !important;
+.rdt_TableCol:first-child
+ {
+  position: sticky !important;
+  left: 0;
+  background: #0a4f88;
+}
+.rdt_TableCol:last-child
+ {
+  position: sticky !important;
+  right: 0;
+  background: #0a4f88;
+ 
+}
+.rdt_TableCell:last-child{
+ position: sticky !important;
+  right: 0;
+
+}
+.dropdown-menu {
+  z-index: 9999 !important;
 }
 .dropdown-menu .dropdown-item {
   color: #2b2b2b;
   opacity: 1 !important;
   font-size: 13px;
   padding: 6px 12px;
-  background: #fff;
+  background: #0a4f88;
 }
+
 %input-mixin2 {
 	position: absolute;
 	z-index: 2;

@@ -48,16 +48,16 @@ const handleFilterChange = (column, value) => {
 };
   useEffect(() => {
     const columns = [
-      { key: "company_id", label: "Sr.No.", width: "100px" },
-    { key: "companyName", label: "Company Name", width: "280px" },
-    { key: "firstName", label: "First Name", width: "150px" },
-    { key: "lastName", label: "Last Name", width: "130px" },
-    { key: "address", label: "Address", width: "270px" },
-    { key: "suspicious", label: "Suspicious Company", width: "200px" },
-    { key: "lastLogin", label: "Last Login", width: "170px" },
-    { key: "loginbefore", label: "Login Before", width: "170px" },
-    { key: "latitude", label: "Latitude", width: "120px" },
-    { key: "Status", label: "Status", width: "120px" },
+      { key: "company_id", label: "Sr.No." },
+    { key: "companyName", label: "Company Name"},
+    { key: "firstName", label: "First Name" },
+    { key: "lastName", label: "Last Name"},
+    { key: "address", label: "Address" },
+    { key: "suspicious", label: "Suspicious Company"},
+    { key: "lastLogin", label: "Last Login" },
+    { key: "loginbefore", label: "Login Before" },
+    { key: "latitude", label: "Latitude" },
+    { key: "Status", label: "Status" },
       {
         key: "Action",
         label: "Action",

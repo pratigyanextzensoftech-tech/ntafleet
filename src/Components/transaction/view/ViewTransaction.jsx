@@ -15,6 +15,7 @@ import $ from "jquery";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
 import qs from "qs"; // npm install qs
+
 import {
   Dropdown,
   DropdownToggle,

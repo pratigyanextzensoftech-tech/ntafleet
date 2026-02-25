@@ -4,8 +4,7 @@ import "./index.scss";
 import App from "./App";
 import "./i18n";
 import reportWebVitals from "./reportWebVitals";
-// import '@fortawesome/fontawesome-free/css/all.min.css';
- 
+
 const Root = () => {
   return (
     <div className="App">
