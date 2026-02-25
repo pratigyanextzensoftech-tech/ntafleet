@@ -22,14 +22,27 @@
 //     z-index: 9999;
 // }
 
-#data_list .dt-column-title {
+.dropdown-menu { 
+	z-index: 100000!important; 
+}
+.dt-scroll-body { 
+	min-height: 250px!important; 
+}
+.dropdown-menu .dropdown-item,.dropdown-menu .dropdown-item .show {
+	box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
+	border: none;
+	padding: 0;
+	z-index: 100000!important; 
+}
+ 
+.dt-column-title {
 	font-weight: bold;
 	font-size: 14px;
 	text-align: left;
 	padding: 3px; 
 }
 
-#data_list .table tbody td {
+ .table tbody td {
   padding: 3px !important; 
   vertical-align: middle;
   font-size: 12px;
