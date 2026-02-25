@@ -88,6 +88,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                               <DatePicker
                                 className={`form-control `}
                                 selected={field.value}
+                                id="from"
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
                                 portalId="root"
@@ -118,6 +119,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                                 onChange={(date) => field.onChange(date)}
                                 dateFormat="yyyy-MM-dd"
                                 portalId="root"
+                                 id="to"
                                 popperPlacement="bottom-start"
                               />
                             )}
@@ -143,6 +145,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             <Select
                               {...field}
                               options={supplier}
+                              name="supplier"
                               className="form-control p-0 border-0"
                               placeholder="Select supplier"
                               value={field.value}
@@ -180,6 +183,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             <Select
                               {...field}
                               options={country}
+                              id="country"
                               className="form-control p-0 border-0"
                               placeholder="Select Country"
                               menuPortalTarget={document.body}
@@ -222,6 +226,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                               className="form-control p-0 border-0"
                               menuPortalTarget={document.body}
                               menuPosition="fixed"
+                               id="invoice_type"
                               styles={{
                                 menuPortal: (base) => ({
                                   ...base,
@@ -247,6 +252,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                           <Select
                             {...field}
                             options={companies}
+                             id="company_id"
                             className="form-control p-0 border-0"
                             placeholder="Select Company Name"
                             menuPortalTarget={document.body}
@@ -275,6 +281,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             {...field}
                             options={customizedTypeType}
                             className="form-control p-0 border-0"
+                            id="customised"
                             menuPortalTarget={document.body}
                             menuPosition="fixed"
                             styles={{
@@ -303,6 +310,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             className="form-control p-0 border-0"
                             menuPortalTarget={document.body}
                             menuPosition="fixed"
+                              id="invcat"
                             styles={{
                               menuPortal: (base) => ({
                                 ...base,
@@ -327,6 +335,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                           <Select
                             {...field}
                             options={InvoiceShow}
+                             id="show_hide"
                             className="form-control p-0 border-0"
                             menuPortalTarget={document.body}
                             menuPosition="fixed"
