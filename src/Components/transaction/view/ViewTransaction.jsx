@@ -159,7 +159,7 @@ console.log(supplier);
       ordering: true,
      scrollX: true,
          scrollCollapse: true,
-          fixedColumns: { leftColumns: 1, rightColumns: 1},
+          fixedColumns: { leftColumns: 1},
       pageLength: 10,
       columns: columns,
     

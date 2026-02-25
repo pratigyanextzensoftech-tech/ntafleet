@@ -18,6 +18,7 @@ import $ from "jquery";
 import "datatables.net";
 import { formatDate } from "../../Hooks/Dropdowns";
 import { download } from "../../api";
+import { downloadPdf } from "../../Hooks/Dropdowns";
 import {
   Dropdown,
   DropdownToggle,
@@ -118,9 +119,12 @@ const show_hide = $('input[name="invoiceShow"]').val();
   };
 
 }, []);
+
+
   /* ---------------- DATATABLE FUNCTION ---------------- */
 
   const GetDataTAble = (api, tableId,from,to,company_id,country,invoice_type,invcat,show_hide,cust_inv_type,supplier) => {
+    console.log(api)
    if ($.fn.DataTable.isDataTable(tableId)) {
   $(tableId).DataTable().clear().destroy();
 }
@@ -147,67 +151,226 @@ const show_hide = $('input[name="invoiceShow"]').val();
   { data: "supplier_name", title: "Supplier" },
   { data: "mail_by", title: "Mailed_By " },
   { data: "mail_on", title: "Mailed_On" },
-   {
-    data: "mails",
-    title: "Show_Hide",
-    orderable: false,
-    render: function (data, type, row) {
-      return `
-        <select class="form-select  form-select-sm "
-                data-id="${row.invoice_id}">
-          <option value="1" ${data == 1 ? "selected" : ""}>Show</option>
-          <option value="0" ${data == 0 ? "selected" : ""}>Hide</option>
-        </select>
-      `;
-    }
-  },
   {
-    data: "admin_status",
-    title: "Status",
-    orderable: false,
-    render: function (data, type, row) {
-      return `
-        <select class="form-select form-select-sm admin-status"
-                data-id="${row.invoice_id}">
-          <option value="Open" ${data == "Open" ? "selected" : ""}>Open</option>
-          <option value="Entered" ${data == "Entered" ? "selected" : ""}>Entered</option>
-          <option value="Close" ${data == "Close" ? "selected" : ""}>Close</option>
-        </select>
-      `;
-    }
-  },
- {
+  data: "mails",
+  title: "Show_Hide",
+  orderable: false,
+  render: function (data, type, row) {
+    return `
+      <select class="form-select form-select-sm status-change"
+              data-id="${row.invoice_id}"
+              data-field="mails">
+        <option value="1" ${data == 1 ? "selected" : ""}>Show</option>
+        <option value="0" ${data == 0 ? "selected" : ""}>Hide</option>
+      </select>
+    `;
+  }
+},
+{
+  data: "admin_status",
+  title: "Status",
+  orderable: false,
+  render: function (data, type, row) {
+    return `
+      <select class="form-select form-select-sm status-change"
+              data-id="${row.invoice_id}"
+              data-field="admin_status">
+        <option value="Open" ${data == "Open" ? "selected" : ""}>Open</option>
+        <option value="Entered" ${data == "Entered" ? "selected" : ""}>Entered</option>
+        <option value="Close" ${data == "Close" ? "selected" : ""}>Close</option>
+      </select>
+    `;
+  }
+},
+{
   data: null,
   title: "Action",
   orderable: false,
- render: function (data, type, row) {
+  render: function (data, type, row) {
+ let btnType;
 
-  const url = `/card-admin/edit-transaction/${btoa(row.invoice_id)}`;
-  return `
-    <div class="dropdown">
-      <button class="btn btn-sm btn-success dropdown-toggle" 
-              type="button" 
-              data-bs-toggle="dropdown">
-        Action
-      </button>
+    if (api === combine_invoice) {
+      btnType = "INV";
+    } 
+    else if (api === owner_invoice) {
+      btnType = "OWNER";
+    } 
+    else if (api === customized_invoice) {
+      btnType = "CUS";
+    } 
+       const viewUrl = `/card-admin/viewInvoice/ViewPdf/${btoa(row.invoice_id)}?type=${btnType}`;
 
-      <ul class="dropdown-menu">
+    let actionItems = "";
+
+    // 🔥 API based condition
+    if (api===combine_invoice) {
+
+      // FIRST API → 4 options
+      actionItems = `
+     <li>
+  <button class="dropdown-item download-btn"
+          data-link="${row.download_link}"
+          data-id="${row.invoice_id}"
+          data-type="${btnType}">
+    <i class="fa fa-download me-2 text-danger"></i>
+    Download
+  </button>
+</li>
+
         <li>
-          <a class="dropdown-item"
-             href="${url}">
-             <i class="fa fa-edit me-2 text-primary"></i> Edit
-          </a>
+        <a class="dropdown-item"
+               href="${viewUrl}"
+               target="_blank"
+               rel="noopener noreferrer">
+              <i class="fa fa-eye me-2 text-success"></i>
+              View
+            </a>
         </li>
+
         <li>
-          <button class="dropdown-item delete-btn text-danger"
+       <button class="dropdown-item email-btn"
+          data-id="${row.invoice_id}"
+          data-supplier="${row.supplier_id}"
+          data-tp="${row.tp || ''}"
+          data-api="${api}">
+    <i class="fa fa-envelope me-2 text-primary"></i>
+    Email
+  </button>
+        </li>
+
+        <li>
+          <button class="dropdown-item regenerate-btn"
                   data-id="${row.invoice_id}">
-            <i class="fa fa-trash me-2"></i> Delete
+            <i class="fa fa-sync me-2 text-info"></i>
+            Regenerate
           </button>
         </li>
-      </ul>
-    </div>
-  `;
-},
+          <li>
+           <button class="dropdown-item delete-btn text-danger"
+                   data-id="${row.invoice_id}"
+                data-api="${api}">
+            <i class="fa fa-trash me-2"></i>
+            Delete
+          </button>
+        </li>
+      `;
+
+    } 
+    else if (api===owner_invoice) {
+
+      // SECOND API → 5 options
+      actionItems = `
+     <li>
+  <button class="dropdown-item download-btn"
+          data-link="${row.download_link}"
+          data-id="${row.invoice_id}"
+          data-type="${btnType}">
+    <i class="fa fa-download me-2 text-danger"></i>
+    Download
+  </button>
+</li>
+           <li>
+          <button class="dropdown-item download-btn"
+                  data-link="${row.download_link}"
+                  data-id="${row.invoice_id}">
+            <i class="fa fa-download me-2 text-danger"></i>
+            Download CSV EXCEl
+          </button>
+        </li>
+
+        <li>
+          <a class="dropdown-item"
+               href="${viewUrl}"
+               target="_blank"
+               rel="noopener noreferrer">
+              <i class="fa fa-eye me-2 text-success"></i>
+              View
+            </a>
+        </li>
+
+        <li>
+        <button class="dropdown-item email-btn"
+          data-id="${row.invoice_id}"
+          data-supplier="${row.supplier_id}"
+          data-tp="${row.tp || ''}"
+          data-api="${api}">
+    <i class="fa fa-envelope me-2 text-primary"></i>
+    Email
+  </button>
+        </li>
+
+        <li>
+          <button class="dropdown-item regenerate-btn"
+                  data-id="${row.invoice_id}">
+            <i class="fa fa-sync me-2 text-info"></i>
+            Regenerate
+          </button>
+        </li>
+          <li>
+          <button class="dropdown-item delete-btn text-danger"
+                   data-id="${row.invoice_id}"
+                data-api="${api}">
+            <i class="fa fa-trash me-2"></i>
+            Delete
+          </button>
+        </li>
+      `;
+    }
+else if(api===customized_invoice){
+     actionItems = `
+      <li>
+  <button class="dropdown-item download-btn"
+          data-link="${row.download_link}"
+          data-id="${row.invoice_id}"
+          data-type="${btnType}">
+    <i class="fa fa-download me-2 text-danger"></i>
+    Download
+  </button>
+</li>
+
+        <li>
+         <a class="dropdown-item"
+               href="${viewUrl}"
+               target="_blank"
+               rel="noopener noreferrer">
+              <i class="fa fa-eye me-2 text-success"></i>
+              View
+            </a>
+        </li>
+
+        <li>
+         <button class="dropdown-item email-btn"
+          data-id="${row.invoice_id}"
+          data-supplier="${row.supplier_id}"
+          data-tp="${row.tp || ''}"
+          data-api="${api}">
+    <i class="fa fa-envelope me-2 text-primary"></i>
+    Email
+  </button>
+        </li>
+
+         <button class="dropdown-item delete-btn text-danger"
+                 data-id="${row.invoice_id}"
+                data-api="${api}">
+            <i class="fa fa-trash me-2"></i>
+            Delete
+          </button>
+      
+      `;
+}
+     return `
+      <div class="dropdown">
+        <button class="btn btn-sm btn-success dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown">
+          Action
+        </button>
+        <ul class="dropdown-menu">
+          ${actionItems}
+        </ul>
+      </div>
+    `;  
+  }
 }
 ];
     $(tableId).DataTable({
@@ -219,7 +382,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
       ordering: true,
        scrollX: true,
       scrollCollapse: true,
-      fixedColumns: { leftColumns: 1, rightColumns: 1},
+      fixedColumns: { leftColumns: 1},
       pageLength: 10,
  columns: columns, 
       ajax: async function (data, callback) {
@@ -258,6 +421,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
       mail_on: row.mail_on,
       mails: row.mails,
       admin_status: row.admin_status,
+      download_link:row.download_link,
       id: row.id
     }));
     console.log(tableData)
@@ -280,6 +444,167 @@ const show_hide = $('input[name="invoiceShow"]').val();
 
   
     });
+   // Store previous value
+$(document).off("focus", ".status-change");
+$(document).on("focus", ".status-change", function () {
+  $(this).data("previous", $(this).val());
+});
+
+
+// Handle change for BOTH dropdowns
+$(document).off("change", ".status-change");
+$(document).on("change", ".status-change", function () {
+
+  const table = $(tableId).DataTable();
+  const selectElement = $(this);
+
+  const invoice_id = selectElement.data("id");
+  const field = selectElement.data("field"); // 🔥 important
+  const newValue = selectElement.val();
+  const oldValue = selectElement.data("previous");
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Change status?",
+    icon: "warning",
+    showCancelButton: true,
+  }).then(async (result) => {
+
+    if (!result.isConfirmed) {
+      selectElement.val(oldValue);
+      return;
+    }
+
+    try {
+
+      await axios.put(`${api}/${invoice_id}`, {
+        id: invoice_id,
+        [field]: field === "mails" ? Number(newValue) : newValue
+      });
+
+      table.ajax.reload(null, false);
+
+      Swal.fire("Updated!", "Status changed successfully.", "success");
+
+    } catch (error) {
+
+      selectElement.val(oldValue);
+
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
+
+  });
+
+});
+
+$(document).off("click", ".delete-btn");
+
+$(document).on("click", ".delete-btn", function () {
+
+  const table = $(tableId).DataTable();
+  const invoiceId = $(this).data("id");
+  const apiUrl = $(this).data("api");   // 🔥 dynamic api
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      axios.delete(`${apiUrl}/${invoiceId}`)
+        .then(() => {
+
+          // ✅ reload table without resetting page
+          table.ajax.reload(null, false);
+
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+
+    }
+  });
+
+});
+
+$(document).off("click", ".email-btn");
+
+$(document).on("click", ".email-btn", function () {
+
+  const invoiceId = $(this).data("id");
+  const supplierId = $(this).data("supplier");
+  const tpValue = $(this).data("tp");
+  const apiUrl = $(this).data("api");
+
+  // 🔥 decide invoiceType
+  let invoiceType;
+
+  if (apiUrl === combine_invoice) {
+    invoiceType = tpValue;
+  } 
+  else if (apiUrl === owner_invoice) {
+    invoiceType = "OWNER";
+  } 
+  else if (apiUrl === customized_invoice) {
+    invoiceType = "CUSTUM";
+  }
+
+  const payload = {
+    mail_type: "INVOICE",
+    supplier: supplierId,
+    invoiceType: invoiceType,
+    ids: invoiceId
+  };
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to send the mail?",
+    icon: "warning",
+    showCancelButton: true,
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      axios.post(`${apiUrl}/send-mail`, payload)
+        .then(() => {
+          Swal.fire("Successfully sent the mail", "", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to send the mail.", "error");
+        });
+
+    }
+
+  });
+
+});
+$(document).off("click", ".download-btn");
+
+$(document).on("click", ".download-btn", function () {
+
+  const link = $(this).data("link");
+  const invoiceId = $(this).data("id");
+  const btnType = $(this).data("type");
+
+  // Create minimal row object (if needed)
+  const row = {
+    invoice_id: invoiceId
+  };
+console.log(link);
+console.log(btnType);
+console.log(row);
+
+  // 🔥 Call your existing function
+  downloadPdf(link, btnType, row);
+
+});
   };
 
 

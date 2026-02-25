@@ -4,7 +4,11 @@ import "./index.scss";
 import App from "./App";
 import "./i18n";
 import reportWebVitals from "./reportWebVitals";
+// import '@fortawesome/fontawesome-free/css/all.min.css';
+ 
 
+//import * as bootstrap from "bootstrap";
+import "bootstrap/js/dist/dropdown";
 const Root = () => {
   return (
     <div className="App">
