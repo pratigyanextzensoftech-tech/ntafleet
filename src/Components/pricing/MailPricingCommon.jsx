@@ -158,8 +158,23 @@ console.log(newSelection)
       "Mailed_On": "mail_on",
     };
 
-     
- const columnWidths = {
+  
+
+
+const columnWidths = taxOption === false
+  ? {
+     "ID #": "120px",
+  "Company": "350px",
+  "Pricing Date": "180px",
+  "Supplier": "150px",
+  "Entry_Count": "150px",
+  "Added_By": "180px",
+  "Added_On": "160px",
+  "Mailed_By": "150px",
+  "Mailed_On": "150px",
+    }
+  :  
+ {
   "ID #": "100px",
   "Company": "300px",
   "Pricing Date": "180px",
@@ -217,7 +232,7 @@ console.log(newSelection)
         }});
              cols.push({
   name: "View Pdf",
-  width:"180px",
+  width:"250px",
   cell: (row) => (
     <Link
       // to={`/download_pdf/${btoa(row.id)}`}

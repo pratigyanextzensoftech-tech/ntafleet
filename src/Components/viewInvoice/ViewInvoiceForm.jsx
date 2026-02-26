@@ -239,6 +239,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       options={companies}
                       className="form-control p-0 border-0"
                       id="company_id"
+                       name="company"
                       placeholder="Select Company"
                       menuPortalTarget={document.body}
                       menuPosition="fixed"
@@ -268,6 +269,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       options={country}
                       className="form-control p-0 border-0"
                        id="country"
+                       name="country"
                       placeholder="Select Country"
                       menuPortalTarget={document.body}
                       menuPosition="fixed"
@@ -297,6 +299,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       options={invoiceType}
                       className="form-control p-0 border-0"
                        id="invoice_type"
+                       name="invoiceType"
                       menuPortalTarget={document.body}
                       menuPosition="fixed"
                       styles={{
@@ -326,6 +329,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       options={InvoiceCategory}
                       className="form-control p-0 border-0"
                        id="invcat"
+                       name="invcat"
                       menuPortalTarget={document.body}
                       menuPosition="fixed"
                       styles={{
@@ -355,6 +359,7 @@ const ViewInvoiceForm = ({ title, onSearch }) => {
                       className="form-control p-0 border-0"
                       menuPortalTarget={document.body}
                        id="show_hide"
+                       nme="invoiceShow"
                       menuPosition="fixed"
                       styles={{
                         menuPortal: (base) => ({

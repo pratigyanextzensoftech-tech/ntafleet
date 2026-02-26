@@ -35,13 +35,13 @@ const Index = () => {
     driverId: "100px",
     driverName: "120px",
     beingOverridden: "160px",
-    status: "100px",
+    status: "150px",
     PayrollStatus: "150px",
     PayrollUse: "110px",
     gpsid: "100px",
-    Zid: "50px",
-    infosrc: "70px",
-    plicySubFleet: "120px",
+    Zid: "80px",
+    infosrc: "120px",
+    plicySubFleet: "220px",
     CardSubfleet: "120px",
   };
 

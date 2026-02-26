@@ -136,17 +136,19 @@ const OwnerOperator = ({ title,onSearch }) => {
                         defaultValue={null}
                          render={({ field }) => {
                                                  // Auto select if only one option exists
-                                                 if (
-                                                   supplier?.length >= 1   &&
-                                                   field.value === null
-                                                 ) {
-                                                   field.onChange(supplier[0]);
-                                                 }
+                                                //  if (
+                                                //    supplier?.length >= 1   &&
+                                                //    field.value === null
+                                                //  ) 
+                                                //  {
+                                                //    field.onChange(supplier[0]);
+                                                //  }
                                                   
                                                  return (
                                                    <Select
                                                      {...field}
-                                                     name="supplier"
+                                                  inputId="supplier_id"
+                                                  name="supplier"
                                                      options={supplier}
                                                      className="form-control p-0 border-0"
                                                      placeholder="Select supplier"
@@ -192,6 +194,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                             {...field}
                             options={country}
                               id="country"
+                              name="country"
                             className="form-control p-0 border-0"
                             placeholder="Select Country"
                               menuPortalTarget={document.body}
@@ -233,6 +236,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                             {...field}
                             options={invoiceTypes}
                              id="invoice_type"
+                             name="invoiceType"
                             className="form-control p-0 border-0"
                               menuPortalTarget={document.body}
                           menuPosition="fixed"
@@ -263,6 +267,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                             {...field}
                             options={companies}
                            id="company_id"
+                            name="company"
                             className="form-control p-0 border-0"
                             placeholder="Select Company "
                               menuPortalTarget={document.body}
@@ -297,6 +302,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                                    value={field.value}              // IMPORTANT for controlled select
         onChange={(val) => field.onChange(val)}
            id="invcat"
+           name="invcat"
           menuPortalTarget={document.body}
                           menuPosition="fixed"
                                  styles={{
@@ -326,6 +332,7 @@ const OwnerOperator = ({ title,onSearch }) => {
                             {...field}
                             options={InvoiceShow}
                              id="show_hide"
+                             name="invoiceShow"
                             className="form-control p-0 border-0"
                                    value={field.value}              // IMPORTANT for controlled select
         onChange={(val) => field.onChange(val)}

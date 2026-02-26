@@ -78,6 +78,7 @@ onSearch(basePayload)
                                     <Controller
                                         name="from"
                                         control={control}
+                                        id="from"
                                         render={({ field }) => (
                                             <DatePicker
                                                 className={`form-control `}
@@ -112,6 +113,7 @@ onSearch(basePayload)
 
                                     <Controller
                                         name="to"
+                                        id="to"
                                         control={control}
                                         render={({ field }) => (
                                             <DatePicker
@@ -140,6 +142,7 @@ onSearch(basePayload)
                                 render={({ field }) => (
                                     <Select
                                         {...field}
+                                        id="company"
                                         options={companies}
                                         className="form-control p-0 border-0"
                                         placeholder="Select Company "

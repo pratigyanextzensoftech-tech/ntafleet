@@ -37,23 +37,37 @@ const ViewIndex = () => {
     return params.get("tab") || "1";
   };
 
-function handleDownload(type, filters) {
+function handleDownload(type, invoiceType) {
+   console.log(type);
    
 const ids = []; 
 $('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val());});
 
-if (ids.length === 0) {  alert('Please select at least one item');  return;}
+if (ids.length === 0) {
+    const supplierValue = $('input[name="supplier"]').val();
+
+console.log(supplierValue);
+    if (supplierValue) {
+      ids.push(supplierValue);
+    }
+  }
+
+  if (ids.length === 0) {
+    alert('Please select at least one supplier');
+    return;
+  }
+
 
  const IDSUP = ids.join(',');  
 const from = $('#from').val();
 const to = $('#to').val();
 const country = $('input[name="country"]').val();
 const company_id = $('input[name="company"]').val();
-const invcat = $('input[name="category"]').val();
+const invcat = $('input[name="invcat"]').val();
 const invoice_type = $('input[name="invoiceType"]').val();
 const show_hide = $('input[name="invoiceShow"]').val();  
 
- window.open(`${download}?type=INVOICE&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&country=${country}&company_id=${company_id}&invcat=${invcat}&invoice_type=${invoice_type}&show_hide=${show_hide}`, "_self");
+ window.open(`${download}?type=${invoiceType}&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&country=${country}&company_id=${company_id}&invcat=${invcat}&invoice_type=${invoice_type}&show_hide=${show_hide}`, "_self");
 
 }
   const getApiByTab = (tab) => {
@@ -129,7 +143,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
   $(tableId).DataTable().clear().destroy();
 }
    const columns =[
-  { data: "invoice_id", title: "Invoice#" },
+  { data: "invoice_display", title: "Invoice#" },
   { data: "company_name", title: "Company" },
  {
   data: null,
@@ -406,6 +420,7 @@ else if(api===customized_invoice){
      const tableData = json.data.map((row) => ({
       id:row.id,
       invoice_id: row.invoice_id,
+    invoice_display:api === combine_invoice ? row.tp === "Rack" ? `${row.invoice_type}-${row.invoice_id}`: `NTA-${row.invoice_id}`: `${row.invoice_id}`,
       company_name: row.company_name,
       from: row.from,
       to: row.to,
@@ -680,12 +695,13 @@ console.log(supplier);
     {
       id: "1",
       label: "View Invoices",
+         
      component: (
   <Row>
     <Col sm="12">
       <Card>
         <HeaderCard
-          title="Transactions List"
+          title="Invoices List"
           renderDropdown={() => (
              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
                            <DropdownToggle
@@ -699,40 +715,40 @@ console.log(supplier);
                            <DropdownMenu style={{ minWidth: 160 }}>
                              <DropdownItem
                                className="text-primary"
-                               onClick={() => handleDownload("Excel",filters)}
+                               onClick={() => handleDownload("Excel","INVOICE")}
                              >
                                <FaFileExcel /> Download Excel
                              </DropdownItem>
            
                              <DropdownItem
                                className="text-danger"
-                               onClick={() => handleDownload("CSV",filters)}
+                               onClick={() => handleDownload("CSV","INVOICE")}
                              >
                                <FaFileCsv /> Download CSV
                              </DropdownItem>
            
                              <DropdownItem
                                className="text-success"
-                               onClick={() => handleDownload("Quickbooks",filters)}
+                               onClick={() => handleDownload("Quickbooks","INVOICE")}
                              >
                                <FaFileCsv /> Download Quickbooks CSV
                              </DropdownItem>
            
                              <DropdownItem
                                className="text-warning"
-                               onClick={() => handleDownload("Canada_Quickbooks",filters)}
+                               onClick={() => handleDownload("Canada_Quickbooks","INVOICE")}
                              >
                                <FaFilePdf /> Download Canada Quickbooks
                              </DropdownItem>
                              <DropdownItem
                                className="text-primary"
-                               onClick={() => handleDownload("Quickbooks_New",filters)}
+                               onClick={() => handleDownload("Quickbooks_New","INVOICE")}
                              >
                                <FaFileCsv /> Download Quickbooks CSV new
                              </DropdownItem>
                              <DropdownItem
                                className="text-danger"
-                               onClick={() => handleDownload("Quickbooks_Detailed",filters)}
+                               onClick={() => handleDownload("Quickbooks_Detailed","INVOICE")}
                              >
                                <FaFileCsv /> Download Detailed Quickbooks CSV
                              </DropdownItem>
@@ -773,19 +789,19 @@ console.log(supplier);
                            </DropdownToggle>
            
                            <DropdownMenu style={{ minWidth: 160 }}>
-                             <DropdownItem className="text-primary">
+                             <DropdownItem className="text-primary"  onClick={() => handleDownload("Excel","OWNER")}>
                                <FaFileExcel /> Download Excel
                              </DropdownItem>
            
-                             <DropdownItem className="text-danger">
+                             <DropdownItem className="text-danger"  onClick={() => handleDownload("CSV","OWNER")}>
                                <FaFileCsv /> Download CSV
                              </DropdownItem>
            
-                             <DropdownItem className="text-success">
+                             <DropdownItem className="text-success"  onClick={() => handleDownload("Quickbooks","OWNER")}>
                                <FaFileCsv /> Download Quickbooks CSV
                              </DropdownItem>
            
-                             <DropdownItem className="text-warning">
+                             <DropdownItem className="text-warning" onClick={() => handleDownload("Canada_Quickbooks","OWNER")}>
                                <FaFilePdf /> Download Canada Quickbooks
                              </DropdownItem>
                            </DropdownMenu>
@@ -821,19 +837,19 @@ console.log(supplier);
                           </DropdownToggle>
           
                           <DropdownMenu style={{ minWidth: 160 }}>
-                            <DropdownItem className="text-primary">
+                            <DropdownItem className="text-primary" onClick={() => handleDownload("Excel","CUSTOMIZE")}>
                               <FaFileExcel /> Download Excel
                             </DropdownItem>
           
-                            <DropdownItem className="text-danger">
+                            <DropdownItem className="text-danger"  onClick={() => handleDownload("CSV","CUSTOMIZE")}>
                               <FaFileCsv /> Download CSV
                             </DropdownItem>
           
-                            <DropdownItem className="text-success">
+                            <DropdownItem className="text-success" onClick={() => handleDownload("Quickbooks","CUSTOMIZE")}>
                               <FaFileCsv /> Download Quickbooks CSV
                             </DropdownItem>
           
-                            <DropdownItem className="text-warning">
+                            <DropdownItem className="text-warning" onClick={() => handleDownload("Canada_Quickbooks","CUSTOMIZE")}>
                               <FaFilePdf /> Download Canada Quickbooks
                             </DropdownItem>
                           </DropdownMenu>

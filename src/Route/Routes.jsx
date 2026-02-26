@@ -43,14 +43,14 @@ import AddItems from '../Components/items/addItems/index';
 
 //Company
 import AddCompany from '../Components/company/AddCompany'
-import ViewCompany from '../Components/company/ViewCompany';
+import ViewCompany from '../Components/company/index.jsx';
 import EditCompany from '../Components/company/EditCompany'
 import CompanyInfo from '../Components/company/CompanyInfo/CompanyInfo';
-import SubLOgin from '../Components/company/subLogin/SubLogin';
+import SubLOgin from '../Components/company/subLogin/SubLogin.jsx';
 
 //Fuel Card
 import AddFuel from '../Components/fuelCards/addFuel/index';
-import ViewFuel from '../Components/fuelCards/view/index';
+import ViewFuel from '../Components/fuelCards/view/ViewFuelCard.jsx';
 import EFSFuel from '../Components/fuelCards/viewEFS/index';
 import HistoryFuel from '../Components/fuelCards/history/index';
 import EditInformation from '../Components/fuelCards/editInformation/index.jsx'
@@ -64,7 +64,7 @@ import EssoFtpLive from '../Components/transaction/essoFtpLive/index';
 import CheckTransaction from '../Components/transaction/checkTransaction/index';
 import RackToRetail from '../Components/transaction/rackToRetail/index';
 import RetailToRack from '../Components/transaction/retailToRack/index';
-import ViewEfs from '../Components/transaction/viewEfs/index';
+import ViewEfs from '../Components/transaction/viewEfs/ViewEfsList.jsx';
 import UpdateUnit from '../Components/transaction/updateUnitDriver/index';
 
 //Invoice
@@ -97,7 +97,7 @@ import SupplierList from '../Components/supplier/supplierList/index';
 import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
 import AddMoneyCode from '../Components/moneyCode/addMoneyCode/index';
 import UploadMoney from '../Components/moneyCode/upload/index'
-import ViewMoneyCode from '../Components/viewMoneyCode/ViewMOneyCode';
+import ViewMoneyCode from '../Components/viewMoneyCode/index.jsx';
 import CheckInvoicemoneyCode from '../Components/moneyCode/checkInvoic/index';
 
 

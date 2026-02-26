@@ -6,6 +6,7 @@ import Select from "react-select";
 const DropDown = ({
   control,
   name,
+  id,
   label = "Select Option",
   placeholder = "Select option",
   options = [],
@@ -44,6 +45,7 @@ useEffect(() => {
 
         <Controller
           name={name}
+          id={id}
           control={control}
           rules={rules}
           render={({ field, fieldState }) => (

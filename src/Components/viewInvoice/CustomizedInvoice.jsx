@@ -184,6 +184,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                               {...field}
                               options={country}
                               id="country"
+                              name="country"
                               className="form-control p-0 border-0"
                               placeholder="Select Country"
                               menuPortalTarget={document.body}
@@ -227,6 +228,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                               menuPortalTarget={document.body}
                               menuPosition="fixed"
                                id="invoice_type"
+                               name="invoiceType"
                               styles={{
                                 menuPortal: (base) => ({
                                   ...base,
@@ -253,6 +255,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             {...field}
                             options={companies}
                              id="company_id"
+                             name="company"
                             className="form-control p-0 border-0"
                             placeholder="Select Company Name"
                             menuPortalTarget={document.body}
@@ -311,6 +314,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             menuPortalTarget={document.body}
                             menuPosition="fixed"
                               id="invcat"
+                              name="invcat"
                             styles={{
                               menuPortal: (base) => ({
                                 ...base,
@@ -336,6 +340,7 @@ const CustomizedInvoice = ({ title, onSearch }) => {
                             {...field}
                             options={InvoiceShow}
                              id="show_hide"
+                             name="invoiceShow"
                             className="form-control p-0 border-0"
                             menuPortalTarget={document.body}
                             menuPosition="fixed"

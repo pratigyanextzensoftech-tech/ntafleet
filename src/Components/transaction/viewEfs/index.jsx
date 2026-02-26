@@ -174,6 +174,7 @@ const columnWidths = {
       ),
       ignoreRowClick: true,
       allowOverflow: true,
+      width:"200px",
       button: true,
      
     });

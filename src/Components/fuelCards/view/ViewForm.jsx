@@ -94,6 +94,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
                                                      <Select
                                                        {...field}
                                                        options={supplier}
+                                                       id="supplier"
                                                        className="form-control p-0 border-0"
                                                        placeholder="Select supplier"
                                                        value={field.value}
@@ -122,6 +123,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
               <InputGroupText>Card No</InputGroupText>
               <Controller
                 name="card_no"
+                id="card_no"
                 control={control}
                 render={({ field }) => <Input {...field} type="text" />}
               />
@@ -135,6 +137,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
               <InputGroupText>policy</InputGroupText>
               <Controller
                 name="policy"
+                id="policy"
                 control={control}
                 render={({ field }) => <Input {...field} type="text" />}
               />
@@ -148,6 +151,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
               <InputGroupText>Unit</InputGroupText>
               <Controller
                 name="unit"
+                id="unit"
                 control={control}
                 render={({ field }) => <Input {...field} type="text" />}
               />
@@ -162,6 +166,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
               <InputGroupText>Pin</InputGroupText>
               <Controller
                 name="pin"
+                id="pin"
                 control={control}
                 render={({ field }) => <Input {...field} type="text" />}
               />
@@ -174,6 +179,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
               <InputGroupText>Driver Name</InputGroupText>
               <Controller
                 name="driver_name"
+                id="driver_name"
                 control={control}
                 render={({ field }) => <Input {...field} type="text" />}
               />
@@ -184,6 +190,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="company"
+            id="company"
             label="Company"
             control={control}
             options={companies}
@@ -207,6 +214,7 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
         <Col xxl="3"  xl="4" md="6" sm="12">
           <DropDown
             name="status"
+            id="status"
             label="Card Status"
             control={control}
             options={cardStatus}

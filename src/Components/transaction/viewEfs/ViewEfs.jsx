@@ -85,6 +85,7 @@ useEffect(() => {
                                         <Col xs="9">
                                             <Controller
                                                 name="from"
+                                                id="from"
                                                 control={control}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -111,9 +112,9 @@ useEffect(() => {
                                             </InputGroupText>
                                         </Col>
                                         <Col xs="9">
-
                                             <Controller
                                                 name="to"
+                                                 id="to"
                                                 control={control}
                                                 render={({ field }) => (
                                                     <DatePicker
@@ -133,6 +134,7 @@ useEffect(() => {
                            <Col xxl="3" md="6" sm="12">
                              <InputText
                                                       name="stateProv"
+                                                      id="stateProv"
                                                       label="State Prov"
                                                       type="text"
                                                       register={register}
@@ -141,6 +143,7 @@ useEffect(() => {
                              <Col xxl="3" md="6" sm="12">
                                <InputText
                             name="unitNo"
+                            id="unit"
                             label="Unit"
                             type="text"
                             register={register}
@@ -152,6 +155,7 @@ useEffect(() => {
  <Col  xxl="3" md="6" sm="12">
                          <InputText
                             name="cardNo"
+                            id="cardNo"
                             label="Card No."
                             type="text"
                             register={register}
@@ -169,6 +173,7 @@ useEffect(() => {
                                                 options={companies}
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Company "
+                                                id="company"
                                             />
                                         )}
                                     />
@@ -185,6 +190,7 @@ useEffect(() => {
                                             <Select
                                                 {...field}
                                                 options={Reportcurrency}
+                                                id="currency"
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Currency"
                                             />
@@ -203,6 +209,7 @@ useEffect(() => {
                                             <Select
                                                 {...field}
                                                 options={items}
+                                                id="items"
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Items"
                                             />
@@ -224,6 +231,7 @@ useEffect(() => {
                                             <Select
                                                 {...field}
                                                 options={invoiceType}
+                                                id="invType"
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select type"
                                             />
@@ -245,6 +253,7 @@ useEffect(() => {
                             <Select
                               {...field}
                               options={supplierData}
+                              id="supplier"
                               className="form-control p-0 border-0"
                               placeholder="Select supplier"
                               value={field.value}
