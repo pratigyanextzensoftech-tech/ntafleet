@@ -138,7 +138,6 @@ const Index = () => {
               >
                 <FaEnvelope /> Send Email
               </button>
-
               <button
                 className="dropdown-item d-flex align-items-center text-danger"
                 style={{ padding: "8px 12px", gap: "8px" }}

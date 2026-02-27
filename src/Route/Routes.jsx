@@ -46,7 +46,7 @@ import AddCompany from '../Components/company/AddCompany'
 import ViewCompany from '../Components/company/index.jsx';
 import EditCompany from '../Components/company/EditCompany'
 import CompanyInfo from '../Components/company/CompanyInfo/CompanyInfo';
-import SubLOgin from '../Components/company/subLogin/SubLogin.jsx';
+import SubLOgin from '../Components/company/subLogin/index.jsx';
 
 //Fuel Card
 import AddFuel from '../Components/fuelCards/addFuel/index';
@@ -87,14 +87,14 @@ import CompareInvoice from '../Components/compareInvoice/index'
 import CreateCenInvoice from '../Components/CreateCenInvoice/Index.jsx'
 //Reports
 import ViewReports from '../Components/reports/viewReports/index';
-import SalesmanVol from '../Components/reports/salesmanVolume/index';
+import SalesmanVol from '../Components/reports/salesmanVolume/SalesManList.jsx';
 import CreateReports from '../Components/reports/createReport/index';
 
 //Supplier
 import SupplierList from '../Components/supplier/supplierList/index';
 
 //Money Code
-import MoneyCodeList from '../Components/moneyCode/moneyCodeList/index';
+import MoneyCodeList from '../Components/moneyCode/moneyCodeList/MoneyCode.jsx';
 import AddMoneyCode from '../Components/moneyCode/addMoneyCode/index';
 import UploadMoney from '../Components/moneyCode/upload/index'
 import ViewMoneyCode from '../Components/viewMoneyCode/index.jsx';
@@ -120,10 +120,10 @@ import ManageMenu from '../Components/setting/manageMenu/Index'
 
 //Tcheck
 import UploadTcheck from '../Components/tcheck/upload/index'
-import TcheckList from '../Components/tcheck/list/index'
+import TcheckList from '../Components/tcheck/list/TcheckList.jsx'
 import TcheckEditForm from '../Components/tcheck/list/TcheckEditForm'
 import CreateTCheck from '../Components/tcheck/create/index'
-import ViewTCheck from '../Components/tcheck/view/index'
+import ViewTCheck from '../Components/tcheck/view/ViewTcheck.jsx'
 
 //Help
 import Help_Use_Efsllc from '../Components/help/help_use_efsllc';

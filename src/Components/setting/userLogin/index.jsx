@@ -44,14 +44,14 @@ const Index = () => {
       
     };
   const columnWidths = {
-  "Sr.No": "90px",
-  "User Name": "200px",
+  "Sr.No": "120px",
+  "User Name": "250px",
   "Login_IP": "150px",
   "Address": "400px",
-  "Country": "120px",
-  "State": "80px",
-  "City": "110px",
-  "Login_Status": "120px",
+  "Country": "150px",
+  "State": "110px",
+  "City": "170px",
+  "Login_Status": "140px",
   "Login_Time": "180px",
   "Logout_Time": "180px",
   "Dated": "180px",

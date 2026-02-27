@@ -62,6 +62,7 @@ const payload={
                                             <DatePicker
                                                 className={`form-control `}
                                                 selected={field.value}
+                                                id="from"
                                                 onChange={(date) => field.onChange(date)}
                                                 dateFormat="yyyy-MM-dd"
                                             />
@@ -88,6 +89,7 @@ const payload={
                                             <DatePicker
                                                 className={`form-control digits`}
                                                 selected={field.value}
+                                                id="to"
                                                 onChange={(date) => field.onChange(date)}
                                                 dateFormat="yyyy-MM-dd"
                                             />
@@ -109,6 +111,7 @@ const payload={
                                     <Select
                                         {...field}
                                         options={companies}
+                                        id="company"
                                         className="form-control p-0 border-0"
                                         placeholder="Select Company "
                                              value={field.value}
@@ -127,7 +130,7 @@ const payload={
                     <FormGroup className=" m-form__group">
                         <InputGroup>
                             <InputGroupText>  Unit </InputGroupText>
-                            <input style={{ border: "1px solid #ccc" }} className="form-control" type="text"  {...register('unit')} />
+                            <input id="unit" style={{ border: "1px solid #ccc" }} className="form-control" type="text"  {...register('unit')} />
                         </InputGroup>
 
                     </FormGroup>

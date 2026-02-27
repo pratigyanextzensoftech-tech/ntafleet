@@ -50,13 +50,13 @@ const Index = () => {
       
     };
   const columnWidths = {
-  "Sr.No": "130px",
-  "User Name": "260px",
+  "Sr.No": "170px",
+  "User Name": "320px",
   "Login_IP": "360px",
-  "Menu": "290px",
-  "Link": "290px",
-  "Type": "190px",
-  "Dated": "290px",
+  "Menu": "310px",
+  "Link": "350px",
+  "Type": "220px",
+  "Dated": "300px",
 };
 
     const {

@@ -29,7 +29,7 @@ const Index = () => {
   }, []);
 const handleEdit =async (row)=>{
      try {
-    const response = await axios.get(`${APINAME}/${row["Id #"]}`);
+    const response = await axios.get(`${APINAME}/${row.id}`);
     setSelectedRow(response.data);     // ✅ full API object
     setEdit(true);
   } catch (error) {
@@ -52,7 +52,7 @@ const handleEdit =async (row)=>{
 
     if (result.isConfirmed) {
 
-      axios.delete(`${APINAME}/${row["Id #"]}`)
+      axios.delete(`${APINAME}/${row.id}`)
         .then(() => {
 
           Swal.fire(
@@ -76,7 +76,7 @@ const handleEdit =async (row)=>{
 };
   function GetDataTAble( ) {
      const columns = [
-  { data: "company_id", title: "Id #" },
+  { data: "id", title: "Id #" },
   { data: "company_name", title: "Company" },
   { data: "name", title: "Name" },
   { data: "email", title: "Email" },
@@ -90,7 +90,6 @@ const handleEdit =async (row)=>{
   orderable: false,
   render: function (data, type, row) {
 
-    const editUrl = `/card-admin/edit_company/${btoa(row.company_id)}`;
 
     return `
       <div class="dropdown">
@@ -102,11 +101,10 @@ const handleEdit =async (row)=>{
 
         <ul class="dropdown-menu">
 
-          <li>
-            <a class="dropdown-item text-success"
-               href="${editUrl}">
+           <li>
+            <button class="dropdown-item text-primary edit-btn">
               <i class="fa fa-edit me-2"></i> Edit
-            </a>
+            </button>
           </li>
 
           <li>
@@ -163,6 +161,7 @@ const handleEdit =async (row)=>{
      
     // ✅ Map table data
     const tableData = tableRes.data.map((row) => ({
+      "id":row.id,
     "company_id": row.company_id,
    "company_name":row.company_name,
    "name":row.name,
@@ -200,6 +199,7 @@ $(document)
   .on("click", ".edit-btn", function () {
 
     const rowData = table.row($(this).closest("tr")).data();
+console.log(rowData);
 
     handleEdit(rowData);   // 🔥 call your function
 
@@ -220,28 +220,7 @@ $(document)
    GetDataTAble()
   };
 
-    function handleDownload(type) {
-const ids = []; 
-let esso_ftp='';
-$('.chk input[type="checkbox"]:checked').each(function () {  ids.push($(this).val()); if($(this).val()==='100'){esso_ftp="Yes";} });
 
-if (ids.length === 0) {  alert('Please select at least one item');  return;}
- const IDSUP = ids.join(',');  
-const from = $('#from').val();
-const to = $('#to').val();
-const state_prov = $('input[name="state_prov"]').val();
-const unit = $('input[name="unit"]').val();
-const card_no = $('input[name="card_no"]').val();
-const company = $('input[name="company"]').val();
-const currency = $('input[name="currency"]').val();  
-const items = $('input[name="items"]').val();  
-const status = $('input[name="status"]').val();  
-const invoice_type = $('input[name="invoice_type"]').val(); 
-
-console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoice_type)
- window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
-
-} 
   return (
     <Fragment>
       <Breadcrumbs  parent="Invoice" title="Company List" />
@@ -264,31 +243,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
             <Card>
                 <HeaderCard
                   title="Company List"
-                  renderDropdown={() => (
-    <>
-       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle
-        tag="span"
-        className="px-2 text-white"
-        style={{ cursor: "pointer" }}
-      >
-        <i className="fa fa-download me-1"></i> Download
-      </DropdownToggle>
-
-      <DropdownMenu   style={{ minWidth: 160 }}>
-        <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel")}>
-          <FaFileExcel/> Download Excel
-        </DropdownItem>
-
-        <DropdownItem className="text-danger"   onClick={() => handleDownload("CSV")}>
-          <FaFileCsv/> Download CSV
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-
-    </>
-  )}
-                  download={true}
+              
                 />
              
               <CardBody>

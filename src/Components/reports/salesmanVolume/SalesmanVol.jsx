@@ -71,7 +71,6 @@ del:""
     axios.post(APINAME,payload)
     .then((res)=>{
         console.log(res);
-       
           toast.success("Add successfully!");
 
    reset();

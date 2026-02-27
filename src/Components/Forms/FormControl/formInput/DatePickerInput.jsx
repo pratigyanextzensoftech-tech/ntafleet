@@ -11,6 +11,7 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 const DatePickerInput = ({
   name,
+  id,
   control,
   placeholder,
     portalId,
@@ -34,6 +35,7 @@ const DatePickerInput = ({
             render={({ field }) => (
               <DatePicker
                 placeholderText={placeholder}
+                id={id}
                 className={`form-control`}
                 selected={field.value}
                 onChange={(date) => field.onChange(date)}

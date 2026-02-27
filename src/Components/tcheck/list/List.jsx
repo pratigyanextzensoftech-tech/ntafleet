@@ -31,8 +31,8 @@ const List = ({ btnTitle1,onSearch }) => {
         const payload = {
       from: formData?.from ? formatDate(formData.from) : "",
       to: formData?.to ? formatDate(formData.to) : "",
-      company_id: formData?.company ? formatDate(formData?.company.value) : "",
-    company_name: formData?.company ? formatDate(formData?.company.label) : ""
+      company_id: formData?.company?.value?formData?.company?.value  : "",
+    company_name: formData?.company?.label?formData?.company?.label : ""
     }
         console.log(payload);
          if (onSearch) onSearch(payload);
@@ -49,6 +49,7 @@ const List = ({ btnTitle1,onSearch }) => {
                     <Row>
                         <DatePickerInput
                             name="from"
+                            id="drom"
                             control={control}              // ✅ make sure this is passed
                             label="From Date"
                             required="Required"
@@ -59,6 +60,7 @@ const List = ({ btnTitle1,onSearch }) => {
                 <Col xxl="3" md="6">
                     <DatePickerInput
                         name="to"
+                        id="to"
                         control={control}              // ✅ make sure this is passed
                         label="To"
                         required="Required"
@@ -70,6 +72,7 @@ const List = ({ btnTitle1,onSearch }) => {
                 <Col xxl="3" md="6">
                     <DropDown
                         name="company"
+                        id="company"
                         label="Company"
                         control={control}
                         placeholder="Select Company"

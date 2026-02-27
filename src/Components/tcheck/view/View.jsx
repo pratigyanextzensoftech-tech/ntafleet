@@ -32,7 +32,7 @@ const List = ({ onSearch }) => {
         const payload = {
       from: formData?.from ? formatDate(formData.from) : "",
       to: formData?.to ? formatDate(formData.to) : "",
-      company_id: formData?.company ? formatDate(formData?.company.value) : ""
+      company_id: formData?.company ? formData?.company.value : ""
     }
 
          if (onSearch) onSearch(payload);
