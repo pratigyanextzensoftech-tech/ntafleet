@@ -9,8 +9,6 @@ import {
   Input,
   Label
 } from "reactstrap";
-import HeaderCard from '../Common/Component/HeaderCard';
-import {Card,CardBody} from 'reactstrap'
 import { Btn } from '../../AbstractElements';
 import { pricigSupplier } from '../Forms/FormWidget/FormSelect2/OptionDatas';
 import { useForm, Controller } from "react-hook-form";
@@ -23,13 +21,11 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Loader from '../../Layout/Loader';
 import usePaginatedTable from '../../Hooks/usePagination';
+import { FaEnvelope,FaTrashAlt,FaFileExcel,FaFilePdf,FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import $ from "jquery";
-import "datatables.net";
-import { downloadPdf } from "../../Hooks/Dropdowns";
-import { Link } from 'react-router-dom';
-
-const PricingCommon = ({
+import DataTableComponent from '../Tables/DataTable/DataTableComponent';
+const PricingCommonIndex = ({
   title,
   btnTitle,
   csvFile,
@@ -156,6 +152,37 @@ axios
     setSelectedValues(updated);
     field.onChange(updated);
   };
+const handleSelectAll = (checked, data) => {
+  setSelectAll(checked);
+
+  if (!checked) {
+    setSelectedRows([]);
+    return;
+  }
+
+  // 1️⃣ Create comma-separated string
+  const ids = data.map(row => row["ID #"]);
+
+  setSelectedRows(ids); // store comma string if needed
+
+};
+
+
+ const handleSelectRow = (id) => {
+  // 1️⃣ Toggle checkbox first
+  const alreadySelected = selectedRows.includes(id);
+
+  // Update selection immediately
+  const newSelection = alreadySelected
+    ? selectedRows.filter((rowId) => rowId !== id)
+    : [...selectedRows, id];
+  // const ids=newSelection.join(",")
+
+  setSelectedRows(newSelection);
+console.log(newSelection)
+  // 2️⃣ Now show confirmation popup
+ 
+};
 
   const [openRowId, setOpenRowId] = useState(null);
       const [tableColumns, setTableColumns] = useState([]);
@@ -193,219 +220,100 @@ axios
         handleSearch, // ✅ Added
         setData,
       } = usePaginatedTable({ apiUrl: listapi, columnsMap,tax,invoiceType,perPageValue });
-
-const handleBulkDelete = () => {
-
-  const table = $("#pricingTable").DataTable();
-  let ids = [];
-
-  $(".row-checkbox:checked").each(function () {
-    ids.push($(this).val());
-  });
-
-  if (ids.length === 0) {
-    Swal.fire("Warning!", "Please select at least one record.", "warning");
-    return;
-  }
-
-  Swal.fire({
-    title: "Are you sure?",
-    text: `Delete ${ids.length} record(s)?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-
-    if (result.isConfirmed) {
-
-      Promise.all(
-        ids.map(id => axios.delete(`${listapi}/${id}`))
-      )
-      .then(() => {
-
-        // Remove rows from DataTable
-        $(".row-checkbox:checked").each(function () {
-          table.row($(this).closest("tr")).remove().draw();
-        });
-
-        Swal.fire("Deleted!", "Record(s) deleted.", "success");
-
-      })
-      .catch(() => {
-        Swal.fire("Error!", "Delete failed.", "error");
+      useEffect(() => {
+        console.log(data,"list")
+        const cols = Object.keys(columnsMap).map((key) => ({
+          name: key,
+          selector: (row) => row[key],
+          sortable: true,
+          wrap: true,
+        }));
+      cols.push({
+        name: (
+          <div className="d-flex align-items-center">
+            <span className="me-2 fw-bold">Delete</span>
+            <input
+              type="checkbox"
+              checked={selectAll}
+              onChange={(e) => handleSelectAll(e.target.checked, data)}
+            />
+          </div>
+        ),
+        cell: (row) => (
+          <input
+            type="checkbox"
+            checked={selectedRows.includes(row["ID #"])}
+            onChange={() => handleSelectRow(row["ID #"])}
+          />
+        ),
+        width: "120px",
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
       });
-
-    }
-  });
-};
-
- useEffect(() => {
-
-  const tableId = `#pricingTable`;
-
-  setTimeout(() => {
-
-    if ($.fn.DataTable.isDataTable(tableId)) {
-      $(tableId).DataTable().clear().destroy();
-    }
-
-    const table = $(tableId).DataTable({
-      data: data,
-    processing: true,
-     serverSide: false,
-      columns: [
-        ...Object.keys(columnsMap).map((key) => ({
-          data: key,
-          title: key
-        })),
-
-        // ✅ Checkbox Column
-      {
-  data: "id",
-  title: `Delete <input type="checkbox" id="select-all">`,
-  orderable: false,
-  render: function (data) {
-    return `<input type="checkbox" class="row-checkbox" value="${data}">`;
-  }
-},
-
-        // ✅ Action Column
-        {
-          data: null,
-          title: "Action",
-          orderable: false,
-          render: function (row) {
-            return `
-              <div class="dropdown">
-                <button class="btn btn-sm btn-success dropdown-toggle"
-                        data-bs-toggle="dropdown">
-                  <i class="fa fa-cog me-1"></i> Action
-                </button>
-
-                <ul class="dropdown-menu">
-
-                  <li>
-
-                       <button class="dropdown-item download-btn"
-          data-link="${row.fulldata.download_link}">
-    <i class="fa fa-download me-2 text-danger"></i>
-    Download
-  </button>
-                  </li>
-
-                  <li>
-                    <a class="dropdown-item"
-                       target="_blank"
-                       href="/card-admin/download_excel/${btoa(row.fulldata.id)}">
-                       <i class="fa fa-user-shield text-primary me-2"></i>
-                       View Admin Pdf
-                    </a>
-                  </li>
-
-                  <li>
-                    <button class="dropdown-item email-btn"
-                            data-id="${row.fulldata.id}">
-                       <i class="fa fa-envelope text-success me-2"></i>
-                       Email Pricing Pdf
-                    </button>
-                  </li>
-
-                  <li>
-                    <button class="dropdown-item testing-email-btn"
-                            data-id="${row.fulldata.id}">
-                       <i class="fa fa-envelope text-info me-2"></i>
-                       Testing Email Pricing Pdf
-                    </button>
-                  </li>
-
-                </ul>
-              </div>
-            `;
-          }
-        }
-
-      ],
-      pageLength: perPageValue || 10,
-      destroy: true
-    });
-$(document).off("change", "#select-all");
-$(document).on("change", "#select-all", function () {
-  $(".row-checkbox").prop("checked", $(this).prop("checked"));
-});
-$(document).on("click", "#delete-selected", function () {
-
-  let table = $("#pricingTable").DataTable();
-  let ids = [];
-
-  $(".row-checkbox:checked").each(function () {
-    ids.push($(this).val());
-  });
-
-  if (ids.length === 0) {
-    Swal.fire("Warning!", "Please select at least one record.", "warning");
-    return;
-  }
-
-  Swal.fire({
-    title: "Are you sure?",
-    text: `Delete ${ids.length} record(s)?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-
-    if (result.isConfirmed) {
-
-      // Loop delete API
-      Promise.all(
-        ids.map(id => axios.delete(`${listapi}/${id}`))
-      ).then(() => {
-
-        // Remove rows from table directly
-        $(".row-checkbox:checked").each(function () {
-          table.row($(this).closest("tr")).remove().draw();
+        cols.push({
+          name: "Action",
+          cell: (row) => (
+            <div className="position-relative dropdown-action">
+              <button
+                className="btn btn-sm btn-primary px-2"
+                onClick={() => setOpenRowId(openRowId === row["ID #"] ? null : row["ID #"])}
+              >
+                Action
+              </button>
+    
+              {openRowId === row["ID #"] && (
+                <div
+                  className="position-absolute bg-white border rounded shadow"
+                  style={{
+                    zIndex: 1000,
+                    right: 0,
+                    marginTop: 5,
+                    minWidth: 160,
+                    padding: "5px 0",
+                  }}
+                >
+                  <Link
+                    to={`/download_pdf/${btoa(row.id)}`}
+                    className="dropdown-item d-flex align-items-center text-danger"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+                  >
+                    <FaFilePdf /> View Pdf
+                  </Link>
+    
+                  <Link
+                    to={`/download_excel/${btoa(row.id)}`}
+                    className="dropdown-item d-flex align-items-center text-success"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+                  >
+                    <FaFileExcel /> View Admin Pdf
+                  </Link>
+    
+                  <button
+                    className="dropdown-item d-flex align-items-center text-primary"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+    
+                  >
+                    <FaEnvelope />Email Pricing Pdf
+                  </button>
+    
+                  <button
+                    className="dropdown-item d-flex align-items-center text-danger"
+                    style={{ padding: "8px 12px", gap: "8px" }}
+                  >
+                    <FaTrashAlt /> Testing Email Pricing Pdf
+                  </button>
+                </div>
+              )}
+    
+            </div>
+          ),
         });
-
-        Swal.fire("Deleted!", "Record(s) deleted.", "success");
-
-      }).catch(() => {
-        Swal.fire("Error!", "Delete failed.", "error");
-      });
-
-    }
-  });
-
-});
-$(document).off("click", ".download-btn");
-
-$(document).on("click", ".download-btn", function () {
-
-  const link = $(this).data("link");
-  // Create minimal row object (if needed)
-  // 🔥 Call your existing function
-  downloadPdf(link);
-
-});
-
-  }, 0);
-
-}, [data]);
-
-useEffect(() => {
-
-  $(document).off("click", ".email-btn");
-
-  $(document).on("click", ".email-btn", function () {
-    const id = $(this).data("id");
-    console.log("Email clicked:", id);
-  });
-
-  return () => {
-    $(document).off("click", ".email-btn");
-  };
-
-}, []);
-
+        
+    
+        setTableColumns(cols);
+      }, [openRowId,data, selectedRows, selectAll]);
+    
       useEffect(() => {
         const handleClickOutside = (event) => {
           if (!event.target.closest(".dropdown-action")) {
@@ -416,7 +324,37 @@ useEffect(() => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
       }, []);
     
-  
+      const handleDelete = (id) => {
+        console.log(id)
+        const stringId=id.join(",")
+        console.log(stringId)
+      Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+      for(let i=0;i<id.length;i++){
+ axios.delete(`${listapi}/${id[i]}`)
+        .then(() => {
+          setData((prev) => prev.filter((item) => item["ID #"] !== id[i]));
+          setSelectedRows([]); // or remove only that ID
+          Swal.fire("Deleted!", "Record deleted successfully.", "success");
+        })
+        .catch(() => {
+          Swal.fire("Error!", "Failed to delete record.", "error");
+        });
+      }
+             
+    } 
+  });
+      };
   return (
     <Fragment>
             {loading && <Loader loading={true} />}
@@ -841,77 +779,29 @@ useEffect(() => {
           </fieldset>
         </Col>
       </Row>
- <Row>
-          <Col sm="12">
-            <Card>
-                <HeaderCard
-                  title="T Check List"
-//                   renderDropdown={() => (
-//     <>
-//        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-//       <DropdownToggle
-//         tag="span"
-//         className="px-2 text-white"
-//         style={{ cursor: "pointer" }}
-//       >
-//         <i className="fa fa-download me-1"></i> Download
-//       </DropdownToggle>
-
-//       <DropdownMenu   style={{ minWidth: 160 }}>
-//         <DropdownItem className="text-primary"   onClick={() => handleDownload("Excel")}>
-//           <FaFileExcel/> Download Excel
-//         </DropdownItem>
-
-//         <DropdownItem className="text-danger"   onClick={() => handleDownload("CSV")}>
-//           <FaFileCsv/> Download CSV
-//         </DropdownItem>
-
-//       </DropdownMenu>
-//     </Dropdown>
-
-//     </>
-//   )}
-//                   download={true}
-                />
-             
-              <CardBody>
-                  <div className='text-end mb-3'>
-                 <Btn
-  attrBtn={{
-    color: "danger",
-    onClick: handleBulkDelete
-  }}
->
-  Delete Pricing
-</Btn>
-                </div>
-      {table !== false && (
-  <div className="table-responsive mt-4">
-    <table
-      id={`pricingTable`}
-      className="table table-bordered table-striped"
-      style={{ width: "100%" }}
-    >
-      <thead>
-        <tr>
-          {Object.keys(columnsMap).map((col) => (
-            <th key={col}>{col}</th>
-          ))}
-          <th>Delete</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-)}
+      {table!==false &&(
+        <>
+        <DataTableComponent
+          title={tableTitle && tableTitle || "Pricing PDF List (Without Tax) "}
+          tableColumns={tableColumns}
+          tableData={data}
+          loading={essoLoading}
+          // table={showTable}
+          handleDelete={()=>handleDelete(selectedRows)}
+          pagination
+          paginationServer
+          buttonTitle="Delete Pricing"
+         paginationRowsPerPageOptions={[ 200,300]}
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
+        />
+        </>
+     
+      )}
         
-       </CardBody>
-                                </Card>
-                               </Col>
-                               </Row>   
     </Fragment>
   );
 };
 
-export default PricingCommon;
+export default PricingCommonIndex;

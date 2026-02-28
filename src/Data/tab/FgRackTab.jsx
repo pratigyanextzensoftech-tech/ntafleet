@@ -1,5 +1,5 @@
 
-import PricingCommon from '../../Components/pricing/PricingCommon';
+import PricingCommon from '../../Components/pricing/PricingCommonIndex';
 import UpdateFgRack from '../../Components/pricing/updateFg/UpdateFgRack';
 import FgRackCent from '../../Components/pricing/updateFg/FgRackCent';
 import { rack_cent } from '../../api';

@@ -1,6 +1,6 @@
 import UpdateFgRack from '../../Components/pricing/updateFg/UpdateFgRack';
 import RackCentList from '../../Components/pricing/updateTaPetro/RackCentLIst';
-import PricingCommon from '../../Components/pricing/PricingCommon';
+import PricingCommon from '../../Components/pricing/PricingCommonIndex';
 import UpdateEssoOwner from '../../Components/pricing/ownerOperator/UpdateEssoOwner';
 import EssoOwnerRackList from '../../Components/pricing/ownerOperator/EssoOwnreRackList';
 import UlOwnerList from '../../Components/pricing/ownerOperator/UlOwnerList';

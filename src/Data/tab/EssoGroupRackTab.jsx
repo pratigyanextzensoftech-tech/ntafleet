@@ -3,7 +3,7 @@ import RackCentList from '../../Components/pricing/updateTaPetro/RackCentLIst';
 import LoveRackCentList from '../../Components/pricing/updateLoveRack/LOveRackCentList';
 import UploadEssoGroupRackForm from '../../Components/pricing/essoGroup/UploadEssoGroupRackForm';
 import EssoGroupForm from '../../Components/pricing/essoGroup/EssoGroupForm';
-import PricingCommon from '../../Components/pricing/PricingCommon';
+import PricingCommon from '../../Components/pricing/PricingCommonIndex';
 import UpdateEsso from '../../Components/pricing/essoGroup/UpdateEsso';
 import EssoGroupRackcentList from '../../Components/pricing/essoGroup/EssoGroupRackcentList';
 export const EssoGroupRackTab = [

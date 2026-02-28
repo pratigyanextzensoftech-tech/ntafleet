@@ -21,7 +21,7 @@ import ManageEssoCent from '../Components/pricing/manage_essocent/index';
 import UploadFjPrice from '../Components/pricing/uploadPricing/index';
 import PriceList from '../Components/pricing/pricing_list/index';
 //import SinglePricing from '../Components/pricing/singlePricingPdf/single_price_pdf';
-import SinglePricing from '../Components/pricing/singlePricingPdf/index';
+import SinglePricing from '../Components/pricing/singlePricingPdf/SinglePdfIndex.jsx';
 import BulkPrice from '../Components/pricing/bulk_price/index';
 import EssoBulk from '../Components/pricing/essoBulk/index';
 import CenBulk from '../Components/pricing/cen_bulk/index.jsx';
@@ -86,7 +86,7 @@ import SendBulk from '../Components/sendBulk/SendBulk';
 import CompareInvoice from '../Components/compareInvoice/index'
 import CreateCenInvoice from '../Components/CreateCenInvoice/Index.jsx'
 //Reports
-import ViewReports from '../Components/reports/viewReports/index';
+import ViewReports from '../Components/reports/viewReports/ViewReportLIst.jsx';
 import SalesmanVol from '../Components/reports/salesmanVolume/SalesManList.jsx';
 import CreateReports from '../Components/reports/createReport/index';
 

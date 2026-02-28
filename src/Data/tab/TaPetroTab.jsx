@@ -4,6 +4,7 @@ import MailTaPetro from '../../Components/pricing/taPetroBulk/MailTaPetro';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,ta_pricing_pdf } from '../../api';
 import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
+import MailPricingIndex from '../../Components/pricing/MailPricingIndex';
 export const TaPetroTab = [
   {
     id: '1',

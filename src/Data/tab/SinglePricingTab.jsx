@@ -14,7 +14,7 @@ export const SinglepricingTab = (fetchers) => [
         supplier=""
         title="Create FJ Pricing PDF"
         btnTtitle="Create FJ Pricing PDF"
-        onDataAdded={fetchers.pricingPdfData}  
+        // onDataAdded={fetchers.pricingPdfData}  
         api_name={create_pricing_pdf}
  
       />
@@ -34,7 +34,7 @@ export const SinglepricingTab = (fetchers) => [
         supplier=""
         title="Create Ta-Petro Pricing PDF (Capped)"
         btnTtitle="Create pricing Pdf"
-        onDataAdded={fetchers.tapetroPdf}   
+        // onDataAdded={fetchers.tapetroPdf}   
         api_name={create_pricing_pdf}
  
       />
@@ -54,7 +54,7 @@ export const SinglepricingTab = (fetchers) => [
         supplier=""
         title="Create Ta-Petro Pricing PDF (Actual)"
         btnTtitle="Create pricing Pdf"
-        onDataAdded={fetchers.tapetroPdfActual}
+        // onDataAdded={fetchers.tapetroPdfActual}
         api_name={create_pricing_pdf}
  
       />
@@ -70,7 +70,7 @@ export const SinglepricingTab = (fetchers) => [
         supplier="" 
         title="Create ESSO Pricing PDF (Without Tax)"
         btnTtitle="Create ESSO Pricing PDF (Without Tax)"
-        onDataAdded={fetchers.essoPdfWithoutTax} 
+        // onDataAdded={fetchers.essoPdfWithoutTax} 
         api_name={create_pricing_pdf}
  
       />
@@ -85,7 +85,7 @@ export const SinglepricingTab = (fetchers) => [
         tax="Yes"  
         title="Create ESSO Pricing PDF (With Tax)"
         btnTtitle="Create ESSO Pricing PDF (With Tax)"
-        onDataAdded={fetchers.essoPdf}  
+        // onDataAdded={fetchers.essoPdf}  
         supplier=""
         api_name={create_pricing_pdf}
 
@@ -105,7 +105,7 @@ export const SinglepricingTab = (fetchers) => [
         invoice_type= "Capped" 
         title="Create LOVE Pricing PDF (Capped)"
         btnTtitle="Create LOVE Pricing PDF"
-        onDataAdded={fetchers.lovePdf}
+        // onDataAdded={fetchers.lovePdf}
         supplier=""  
         api_name={create_pricing_pdf}
   
@@ -126,7 +126,7 @@ export const SinglepricingTab = (fetchers) => [
         invoice_type= "Actual" 
         title="Create LOVE Pricing PDF (Actual)"
         btnTtitle="Create LOVE Pricing PDF"
-        onDataAdded={fetchers.lovePdfActual}
+        // onDataAdded={fetchers.lovePdfActual}
         api_name={create_pricing_pdf}
   
       />
@@ -141,7 +141,7 @@ export const SinglepricingTab = (fetchers) => [
         invoice_type= "Actual" 
         title="Create ULTRAMAR Pricing PDF"
         btnTtitle="Create ULTRAMAR Pricing PDF"
-        onDataAdded={fetchers.ulPdf}  
+        // onDataAdded={fetchers.ulPdf}  
         api_name={create_pricing_pdf}
 
       />
@@ -156,7 +156,7 @@ export const SinglepricingTab = (fetchers) => [
         // invoice_type= "Actual" 
         title="Create Irving Pricing PDF"
         btnTtitle="Create Irving Pricing PDF"
-        onDataAdded={fetchers.ulPdf}  
+        // onDataAdded={fetchers.ulPdf}  
         api_name={create_pricing_pdf}
 
       />
@@ -171,7 +171,7 @@ export const SinglepricingTab = (fetchers) => [
         // invoice_type= "Actual" 
         title="Create Cenovus Pricing PDF"
         btnTtitle="Create Cenovus Pricing PDF"
-        onDataAdded={fetchers.ulPdf}  
+        // onDataAdded={fetchers.ulPdf}  
         api_name={create_pricing_pdf}     
       />
     ),

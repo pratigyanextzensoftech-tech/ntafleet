@@ -58,7 +58,7 @@ const TcheckList = () => {
       <button class="btn btn-sm btn-success dropdown-toggle" 
               type="button" 
               data-bs-toggle="dropdown">
-        Action
+          <i class="fa fa-cog me-1"></i>  Action
       </button>
 
       <ul class="dropdown-menu">
@@ -75,7 +75,6 @@ const TcheckList = () => {
               <i class="fa fa-trash me-2"></i> Delete
             </button>
           </li>
-
         </ul>
       </div>
     `;

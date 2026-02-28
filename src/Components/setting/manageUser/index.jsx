@@ -214,7 +214,7 @@ const Index = () => {
         cell: (row) => (
           <div className="position-relative dropdown-action">
             <button
-              className="btn btn-sm btn-primary px-2"
+              className="btn btn-sm btn-primary px-2  show_hide"
               onClick={() =>
                 setOpenRowId(openRowId === row.id ? null : row.id)
               }

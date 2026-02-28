@@ -1,4 +1,4 @@
-import PricingCommon from '../../Components/pricing/PricingCommon';
+import PricingCommon from '../../Components/pricing/PricingCommonIndex';
 import UpdateFgRack from '../../Components/pricing/updateFg/UpdateFgRack';
 import UpdateLoveRack from '../../Components/pricing/updateLoveRack/UpdateLoveRack';
 import LoveRackCentList from '../../Components/pricing/updateLoveRack/LOveRackCentList';
