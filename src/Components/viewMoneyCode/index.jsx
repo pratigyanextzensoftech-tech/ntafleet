@@ -42,49 +42,7 @@ const Index = () => {
       GetDataTAble(from,to,company);
   }, []);
 
-useEffect(() => {
 
-  const statusChangeHandler = function () {
-
-    const invoiceId = $(this).data("id");
-    const type = $(this).data("type");
-    const newValue = $(this).val();
-    const oldValue = $(this).attr("data-old") || "";
-
-    // Save old value for rollback
-    $(this).attr("data-old", newValue);
-
-    const payload = {
-      id: invoiceId,
-      status: newValue
-    };
-
-    const apiUrl =
-      type === "Retail"
-        ? retail_invoice
-        : invoice;
-
-    axios
-      .put(`${apiUrl}/${invoiceId}`, payload)
-      .then((res) => {
-        console.log("Updated successfully");
-      })
-      .catch((err) => {
-        console.error("Update failed");
-
-        // 🔁 rollback UI
-        $(this).val(oldValue);
-      });
-
-  };
-
-  $(document).on("change", ".status-dropdown", statusChangeHandler);
-
-  return () => {
-    $(document).off("change", ".status-dropdown", statusChangeHandler);
-  };
-
-}, []);
 
  
 
@@ -103,7 +61,7 @@ useEffect(() => {
   render: function (data, type, row) {
     return `
       <select class="form-select form-select-sm status-change"
-              data-id="${row["Invoice #"]}"
+              data-id="${row.invoice_id}"
                 data-type="${row.tp}"
               data-field="admin_status">
         <option value="Open" ${data == "Open" ? "selected" : ""}>Open</option>
@@ -262,6 +220,61 @@ useEffect(() => {
   }
 },
     });
+$(document).off("focus", ".status-change");
+$(document).on("focus", ".status-change", function () {
+  $(this).data("previous", $(this).val());
+});
+
+
+// Handle change for BOTH dropdowns
+$(document).off("change", ".status-change");
+$(document).on("change", ".status-change", function () {
+
+  const table = $("#example").DataTable();
+  const selectElement = $(this);
+
+  const invoice_id = selectElement.data("id");
+  const field = selectElement.data("field"); // 🔥 important
+  const newValue = selectElement.val();
+  const oldValue = selectElement.data("previous");
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Change Admin Status?",
+    icon: "warning",
+    showCancelButton: true,
+  }).then(async (result) => {
+
+    if (!result.isConfirmed) {
+      selectElement.val(oldValue);
+      return;
+    }
+
+    try {
+let updateApi;
+
+
+await axios.put(`${APINAME}/${invoice_id}`, {
+  id: invoice_id,
+  [field]: field === "mails" ? Number(newValue) : newValue
+});
+     
+
+      table.ajax.reload(null, false);
+
+      Swal.fire("Updated!", "Status changed successfully.", "success");
+
+    } catch (error) {
+
+      selectElement.val(oldValue);
+
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
+
+  });
+
+});
+
     $(document).on("click", ".delete-btn", function () {
 
   const invoiceId = $(this).data("invoice");

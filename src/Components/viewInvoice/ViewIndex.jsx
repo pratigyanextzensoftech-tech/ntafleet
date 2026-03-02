@@ -6,6 +6,8 @@ import BasicTabCard from "../UiKits/Tabs/BoostrapTabs/BasicTabCard";
 import {
   combine_invoice,
   owner_invoice,
+  retail_invoice,
+  invoice,
   customized_invoice,
 } from "../../api";
 import OwnerOperator from "../viewInvoice/OwnerOperator";
@@ -172,6 +174,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
     return `
       <select class="form-select form-select-sm status-change"
               data-id="${row.invoice_id}"
+              data-tp="${row.tp || ''}"
               data-field="mails">
         <option value="1" ${data == 1 ? "selected" : ""}>Show</option>
         <option value="0" ${data == 0 ? "selected" : ""}>Hide</option>
@@ -187,6 +190,7 @@ const show_hide = $('input[name="invoiceShow"]').val();
     return `
       <select class="form-select form-select-sm status-change"
               data-id="${row.invoice_id}"
+              data-tp="${row.tp || ''}"
               data-field="admin_status">
         <option value="Open" ${data == "Open" ? "selected" : ""}>Open</option>
         <option value="Entered" ${data == "Entered" ? "selected" : ""}>Entered</option>
@@ -438,7 +442,7 @@ else if(api===customized_invoice){
       mails: row.mails,
       admin_status: row.admin_status,
       download_link:row.download_link,
-      id: row.id
+      tp: row?.tp?row?.tp :""
     }));
     console.log(tableData)
           callback({
@@ -475,13 +479,18 @@ $(document).on("change", ".status-change", function () {
   const selectElement = $(this);
 
   const invoice_id = selectElement.data("id");
+  const tp = selectElement.data("tp");
   const field = selectElement.data("field"); // 🔥 important
   const newValue = selectElement.val();
   const oldValue = selectElement.data("previous");
+const message =
+  field === "mails"
+    ? "Change Show / Hide status?"
+    : "Change Admin Status?";
 
   Swal.fire({
     title: "Are you sure?",
-    text: "Change status?",
+    text: message,
     icon: "warning",
     showCancelButton: true,
   }).then(async (result) => {
@@ -492,11 +501,19 @@ $(document).on("change", ".status-change", function () {
     }
 
     try {
+let updateApi;
 
-      await axios.put(`${api}/${invoice_id}`, {
-        id: invoice_id,
-        [field]: field === "mails" ? Number(newValue) : newValue
-      });
+if (tp === "Retail") updateApi = invoice;
+else if (tp === "Rack") updateApi = retail_invoice;
+else if (api === owner_invoice) updateApi = owner_invoice;
+else if (api === customized_invoice) updateApi = customized_invoice;
+else updateApi = invoice;
+
+await axios.put(`${updateApi}/${invoice_id}`, {
+  id: invoice_id,
+  [field]: field === "mails" ? Number(newValue) : newValue
+});
+     
 
       table.ajax.reload(null, false);
 
