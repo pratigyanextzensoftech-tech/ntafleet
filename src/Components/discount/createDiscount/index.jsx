@@ -213,7 +213,7 @@ const refreshTable=()=>{
             <Card>
               <HeaderCard title="Create Single Discount" />
               <CardBody>
-                 <Create btnTitle="Create" onCreateSuccess={() => fetchDiscounts(currentPage, perPage)} onDataAdded={refreshTable}/>
+                 <Create btnTitle="Create"/>
               </CardBody>
             </Card>
           </Col>

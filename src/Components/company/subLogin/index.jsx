@@ -223,12 +223,12 @@ $(document)
 
   return (
     <Fragment>
-      <Breadcrumbs  parent="Invoice" title="Company List" />
+      <Breadcrumbs  parent="Company" title="Manage Sub-Login" />
       <Container fluid={true}>
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Filter" />
+              <HeaderCard title="Add Sub-Login " />
               <CardBody>
                 <SubLoginForm btnTtitle="Add Sub Login" onDataAdded={refreshTable}  Edit={Edit}
                   selectedRow={selectedRow}
@@ -242,7 +242,7 @@ $(document)
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="Company List"
+                  title="Sub-Login List "
               
                 />
              

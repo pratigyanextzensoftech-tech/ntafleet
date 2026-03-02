@@ -292,7 +292,6 @@ const filteredData = discountData.filter((row) =>
 ];
 
 
-
  const handleSearch = (formData) => {
     console.log("🔍 Filters received:", formData);
     setFilters(formData); // save filters

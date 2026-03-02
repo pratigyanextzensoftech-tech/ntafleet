@@ -48,7 +48,7 @@ const ViewForm = ({ title, btnTitle, btnTitle1,onSearch }) => {
  useEffect(() => {
   
     axios
-      .get(`${supplierById}/1,5,4`)
+      .get(`${supplierById}/1,5,4,3`)
       .then((res) => {
         const formatted = res.data.map((s) => ({
           value: s.id,
@@ -105,6 +105,7 @@ added_on:new Date()
           <Col xl="4"  md="6" sm="12">
             <DropDown
               name="company"
+              id="company"
               label="Company"
               control={control}
               placeholder="Select Company"
@@ -129,6 +130,7 @@ added_on:new Date()
           <Col  xl="4"  md="6" sm="12">
             <DatePickerInput
               name="startDate"
+              id="start"
               control={control} // ✅ make sure this is passed
               label="Start Date"
               placeholder="Select start date" // ✅ fixed spelling
@@ -140,6 +142,7 @@ added_on:new Date()
           <Col  xl="4"  md="6" sm="12">
             <DatePickerInput
               name="endDate"
+              id="end"
               control={control} // ✅ make sure this is passed
               label="End Date"
               placeholder="Select end date" // ✅ fixed spelling
@@ -152,6 +155,7 @@ added_on:new Date()
           <Col  xl="4"  md="6" sm="12">
             <DropDown
               name="country"
+              id="country"
               label="Country"
               control={control}
               setValue={setValue}
@@ -178,6 +182,7 @@ added_on:new Date()
           <Col  xl="4"  md="6" sm="12">
             <DropDown
               name="supplier"
+              id="supplier"
               label="Supplier"
               control={control}
               setValue={setValue}

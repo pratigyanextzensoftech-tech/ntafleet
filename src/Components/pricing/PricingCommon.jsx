@@ -289,7 +289,7 @@ const handleBulkDelete = () => {
                        <button class="dropdown-item download-btn"
           data-link="${row.fulldata.download_link}">
     <i class="fa fa-download me-2 text-danger"></i>
-    Download
+    Download Pdf
   </button>
                   </li>
 
@@ -845,7 +845,7 @@ useEffect(() => {
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="T Check List"
+                  title={tableTitle}
 //                   renderDropdown={() => (
 //     <>
 //        <Dropdown isOpen={dropdownOpen} toggle={toggle}>

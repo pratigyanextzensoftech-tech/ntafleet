@@ -329,7 +329,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
 } 
   return (
     <Fragment>
-      <Breadcrumbs parent='Tcheck' title='T Check List '/>
+      <Breadcrumbs parent='Tcheck' title='T-Check Invoices List'/>
       <Container fluid={true}>
         <Row>
           <Col sm="12">
@@ -345,7 +345,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="T Check List"
+                  title="T-Check Invoices List"
                   renderDropdown={() => (
     <>
        <Dropdown isOpen={dropdownOpen} toggle={toggle}>

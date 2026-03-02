@@ -119,23 +119,22 @@ const show_hide = $('input[name="invoiceShow"]').val();
       }
     });
   };
- useEffect(() => {
- const deleteHandler = function (row) {
-    const id = $(this).data("id");
+//  useEffect(() => {
+//  const deleteHandler = function (row) {
+//     const id = $(this).data("id");
 
-    handleDelete(row); // ✅ call React function
-  };
+//     handleDelete(row); // ✅ call React function
+//   };
 
-  $(document).on("click", ".delete-btn", deleteHandler);
+//   $(document).on("click", ".delete-btn", deleteHandler);
 
-  return () => {
-    $(document).off("click", ".delete-btn", deleteHandler);
-  };
+//   return () => {
+//     $(document).off("click", ".delete-btn", deleteHandler);
+//   };
 
-}, []);
+// }, []);
 
 
-  /* ---------------- DATATABLE FUNCTION ---------------- */
 
   const GetDataTAble = (api, tableId,from,to,company_id,country,invoice_type,invcat,show_hide,cust_inv_type,supplier) => {
     console.log(api)
@@ -417,10 +416,12 @@ else if(api===customized_invoice){
         try {
           const response = await fetch(`${api}?${params.toString()}`);
           const json = await response.json();
-     const tableData = json.data.map((row) => ({
+     const tableData = json.data.map((row) => (
+  
+      {
       id:row.id,
       invoice_id: row.invoice_id,
-    invoice_display:api === combine_invoice ? row.tp === "Rack" ? `${row.invoice_type}-${row.invoice_id}`: `NTA-${row.invoice_id}`: `${row.invoice_id}`,
+    invoice_display: row.tp === "Rack" ? `${row.invoice_type}-${row.invoice_id}`: `NTA-${row.invoice_id}`,
       company_name: row.company_name,
       from: row.from,
       to: row.to,

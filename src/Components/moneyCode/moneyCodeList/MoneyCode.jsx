@@ -338,12 +338,12 @@ function handleDeleteSelected() {
 }
   return (
     <Fragment>
-      <Breadcrumbs parent='Tcheck' title='T Check List '/>
+      <Breadcrumbs parent='Money Code' title='Money Code List '/>
       <Container fluid={true}>
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Filter" />
+              <HeaderCard title="Filters" />
               <CardBody>
                       <MoneyCodeListForm btntitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
               </CardBody>
@@ -354,7 +354,7 @@ function handleDeleteSelected() {
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="T Check List"
+                  title="Money Code List"
                   renderDropdown={() => (
     <>
        <Dropdown isOpen={dropdownOpen} toggle={toggle}>

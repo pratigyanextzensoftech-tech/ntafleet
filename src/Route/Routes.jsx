@@ -4,9 +4,9 @@ import Report_Dashboard from '../Components/dashboard/report_dashboard'
 import Ggraph_Dashboard from '../Components/dashboard/graph_dashboard'
 
 // discount
-import CreateDiscount from '../Components/discount/createDiscount/index';
-import ViewDiscount from '../Components/discount/view/index';
-import DiscountSheet from '../Components/discount/discountSheet/index';
+import CreateDiscount from '../Components/discount/createDiscount/ViewIndex.jsx';
+import ViewDiscount from '../Components/discount/view/ViewIndex.jsx';
+import DiscountSheet from '../Components/discount/discountSheet/DiscountSheetIndex.jsx';
 import BulkDiscount from '../Components/discount/bulkDiscount/index';
 import ZeroDiscount from '../Components/discount/zeroDiscount/index';
 

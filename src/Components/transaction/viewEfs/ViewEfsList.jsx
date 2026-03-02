@@ -268,7 +268,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
 } 
   return (
     <Fragment>
-      <Breadcrumbs parent="Transaction" title="View Transaction" />
+      <Breadcrumbs parent="Transaction" title="EFS Transactions List" />
       <Container fluid={true}>
         <Row>
           <Col sm="12">
@@ -284,7 +284,7 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="Transactions List"
+                  title="EFS Transactions List"
                   renderDropdown={() => (
     <>
        <Dropdown isOpen={dropdownOpen} toggle={toggle}>

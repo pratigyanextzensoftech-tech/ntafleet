@@ -158,7 +158,7 @@ const CompanyInfo = () => {
   };
   return (
     <Fragment>
-      <Breadcrumbs parent="Company" title="Company Info" />
+      <Breadcrumbs parent="Company" title="Company List" />
       <Container fluid={true}>
         <Row>
           <Col sm="12">
@@ -177,7 +177,7 @@ const CompanyInfo = () => {
         <Card>
           <CardBody>
             <HeaderCard
-              title="Rack Cent List"
+              title="Company List"
               download={false}
               downloadHeading=""
             />

@@ -17,7 +17,7 @@ import axios from 'axios';
 import { useCountry } from "../../../Hooks/Dropdowns";
 import { toast } from "react-toastify";
 import { discount_list as APINAME } from '../../../api';
-const Create = ({ title, btnTitle,onDataAdded }) => {
+const Create = ({ btnTitle,onDataAdded }) => {
   const { companies: companyOptions, loading: companyLoading } = useCompany();
   const {data: supplier } = useSupplier();
   const {data:country}=useCountry()
