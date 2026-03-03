@@ -1,18 +1,16 @@
-import React, { Fragment,useEffect } from 'react';
+import React, { Fragment,useEffect,useState } from 'react';
 import { Row, Col, Form,FormGroup,InputGroup,InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
-import { add_user } from '../../../Constant';
-import HeaderCard from '../../Common/Component/HeaderCard';
 import { useForm,Controller } from 'react-hook-form';
 import axios from 'axios';
 import Select from 'react-select'
 import { toast } from 'react-toastify';
 import InputText from '../../Forms/FormControl/formInput/InputText';
-import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { companyLoginAccess, manageuserStatus } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { administrator } from '../../../api'; // ✅ Adjust API endpoint if needed
-
-const FormComponent = ({ editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded,validation }) => {
+import Loader from '../../../Layout/Loader';
+const FormComponent = ({ Edit,selectedRow,setEdit,onDataAdded,validation }) => {
+  const[loading,setLoading]=useState(false)
   const {
     register,
     control,
@@ -32,7 +30,9 @@ const FormComponent = ({ editUser,Edit_id,Edit,selectedRow,setEdit,onDataAdded,v
     }
   });
 useEffect(() => {
+    
   if (Edit && selectedRow) {
+    setLoading(true)
     console.log(selectedRow.status)
    const companylogin = companyLoginAccess.find(
   (item) => item.label === selectedRow.company_login
@@ -58,6 +58,7 @@ useEffect(() => {
           label: companylogin.label
         }
     });
+    setLoading(false)
   }
 }, [Edit, selectedRow]);
 
@@ -82,13 +83,27 @@ const onSubmit = async (formData) => {
   try {
      if (Edit && selectedRow) {
       // 🟢 UPDATE (Edit mode)
+      setLoading(true)
       const res = await axios.put(`${administrator}/${selectedRow.id}`, payload);
       console.log("✅ User Updated:", res.data);
         if (onDataAdded) onDataAdded();
 
       toast.success("User updated successfully!");
+            setLoading(false)
+              reset({
+       name:"",
+      email:"",
+      phone:"",
+      company:"",
+      password:"",
+      status:"",
+      company_login:""
+    }); 
+    setEdit(false)
+
     } else {
       // 🟢 ADD (Create mode)
+      setLoading(true)
       const res = await axios.post(administrator, payload);
       console.log("✅ User Added:", res.data);
       toast.success("User added successfully!");
@@ -103,6 +118,8 @@ const onSubmit = async (formData) => {
     }); 
     setEdit(false)
        if (onDataAdded) onDataAdded(res.data); 
+             setLoading(false)
+
     }
 
   // reset form after submit
@@ -115,6 +132,7 @@ const onSubmit = async (formData) => {
 
   return (
     <Fragment>
+      {loading==true &&<Loader loading={loading}/>}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col xl="4"  md="6" sm="12">

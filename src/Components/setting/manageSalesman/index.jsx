@@ -23,8 +23,6 @@ const [selectedRow, setSelectedRow] = useState(null);
     const format = withTime ? "DD-MM-YYYY HH:mm" : "DD-MM-YYYY";
     return dayjs(value).isValid() ? dayjs(value).format(format) : "-";
   };
-
-  // Column mapping
   const columnsMap = {
     "ID #": "id",
     "Name": "name",

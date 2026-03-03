@@ -1,14 +1,15 @@
 
-import React, { Fragment,useEffect } from 'react';
-import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
+import React, { Fragment,useEffect,useState } from 'react';
+import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { salesman as APINAME } from '../../../api';
-
+import Loader from '../../../Layout/Loader';
 const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
+  const[loading,setLoading]=useState(false)
   const addedBy=localStorage.getItem("userId")
         const {
             register,
@@ -26,6 +27,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         });
          useEffect(() => {
             if (Edit && selectedRow) {
+              setLoading(true)
               console.log(selectedRow)
               reset({
                 name: selectedRow.name, // 👈 key from columnsMap in Index.jsx
@@ -33,10 +35,11 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                 phone: selectedRow.phone, // 👈 key from columnsMap in Index.jsx
                 address: selectedRow.address, // 👈 key from columnsMap in Index.jsx
               });
+                            setLoading(false)
+
             }
           }, [Edit, selectedRow, reset]);
             const onSubmit = (formData) => {
-                                console.log("Form Data:", formData);  // ✅ This will print your inputs
         
              const payload = {
             name: formData.name,
@@ -50,6 +53,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
                 added_by:addedBy
              }
              if (Edit && selectedRow) {
+                setLoading(true)
       // ✅ Update existing supplier
       axios.put(`${APINAME}/${selectedRow.id}`, payload)
         .then((res) => {
@@ -62,6 +66,8 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
             phone:"",
             address:""
           });
+                      setLoading(false)
+
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -69,11 +75,13 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         });
       }
       else{
+            setLoading(true)
     axios.post(APINAME, payload)
   .then((res) => {
     console.log(res.data);
     toast.success("Added successfully!");
     reset();
+    setLoading(false)
 
     // ✅ Immediately update UI
     if (onDataAdded) onDataAdded(res.data); 
@@ -86,6 +94,7 @@ const ManageSalesman = ({onDataAdded,Edit,selectedRow,setEdit}) => {
     }       
     return (
         <Fragment >
+          {loading===true && <Loader loading={loading}/>}
                     <Form noValidate='' onSubmit={handleSubmit(onSubmit)}>
                         <Row>
                             <Col xxl="4"  md="6" sm="12">

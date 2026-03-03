@@ -2,17 +2,16 @@
 import React, { Fragment, useState,useEffect } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
-import HeaderCard from '../../Common/Component/HeaderCard';
 import Select from 'react-select'
 import { Controller, useForm } from 'react-hook-form';
-import { optionscountry } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { city as APINAME } from "../../../api";
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useCountry,useStates } from '../../../Hooks/Dropdowns';
-
+import Loader from '../../../Layout/Loader';
 const ViewCityForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
+  const[loading,setLoading]=useState(false)
    const{data}=useCountry()
 const { data: stateData } = useStates();
    const {
@@ -31,6 +30,7 @@ const { data: stateData } = useStates();
   });
 useEffect(() => {
   if (Edit && selectedRow) {
+setLoading(true)
 console.log(selectedRow)
     const selectedCountry = data?.find(
       (item) => item.value === selectedRow.country_id
@@ -46,6 +46,8 @@ console.log(selectedRow)
       country: selectedCountry ,
       state: selectedState ,
     });
+    setLoading(false)
+
   }
 }, [Edit, selectedRow]);   
 
@@ -61,6 +63,7 @@ const onSubmit = (formData) => {
          }
            if (Edit && selectedRow) {
             console.log(selectedRow)
+            setLoading(true)
           axios.put(`${APINAME}/${selectedRow.city_id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
@@ -72,6 +75,7 @@ const onSubmit = (formData) => {
       state:"",
      
           });
+                      setLoading(false)
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -79,6 +83,7 @@ const onSubmit = (formData) => {
         });
     }
     else{
+      setLoading(true)
   axios.post(APINAME,payload)
         .then((res)=>{
             console.log(res);
@@ -88,6 +93,8 @@ const onSubmit = (formData) => {
        reset();
     
             if (onDataAdded) onDataAdded();
+                  setLoading(false)
+
         })
         .catch((err)=>{
             console.log(err);
@@ -98,6 +105,7 @@ const onSubmit = (formData) => {
             };
   return (
     <Fragment >
+      {loading===true && <Loader loading={true}/>}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col xl="3"  md="6" sm="12">

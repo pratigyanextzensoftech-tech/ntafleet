@@ -2,76 +2,96 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import axios from "axios";
-import {  items as APINAME,download} from '../../../api/index'
+import {  salesman as APINAME} from '../../../api/index'
+import ManageSalesman from "./ManageSalesman";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import { FaFileExcel,FaFileCsv } from "react-icons/fa";
 import Swal from "sweetalert2";
 import $ from "jquery";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
-import AddItems from "./AddItems";
-
-
-const ItemIndex = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const[FormData,setFormData]=useState([])
-    const [selectedRow, setSelectedRow] = useState(null);
+import { formatDate } from "../../../Hooks/Dropdowns";
+const ManageSalesManIndex = () => {
+   const [selectedRow, setSelectedRow] = useState(null);
     const[Edit,setEdit]=useState(false)
-
-  const toggle = () => setDropdownOpen((prev) => !prev);
-  useEffect(() => {
-      GetDataTAble();
+   const[validation,setValidation]=useState(true)
+  
+  useEffect(() => { 
+      
+          GetDataTAble();
   }, []);
-const handleEdit =async (row)=>{
-     try {
-    const response = await axios.get(`${APINAME}/${row.item_id}`);
+
+   const handleEdit = async(row) => {
+    setValidation(false)
+    console.log(row.id)
+    try {
+    const response = await axios.get(`${APINAME}/${row.id}`);
     setSelectedRow(response.data);     // ✅ full API object
     setEdit(true);
   } catch (error) {
     console.error("Error fetching full row data", error);
   }
+  };
+  const handleDelete = (row) => {
+      const table = $("#example").DataTable();
     
-  }
- const handleDelete = (row) => {
-
-  const table = $("#example").DataTable();
-
+    console.log(row)
   Swal.fire({
-    title: "Are you sure?",
-    text: "Do you really want to delete?",
-    icon: "warning",
+    title: 'Are you sure?',
+    text: `Do you really want to delete user "${row.name}"?`,
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "Cancel"
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
   }).then((result) => {
-
     if (result.isConfirmed) {
-      axios.delete(`${APINAME}/${row.item_id}`)
-        .then(() => {
+      // ✅ Call API to delete
+      axios.delete(`${APINAME}/${row.id}`)
+        .then((res) => {
+          console.log(res);
           Swal.fire(
-            "Deleted!",
-            "Record deleted successfully.",
-            "success"
+            'Deleted!',
+            `User "${row.name}" has been deleted.`,
+            'success'
           );
-          // ✅ Important for DataTable
-          table.ajax.reload(null, false);
+                     table.ajax.reload(null, false);
 
         })
-        .catch(() => {
-          Swal.fire("Error!", "Failed to delete record.", "error");
+        .catch((err) => {
+          console.log(err);
+          Swal.fire('Error!', 'Failed to delete user.', 'error');
         });
-
     }
-
   });
-
 };
-  function GetDataTAble( ) {
+
+  function GetDataTAble() {
+
      const columns = [
-  { data: "item_id", title: "item Id" },
-  { data: "item_name", title: "Item Name" },
-  { data: "discount_applied", title: "Discount Applied" },
-  { data: "tax_applied", title: "Tax Applied" },
+  { data: "id", title: "ID #" },
+  { data: "name", title: "Name" },
+  { data: "email", title: "Email" },
+  { data: "phone", title: "Phone" },
+  { data: "address", title: "Address" },
+{ data: "added_by_name", title: "Added By" },
+{ data: "created", title: "Added On" },
+   
+  {
+  data: "status",
+  title: "Status",
+  orderable: false,
+  render: function (data, type, row) {
+    return `
+       <select class="form-select form-select-sm status-change"
+              data-id="${row.id}"
+              data-field="status">
+        <option value="Open" ${data == 0 ? "selected" : ""}>Active</option>
+        <option value="Entered" ${data == 1 ? "selected" : ""}>Blocked</option>
+      </select>
+    `;
+  }
+},
 {
   data: null,
   title: "Action",
@@ -97,7 +117,6 @@ const handleEdit =async (row)=>{
               <i class="fa fa-trash me-2"></i> Delete
             </button>
           </li>
-
         </ul>
       </div>
     `;
@@ -117,7 +136,6 @@ const handleEdit =async (row)=>{
           fixedColumns: { leftColumns: 1},
       pageLength: 10,
       columns: columns,
-    
       columnDefs: [
         {
           targets: "_all",
@@ -136,19 +154,24 @@ const handleEdit =async (row)=>{
   params.append("search", data.search.value || "");
   params.append("orderColumn", data.columns[data.order[0].column].data);
   params.append("orderDir", data.order[0].dir);
+ 
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
     const tableRes = await response.json();
     // 🔥 Call both APIs together
      console.log(tableRes);
-     
     // ✅ Map table data
     const tableData = tableRes.data.map((row) => ({
-    "item_id":row.item_id,
-    "item_name": row.item_name,
-   "discount_applied":row.discount_applied===0?"Yes":"No",
-   "tax_applied":row.tax_applied===0?"Yes":"No",  
+    "id": row.id,
+   "name":row.name,
+   "email":row.email,
+   "phone":row.phone,
+    "address":row.address,
+    "added_by_name":row.added_by_name,
+    "created":formatDate(row.created),
     }));
+    console.log(tableData);
+    
     callback({
       draw: data.draw,
       recordsTotal: tableRes.recordsTotal,
@@ -169,8 +192,6 @@ const handleEdit =async (row)=>{
 },
     });
 const table = $("#example").DataTable();
-
-// EDIT
 $(document)
   .off("click", ".edit-btn")
   .on("click", ".edit-btn", function () {
@@ -190,24 +211,81 @@ $(document)
     handleDelete(rowData);  
 
 });
+
+$(document).off("focus", ".status-change");
+$(document).on("focus", ".status-change", function () {
+  $(this).data("previous", $(this).val());
+});
+
+
+// Handle change for BOTH dropdowns
+$(document).off("change", ".status-change");
+$(document).on("change", ".status-change", function () {
+
+  const table = $("#example").DataTable();
+  const selectElement = $(this);
+
+  const id = selectElement.data("id");
+  const field = selectElement.data("field"); // 🔥 important
+  const newValue = selectElement.val();
+  const oldValue = selectElement.data("previous");
+const message =
+  field === "status"
+    ? "Change  status?"
+    : "Change Company Status?";
+
+  Swal.fire({
+    title: "Are you sure?",
+    text:message,
+    icon: "warning",
+    showCancelButton: true,
+  }).then(async (result) => {
+
+    if (!result.isConfirmed) {
+      selectElement.val(oldValue);
+      return;
+    }
+
+    try {
+await axios.put(`${APINAME}/${id}`, {
+  id: id,
+  [field]: field === "status" ? Number(newValue) : newValue
+});
+      table.ajax.reload(null, false);
+
+      Swal.fire("Updated!", "Status changed successfully.", "success");
+
+    } catch (error) {
+
+      selectElement.val(oldValue);
+
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
+
+  });
+
+});
+
   }
    const refreshTable = () => {
    GetDataTAble()
   };
 
-
   return (
     <Fragment>
-      <Breadcrumbs parent="Items" title="Manage Item" />
+      <Breadcrumbs parent="Setting" title="Manage Sales Man"/>
       <Container fluid={true}>
         <Row>
           <Col sm="12">
             <Card>
-              <HeaderCard title="Add Item" />
+              <HeaderCard title="Add Sales Man" />
               <CardBody>
-                <AddItems Edit={Edit}
-                selectedRow={selectedRow}
-                setEdit={setEdit} btnTitle="Add Item" onDataAdded={refreshTable}/>
+                   <ManageSalesman
+    onDataAdded={refreshTable}
+    Edit={Edit}
+    selectedRow={selectedRow}
+    setEdit={setEdit}
+/>
               </CardBody>
             </Card>
           </Col>
@@ -216,8 +294,8 @@ $(document)
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="Items List "
-              
+                  title="Sales Man List"
+        
                 />
              
               <CardBody>
@@ -229,10 +307,14 @@ $(document)
                   >
                     <thead>
                       <tr>
-                        <th>Item Id</th>
+                        <th>ID#</th>
                         <th>Name </th>
-                        <th>Discount Applied </th>
-                        <th> Tax Applied </th>
+                        <th>Email </th>
+                        <th> Phone </th>
+                        <th>Address </th>
+                        <th>Added By </th> 
+                        <th>Added On</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -248,4 +330,4 @@ $(document)
   );
 };
 
-export default ItemIndex;
+export default ManageSalesManIndex;

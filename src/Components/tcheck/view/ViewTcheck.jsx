@@ -24,12 +24,11 @@ const ViewTcheck = () => {
   const[FormData,setFormData]=useState([])
   const toggle = () => setDropdownOpen((prev) => !prev);
   
-  useEffect(() => {
-      
+  useEffect(() => { 
         const company = document.getElementById("company")?.value;
         const from = document.getElementById("from")?.value;
         const to = document.getElementById("to")?.value;
-      GetDataTAble(from,to, company);
+          GetDataTAble(from,to, company);
   }, []);
 
   function GetDataTAble(from,to,company) {
@@ -41,13 +40,28 @@ const ViewTcheck = () => {
   { data: "to_date", title: "To Date" },
   { data: "due_date", title: "Due Date" },
   { data: "total", title: "Total Due" },
+    {
+  data: "mails",
+  title: "Show_Hide",
+  orderable: false,
+  render: function (data, type, row) {
+    return `
+      <select class="form-select form-select-sm status-change"
+              data-id="${row.invoice_id}"
+              data-field="mails">
+        <option value="1" ${data == 1 ? "selected" : ""}>Show</option>
+        <option value="0" ${data == 0 ? "selected" : ""}>Hide</option>
+      </select>
+    `;
+  }
+},
   {
   data: "admin_status",
   title: "Status",
   orderable: false,
   render: function (data, type, row) {
     return `
-      <select class="form-select form-select-sm status-change"
+       <select class="form-select form-select-sm status-change"
               data-id="${row.invoice_id}"
               data-field="admin_status">
         <option value="Open" ${data == "Open" ? "selected" : ""}>Open</option>
@@ -62,8 +76,6 @@ const ViewTcheck = () => {
   title: "Action",
   orderable: false,
   render: function (data, type, row) {
-    console.log(row);
-    
     return `
       <div class="dropdown">
         <button class="btn btn-sm btn-success dropdown-toggle"
@@ -168,6 +180,8 @@ const ViewTcheck = () => {
    "from_date":formatDate(row.from_date),
    "to_date":formatDate(row.to_date),
     "due_date":row.due_date,
+    "admin_status":row.admin_status,
+    "mails":row.mails,
    "total":row.total, 
    "download_link":row.download_link    
     }));
@@ -236,63 +250,59 @@ $(document)
     downloadPdf(link, invoiceId);
   });
 
+$(document).off("focus", ".status-change");
+$(document).on("focus", ".status-change", function () {
+  $(this).data("previous", $(this).val());
+});
 
 
-$(document)
-  .off("focus", ".status-change")
-  .on("focus", ".status-change", function () {
-    $(this).data("previous", $(this).val());
-  });
-  $(document)
-  .off("change", ".status-change")
-  .on("change", ".status-change", function () {
+// Handle change for BOTH dropdowns
+$(document).off("change", ".status-change");
+$(document).on("change", ".status-change", function () {
 
-    const table = $("#example").DataTable();
-    const selectElement = $(this);
+  const table = $("#example").DataTable();
+  const selectElement = $(this);
 
-    const invoice_id = selectElement.data("id");
-    const field = selectElement.data("field");
-    const newValue = selectElement.val();
-    const oldValue = selectElement.data("previous");
+  const invoice_id = selectElement.data("id");
+  const field = selectElement.data("field"); // 🔥 important
+  const newValue = selectElement.val();
+  const oldValue = selectElement.data("previous");
+const message =
+  field === "mails"
+    ? "Change Show / Hide status?"
+    : "Change Admin Status?";
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Change status?",
-      icon: "warning",
-      showCancelButton: true,
-    }).then(async (result) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text:message,
+    icon: "warning",
+    showCancelButton: true,
+  }).then(async (result) => {
 
-      // ❌ Cancel clicked
-      if (!result.isConfirmed) {
-        selectElement.val(oldValue);
-        return;
-      }
+    if (!result.isConfirmed) {
+      selectElement.val(oldValue);
+      return;
+    }
 
-      try {
+    try {
+await axios.put(`${APINAME}/${invoice_id}`, {
+  id: invoice_id,
+  [field]: field === "mails" ? Number(newValue) : newValue
+});
+      table.ajax.reload(null, false);
 
-        await axios.put(`${APINAME}/${invoice_id}`, {
-          id: invoice_id,
-          [field]: newValue
-        });
+      Swal.fire("Updated!", "Status changed successfully.", "success");
 
-        // ✅ update previous value after success
-        selectElement.data("previous", newValue);
+    } catch (error) {
 
-        Swal.fire("Updated!", "Status changed successfully.", "success");
+      selectElement.val(oldValue);
 
-        table.ajax.reload(null, false);
-
-      } catch (error) {
-
-        // ❌ Error → restore previous value
-        selectElement.val(oldValue);
-
-        Swal.fire("Error!", "Something went wrong.", "error");
-      }
-
-    });
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
 
   });
+
+});
 
   }
 

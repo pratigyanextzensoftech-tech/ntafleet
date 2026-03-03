@@ -470,7 +470,6 @@ $(document).on("focus", ".status-change", function () {
   $(this).data("previous", $(this).val());
 });
 
-
 // Handle change for BOTH dropdowns
 $(document).off("change", ".status-change");
 $(document).on("change", ".status-change", function () {

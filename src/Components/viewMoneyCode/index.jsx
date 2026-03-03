@@ -55,6 +55,21 @@ const Index = () => {
   { data: "due_date", title: "Due Date" },
   { data: "total", title: "Total Due" },
   {
+  data: "mails",
+  title: "Show_Hide",
+  orderable: false,
+  render: function (data, type, row) {
+    return `
+      <select class="form-select form-select-sm status-change"
+              data-id="${row.invoice_id}"
+              data-field="mails">
+        <option value="1" ${data == 1 ? "selected" : ""}>Show</option>
+        <option value="0" ${data == 0 ? "selected" : ""}>Hide</option>
+      </select>
+    `;
+  }
+},
+  {
   data: "admin_status",
   title: "Status",
   orderable: false,
@@ -62,7 +77,6 @@ const Index = () => {
     return `
       <select class="form-select form-select-sm status-change"
               data-id="${row.invoice_id}"
-                data-type="${row.tp}"
               data-field="admin_status">
         <option value="Open" ${data == "Open" ? "selected" : ""}>Open</option>
         <option value="Entered" ${data == "Entered" ? "selected" : ""}>Entered</option>
@@ -183,7 +197,7 @@ const Index = () => {
       "due_date": row.due_date,
       "total": row.total,
       admin_status: row.admin_status,
-        tp: row.tp,
+       "mails":row.mails,
         fulldata: row 
         
     }));
@@ -237,10 +251,13 @@ $(document).on("change", ".status-change", function () {
   const field = selectElement.data("field"); // 🔥 important
   const newValue = selectElement.val();
   const oldValue = selectElement.data("previous");
-
+const message =
+  field === "mails"
+    ? "Change Show / Hide status?"
+    : "Change Admin Status?";
   Swal.fire({
     title: "Are you sure?",
-    text: "Change Admin Status?",
+    text: message,
     icon: "warning",
     showCancelButton: true,
   }).then(async (result) => {
@@ -251,9 +268,6 @@ $(document).on("change", ".status-change", function () {
     }
 
     try {
-let updateApi;
-
-
 await axios.put(`${APINAME}/${invoice_id}`, {
   id: invoice_id,
   [field]: field === "mails" ? Number(newValue) : newValue

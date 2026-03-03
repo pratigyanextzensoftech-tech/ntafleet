@@ -47,7 +47,7 @@ const Index = () => {
         onChange={(e) => handleFilterChange("id", e.target.value)}
       />
     </div>
-  ), width:"120px", selector: (row) => row.id, sortable: true },
+  ), width:"150px", selector: (row) => row.id, sortable: true },
 
       { name: (
     <div style={{ width: "100%" }}>
@@ -67,7 +67,7 @@ const Index = () => {
         onChange={(e) => handleFilterChange("name", e.target.value)}
       />
     </div>
-  ), selector: (row) => row.name, sortable: true, wrap: true,width:"250px" },
+  ), selector: (row) => row.name, sortable: true, wrap: true,width:"280px" },
       { name: (
     <div style={{ width: "100%" }}>
       <div>Email</div>
@@ -86,7 +86,7 @@ const Index = () => {
         onChange={(e) => handleFilterChange("email", e.target.value)}
       />
     </div>
-  ), selector: (row) => row.email, sortable: true, wrap: true,width:"250px" },
+  ), selector: (row) => row.email, sortable: true, wrap: true,width:"280px" },
 
        { name: (
     <div style={{ width: "100%" }}>
@@ -106,7 +106,7 @@ const Index = () => {
         onChange={(e) => handleFilterChange("phone", e.target.value)}
       />
     </div>
-  ), selector: (row) => row.phone, sortable: true, wrap: true,width:"200px" },
+  ), selector: (row) => row.phone, sortable: true, wrap: true,width:"280px" },
        { name: (
     <div style={{ width: "100%" }}>
       <div>Company</div>
@@ -176,7 +176,7 @@ const Index = () => {
             <option value="No">No</option>
           </select>
         ),
-        width: "200px",
+        width: "230px",
       },
        { name: (
     <div style={{ width: "100%" }}>
@@ -207,7 +207,7 @@ const Index = () => {
             <option value="Blocked">Blocked</option>
           </select>
         ),
-        width: "180px",
+        width: "200px",
       },
       {
         name: "Action",

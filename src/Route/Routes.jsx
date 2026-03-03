@@ -39,7 +39,7 @@ import UltramarGroup from '../Components/pricing/ultramarGroup/index';
 import DownloadBulk from '../Components/pricing/downloadBulk/index';
 import IrvingBulk from '../Components/pricing/IrvingBulk/index.jsx'
 //Items
-import AddItems from '../Components/items/addItems/index';
+import AddItems from '../Components/items/addItems/ItemsIndex.jsx';
 
 //Company
 import AddCompany from '../Components/company/AddCompany'
@@ -106,7 +106,7 @@ import LinamarEsso from '../Components/location/linamarEsso/index';
 import PetroLink from '../Components/location/petroLink/index';
 import ViewCountry from '../Components/location/viewCountry/index'
 import ViewStates from '../Components/location/viewState/index'
-import ViewCity from '../Components/location/viewCity/index'
+import ViewCity from '../Components/location/viewCity/ViewCityIndex.jsx'
 import ManageLoc from '../Components/location/manageLoc/index'
 import ManageGroup from '../Components/location/manageGroup/index'
 
@@ -114,8 +114,8 @@ import ManageGroup from '../Components/location/manageGroup/index'
 import UserLogin from '../Components/setting/userLogin/index'
 import TrackVisitor from '../Components/setting/trackVisitor/index'
 import CompanyLogin from '../Components/setting/companyLogin/index'
-import ManageUser from '../Components/setting/manageUser/index'
-import ManageSalesman from '../Components/setting/manageSalesman/index';
+import ManageUser from '../Components/setting/manageUser/ManageUserIndex.jsx'
+import ManageSalesman from '../Components/setting/manageSalesman/ManageSalesManIndex.jsx';
 import ManageMenu from '../Components/setting/manageMenu/Index'
 
 //Tcheck

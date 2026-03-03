@@ -15,6 +15,7 @@ import {
   InputGroupText,
   Container,
 } from "reactstrap";
+import Loader from "../../../Layout/Loader";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -24,6 +25,7 @@ import { items as APINAME } from "../../../api"; // API endpoint
 
 const AddItems = ({ btnTitle, onDataAdded, Edit, selectedRow, setEdit }) => {
   const [selectedValues, setSelectedValues] = useState([]);
+  const[loading,setLoading]=useState(false)
   const {
     register,
     control,
@@ -34,20 +36,24 @@ const AddItems = ({ btnTitle, onDataAdded, Edit, selectedRow, setEdit }) => {
   useEffect(() => {
     if (Edit && selectedRow) {
       console.log(selectedRow);
+      setLoading(true)
       reset({
         Name: selectedRow.item_name,
         discount:
-          selectedRow.discount == 0
+          selectedRow.discount_applied == 0
             ? { value: "0", label: "Yes" }
             : { value: "1", label: "No" },
 
         tax:
-          selectedRow.tax == 0
+          selectedRow.tax_applied == 0
             ? { value: "0", label: "Yes" }
             : { value: "1", label: "No" },
       });
     }
+          setLoading(false)
+
   }, [Edit, selectedRow, reset]);
+  
   const onSubmit = (formData) => {
     // console.log("Form Data:", formData);  // ✅ This will print your inputs
 console.log(formData)
@@ -57,9 +63,8 @@ console.log(formData)
       tax_applied: formData.tax.value,
       fee: "",
     };
-
     if (Edit && selectedRow) {
-     
+     setLoading(true);
       axios
         .put(`${APINAME}/${selectedRow.item_id}`, payload)
         .then((res) => {
@@ -71,23 +76,26 @@ console.log(formData)
             discount: "",
             tax: "",
           });
+          setLoading(false)
         })
         .catch((err) => {
           toast.error("Update failed!");
           console.error(err);
         });
     } else {
+      setLoading(true)
       axios
         .post(APINAME, payload)
         .then((res) => {
           console.log(res);
           toast.success("Add successfully!");
           reset();
+     
 
           // ✅ Immediately update UI
           if (onDataAdded) onDataAdded(res.data);
           reset();
-
+ setLoading(false)
           // if (onDataAdded) onDataAdded();
         })
         .catch((err) => {
@@ -102,7 +110,8 @@ console.log(formData)
 
  
   return (
-    <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>
+    <Form noValidate="" onSubmit={handleSubmit(onSubmit)}>  
+    {loading===true &&<Loader loading={loading}/>}
       <Row className="mt-3">
         <Col  xl="3"  lg="4" md="6" sm="12">
           <FormGroup className=" m-form__group">

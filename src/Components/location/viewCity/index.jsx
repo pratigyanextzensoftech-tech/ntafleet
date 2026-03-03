@@ -21,7 +21,6 @@ const Index = () => {
     "State": "state_name",
     "Abbreviation": "abbreviation", 
     "Country": "country_name",
-  
   };
    
      const {
