@@ -248,7 +248,6 @@ const handleBulkDelete = () => {
     if ($.fn.DataTable.isDataTable(tableId)) {
       $(tableId).DataTable().clear().destroy();
     }
-
     const table = $(tableId).DataTable({
       data: data,
     processing: true,

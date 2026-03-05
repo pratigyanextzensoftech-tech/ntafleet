@@ -4,7 +4,7 @@ import { Container, Row, Card, Col, CardBody } from 'reactstrap';
 import HeaderCard from '../../Common/Component/HeaderCard';
 import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard';
 import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab';
-import ManageMenuTable from '../../../Data/tab/ManageMenuTable'; 
+import ManageMenuTable from './ManageMenuTable'; 
 const Index = () => {
 const menuTabs = ManageMenuTable();
  // returns array of tabs

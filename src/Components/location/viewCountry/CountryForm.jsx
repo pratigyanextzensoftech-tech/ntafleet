@@ -1,5 +1,5 @@
 
-import React, { Fragment,useEffect } from 'react';
+import React, { Fragment,useEffect,useState } from 'react';
 import { Row, Col, Form, FormGroup, Input, InputGroup, InputGroupText } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import HeaderCard from '../../Common/Component/HeaderCard';
@@ -8,7 +8,9 @@ import { useForm } from 'react-hook-form';
 import { country as APINAME } from '../../../api';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Loader from '../../../Layout/Loader';
 const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
+    const[loading,setLoading]=useState(false)
     const {
         register,
         control,
@@ -22,11 +24,14 @@ const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
     });
     useEffect(() => {
             if (Edit && selectedRow) {
+                setLoading(true)
                 console.log(selectedRow)
               reset({
-                country: selectedRow["Country Name"],
+                country: selectedRow.country_name,
               
               });
+                              setLoading(false)
+
             }
           }, [Edit, selectedRow, reset]);
      const onSubmit = (formData) => {
@@ -37,8 +42,10 @@ const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
      
          }
           if (Edit && selectedRow) {
-            console.log(selectedRow)
-          axios.put(`${APINAME}/${selectedRow[["Country ID"]]}`, payload)
+            console.log(selectedRow.country_id);
+            
+            setLoading(true)
+          axios.put(`${APINAME}/${selectedRow.country_id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
           if (onDataAdded) onDataAdded();
@@ -46,6 +53,8 @@ const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
           reset({
           country:""
           });
+                      setLoading(false)
+
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -72,6 +81,7 @@ const CountryForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
             };
     return (
         <Fragment >
+            {loading==true && <Loader loading={loading}/>}
             <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                 <Row>
                     <Col xxl="8" >

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import DataTableComponent from "../../Components/Tables/DataTable/DataTableComponent";
-import { pmenu as pmenuApi, smenu as smenuApi } from "../../api";
-import usePaginatedTable from "../../Hooks/usePagination";
+import DataTableComponent from "../../../Components/Tables/DataTable/DataTableComponent";
+import { pmenu as pmenuApi, smenu as smenuApi } from "../../../api/index";
+import usePaginatedTable from "../../../Hooks/usePagination";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { menu } from "../../api";
+import { menu } from "../../../api";
 // 🔹 Action Dropdown
 const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
   const [open, setOpen] = useState(false);
@@ -74,7 +74,6 @@ const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
     </div>
   );
 };
-
 const ManageMenuTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [Edit, setEdit] = useState(false);

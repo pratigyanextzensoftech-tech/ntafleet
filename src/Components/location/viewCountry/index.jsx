@@ -174,10 +174,10 @@ console.log(row)
          cancelButtonText: 'Cancel'
        }).then((result) => {
          if (result.isConfirmed) {
-           axios.delete(`${APINAME}/${row["Country ID"]}`)
+           axios.delete(`${APINAME}/${row.country_id}`)
              .then(() => {
-               setData((prevData) => prevData.filter((item) => item[["Country ID"]] !== row[["Country ID"]]));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
+                  table.ajax.reload(null, false);
              })
              .catch(() => {
                Swal.fire('Error!', 'Failed to delete record.', 'error');

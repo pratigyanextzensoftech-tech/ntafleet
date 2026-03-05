@@ -22,7 +22,6 @@ const Index = () => {
     "Flying J Site ID": "site_id",
     "Flying J Location ID": "loc_id",
   };
-    
      const {
        data,
        totalRows,

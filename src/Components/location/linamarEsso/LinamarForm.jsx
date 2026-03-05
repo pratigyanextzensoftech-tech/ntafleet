@@ -1,14 +1,15 @@
 
-import React, { Fragment,useEffect } from 'react';
+import React, { Fragment,useEffect,useState } from 'react';
 import { Row, Col, Form } from 'reactstrap';
 import { Btn } from "../../../AbstractElements";
 import InputText from '../../Forms/FormControl/formInput/InputText';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { linamar_esso_loc as APINAME } from '../../../api';
-
+import Loader from '../../../Layout/Loader';
 import axios from 'axios'
 const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
+    const[loading,setLoading]=useState(false)
     const {
         register,
         control,
@@ -26,13 +27,15 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
     });
     useEffect(() => {
         if (Edit && selectedRow) {
+            setLoading(true)
             console.log(selectedRow)
           reset({
-            essoLoc: selectedRow["Esso Location"],
-            flyingLoc: selectedRow["Flying J Location"] , // prefill dropdown
-          flyingJLOc: selectedRow["Flying J Location ID"], 
-          flyingJSite: selectedRow["Flying J Site ID"], 
+            essoLoc: selectedRow.esso_location,
+            flyingLoc: selectedRow.fj_location , // prefill dropdown
+          flyingJLOc: selectedRow.loc_id, 
+          flyingJSite: selectedRow.site_id, 
           });
+                      setLoading(false)
         }
       }, [Edit, selectedRow, reset]);
        const onSubmit = (formData) => {
@@ -44,9 +47,8 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
     loc_id:formData.flyingJLOc
      }
         if (Edit && selectedRow) {
-            console.log(selectedRow)
-            console.log(payload)
-          axios.put(`${APINAME}/${selectedRow.ID}`, payload)
+            setLoading(true)
+          axios.put(`${APINAME}/${selectedRow.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
           console.log(res)
@@ -58,6 +60,8 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
             flyingJSite:"",
             flyingJLOc:""
           });
+                      setLoading(false)
+
         })
         .catch((err) => {
           toast.error("Update failed!");
@@ -84,6 +88,7 @@ const LinamarForm = ({onDataAdded,Edit,selectedRow,setEdit}) => {
         };
     return (
         <Fragment > 
+                    {loading==true && <Loader loading={loading}/>}
                 <Form noValidate=''  onSubmit={handleSubmit(onSubmit)}>
                     <Row>
                         <Col  xxl="4"  md="6" sm="12">

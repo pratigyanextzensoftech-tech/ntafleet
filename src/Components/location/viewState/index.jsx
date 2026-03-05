@@ -26,7 +26,6 @@ const Index = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
  
-  // ✅ Column mapping between UI and API
   const columnsMap = {
     "State ID": "state_id",
     "State Name": "province_name",

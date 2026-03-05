@@ -82,7 +82,7 @@ import ManageMacro from '../Components/manageMacro/ManageMacro';
 import CreateCustomized from '../Components/createCustomized/CreateCustomized';
 import CreateUltramar from '../Components/createUltramar/CreateUltramar';
 import CreateRepeat from '../Components/createRepeat/CreateRepeat';
-import SendBulk from '../Components/sendBulk/SendBulk';
+import SendBulk from '../Components/sendBulk/index.jsx';
 import CompareInvoice from '../Components/compareInvoice/index'
 import CreateCenInvoice from '../Components/CreateCenInvoice/Index.jsx'
 //Reports
@@ -102,10 +102,10 @@ import CheckInvoicemoneyCode from '../Components/moneyCode/checkInvoic/index';
 
 
 //Location
-import LinamarEsso from '../Components/location/linamarEsso/index';
+import LinamarEsso from '../Components/location/linamarEsso/LinamarEssoIndex.jsx';
 import PetroLink from '../Components/location/petroLink/index';
-import ViewCountry from '../Components/location/viewCountry/index'
-import ViewStates from '../Components/location/viewState/index'
+import ViewCountry from '../Components/location/viewCountry/CountryIndex.jsx'
+import ViewStates from '../Components/location/viewState/ViewStateIndex.jsx'
 import ViewCity from '../Components/location/viewCity/ViewCityIndex.jsx'
 import ManageLoc from '../Components/location/manageLoc/index'
 import ManageGroup from '../Components/location/manageGroup/index'
