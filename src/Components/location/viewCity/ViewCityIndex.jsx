@@ -115,16 +115,20 @@ const ViewCityIndex = () => {
           fixedColumns: { leftColumns: 1},
       pageLength: 10,
       columns: columns,
-      columnDefs: [
-        {
-          targets: "_all",
-          orderable: false,
-        },
-        {
-          targets: [0, 1], // allow ordering only here
-          orderable: true,
-        },
-      ],
+     columnDefs: [
+    {
+      targets: 0,          // 👈 ID column
+      className: "text-start"
+    },
+    {
+      targets: "_all",
+      orderable: false,
+    },
+    {
+      targets: [0, 1],     // allow ordering only here
+      orderable: true,
+    }
+  ],
 
     ajax: async function (data, callback) {
   const params = new URLSearchParams();
