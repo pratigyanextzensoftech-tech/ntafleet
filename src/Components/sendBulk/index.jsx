@@ -15,12 +15,8 @@ import 'datatables.net';
 import 'datatables.net-fixedcolumns';
 import { formatDate } from '../../Hooks/Dropdowns';
 const Index = () => {
-   const [openRowId, setOpenRowId] = useState(null);
-    const [tableColumns, setTableColumns] = useState([]);
+  
     const [showTable,setShowTable]=useState(false)
-    const [selectedIds, setSelectedIds] = useState([]);
-    const[selectedData,setSelectdData]=useState([])
-    const [selectAll, setSelectAll] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
 
     const[filters,setFilters]=useState({})
@@ -212,7 +208,7 @@ const moneycodeColumns = [
 
 ];
 
-  const GetDataTAble = (api, tableId) => {
+  const GetDataTAble = (api, tableId,start_date,end_date,supplier,country,invoice_type,invcat,company_id,cust_inv_type) => {
     console.log(api)
    if ($.fn.DataTable.isDataTable(tableId)) {
   $(tableId).DataTable().clear().destroy();
@@ -244,7 +240,14 @@ else if (api === owner_invoice) {
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
-
+        params.append("start_date", start_date?start_date:"");
+        params.append("end_date", end_date?end_date :"");
+        params.append("supplier_id", supplier?supplier:"");
+        params.append("company_id",company_id?company_id:"");
+        params.append("country", country?country:"");
+        params.append("invcat", invcat?invcat :"");
+        params.append("invoice_type", invoice_type?invoice_type : "");
+       params.append("cust_inv_type", cust_inv_type?cust_inv_type: "");
 
         try {
           const response = await fetch(`${api}?${params.toString()}`);
@@ -333,30 +336,29 @@ else if (api === owner_invoice) {
 
   };
 
-useEffect(() => {
-  const tab = getActiveTabFromUrl();
-  const api = getApiByTab(tab);
-  const tableId = getTableIdByTab(tab);
-  setTimeout(() => {
-    GetDataTAble(api, tableId);
-  }, 200);
-   return () => {
-  if ($.fn.DataTable.isDataTable(tableId)) {
-    $(tableId).DataTable().clear().destroy();
-  }
-};
-}, [window.location.search]);
-
-      
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".dropdown-action")) {
-        setOpenRowId(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+// useEffect(() => {
+//   const tab = getActiveTabFromUrl();
+//   const api = getApiByTab(tab);
+//   const tableId = getTableIdByTab(tab);
+//    const start_date = document.getElementById("start")?.value ||"";
+//         const end_date = document.getElementById("end")?.value ||"";
+//         const supplier = document.getElementById("supplier")?.value ||"";
+//         const company_id = document.getElementById("company_id")?.value ||"";
+//         const country = document.querySelector('[name="country"]')?.value ||"";
+// const invoice_type = document.querySelector('[name="invoice"]')?.value || "";
+//         const invcat = document.getElementById("invcat")?.value ||"";
+//         const cust_inv_type = document.getElementById("customised")?.value ||"";
+//         console.log(country);
+        
+//   setTimeout(() => {
+//     GetDataTAble(api, tableId,start_date,end_date,supplier,country,invoice_type,invcat,company_id,cust_inv_type);
+//   }, 200);
+//    return () => {
+//   if ($.fn.DataTable.isDataTable(tableId)) {
+//     $(tableId).DataTable().clear().destroy();
+//   }
+// };
+// }, [window.location.search]);
 
    const SendBulkTable = [ 
   {
@@ -369,6 +371,7 @@ useEffect(() => {
         <HeaderCard
           title="Send Invoice"
         />
+        {showTable && (
         <CardBody>
              <div className='text-end mb-3'>
                   <Btn attrBtn={{ color: "danger", onClick: () =>
@@ -385,6 +388,7 @@ useEffect(() => {
             className="table table-bordered w-100"
           />
         </CardBody>
+        )}
       </Card>
     </Col>
   </Row>
@@ -400,6 +404,7 @@ useEffect(() => {
         <HeaderCard
           title="Send Invoice"
         />
+        {showTable && (
         <CardBody>
               <div className='text-end mb-3'>
                   <Btn attrBtn={{ color: "danger", onClick: () =>
@@ -419,6 +424,7 @@ useEffect(() => {
             className="table table-bordered w-100"
           />
         </CardBody>
+        )}
       </Card>
     </Col>
   </Row>
@@ -435,6 +441,7 @@ useEffect(() => {
         <HeaderCard
           title="Send Invoice"
         />
+        {showTable && (
         <CardBody>
                 <div className='text-end mb-3'>
                   <Btn attrBtn={{ color: "danger", onClick: () =>
@@ -452,6 +459,7 @@ useEffect(() => {
             className="table table-bordered w-100"
           />
         </CardBody>
+        )}
       </Card>
     </Col>
   </Row>
@@ -467,6 +475,7 @@ useEffect(() => {
         <HeaderCard
           title="Send Invoice"
         />
+        {showTable && (
         <CardBody>
                 <div className='text-end mb-3'>
                   <Btn attrBtn={{ color: "danger", onClick: () =>
@@ -486,6 +495,7 @@ useEffect(() => {
             className="table table-bordered w-100"
           />
         </CardBody>
+        )}
       </Card>
     </Col>
   </Row>
@@ -501,6 +511,7 @@ useEffect(() => {
         <HeaderCard
           title="Send Invoice"
         />
+        {showTable && (
         <CardBody>
                 <div className='text-end mb-3'>
                   <Btn attrBtn={{ color: "danger", onClick: () =>
@@ -520,6 +531,7 @@ useEffect(() => {
             className="table table-bordered w-100"
           />
         </CardBody>
+        )}
       </Card>
     </Col>
   </Row>
@@ -527,45 +539,62 @@ useEffect(() => {
   },
   
 ];
-   const handleSearch = (formData) => {
-     const tab = getActiveTabFromUrl();
+useEffect(() => {
+  if (!showTable || !filters) return;
+
+  const tab = getActiveTabFromUrl();
   const api = getApiByTab(tab);
   const tableId = getTableIdByTab(tab);
 
-    console.log("🔍 Filters received:", formData);
+  GetDataTAble(
+    api,
+    tableId,
+    filters.from,
+    filters.to,
+    filters.supplier_id,
+    filters.country_id,
+    filters.invoice_type,
+    filters.inv_cat,
+    filters.company_id,
+    filters.cust_inv_type
+  );
 
-  
-    GetDataTAble(api, tableId); // fetch new data immediately
-  };
+}, [showTable, filters]);
+const handleSearch = (formData) => {
+  console.log("🔍 Filters received:", formData);
+
+  setFilters(formData);   // save filters
+  setShowTable(true);     // show table
+};
 const SendBulkTab = [
   {
     id: '1',
     label:"Send Invoice",
-    component: <SingleEssoForm  company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch} setShowTable={setShowTable} />,
+    component: <SingleEssoForm  company_list="false"  btnTtitle="Search Invoice" title="Search Invoice" onSearch={handleSearch}  />,
   },
   {
     id: '2',
     label:"Send Owner Operator Invoice",
-    component: <CreateInvoiceCommon setShowTable={setShowTable}  validation={false}  company_list="list" 
+    component: <CreateInvoiceCommon  validation={false}  company_list="list" 
  supplier_ids="6"  cust_inv_dropdown={true}   country_id="1" owner_operator_invoice="Yes" invoice_type_dropdown={true}  invoice_type="RG" btnTtitle="Search Data" btn1Title="Reset"  title="Search Owner Operator Invoice"  onSearch={handleSearch}/>,
   },
   
   {
     id: '3',
     label: "Send MoneyCode Invoice",
-    component: <CreateInvoiceCommon setShowTable={setShowTable} validation={false}  company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={handleSearch}/>,
+    component: <CreateInvoiceCommon  validation={false}  company_list="list" suplier_list={false} btnTtitle="Search Data" title="Search MoneyCode Invoice" onSearch={handleSearch}/>,
   },
    {
     id: '4',
     label:"Send Customized Invoice",
-    component:  <CreateInvoiceCommon setShowTable={setShowTable} invoice_creation="" invoice_type="" cust_inv_type="RG" validation={false} company_list="list" cust_inv_dropdown={true}
+    component:  <CreateInvoiceCommon invoice_creation="" invoice_type="" cust_inv_type="RG" validation={false} company_list="list" cust_inv_dropdown={true}
  supplier_ids="6,3" invoice_category_dropdown={true}   country_id="" invoice_type_dropdown={true}   btnTtitle="Search Data" btn1Title="Reset"  title="Search Customized Invoice" onSearch={handleSearch}/>,
   },
  
    {
     id: '5',
     label:"Send T-check Invoice",
-    component: <CreateInvoiceCommon setShowTable={setShowTable} validation={false} company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={handleSearch}/>,
+    component: <CreateInvoiceCommon  validation={false} company_list="list" suplier_list={false}  btnTtitle="Search Data" title="Search T-check Invoice" onSearch={handleSearch}/>,
   },
   
 ];

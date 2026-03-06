@@ -67,7 +67,6 @@ const Index = () => {
         "Fuel Price": "fuel_price",
         "Savings": "saving_total",
         "Bulk DEF": "bulk_def_price",
-
     },
      esso: {
     id: "id",

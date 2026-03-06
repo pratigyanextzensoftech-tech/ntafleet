@@ -19,7 +19,7 @@ import DownloadEssoCent from '../Components/pricing/download_essocent/index';
 import UpdateEssoCent from '../Components/pricing/updateEssoCent/index';
 import ManageEssoCent from '../Components/pricing/manage_essocent/index';
 import UploadFjPrice from '../Components/pricing/uploadPricing/index';
-import PriceList from '../Components/pricing/pricing_list/index';
+import PriceList from '../Components/pricing/pricing_list/PriceListIndex.jsx';
 //import SinglePricing from '../Components/pricing/singlePricingPdf/single_price_pdf';
 import SinglePricing from '../Components/pricing/singlePricingPdf/SinglePdfIndex.jsx';
 import BulkPrice from '../Components/pricing/bulk_price/index';

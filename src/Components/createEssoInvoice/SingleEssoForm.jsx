@@ -103,17 +103,15 @@ useEffect(() => {
     console.log("Form Data:", data); 
     const payload={
 company_id:data.company?.value,
-country:data.country?.label,
+country_id:data.country?.label,
 invoice_type:data.invoice?.value,
 to:data.endDate? formatDate(data.endDate) : "",
 from:data.startDate? formatDate(data.startDate) : "",
 supplier_id:data.supplier?.value,
-invcat:data?.invCat?.value?data?.invCat?.value:"",
+cust_inv_type:data?.invCat?.value?data?.invCat?.value:"",
     }
      if (onSearch){ 
-
       onSearch(payload)
-    setShowTable(true)
      };// ✅ This will print your inputs
     // alert("Form submitted successfully!");
   };
@@ -146,6 +144,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                       <Select
                         {...field}
                         options={company}
+                        id="company_id"
                         className="form-control p-0 border-0"
                         placeholder="Select Company Name"
                           menuPortalTarget={document.body}
@@ -160,8 +159,6 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                     )}
                   />
                 </InputGroup>
-
-          
               </FormGroup>
             </Col>
               )}
@@ -180,6 +177,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         render={({ field }) => (
                           <DatePicker
                             placeholderText="Select start date"
+                            id="start"
                             className={`form-control `}
                             selected={field.value}
                             onChange={(date) => field.onChange(date)}
@@ -210,6 +208,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         render={({ field }) => (
                           <DatePicker
                             placeholderText="Select End date"
+                            id="end"
                             className={`form-control `}
                             selected={field.value}
                             onChange={(date) => field.onChange(date)}
@@ -231,7 +230,6 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                   <InputGroupText>Supplier</InputGroupText>
                   <Controller
                     name="supplier"
-                   
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -240,6 +238,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         supplierData
                         }
                         className="form-control p-0 border-0"
+                        id="supplier"
                         placeholder="Select supplier"
                         menuPortalTarget={document.body}
                           menuPosition="fixed"
@@ -269,6 +268,8 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         {...field}
                         options={[country[1]]}
                         className="form-control p-0 border-0"
+                        id="country"
+                        name="country"
                         placeholder="Select Country"
                         menuPortalTarget={document.body}
                           menuPosition="fixed"
@@ -292,6 +293,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                   <InputGroupText>Invoice Type</InputGroupText>
                   <Controller
                     name="invoice"
+                      id="invoice_type"
                     defaultValue={
                      invoiceType[1]
                     }
@@ -301,6 +303,8 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                         {...field}
                        options={invoiceType.filter((_, index) => index !== 0)}
                         className="form-control p-0 border-0"
+                        id="invoice_type"
+                         name="invoice"
                         menuPortalTarget={document.body}
                           menuPosition="fixed"
                                  styles={{
@@ -327,6 +331,7 @@ invcat:data?.invCat?.value?data?.invCat?.value:"",
                           <Select
                             {...field}
                             options={InvoiceCategory}
+                            id="invcat"
                             className="form-control p-0 border-0"
                             menuPortalTarget={document.body}
                           menuPosition="fixed"

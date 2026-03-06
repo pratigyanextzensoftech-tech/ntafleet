@@ -76,7 +76,7 @@ const CreateInvoiceCommon = ({
 
   const onSubmit = (data) => {
     console.log(companies);
-    
+
      let companyValue = "";
    if (Array.isArray(data.selectedCompanies)) {
   if (data.selectedCompanies.includes("All Company")) {
@@ -85,6 +85,7 @@ const CreateInvoiceCommon = ({
     companyValue = data.selectedCompanies.join(",");  // 🔥 Convert array → string
   }
 }
+
     const basePayload = {
       company_id:company_list==="checkbox"? companyValue : data?.company?.value.toString()?data?.company?.value.toString():"" ,
       invoice_creation: invoice_creation ? invoice_creation : "",
@@ -96,12 +97,23 @@ const CreateInvoiceCommon = ({
       inv_cat: data.invCateory ? data.invCateory.value : "",
       cust_inv_type: data.cust_inv_type ? data.cust_inv_type.value : ""
     };
+    const Payload = {
+      company_id:company_list==="checkbox"? companyValue : data?.company?.value.toString()?data?.company?.value.toString():"" ,
+      invoice_creation: invoice_creation ? invoice_creation : "",
+      supplier_id: data?.supplier?.value ||"",
+      country_id: data?.country?.label ||"",
+      from: data.startDate ? formatDate(data.startDate) : "",
+      to: data.endDate ? formatDate(data.endDate) : "",
+      invoice_type: data.invoice_type ? data.invoice_type.value : ta_retail_invoice?ta_retail_invoice: invoice_type,
+      inv_cat: data.invCateory ? data.invCateory.value : "",
+      cust_inv_type: data.cust_inv_type ? data.cust_inv_type.value : ""
+    };
  if (onSearch){
-onSearch(basePayload)
-setShowTable(true)
-
-
+onSearch(Payload)
  }   ;
+ if (api_name) {
+    setLoading(true);
+
          setLoading(true);
     axios
       .post(api_name, basePayload, {
@@ -117,6 +129,7 @@ setShowTable(true)
         toast.error(err);
         setLoading(false);
       });
+    }
 
     console.log("Final Payload Sent =>", basePayload);
   };
@@ -185,6 +198,7 @@ setShowTable(true)
         ...(companies )
       ]}
                               className="form-control p-0 border-0"
+                              id="company_id"
                               placeholder="Select Company"
                                 menuPortalTarget={document.body}
                           menuPosition="fixed"
@@ -223,6 +237,7 @@ setShowTable(true)
                             render={({ field }) => (
                               <DatePicker
                                 placeholderText="Select start date"
+                                id="start"
                                 className={`form-control `}
                                 selected={field.value}
                                 onChange={(date) => field.onChange(date)}
@@ -264,6 +279,7 @@ setShowTable(true)
                                 onChange={(date) => field.onChange(date)}
                                dateFormat="yyyy-MM-dd"
                                portalId="root"
+                               id="end"
                               popperPlacement="bottom-start"
                               />
                             )}
@@ -289,6 +305,7 @@ setShowTable(true)
                         control={control}
                         rules={validation!==false &&{ required: "Supplier is required" }}
                         defaultValue={null}
+                        id="supplier"
                         render={({ field }) => {
                           // Auto select if only one option exists
                           if (
@@ -349,6 +366,7 @@ setShowTable(true)
                             <Select
                               {...field}
                               options={country}
+                              id="country"
                               className="form-control p-0 border-0"
                               placeholder="Select Country"
                               value={field.value}
@@ -398,6 +416,7 @@ setShowTable(true)
                                 className="form-control p-0 border-0"
                                 placeholder="Select Inv "
                                 value={field.value}
+                                id="invoice_type"
                                 onChange={(val) => field.onChange(val)}
                                   menuPortalTarget={document.body}
                           menuPosition="fixed"
@@ -438,6 +457,7 @@ setShowTable(true)
                               <Select
                                 {...field}
                                 options={InvoiceCategory}
+                                id="invcat"
                                 className="form-control p-0 border-0"
                                 placeholder="Select Inv"
                                 value={field.value}
@@ -480,6 +500,7 @@ setShowTable(true)
                             return (
                               <Select
                                 {...field}
+                                id="customised"
                                 options={customizedTypeType}
                                 className="form-control p-0 border-0"
                                 placeholder="Select Inv"
