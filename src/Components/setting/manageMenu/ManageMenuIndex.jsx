@@ -10,64 +10,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { menu } from "../../../api";
 // 🔹 Action Dropdown
-const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
 
-
-  return (
-    <div ref={dropdownRef} className="position-relative dropdown-action">
-      <button
-        type="button"
-        className="btn btn-sm btn-primary show_hide"
-        style={{ padding: "2px 4px" }}
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        Action
-      </button>
-
-      {open && (
-        <ul
-          className="dropdown-menu show"
-          style={{
-            display: "block",
-            position: "absolute",
-            right: 0,
-            marginTop: 4,
-            zIndex: 9999,
-            minWidth: 120,
-          }}
-        >
-          <li>
-            <button
-              type="button"
-              className="text-success dropdown-item d-flex align-items-center"
-              onClick={() => {
-                setOpen(false);
-                onEdit(row, apiUrl);
-              }}
-            >
-              <FaEdit className="me-2" /> Edit
-            </button>
-          </li>
-
-          <li>
-            <button
-              type="button"
-              className="text-danger dropdown-item d-flex align-items-center"
-              onClick={() => {
-                setOpen(false);
-                onDelete(row);
-              }}
-            >
-              <FaTrashAlt className="me-2" /> Delete
-            </button>
-          </li>
-        </ul>
-      )}
-    </div>
-  );
-};
 const ManageMenuIndex = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [Edit, setEdit] = useState(false);
@@ -127,8 +70,8 @@ const ManageMenuIndex = () => {
 
  useEffect(() => {
 
-    loadDataTable("#primaryMenuTable", pmenuApi);
-    loadDataTable("#secondaryMenuTable", smenuApi, true);
+    loadTable("#primaryMenuTable", pmenuApi);
+    loadTable("#secondaryMenuTable", smenuApi, true);
 
   }, []);
 

@@ -14,10 +14,12 @@ import { ta_pricing_actual as TA_ACTUAL_API,
   irv_pricing as IRVING_API,
   pricing,
   cen_pricing } from "../../../api";
+import axios from 'axios';
 import $ from "jquery";
 import "datatables.net";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
+import Swal from 'sweetalert2';
 const PriceListIndex = () => {
     const [selectedRows, setSelectedRows] = useState([]);
     const[filters,setFilters]=useState({})
@@ -65,12 +67,10 @@ const PriceListIndex = () => {
            case "6":
           return "#love-actual";
            case "7":
-          return "#love-capped";
-           case "8":
           return "#ultramar";
-           case "9":
+           case "8":
           return "#irving";
-            case "10":
+            case "9":
           return "#cen-pricing";
 
       }
@@ -396,7 +396,7 @@ const cenovus = [
   }
 }
 ];
-  const GetDataTAble = (api, tableId) => {
+  const GetDataTAble = (api, tableId,pricing_date,supplier) => {
     console.log(api)
    if ($.fn.DataTable.isDataTable(tableId)) {
   $(tableId).DataTable().clear().destroy();
@@ -448,6 +448,8 @@ else{
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
+        params.append("pricing_date", pricing_date?pricing_date:"");
+        params.append("supplier", supplier?supplier :"");
 
         try {
           const response = await fetch(`${api}?${params.toString()}`);
@@ -502,6 +504,42 @@ else{
       PST_QST: row.PST_QST,
       TOTAL_PRICE: row.TOTAL_PRICE,
 
+      Store_No:row.Store_No,
+      City:row.City,
+      State:row.State,
+      OPIS_Rack_ID:row.OPIS_Rack_ID,
+      Retail_Price:row.Retail_Price,
+      OPIS_Discounted_Price:row.OPIS_Discounted_Price,
+      Best_Discounted_Price:row.Best_Discounted_Price,
+      Pumping_Fee:row.Pumping_Fee,
+      Total_Taxes_Fees:row.Total_Taxes_Fees,
+      Federal_Taxes:row.Federal_Taxes,
+      State_Taxes:row.State_Taxes,
+      Other_Taxes:row.Other_Taxes,
+      Sales_Tax:row.Sales_Tax,
+      Freight_Fee:row.Freight_Fee,
+      DEF_Retail_Price:row.DEF_Retail_Price,
+
+      diesel:row.diesel,
+      old_price:row.old_price,
+      new_price:row.new_price,
+      carbon_tax:row.carbon_tax,
+      pft:row.pft,
+      fed_ex:row.fed_ex,
+      sub_total:row.sub_total,
+      gst_hst:row.gst_hst,
+      pst:row.pst,
+      pft:row.pft,
+      total:row.total,
+
+      site_id:row.site_id,
+      site_name:row.site_name,
+      card_id:row.card_id,
+      base_price:row.base_price,
+      excise_tax:row.excise_tax,
+      prov_fuel_tax_fees:row.prov_fuel_tax_fees,
+      qst:row.qst,
+      in_tax_price:row.in_tax_price,
 
     }));
     console.log(tableData)
@@ -569,7 +607,66 @@ else{
 });
 
   };
+const handleDelete = ({ ids = [], deleteApi, refetch }) => {
 
+  if (!ids.length) {
+    Swal.fire("Warning", "Please select at least one record.", "warning");
+    return;
+  }
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete selected records?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then(async (result) => {
+
+    if (result.isConfirmed) {
+
+      try {
+
+        // delete all ids
+        await Promise.all(
+          ids.map(id => axios.delete(`${deleteApi}/${id}`))
+        );
+
+        Swal.fire("Deleted!", "Record deleted successfully.", "success");
+
+        setSelectedRows([]);              // clear selected rows
+        $("#select-all").prop("checked", false); 
+
+        refetch(); // reload DataTable
+
+      } catch (error) {
+
+        Swal.fire("Error!", "Failed to delete record.", "error");
+
+      }
+
+    }
+
+  });
+
+};
+const handleDeleteClick = () => {
+
+  const tab = getActiveTabFromUrl();
+  const api = getApiByTab(tab);
+  const tableId = getTableIdByTab(tab);
+  const pricing_date=filters.pricing_date;
+  const supplier=filters.supplier
+
+  handleDelete({
+    ids: selectedRows,
+    deleteApi: api,
+    refetch: () => GetDataTAble(api, tableId,pricing_date,supplier)
+  });
+
+};
    const PricingTable = [ 
   {
     id: '1',
@@ -584,7 +681,7 @@ else{
       
         <CardBody>
              <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger", }}>Delete Pricing</Btn>
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick }}>Delete Pricing</Btn>
                 </div>
           <table
             id="pricing"
@@ -614,7 +711,7 @@ else{
       
         <CardBody>
               <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger", }}>Delete Mail</Btn>
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick }}>Delete Mail</Btn>
                 </div>
           <table
             id="ta-capped"
@@ -645,7 +742,7 @@ else{
     
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
     }}>Delete Mail</Btn>
                 </div>
           <table
@@ -672,7 +769,7 @@ else{
     
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
     }}>Delete Mail</Btn>
                 </div>
           <table
@@ -703,7 +800,7 @@ else{
        
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
      }}>Delete Mail</Btn>
                 </div>
           <table
@@ -734,7 +831,7 @@ else{
      
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
       
              }}>Delete Mail</Btn>
                 </div>
@@ -762,7 +859,7 @@ else{
      
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
       
              }}>Delete Mail</Btn>
                 </div>
@@ -790,7 +887,7 @@ else{
      
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
       
              }}>Delete Mail</Btn>
                 </div>
@@ -813,13 +910,12 @@ else{
     <Col sm="12">
       <Card>
         <HeaderCard
-          title="Irving Pricing List"
+          title="Cenovus Pricing List"
         />
      
         <CardBody>
                 <div className='text-end mb-3'>
-                  <Btn attrBtn={{ color: "danger"
-      
+                  <Btn attrBtn={{ color: "danger",onClick:handleDeleteClick
              }}>Delete Mail</Btn>
                 </div>
           <table
@@ -841,25 +937,33 @@ useEffect(() => {
   const tab = getActiveTabFromUrl();
   const api = getApiByTab(tab);
   const tableId = getTableIdByTab(tab);
+const pricing_date=document.getElementById("pricing_date")?.value
+const supplier=document.getElementById("supplier")?.value
 
   GetDataTAble(
     api,
     tableId,
-    filters.from,
-    filters.to,
-    filters.supplier_id,
-    filters.country_id,
-    filters.invoice_type,
-    filters.inv_cat,
-    filters.company_id,
-    filters.cust_inv_type
+  pricing_date,
+  supplier
+   
   );
 
 }, [ filters]);
 const handleSearch = (formData) => {
   console.log("🔍 Filters received:", formData);
-
-  setFilters(formData);   // save filters
+ const tab = getActiveTabFromUrl();
+  const api = getApiByTab(tab);
+  const tableId = getTableIdByTab(tab);
+  const pricing_date=formData.pricing_date
+  const supplier=formData.supplier
+  setFilters(formData);  
+    GetDataTAble(
+    api,
+    tableId,
+  pricing_date,
+  supplier
+   
+  );
 };
 const PricingTab = [
     {

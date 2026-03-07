@@ -1,4 +1,5 @@
 import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
+import MailPricingCommonIndex from '../../Components/pricing/MailPricingCommonIndex';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,esso_pricing_pdf } from '../../api';
 
@@ -11,7 +12,7 @@ export const EssoBulkTab = [
   {
     id: '2',
     label:"Mail ESSO PDF (Without Tax)",
-    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List (Without Tax)" supplier="ESSO" listapi={esso_pricing_pdf}  tax= "No" supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)"   title="Mail Bulk Pricing PDF (Without Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List (Without Tax)" supplier="ESSO" listapi={esso_pricing_pdf}  tax= "No" supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)"   title="Mail Bulk Pricing PDF (Without Tax)"/>,
   },
   
   {
@@ -23,7 +24,7 @@ export const EssoBulkTab = [
    {
     id: '4',
     label:"Mail ESSO PDF (With Tax)",
-    component:  <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List (With Tax)"
+    component:  <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List (With Tax)"
      supplier="ESSO" listapi={esso_pricing_pdf} tax= "Yes"  supplier_ids="6" btnTitle="Search Pricing PDF (With Tax)"   title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
  
@@ -31,11 +32,11 @@ export const EssoBulkTab = [
    { 
     id: '5',
     label:"Mail ESSO PDF (Without Tax)",
-    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List (Without Tax)" supplier="ESSO" listapi={esso_pricing_pdf} tax= "No"  supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)" title="Mail Bulk Pricing PDF (Without Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List (Without Tax)" supplier="ESSO" listapi={esso_pricing_pdf} tax= "No"  supplier_ids="6" btnTitle="Search Pricing PDF (Without Tax)" title="Mail Bulk Pricing PDF (Without Tax)"/>,
   },
     {
     id: '6',
     label:"Mail ESSO PDF (With Tax)",
-    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List (With Tax)" listapi={esso_pricing_pdf} tax= "Yes" supplier_ids="6"   supplier="ESSO" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List (With Tax)" listapi={esso_pricing_pdf} tax= "Yes" supplier_ids="6"   supplier="ESSO" btnTitle="Search Pricing PDF (With Tax)" title="Mail Bulk Pricing PDF (With Tax)"/>,
   },
 ];

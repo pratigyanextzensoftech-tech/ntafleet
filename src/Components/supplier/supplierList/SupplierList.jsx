@@ -22,7 +22,7 @@ const SupplierList = ({btntitle,btnTitle1,onDataAdded,Edit,selectedRow,setEdit})
      useEffect(() => {
     if (Edit && selectedRow) {
       reset({
-        supplier: selectedRow["Supplier Name"], // 👈 key from columnsMap in Index.jsx
+        supplier: selectedRow.supplier_name, // 👈 key from columnsMap in Index.jsx
       });
     }
   }, [Edit, selectedRow, reset]);

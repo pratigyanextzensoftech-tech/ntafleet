@@ -5,6 +5,7 @@ import HeaderCard from '../../Common/Component/HeaderCard';
 import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard';
 import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab';
 import ManageMenuTable from './ManageMenuTable'; 
+import MenuTable from './MenuTable';
 const Index = () => {
 const menuTabs = ManageMenuTable();
  // returns array of tabs
@@ -22,8 +23,8 @@ const menuTabs = ManageMenuTable();
     selectedRow: menuTabs.selectedRow,
     Edit: menuTabs.Edit,
     row:menuTabs.Row,
-    fetchPmenuData:menuTabs.pmenu,
-    fetchSmenuData:menuTabs.sMenu,
+    fetchPmenuData:menuTabs.menuData,
+    fetchSmenuData:menuTabs.menuData,
     setEdit: menuTabs.setEdit
   })}
 />

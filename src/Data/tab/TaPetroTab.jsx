@@ -4,6 +4,7 @@ import MailTaPetro from '../../Components/pricing/taPetroBulk/MailTaPetro';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,ta_pricing_pdf } from '../../api';
 import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
+import MailPricingCommonIndex from '../../Components/pricing/MailPricingCommonIndex';
 import MailPricingIndex from '../../Components/pricing/MailPricingIndex';
 export const TaPetroTab = [
   {
@@ -19,7 +20,7 @@ export const TaPetroTab = [
        Mail Bulk Pricing PDF - <strong> [Capped]</strong>
       </>
     ), 
-    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} invoiceType="Capped" supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} invoiceType="Capped" supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
   {
     id: '3',
@@ -30,12 +31,12 @@ export const TaPetroTab = [
       </>
     )
    ,
-    component: <MailPricingCommon  taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} invoiceType="Actual"   supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
+    component: <MailPricingCommonIndex  taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} invoiceType="Actual"   supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf"/>,
   },
  {
     id: '4',
     label:" Mail Ta-Petro Bulk Pricing (Non-Customer) ", 
-    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf}  supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
+    component: <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf}  supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing Pdf"/>,
   },
    {
     id: '5',
@@ -47,7 +48,7 @@ export const TaPetroTab = [
     label: " Mail Retail Ta-Petro Bulk Pricing "
      
     , 
-    component: <MailPricingCommon taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
+    component: <MailPricingCommonIndex taxOption={false} tableTitle="Pricing PDF List " supplier="TA" listapi={ta_pricing_pdf} supplier_ids="3" title="Mail Bulk Pricing PDF" btnTitle="Search Pricing PDF"/>,
   },
  
   

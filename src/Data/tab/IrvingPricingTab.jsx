@@ -3,6 +3,7 @@ import MailLoveBulk from '../../Components/pricing/loveBulk/MailLoveBulk';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,love_pricing_pdf,irv_pricing_pdf } from '../../api';
 import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
+import MailPricingCommonIndex from '../../Components/pricing/MailPricingCommonIndex';
 
 export const IrvingPricingTab = [
   {
@@ -13,7 +14,7 @@ export const IrvingPricingTab = [
   {
     id: '2',
     label:"Mail Irving Bulk Pricing PDF (Without Tax)", 
-    component: <MailPricingCommon taxOption={true} tableTitle="Pricing PDF List (Without Tax)" supplier="IRVING" listapi={irv_pricing_pdf} tax= "No" supplier_ids="5" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf (Without Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={true} tableTitle="Pricing PDF List (Without Tax)" supplier="IRVING" listapi={irv_pricing_pdf} tax= "No" supplier_ids="5" title="Mail Bulk Pricing PDF" btnTitle="Search pricing Pdf (Without Tax)"/>,
   },
   {
     id: '3',
@@ -25,7 +26,7 @@ export const IrvingPricingTab = [
   {
     id: '4',
     label:"Mail Irving Bulk Pricing PDF (With Tax)"  , 
-    component: <MailPricingCommon taxOption={true} tableTitle="Pricing PDF List (With Tax)"  listapi={irv_pricing_pdf} supplier="IRV" tax= "Yes"  supplier_ids="5" title="Mail Bulk Pricing PDF (With Tax)" btnTitle="Search Pricing Pdf (With Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={true} tableTitle="Pricing PDF List (With Tax)"  listapi={irv_pricing_pdf} supplier="IRV" tax= "Yes"  supplier_ids="5" title="Mail Bulk Pricing PDF (With Tax)" btnTitle="Search Pricing Pdf (With Tax)"/>,
   }
  
   

@@ -97,6 +97,7 @@ setLoading(false)
                                 <DatePicker
                                   className="form-control"
                                   selected={field.value}
+                                  id="pricing_date"
                                   onChange={(date) => field.onChange(date)}
                                    dateFormat="yyyy-MM-dd"
                                     portalId="root"
@@ -135,6 +136,7 @@ setLoading(false)
                                 }
                                 placeholder="Select supplier"
                                 value={field.value}
+                                id="supplier"
                                   menuPortalTarget={document.body}
                                   menuPosition="fixed"
                                 onChange={field.onChange}

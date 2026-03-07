@@ -252,6 +252,10 @@ const handleBulkDelete = () => {
       data: data,
     processing: true,
      serverSide: false,
+      language: {
+    processing: "Loading...",
+    emptyTable: "No data available"
+  },
       columns: [
         ...Object.keys(columnsMap).map((key) => ({
           data: key,
@@ -327,6 +331,11 @@ const handleBulkDelete = () => {
       pageLength: perPageValue || 10,
       destroy: true
     });
+    table.processing(true);
+     setTimeout(() => {
+      table.processing(false);
+    }, 500);
+
 $(document).off("change", "#select-all");
 $(document).on("change", "#select-all", function () {
   $(".row-checkbox").prop("checked", $(this).prop("checked"));

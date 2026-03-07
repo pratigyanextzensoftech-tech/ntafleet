@@ -117,7 +117,7 @@ const combineColumns = [
   {
     data: null,
     title: "From - To Date",
-    render: (data, type, row) => `${formatDate(row.from)} ${formatDate(row.to)}`
+    render: (data, type, row) => `${formatDate(row.from)}  ${formatDate(row.to)}`
   },
   { data: "due_date", title: "Due Date" },
   { data: "total", title: "Total" },
@@ -149,7 +149,7 @@ const ownerColumns = [
   {
     data: null,
     title: "From - To Date",
-    render: (data, type, row) => `${formatDate(row.from)} ${formatDate(row.to)}`
+    render: (data, type, row) => `${formatDate(row.from)}  ${formatDate(row.to)}`
   },
   { data: "due_date", title: "Due Date" },
   { data: "total", title: "Total" },
@@ -184,7 +184,7 @@ const moneycodeColumns = [
   {
     data: null,
     title: "From - To Date",
-    render: (data, type, row) => `${formatDate(row.from)} ${formatDate(row.to)}`
+    render: (data, type, row) => `${formatDate(row.from_date)}  ${formatDate(row.to_date)}`
   },
   { data: "due_date", title: "Due Date" },
   { data: "total", title: "Total Due" },
@@ -233,7 +233,7 @@ else if (api === owner_invoice) {
        scrollX: true,
       scrollCollapse: true,
       fixedColumns: { leftColumns: 1},
-      pageLength: 10,
+      pageLength: 200,
  columns: columns, 
       ajax: async function (data, callback) {
         const params = new URLSearchParams();
@@ -258,6 +258,8 @@ else if (api === owner_invoice) {
       invoice_id: row.invoice_id,
       company_name: row.company_name,
       from: row.from,
+      from_date:row.from_date,
+      to_date:row.to_date,
       to: row.to,
       due_date: row.due_date,
       total: row.total,

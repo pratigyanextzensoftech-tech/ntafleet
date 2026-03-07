@@ -91,7 +91,7 @@ import SalesmanVol from '../Components/reports/salesmanVolume/SalesManList.jsx';
 import CreateReports from '../Components/reports/createReport/index';
 
 //Supplier
-import SupplierList from '../Components/supplier/supplierList/index';
+import SupplierList from '../Components/supplier/supplierList/SupplierIndex.jsx';
 
 //Money Code
 import MoneyCodeList from '../Components/moneyCode/moneyCodeList/MoneyCode.jsx';

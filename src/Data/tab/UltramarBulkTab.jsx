@@ -3,6 +3,7 @@ import MailUltramar from '../../Components/pricing/ultramar/MailUltramar';
 import PricingCommon from '../../Components/pricing/PricingCommon';
 import { create_pricing_pdf,ul_pricing_pdf } from '../../api';
 import MailPricingCommon from '../../Components/pricing/MailPricingCommon';
+import MailPricingCommonIndex from '../../Components/pricing/MailPricingCommonIndex';
 
 export const UltramarBulkTab = [
   {
@@ -13,7 +14,7 @@ export const UltramarBulkTab = [
   {
     id: '2',
     label:"Mail ULTRAMAR Bulk Pricing PDF (Without Tax)",
-    component: <MailPricingCommon taxOption={true} tableTitle="Pricing PDF List (Without Tax)" listapi={ul_pricing_pdf} tax= "No"  supplier="UL" supplier_ids="10" title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Search pricing Pdf (without Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={true} tableTitle="Pricing PDF List (Without Tax)" listapi={ul_pricing_pdf} tax= "No"  supplier="UL" supplier_ids="10" title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Search pricing Pdf (without Tax)"/>,
   },
   {
     id: '3',
@@ -24,6 +25,6 @@ export const UltramarBulkTab = [
  {
     id: '4',
     label:" Mail ULTRAMAR Bulk Pricing PDF (With Tax)", 
-    component: <MailPricingCommon taxOption={true} tableTitle="Pricing PDF List (With Tax)" listapi={ul_pricing_pdf} supplier="UL" supplier_ids="10" tax= "Yes" title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Search Pricing Pdf (Without Tax)"/>,
+    component: <MailPricingCommonIndex taxOption={true} tableTitle="Pricing PDF List (With Tax)" listapi={ul_pricing_pdf} supplier="UL" supplier_ids="10" tax= "Yes" title="Mail Bulk Pricing PDF (Without Tax)" btnTitle="Search Pricing Pdf (Without Tax)"/>,
   },
 ];
