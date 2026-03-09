@@ -125,10 +125,12 @@ useEffect(() => {
     }
 
     $(tableId).DataTable({
-      paging: true,
-      searching: true,
-      ordering: true,
-      pageLength: 10
+     paging: true,
+  searching: true,
+  ordering: true,
+  pageLength: 10,
+  processing: true,   // ✅ shows loader
+  autoWidth: false
     });
 
   }, 300); // give React time to render rows
@@ -154,7 +156,6 @@ useEffect(() => {
     });
   };
 
-  // 🔹 EDIT
   const handleEdit = async (row) => {
     console.log(row,"row")
     setRow(row)

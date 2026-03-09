@@ -20,6 +20,7 @@ import "datatables.net";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
 import Swal from 'sweetalert2';
+import {formatDate} from '../../../Hooks/Dropdowns'
 const PriceListIndex = () => {
     const [selectedRows, setSelectedRows] = useState([]);
     const[filters,setFilters]=useState({})
@@ -458,7 +459,7 @@ else{
       
     {
       id: row.id,
-      pricing_date: row.pricing_date,
+      pricing_date: formatDate(row.pricing_date),
       supplier: row.supplier,
       site: row.site,
       city: row.city,
@@ -469,6 +470,7 @@ else{
       rack_prov: row.rack_prov,
       cost: row.cost,
       total_cost: row.total_cost,
+      
       retail_price: row.retail_price,
       disc_retail: row.disc_retail,
       your_price: row.your_price,
