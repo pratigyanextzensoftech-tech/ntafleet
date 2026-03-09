@@ -8,7 +8,6 @@ import axios from "axios";
 
 const ViewPdf = () => {
   const [downloadLink, setDownloadLink] = useState("");
-
   const { id } = useParams();
   const location = useLocation();
 
@@ -20,7 +19,6 @@ const ViewPdf = () => {
 
   console.log("Invoice ID:", invoiceId);
   console.log("Button Type:", type);
-
 
   useEffect(() => {
   let API_URL = combine_invoice; // default

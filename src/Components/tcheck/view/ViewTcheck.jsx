@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import axios from "axios";
-import {  tcheck_invoice as APINAME,download} from '../../../api/index'
+import {  tcheck_invoice as APINAME,download,send_mail} from '../../../api/index'
 import View from './View'
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv } from "react-icons/fa";
@@ -249,12 +249,72 @@ $(document)
 
     downloadPdf(link, invoiceId);
   });
+    $(document).off("click", ".email-btn");
+
+    $(document).on("click", ".email-btn", function () {
+      const invoiceId = $(this).data("id");
+      const supplierId = $(this).data("supplier");
+      // 🔥 decide invoiceType
+
+      const payload = {
+        mail_type: "INVOICE",
+        supplier: supplierId,
+        invoiceType: "TCHECK",
+        ids: invoiceId,
+      };
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to send the mail?",
+        icon: "warning",
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(`${send_mail}`, payload)
+            .then(() => {
+              Swal.fire("Successfully sent the mail", "", "success");
+            })
+            .catch(() => {
+              Swal.fire("Error!", "Failed to send the mail.", "error");
+            });
+        }
+      });
+    });
+       $(document).off("click", ".regenerate-btn");
+
+    $(document).on("click", ".regenerate-btn", function () {
+      const invoiceId = $(this).data("id");
+      // 🔥 decide invoiceType
+
+      const payload = {
+        invoiceType: "TCHECK",
+        ids: invoiceId,
+      };
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to Regenerate?",
+        icon: "warning",
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(`${APINAME}/regenerate`, payload)
+            .then(() => {
+              Swal.fire("Successfully sent the mail", "", "success");
+            })
+            .catch(() => {
+              Swal.fire("Error!", "Failed to send the mail.", "error");
+            });
+        }
+      });
+    });
 
 $(document).off("focus", ".status-change");
 $(document).on("focus", ".status-change", function () {
   $(this).data("previous", $(this).val());
 });
-
 
 // Handle change for BOTH dropdowns
 $(document).off("change", ".status-change");

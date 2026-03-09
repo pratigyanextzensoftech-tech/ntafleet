@@ -2,11 +2,11 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard";
 import axios from "axios";
-import {  moneycode_invoice as APINAME,retail_invoice,invoice,download} from '../../api/index'
+import {  moneycode_invoice as APINAME,download,} from '../../api/index'
 import ViewMoneyCodeForm from "./ViewMoneyCodeForm";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
-import { formatDate } from "../../Hooks/Dropdowns";
+import { formatDate,downloadPdf } from "../../Hooks/Dropdowns"; 
 import Swal from "sweetalert2";
 import $ from "jquery";
 import 'datatables.net';
@@ -37,8 +37,6 @@ const Index = () => {
         const from = document.getElementById("from")?.value;
         const to = document.getElementById("to")?.value;
         const company = document.getElementById("company")?.value;
-      
-
       GetDataTAble(from,to,company);
   }, []);
 
@@ -89,64 +87,33 @@ const Index = () => {
   data: null,
   title: "Action",
   orderable: false,
-  render: function (data, type, row) {
+  render: function (data, type, row) { 
 
-    const viewUrl = `/card-admin/viewInvoice/ViewPdf/${btoa(row.invoice_id)}`;
-    const downloadLink = row.fulldata.download_link || "#";
+      let actionItems = "";
+        actionItems = `<li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}"> <i class="fa fa-download me-2 text-danger"></i>Download</button></li>`;
 
-    return `
+        actionItems +=`<li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}"> <i class="fa fa-eye me-2 text-success"></i>View</button></li>`;
+
+        actionItems +=`<li><button class="dropdown-item email-btn" data-id="${row.invoice_id}" data-supplier="${row.supplier_id}">  <i class="fa fa-envelope me-2 text-primary"></i>  Email  </button> </li>`;
+
+        actionItems +=`<li><button class="dropdown-item regenerate-btn" data-id="${row.invoice_id}"><i class="fa fa-sync me-2 text-info"></i>Regenerate</button></li>`;
+        actionItems +=`<li><button class="dropdown-item delete-btn text-danger" data-id="${row.invoice_id}" <i class="fa fa-trash me-2"></i>Delete</button></li>`;
+          return `
       <div class="dropdown">
         <button class="btn btn-sm btn-success dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown">
-         <i class="fa fa-cog me-1"></i>  Action
+          Action
         </button>
-
         <ul class="dropdown-menu">
-
-          <li>
-            <a class="dropdown-item text-danger"
-               href="${downloadLink}"
-               target="_blank">
-               <i class="fa fa-download me-2"></i> Download 
-            </a>
-          </li>
-
-          <li>
-            <a class="dropdown-item text-success"
-               href="${viewUrl}"
-               target="_blank">
-               <i class="fa fa-eye me-2"></i> View
-            </a>
-          </li>
-
-          <li>
-            <button class="dropdown-item text-primary email-btn"
-                    data-id="${row.invoice_id}">
-              <i class="fa fa-envelope me-2"></i> Email
-            </button>
-          </li>
-
-          <li>
-            <button class="dropdown-item text-warning regenerate-btn"
-                    data-id="${row.invoice_id}">
-              <i class="fa fa-refresh me-2"></i> ReGenerate Invoice
-            </button>
-          </li>
-
-          <li>
-            <button class="dropdown-item text-danger delete-btn"
-                  data-invoice="${row.invoice_id}">
-              <i class="fa fa-trash me-2"></i> Delete
-            </button>
-          </li>
-
+          ${actionItems}
         </ul>
       </div>
     `;
-  }
-}
-];
+        },
+      },
+    ];
+ 
 
     $("#example").DataTable({
       serverSide: true,
@@ -198,7 +165,9 @@ const Index = () => {
       "total": row.total,
       admin_status: row.admin_status,
        "mails":row.mails,
-        fulldata: row 
+        fulldata: row ,
+         download_link: row.download_link,
+         "supplier_id":row.supplier_id
         
     }));
 
@@ -233,6 +202,79 @@ const Index = () => {
     });
   }
 },
+    });
+
+     $(document).off("click", ".download-btn");
+
+    $(document).on("click", ".download-btn", function () {
+      const link = $(this).data("link");
+       
+      console.log(link); 
+
+      // 🔥 Call your existing function
+      downloadPdf(link);
+    });
+
+    $(document).off("click", ".email-btn");
+
+    $(document).on("click", ".email-btn", function () {
+      const invoiceId = $(this).data("id");
+      const supplierId = $(this).data("supplier");
+      // 🔥 decide invoiceType
+
+      const payload = {
+        mail_type: "INVOICE",
+        supplier: supplierId,
+        invoiceType: "MONEYCODE",
+        ids: invoiceId,
+      };
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to send the mail?",
+        icon: "warning",
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(`${send_mail}`, payload)
+            .then(() => {
+              Swal.fire("Successfully sent the mail", "", "success");
+            })
+            .catch(() => {
+              Swal.fire("Error!", "Failed to send the mail.", "error");
+            });
+        }
+      });
+    });
+       $(document).off("click", ".regenerate-btn");
+
+    $(document).on("click", ".regenerate-btn", function () {
+      const invoiceId = $(this).data("id");
+      // 🔥 decide invoiceType
+
+      const payload = {
+        invoiceType: "MONEYCODE",
+        ids: invoiceId,
+      };
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to Regenerate?",
+        icon: "warning",
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(`${APINAME}/regenerate`, payload)
+            .then(() => {
+              Swal.fire("Successfully sent the mail", "", "success");
+            })
+            .catch(() => {
+              Swal.fire("Error!", "Failed to send the mail.", "error");
+            });
+        }
+      });
     });
 $(document).off("focus", ".status-change");
 $(document).on("focus", ".status-change", function () {

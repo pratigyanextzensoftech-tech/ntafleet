@@ -8,6 +8,7 @@ export const discount_sheet = `${baseurl}/api/discount_sheet`;
 export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
 export const company_info = `${baseurl}/api/company/company_info`;
+export const send_mail = `${baseurl}/api/send_mail`;
 
 export const companyall = `${baseurl}/api/company/all`;
 export const tacompany = `${baseurl}/api/company/taall`;
