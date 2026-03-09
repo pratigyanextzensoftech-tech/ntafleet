@@ -9,6 +9,7 @@ export const discount_list = `${baseurl}/api/discount_list`;
 export const company = `${baseurl}/api/company`;
 export const company_info = `${baseurl}/api/company/company_info`;
 export const send_mail = `${baseurl}/api/send_mail`;
+export const  regenerate= `${baseurl}/api/regenerate`;
 
 export const companyall = `${baseurl}/api/company/all`;
 export const tacompany = `${baseurl}/api/company/taall`;
@@ -218,7 +219,6 @@ export const retail_invoice = `${baseurl}/api/retail_invoice`;
 export const retail_invoice_detail = `${baseurl}/api/retail_invoice_detail`;
 export const retail_invoice_detail_new = `${baseurl}/api/retail_invoice_detail_new`;
 export const retail_invoice_new = `${baseurl}/api/retail_invoice_new`;
-export const send_email = `${baseurl}/api/send_email`;
 export const ta_cent = `${baseurl}/api/ta_cent`;
 export const ta_centValue = `${baseurl}/api/ta_cent/get_value`;
 export const ta_corp_cent = `${baseurl}/api/ta_corp_cent`;

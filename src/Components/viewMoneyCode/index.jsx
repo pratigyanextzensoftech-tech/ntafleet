@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard";
 import axios from "axios";
-import {  moneycode_invoice as APINAME,download,} from '../../api/index'
+import {  moneycode_invoice as APINAME,download,regenerate,send_mail} from '../../api/index'
 import ViewMoneyCodeForm from "./ViewMoneyCodeForm";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
@@ -266,7 +266,7 @@ const Index = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .post(`${APINAME}/regenerate`, payload)
+            .post(`${regenerate}`, payload)
             .then(() => {
               Swal.fire("Successfully sent the mail", "", "success");
             })

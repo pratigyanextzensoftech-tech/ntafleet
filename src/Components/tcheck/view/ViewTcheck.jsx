@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
 import axios from "axios";
-import {  tcheck_invoice as APINAME,download,send_mail} from '../../../api/index'
+import {  tcheck_invoice as APINAME,download,send_mail,regenerate} from '../../../api/index'
 import View from './View'
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv } from "react-icons/fa";
@@ -300,7 +300,7 @@ $(document)
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .post(`${APINAME}/regenerate`, payload)
+            .post(`${regenerate}`, payload)
             .then(() => {
               Swal.fire("Successfully sent the mail", "", "success");
             })

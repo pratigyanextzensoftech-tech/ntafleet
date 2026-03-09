@@ -19,7 +19,7 @@ import axios from "axios";
 import $ from "jquery";
 import "datatables.net";
 import { formatDate } from "../../Hooks/Dropdowns";
-import { download,send_mail } from "../../api";
+import { download,send_mail,regenerate } from "../../api";
 import { downloadPdf } from "../../Hooks/Dropdowns";
 import {
   Dropdown,
@@ -491,7 +491,7 @@ const ViewIndex = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .post(`${send_mail}`, payload)
+            .post(`${regenerate}`, payload)
             .then(() => {
               Swal.fire("Successfully sent the mail", "", "success");
             })
