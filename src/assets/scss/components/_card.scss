@@ -39,7 +39,8 @@
 	font-weight: bold;
 	font-size: 14px;
 	text-align: left;
-	padding: 3px; 
+	padding: 3px;
+	white-space: nowrap;
 }
 
  .table tbody td {
@@ -48,8 +49,11 @@
   font-size: 12px;
   color: #000000;
   text-align: left;
+  white-space: nowrap;
 }
-
+.table tbody td:nth-child(2) {
+  white-space: normal;
+}
  
 table.dataTable input, table.dataTable select { 
 	height: 24px!important; 

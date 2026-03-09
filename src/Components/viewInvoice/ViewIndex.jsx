@@ -151,9 +151,9 @@ const show_hide = $('input[name="invoiceShow"]').val();
   title: "From - To",
   render: function (data, type, row) {
     
-    const from = row.from || "";
-    const to = row.to || "";
-    return `${formatDate(from)} ${formatDate(to)}`;
+    const from = row.from1 || "";
+    const to = row.to1 || "";
+    return `${from}  to  ${to}`;
   }
 },
   { data: "due_date", title: "Due Date" },
@@ -425,10 +425,10 @@ else if(api===customized_invoice){
       {
       id:row.id,
       invoice_id: row.invoice_id,
-    invoice_display: row.tp === "Rack" ? `${row.invoice_type}-${row.invoice_id}`: `NTA-${row.invoice_id}`,
+      invoice_display: row.tp === "Rack" ? `${row.invoice_type}-${row.invoice_id}`: `NTA-${row.invoice_id}`,
       company_name: row.company_name,
-      from: row.from,
-      to: row.to,
+      from1: row.from1,
+      to1: row.to1,
       due_date: row.due_date,
       total: row.total,
       retail_price: row.retail_price ||0,
@@ -678,7 +678,7 @@ console.log(supplier);
 
     const from = formData.from ||"";
     const to = formData.to ||"";
-       const supplier =  formData.supplier_id ;
+       const supplier =  formData.supplier_id?formData.supplier_id:'' ;
  const company_id =  formData.company_id ||"";
         const country =formData.country ||"";
         const invoice_type = formData.invoice_type ||"";
