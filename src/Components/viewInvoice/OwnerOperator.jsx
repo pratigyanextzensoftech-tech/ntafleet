@@ -40,7 +40,7 @@ const OwnerOperator = ({ title,onSearch }) => {
  
   const onSubmit = (data) => {
      const payload={
-                  supplier_id:data.supplier.value || "",
+                supplier_id: data && supplier ? supplier.value : "",
                     from: data.from ? formatDate(data.from): "",
                           to: data.to ? formatDate(data.to) : "",
                             company_id: data.company?.value || "",
