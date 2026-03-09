@@ -2,11 +2,11 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../AbstractElements";
 import HeaderCard from "../Common/Component/HeaderCard";
 import axios from "axios";
-import {  moneycode_invoice as APINAME,retail_invoice,invoice,download} from '../../api/index'
+import {  moneycode_invoice as APINAME,download,} from '../../api/index'
 import ViewMoneyCodeForm from "./ViewMoneyCodeForm";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
-import { formatDate } from "../../Hooks/Dropdowns";
+import { formatDate,downloadPdf } from "../../Hooks/Dropdowns"; 
 import Swal from "sweetalert2";
 import $ from "jquery";
 import 'datatables.net';
@@ -89,64 +89,33 @@ const Index = () => {
   data: null,
   title: "Action",
   orderable: false,
-  render: function (data, type, row) {
+  render: function (data, type, row) { 
 
-    const viewUrl = `/card-admin/viewInvoice/ViewPdf/${btoa(row.invoice_id)}`;
-    const downloadLink = row.fulldata.download_link || "#";
+      let actionItems = "";
+        actionItems = `<li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}"> <i class="fa fa-download me-2 text-danger"></i>Download</button></li>`;
 
-    return `
+        actionItems +=`<li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}"> <i class="fa fa-eye me-2 text-success"></i>View</button></li>`;
+
+        actionItems +=`<li><button class="dropdown-item email-btn" data-id="${row.invoice_id}" data-supplier="${row.supplier_id}">  <i class="fa fa-envelope me-2 text-primary"></i>  Email  </button> </li>`;
+
+        actionItems +=`<li><button class="dropdown-item regenerate-btn" data-id="${row.invoice_id}"><i class="fa fa-sync me-2 text-info"></i>Regenerate</button></li>`;
+        actionItems +=`<li><button class="dropdown-item delete-btn text-danger" data-id="${row.invoice_id}" <i class="fa fa-trash me-2"></i>Delete</button></li>`;
+          return `
       <div class="dropdown">
         <button class="btn btn-sm btn-success dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown">
-         <i class="fa fa-cog me-1"></i>  Action
+          Action
         </button>
-
         <ul class="dropdown-menu">
-
-          <li>
-            <a class="dropdown-item text-danger"
-               href="${downloadLink}"
-               target="_blank">
-               <i class="fa fa-download me-2"></i> Download 
-            </a>
-          </li>
-
-          <li>
-            <a class="dropdown-item text-success"
-               href="${viewUrl}"
-               target="_blank">
-               <i class="fa fa-eye me-2"></i> View
-            </a>
-          </li>
-
-          <li>
-            <button class="dropdown-item text-primary email-btn"
-                    data-id="${row.invoice_id}">
-              <i class="fa fa-envelope me-2"></i> Email
-            </button>
-          </li>
-
-          <li>
-            <button class="dropdown-item text-warning regenerate-btn"
-                    data-id="${row.invoice_id}">
-              <i class="fa fa-refresh me-2"></i> ReGenerate Invoice
-            </button>
-          </li>
-
-          <li>
-            <button class="dropdown-item text-danger delete-btn"
-                  data-invoice="${row.invoice_id}">
-              <i class="fa fa-trash me-2"></i> Delete
-            </button>
-          </li>
-
+          ${actionItems}
         </ul>
       </div>
     `;
-  }
-}
-];
+        },
+      },
+    ];
+ 
 
     $("#example").DataTable({
       serverSide: true,
@@ -198,7 +167,8 @@ const Index = () => {
       "total": row.total,
       admin_status: row.admin_status,
        "mails":row.mails,
-        fulldata: row 
+        fulldata: row ,
+         download_link: row.download_link,
         
     }));
 
@@ -234,6 +204,19 @@ const Index = () => {
   }
 },
     });
+
+     $(document).off("click", ".download-btn");
+
+    $(document).on("click", ".download-btn", function () {
+      const link = $(this).data("link");
+       
+      console.log(link); 
+
+      // 🔥 Call your existing function
+      downloadPdf(link);
+    });
+
+
 $(document).off("focus", ".status-change");
 $(document).on("focus", ".status-change", function () {
   $(this).data("previous", $(this).val());
