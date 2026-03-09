@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 import { menu } from "../../../api";
 import $ from "jquery";
 import "datatables.net";
-// 🔹 Action Dropdown
 const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -79,9 +78,6 @@ const MenuTable = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [Edit, setEdit] = useState(false);
   const[Row,setRow]=useState([])
-  const [filters, setFilters] = useState({});
-
-  // 🔹 Columns mapping for your custom hook
   const columnSets = {
     primaryMenu: {
       Id: "id",
@@ -116,37 +112,28 @@ const menuData = usePaginatedTable({
       : columnSets.secondaryMenu,
 });
 useEffect(() => {
+  const tableId = activeTab === "1"
+    ? "#primaryMenuTable"
+    : "#secondaryMenuTable";
 
-  if (!menuData?.data || menuData.data.length === 0) return;
-
-  const tableId =
-    activeTab === "1"
-      ? "#primaryMenuTable"
-      : "#secondaryMenuTable";
+  if (!menuData?.data?.length) return;
 
   const timer = setTimeout(() => {
 
     if ($.fn.DataTable.isDataTable(tableId)) {
-      $(tableId).DataTable().destroy(true);
+      $(tableId).DataTable().clear().destroy();
     }
 
     $(tableId).DataTable({
       paging: true,
       searching: true,
       ordering: true,
-      pageLength: 10,
-      destroy: true
+      pageLength: 10
     });
 
-  }, 100);
+  }, 300); // give React time to render rows
 
-  return () => {
-    clearTimeout(timer);
-
-    if ($.fn.DataTable.isDataTable(tableId)) {
-      $(tableId).DataTable().destroy(true);
-    }
-  };
+  return () => clearTimeout(timer);
 
 }, [menuData.data, activeTab]);
   // 🔹 DELETE
@@ -179,168 +166,7 @@ useEffect(() => {
       console.error("Error fetching full row data", error);
     }
   };
-const handleSearch = (field, value) => {
-  setFilters((prev) => ({
-    ...prev,
-    [field]: value,
-  }));
-};
 
-  // 🔹 Generate columns
-  const getTableColumns = (apiUrl, includePrimary = false) => {
-    const cols = [
-      {   name: (
-          <div>
-            <div className="fw-bold text-start">ID</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => handleSearch("Id", e.target.value)}
-
-            />
-          </div>
-        ), selector: (row) => row.Id, sortable: true },
-      {   name: (
-          <div>
-            <div className="fw-bold text-start">Menu Name</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-             onChange={(e) => handleSearch("Menu Name", e.target.value)}
-            />
-          </div>
-        ),  selector: (row) => row["Menu Name"], sortable: true },
-      {  name: (
-          <div>
-            <div className="fw-bold text-start">Menu Link</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-                onChange={(e) => handleSearch("Menu Link", e.target.value)}
-            />
-          </div>
-        ), selector: (row) => row["Menu Link"], sortable: true },
-      {  name: (
-          <div>
-            <div className="fw-bold text-start">Added By</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => handleSearch("Added By", e.target.value)}
-
-            />
-          </div>
-        ), selector: (row) => row["Added By"], sortable: true },
-      { name: (
-          <div>
-            <div className="fw-bold text-start">Added On</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => handleSearch("Added On", e.target.value)}
-
-            />
-          </div>
-        ),  selector: (row) => row["Added On"], sortable: true },
-      { name: (
-          <div>
-            <div className="fw-bold text-start">Menu Order</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => handleSearch("Menu Order", e.target.value)}
-
-            />
-          </div>
-        ),
-        selector: (row) => row["Menu Order"],
-        sortable: true,
-      },
-      {
-        name: "Action",
-        cell: (row) => (
-          <ActionDropdown
-            row={row}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            apiUrl={apiUrl}
-          />
-        ),
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
-      },
-    ];
-
-    if (includePrimary) {
-      cols.splice(2, 0, {
-        name: (
-          <div>
-            <div className="fw-bold text-start">Primary Menu</div>
-            <input
-              type="text"
-              className="mt-2"
-              style={{
-                width: "100%",
-                height: "28px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-              onClick={(e) => e.stopPropagation()}
-              onChange={(e) => handleSearch("Primary Menu", e.target.value)}
-
-            />
-          </div>
-        ),
-        selector: (row) => row["Primary Menu"],
-        sortable: true,
-      });
-    }
-
-    return cols;
-  };
 
   // 🔹 Tabs
   const tabContent = [

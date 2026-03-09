@@ -7,7 +7,7 @@ import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab';
 import ManageMenuTable from './ManageMenuTable'; 
 import MenuTable from './MenuTable';
 const Index = () => {
-const menuTabs = ManageMenuTable();
+const menuTabs = MenuTable();
  // returns array of tabs
   return (
     <Fragment>
