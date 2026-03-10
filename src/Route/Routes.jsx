@@ -11,7 +11,7 @@ import BulkDiscount from '../Components/discount/bulkDiscount/index';
 import ZeroDiscount from '../Components/discount/zeroDiscount/index';
 
 //Retail Price
-import Upload from '../Components/retailPrice/upload/index';
+import Upload from '../Components/retailPrice/upload/UploadIndex.jsx';
 import PetroRetail from '../Components/retailPrice/petro/index';
 
 //Pricing
