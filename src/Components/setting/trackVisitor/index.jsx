@@ -132,9 +132,7 @@ const Index = () => {
       setTableColumns(cols);
     }, [openRowId]);
   
-    // ✅ Action handlers
-    const handleEdit = (row) => alert("Edit " + row.id); 
-    const handleDelete = (row) => alert("Delete " + row.id);   
+ 
   return (
     <Fragment>
       <Breadcrumbs parent="Setting" title="Track Visitors" />

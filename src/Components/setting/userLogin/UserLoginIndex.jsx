@@ -1,35 +1,37 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import { petro_retail as APINAME,download } from "../../../api";
-import PetroForm from "./PetroForm";
+import { user_log as APINAME,download } from "../../../api";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import $ from "jquery";
 import 'datatables.net';
+import dayjs from "dayjs"; 
+
 import 'datatables.net-fixedcolumns';
-import {formatDate} from '../../../Hooks/Dropdowns'
-const PetroIndex = () => {
- const from = document.querySelector('[name="from"]')?.value;
-const to = document.querySelector('[name="to"]')?.value;
-const formatDateOnly = (value) => {
-  if (!value) return "";
-  const d = new Date(value);
-  // if (isNaN(d)) return value; // safety
-  return d.toISOString().split("T")[0]; // YYYY-MM-DD
-};
+const UserLoginIndex = () => {
+   const formatDate = (value, withTime = true) => {
+    if (!value) return "-";
+    const format = withTime ? "DD-MM-YYYY HH:MM" : "DD-MM-YYYY";
+    return dayjs(value).isValid() ? dayjs(value).format(format) : "-";
+  };
+  
   useEffect(() => { 
-          GetDataTAble(from,to);
+          GetDataTAble();
   }, []);
 
-  function GetDataTAble(from,to) {
+  function GetDataTAble() {
      const columns = [
-  { data: "timestamp", title: "Price Date", render: (data) => formatDate(data), className: "text-start"},
-  { data: "Site_Name", title: "Location Name" },
-  { data: "Site_City", title: "City" },
-  { data: "Site_State", title: "State" },
-  { data: "Site_Country", title: "Country" },
-  { data: "Site_Price", title: "Price", render: (data) => data, className: "text-start" },
-  { data: "timestamp", title: "Added Date" },
+  { data: "id", title: "Sr.No", className: "text-start"},
+  { data: "user_name", title: "User Name" },
+  { data: "ip", title: "Login_IP" },
+  { data: "full_address", title: "Address" },
+  { data: "country_name", title: "Country" },
+  { data: "state", title: "State"},
+  { data: "city", title: "City" },
+  { data: "login_status", title: "Login_Status" },
+  { data: "s_start", title: "Login_Time" },
+  { data: "s_end", title: "Logout_Time" },
+  { data: "dated", title: "Dated" },
 ];
 
     $("#example").DataTable({
@@ -62,8 +64,6 @@ const formatDateOnly = (value) => {
   params.append("search", data.search.value || "");
   params.append("orderColumn", data.columns[data.order[0].column].data);
   params.append("orderDir", data.order[0].dir);
-  params.append("from", from?from :"");
-  params.append("to", to?to:"");
  
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
@@ -71,13 +71,17 @@ const formatDateOnly = (value) => {
     // 🔥 Call both APIs together
      console.log(tableRes);
     const tableData = tableRes.data.map((row) => ({
-    "timestamp": row.timestamp,
-   "Site_Name":row.Site_Name,
-   "Site_City":row.Site_City,
-   "Site_State":row.Site_State,
-    "Site_Country":row.Site_Country,
-    "Site_Price":row.Site_Price,
-    "added_date":row.timestamp,
+    "id": row.id,
+   "user_name":row.user_name,
+   "ip":row.ip,
+   "full_address":row.full_address,
+    "country_name":row.country_name,
+    "state":row.state,
+    "city":row.city,
+    "login_status":row.login_status,
+    "s_start":formatDate(row.s_start),
+    "s_end":formatDate(row.s_end),
+    "dated":formatDate(row.dated,false),
     }));
     console.log(tableData);
     
@@ -102,37 +106,15 @@ const formatDateOnly = (value) => {
     });
   }
 
- const handleSearch = (formData) => {
- const from =  formData.from ||"";
- const to =  formData.to ||"";
- console.log(formData);
- 
-
-    GetDataTAble(from,to); // fetch new data immediately
-  };
   return (
     <Fragment>
-      <Breadcrumbs parent="Retail Prices" title="Petro Retail Price" />
+      <Breadcrumbs parent="Setting" title="User Login Log"/>
       <Container fluid={true}>
-        <Row>
-          <Col sm="12">
-            <Card>
-              <HeaderCard title="Filter" />
-              <CardBody>
-                       <PetroForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
          <Row>
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="Petro Retail List"
-                  downloadCsv="Download CSV"
-                   ShowdwonloadCsv={true}
-                  ShowloadData={true}
-                  loadData="Load Data"
+                  title="User Login Log"
                 />
              
               <CardBody>
@@ -144,13 +126,17 @@ const formatDateOnly = (value) => {
                   >
                     <thead>
                       <tr>
-                        <th>Price Date</th>
-                        <th>Location Name </th>
-                        <th>City </th>
-                        <th> State </th>
+                        <th>Sr.No</th>
+                        <th>User Name </th>
+                        <th>Login_IP </th>
+                        <th> Address </th>
                         <th>Country </th>
-                        <th>Price </th> 
-                        <th>Added Date </th> 
+                        <th>State </th> 
+                        <th>City </th> 
+                        <th>Login_Status </th> 
+                        <th>Login_Time </th> 
+                        <th>Logout_Time </th> 
+                        <th>Dated </th> 
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -166,4 +152,4 @@ const formatDateOnly = (value) => {
   );
 };
 
-export default PetroIndex;
+export default UserLoginIndex;

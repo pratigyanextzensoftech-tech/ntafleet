@@ -38,7 +38,7 @@ const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
           style={{
             display: "block",
             position: "absolute",
-            right: 0,
+         
             marginTop: 4,
             zIndex: 9999,
             minWidth: 120,
@@ -74,16 +74,24 @@ const ActionDropdown = ({ row, onEdit, onDelete, apiUrl }) => {
     </div>
   );
 };
-const MenuTable = () => {
+const useMenuTable = () => {
+    const getActiveTabFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("tab") || "1";
+  };
   const [selectedRow, setSelectedRow] = useState(null);
+  const [activeTab, setActiveTab] = useState(getActiveTabFromUrl());
   const [Edit, setEdit] = useState(false);
   const[Row,setRow]=useState([])
+  
   const columnSets = {
     primaryMenu: {
       Id: "id",
       "Menu Name": "name",
       "Menu Link": "link",
       "Added By": "added_by",
+
+
       "Added On": "dated",
       "Menu Order": "ord",
     },
@@ -97,43 +105,42 @@ const MenuTable = () => {
       "Menu Order": "ord",
     },
   };
-const getActiveTabFromUrl = () => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("tab") || "1";
-  };
-const activeTab = getActiveTabFromUrl();
+const apiUrl = activeTab === "1" ? pmenuApi : smenuApi;
 
-  const apiUrl = getActiveTabFromUrl() === "1" ? pmenuApi : smenuApi;
 const menuData = usePaginatedTable({
-  apiUrl: activeTab === "1" ? pmenuApi : smenuApi,
+  apiUrl,
   columnsMap:
     activeTab === "1"
       ? columnSets.primaryMenu
       : columnSets.secondaryMenu,
 });
 useEffect(() => {
-  const tableId = activeTab === "1"
-    ? "#primaryMenuTable"
-    : "#secondaryMenuTable";
+  const tableId =
+    activeTab === "1" ? "#primaryMenuTable" : "#secondaryMenuTable";
 
-  if (!menuData?.data?.length) return;
-
-  const timer = setTimeout(() => {
+  const initTable = () => {
+    const table = $(tableId);
 
     if ($.fn.DataTable.isDataTable(tableId)) {
-      $(tableId).DataTable().clear().destroy();
+      table.DataTable().clear().destroy();
     }
 
-    $(tableId).DataTable({
-     paging: true,
-  searching: true,
-  ordering: true,
-  pageLength: 10,
-  processing: true,   // ✅ shows loader
-  autoWidth: false
+    table.DataTable({
+      paging: true,
+      searching: true,
+      ordering: true,
+      pageLength: 10,
+      processing: true,
+      autoWidth: false,
+      destroy: true
     });
+  };
 
-  }, 300); // give React time to render rows
+  const timer = setTimeout(() => {
+    if (menuData?.data?.length) {
+      initTable();
+    }
+  }, 100);
 
   return () => clearTimeout(timer);
 
@@ -175,9 +182,9 @@ useEffect(() => {
       id: "1",
       label: "Primary Menu",
       component: (
-       <table id="primaryMenuTable" className="display">
+       <table id="primaryMenuTable" className="display" style={{ width: "100%" }}>
   <thead>
-    <tr>
+    <tr >
       <th>ID</th>
       <th>Menu Name</th>
       <th>Menu Link</th>
@@ -190,7 +197,7 @@ useEffect(() => {
 
   <tbody>
     {activeTab === "1" && menuData?.data?.map((row, index) => (
-      <tr key={index}>
+      <tr key={row.Id}>
         <td>{row.Id}</td>
         <td>{row["Menu Name"]}</td>
         <td>{row["Menu Link"]}</td>
@@ -214,7 +221,7 @@ useEffect(() => {
       id: "2",
       label: "Secondary Menu",
       component: (
-      <table id="secondaryMenuTable" className="display">
+      <table id="secondaryMenuTable" className="display" style={{ width: "100%" }}>
   <thead>
     <tr>
       <th>ID</th>
@@ -231,7 +238,7 @@ useEffect(() => {
   <tbody>
     {activeTab === "2" &&
   menuData.data?.map((row, index) => (
-      <tr key={index}>
+      <tr key={row.Id}>
         <td>{row.Id}</td>
         <td>{row["Menu Name"]}</td>
         <td>{row["Primary Menu"]}</td>
@@ -261,6 +268,7 @@ return {
   Edit,
   Row,
   setEdit
-};};
+}
+};
 
-export default MenuTable;
+export default useMenuTable;

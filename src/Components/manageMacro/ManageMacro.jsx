@@ -27,8 +27,7 @@ const ManageMacro = () => {
       "Unit_Price": "unit_price",
       "Qty": "qty",
       "Amt": "amt",
-      "Currency": "currency",
-    
+      "Currency": "currency"
     };
  
        const {

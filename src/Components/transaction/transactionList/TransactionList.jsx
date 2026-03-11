@@ -90,6 +90,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                     render={({ field }) => (
                       <DatePicker
                         className={`form-control `}
+                        id="from"
                         selected={field.value}
                         onChange={(date) => field.onChange(date)}
                        dateFormat="yyyy-MM-dd"
@@ -122,6 +123,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                       <DatePicker
                         className={`form-control digits`}
                         selected={field.value}
+                         id="to"
                         onChange={(date) => field.onChange(date)}
                         dateFormat="yyyy-MM-dd"
 
@@ -141,6 +143,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
          <InputText
                             name="stateProv"
                             label="State Prov"
+                            id="state_prov"
                             type="text"
                             register={register}
                         />
@@ -150,6 +153,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
           <InputText
                             name="unitNo"
                             label="Unit"
+                            id="unit"
                             type="text"
                             register={register}
                         />
@@ -159,6 +163,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
           <InputText
                             name="cardNo"
                             label="Card No."
+                            id="card_no"
                             type="text"
                             register={register}
                         />
@@ -176,6 +181,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                     {...field}
                     options={companies}
                     className="form-control p-0 border-0"
+                    id="company"
                     placeholder="Select Company "
                   />
                 )}
@@ -194,6 +200,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                   <Select
                     {...field}
                     options={currency}
+                    id="currency"
                     className="form-control p-0 border-0"
                     placeholder="Select Currency"
                   />
@@ -213,6 +220,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                   <Select
                     {...field}
                     options={items}
+                    id="items"
                     className="form-control p-0 border-0"
                     placeholder="Select Items"
                   />
@@ -234,6 +242,7 @@ const TransactionList = ({ btnTitle, btnTitle1,onSearch }) => {
                   <Select
                     {...field}
                     options={InvoiceStatus}
+                    id="status"
                     className="form-control p-0 border-0"
                     placeholder="Select status"
                   />

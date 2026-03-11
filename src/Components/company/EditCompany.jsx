@@ -153,6 +153,9 @@ const payload = {
         ul_inv_type: formData.ul_inv_type?.value || "",
         esso_rcent: formData.esso_rcent || "0",
         ul_rcent: formData.ul_rcent || "0",
+        irv_rcent: formData.irv_rcent || "0",
+        cen_rcent: formData.cen_rcent || "0",
+
         esso_rack: formData.esso_rack || "0",
         esso_rack_on: formData.esso_rack_on?.value || "0",
         esso_rack_oon: formData.esso_rack_oon?.value || "0",
@@ -948,9 +951,23 @@ const payload = {
                           setValue={setValue}
                           control={control}
                           defaultValueId={FullData.ul_inv_type}
-                          options={YesNo}
+                          options={invoiceType1}
                         />
                            
+                          </Col>
+                            <Col sm="6">
+                            <FormGroup className="m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Discount Cent
+                                </InputGroupText>
+                                <input
+                                  className="form-control"
+                                  name="ul_rcent"
+                                  type="text"
+                                />
+                              </InputGroup>
+                            </FormGroup>
                           </Col>
                          
                           <Col sm="6">
@@ -988,12 +1005,26 @@ const payload = {
                           label="Irving INVOICE TYPE"
                           setValue={setValue}
                           control={control}
-                          defaultValueId={FullData.ul_inv_type}
-                          options={YesNo}
+                          defaultValueId={FullData.irv_inv_type}
+                          options={invoiceType1}
                         />
-                           
+
+                            
                           </Col>
-                         
+                          <Col sm="6">
+                            <FormGroup className="m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Discount Cent
+                                </InputGroupText>
+                                <input
+                                  className="form-control"
+                                  name="irv_rcent"
+                                  type="text"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
                           <Col sm="6">
                               <DropDown
                           name="irv_owner_operator_invoice"
@@ -1034,7 +1065,20 @@ const payload = {
                         />
                           
                           </Col>
-                        
+                           <Col sm="6">
+                            <FormGroup className="m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Discount Cent
+                                </InputGroupText>
+                                <input
+                                  className="form-control"
+                                  name="esso_rcent"
+                                  type="text"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
                           <Col sm="6">
                                <DropDown
                           name="owner_operator_invoice"
@@ -1053,6 +1097,59 @@ const payload = {
                           setValue={setValue}
                           control={control}
                           defaultValueId={FullData.cust_inv_type}
+                          options={customizedTypeType}
+                        />
+                          </Col>
+                        </Row>
+                      </fieldset>
+                    </Col>
+                         <Col sm="12">
+                      <fieldset>
+                        <legend>CENOVUS INVOICE TYPE</legend>
+                        <Row className="my-3">
+                          <Col sm="6">
+                           <DropDown
+                          name="cen_inv_type"
+                          label="Cenovus INVOICE TYPE"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.cen_inv_type}
+                          options={invoiceType1}
+                        />
+                          
+                          </Col>
+                           <Col sm="6">
+                            <FormGroup className="m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Discount Cent
+                                </InputGroupText>
+                                <input
+                                  className="form-control"
+                                  name="cen_rcent"
+                                  type="text"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                          <Col sm="6">
+                               <DropDown
+                          name="cen_owner_operator_invoice"
+                          label="Owner Operator Invoice"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.cen_owner_operator_invoice}
+                          options={YesNo}
+                        />
+                          
+                          </Col>
+                          <Col sm="6">
+                             <DropDown
+                          name="cen_cust_inv_type"
+                          label="Customized Invoice Type"
+                          setValue={setValue}
+                          control={control}
+                          defaultValueId={FullData.cen_cust_inv_type}
                           options={customizedTypeType}
                         />
                           </Col>
@@ -1424,6 +1521,50 @@ const payload = {
     />
     <Label for="checkbox11">
       Irving Daily Pricing PDF (Without Tax)
+    </Label>
+  </div>
+</Col>
+
+                     <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="Cen_daily_pricing"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox11"
+          type="checkbox"
+          checked={field.value=='Yes'}
+          onChange={(e) =>
+            field.onChange(e.target.checked?'Yes':'')
+          }
+        />
+      )}
+    />
+    <Label for="checkbox11">
+      	Cenovus Daily Pricing PDF (With Tax)
+    </Label>
+  </div>
+</Col>
+
+  <Col sm="3">
+  <div className="checkbox checkbox-dark">
+    <Controller
+      name="cen_daily_pricing_wtax"
+      control={control}
+      render={({ field }) => (
+        <Input
+          id="checkbox12"
+          type="checkbox"
+          checked={field.value=='Yes'}
+          onChange={(e) =>
+            field.onChange(e.target.checked?"Yes":"")
+          }
+        />
+      )}
+    />
+    <Label for="checkbox12">
+      Cenovus Daily Pricing PDF (Without Tax)
     </Label>
   </div>
 </Col>

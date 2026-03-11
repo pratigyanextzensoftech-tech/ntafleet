@@ -71,6 +71,7 @@ const onSubmit = (data) => {
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         className={`form-control `}
+                                                        id="from"
                                                         selected={field.value}
                                                         onChange={(date) => field.onChange(date)}
                                                         dateFormat="yyyy-MM-dd"
@@ -99,6 +100,7 @@ const onSubmit = (data) => {
                                                     <DatePicker
                                                         className={`form-control digits`}
                                                         selected={field.value}
+                                                         id="to"
                                                         onChange={(date) => field.onChange(date)}
                                                         dateFormat="yyyy-MM-dd"
 
@@ -114,6 +116,7 @@ const onSubmit = (data) => {
                             <InputText
                                                       name="stateProv"
                                                       label="State Prov"
+                                                      id="state_prov"
                                                       type="text"
                                                       register={register}
                                                   />
@@ -122,6 +125,7 @@ const onSubmit = (data) => {
                                <InputText
                             name="unitNo"
                             label="Unit"
+                            id="unit"
                             type="text"
                             register={register}
                         />
@@ -132,6 +136,7 @@ const onSubmit = (data) => {
                               <InputText
                             name="cardNo"
                             label="Card No."
+                            id="card_no"
                             type="text"
                             register={register}
                         />
@@ -148,6 +153,7 @@ const onSubmit = (data) => {
                                             <Select
                                                 {...field}
                                                 options={Reportcurrency}
+                                                id="currency"
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Currency"
                                             />
@@ -166,6 +172,7 @@ const onSubmit = (data) => {
                                             <Select
                                                 {...field}
                                                 options={items}
+                                                id="items"
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select Items"
                                             />
@@ -185,6 +192,7 @@ const onSubmit = (data) => {
                                             <Select
                                                 {...field}
                                                 options={InvoiceStatus}
+                                                id="inv_status"
                                                 className="form-control p-0 border-0"
                                                 placeholder="Select status"
                                             />
@@ -207,15 +215,14 @@ const onSubmit = (data) => {
       className="form-control p-0 border-0"
       placeholder="Select supplier"
       options={supplier}
+      id="supplier"
       onChange={(selectedOption) => field.onChange(selectedOption)}
       value={field.value}
     />
   )}
 />
 
-                                </InputGroup>
-
-                               
+                                </InputGroup>       
                             </FormGroup>
                         </Col>
                           <Col xxl="9" xl="12"   md="12" sm="12">

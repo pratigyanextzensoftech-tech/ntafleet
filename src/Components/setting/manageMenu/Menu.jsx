@@ -6,7 +6,7 @@ import BasicTabCard from '../../UiKits/Tabs/BoostrapTabs/BasicTabCard';
 import { ManageMenuTab } from '../../../Data/tab/ManageMenuTab';
 import ManageMenuTable from './ManageMenuTable'; 
 import useMenuTable from './useMenuTable';
-const Index = () => {
+const Menu = () => {
 const menuTabs = useMenuTable();
  // returns array of tabs
   return (
@@ -49,4 +49,4 @@ const menuTabs = useMenuTable();
   );
 };
 
-export default Index;
+export default Menu;

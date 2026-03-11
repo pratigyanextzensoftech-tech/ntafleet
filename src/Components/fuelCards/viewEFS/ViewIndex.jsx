@@ -1,37 +1,34 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import { petro_retail as APINAME,download } from "../../../api";
-import PetroForm from "./PetroForm";
+import { efs_fual_card as APINAME } from "../../../api";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import $ from "jquery";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
-import {formatDate} from '../../../Hooks/Dropdowns'
 const PetroIndex = () => {
- const from = document.querySelector('[name="from"]')?.value;
-const to = document.querySelector('[name="to"]')?.value;
-const formatDateOnly = (value) => {
-  if (!value) return "";
-  const d = new Date(value);
-  // if (isNaN(d)) return value; // safety
-  return d.toISOString().split("T")[0]; // YYYY-MM-DD
-};
   useEffect(() => { 
-          GetDataTAble(from,to);
+          GetDataTAble();
   }, []);
 
-  function GetDataTAble(from,to) {
+  function GetDataTAble() {
      const columns = [
-  { data: "timestamp", title: "Price Date", render: (data) => formatDate(data), className: "text-start"},
-  { data: "Site_Name", title: "Location Name" },
-  { data: "Site_City", title: "City" },
-  { data: "Site_State", title: "State" },
-  { data: "Site_Country", title: "Country" },
-  { data: "Site_Price", title: "Price", render: (data) => data, className: "text-start" },
-  { data: "timestamp", title: "Added Date" },
+  { data: "cardNumber", title: "Card Number#", render: (data) => data, className: "text-start"},
+  { data: "policyNumber", title: "Policy Number" },
+  { data: "company_name", title: "companyXRef" },
+  { data: "unitNumber", title: "unitNumber" },
+  { data: "driverId", title: "driverId" },
+  { data: "driverName", title: "driverName" },
+  { data: "beingOverridden", title: "BeingOverridden" },
+  { data: "status", title: "status" },
+  { data: "payrollStatus", title: "PayrollStatus" },
+  { data: "payrollUse", title: "PayrollUse" },
+  { data: "gpsid", title: "gpsid" },
+  { data: "zid", title: "Zid" },
+  { data: "infosrc", title: "infosrc" },
+  { data: "policySubfleet", title: "plicySubFleet" },
+  { data: "cardSubfleet", title: "CardSubfleet" },
 ];
-
     $("#example").DataTable({
       serverSide: true,
       destroy: true,
@@ -62,22 +59,27 @@ const formatDateOnly = (value) => {
   params.append("search", data.search.value || "");
   params.append("orderColumn", data.columns[data.order[0].column].data);
   params.append("orderDir", data.order[0].dir);
-  params.append("from", from?from :"");
-  params.append("to", to?to:"");
- 
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
     const tableRes = await response.json();
     // 🔥 Call both APIs together
      console.log(tableRes);
     const tableData = tableRes.data.map((row) => ({
-    "timestamp": row.timestamp,
-   "Site_Name":row.Site_Name,
-   "Site_City":row.Site_City,
-   "Site_State":row.Site_State,
-    "Site_Country":row.Site_Country,
-    "Site_Price":row.Site_Price,
-    "added_date":row.timestamp,
+    "cardNumber": row.cardNumber,
+   "policyNumber":row.policyNumber,
+   "company_name":row.company_name,
+   "unitNumber":row.unitNumber,
+    "driverId":row.driverId,
+    "driverName":row.driverName,
+    "beingOverridden":row.beingOverridden,
+    "status":row.status,
+    "payrollStatus":row.payrollStatus,
+    "payrollUse":row.payrollUse,
+    "gpsid":row.gpsid,
+    "zid":row.zid,
+    "infosrc":row.infosrc,
+    "policySubfleet":row.policySubfleet,
+    "cardSubfleet":row.cardSubfleet,
     }));
     console.log(tableData);
     
@@ -102,37 +104,17 @@ const formatDateOnly = (value) => {
     });
   }
 
- const handleSearch = (formData) => {
- const from =  formData.from ||"";
- const to =  formData.to ||"";
- console.log(formData);
- 
-
-    GetDataTAble(from,to); // fetch new data immediately
-  };
   return (
     <Fragment>
-      <Breadcrumbs parent="Retail Prices" title="Petro Retail Price" />
+      <Breadcrumbs parent="Fuel Cards" title=" View EFS Fual Cards"/>
       <Container fluid={true}>
-        <Row>
-          <Col sm="12">
-            <Card>
-              <HeaderCard title="Filter" />
-              <CardBody>
-                       <PetroForm btnTitle="Search Data" btnTitle1="Reset" onSearch={handleSearch}/>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
          <Row>
           <Col sm="12">
             <Card>
                 <HeaderCard
-                  title="Petro Retail List"
-                  downloadCsv="Download CSV"
-                   ShowdwonloadCsv={true}
-                  ShowloadData={true}
-                  loadData="Load Data"
+                  title=" View EFS Fual Cards"
+                     downloadHeading="Download"
+                    download={true}
                 />
              
               <CardBody>
@@ -144,13 +126,21 @@ const formatDateOnly = (value) => {
                   >
                     <thead>
                       <tr>
-                        <th>Price Date</th>
-                        <th>Location Name </th>
-                        <th>City </th>
-                        <th> State </th>
-                        <th>Country </th>
-                        <th>Price </th> 
-                        <th>Added Date </th> 
+                        <th>Card Number #</th>
+                        <th>Policy Number</th>
+                        <th>companyXRef</th>
+                        <th> unitNumber </th>
+                        <th>driverId </th>
+                        <th>driverName </th> 
+                        <th>BeingOverridden </th> 
+                        <th>status </th> 
+                        <th>PayrollStatus </th> 
+                        <th>PayrollUse </th> 
+                        <th>gpsid </th> 
+                        <th>Zid </th> 
+                        <th>infosrc </th> 
+                        <th>plicySubFleet </th> 
+                        <th>CardSubfleet </th> 
                       </tr>
                     </thead>
                     <tbody></tbody>

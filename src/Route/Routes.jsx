@@ -12,7 +12,7 @@ import ZeroDiscount from '../Components/discount/zeroDiscount/index';
 
 //Retail Price
 import Upload from '../Components/retailPrice/upload/UploadIndex.jsx';
-import PetroRetail from '../Components/retailPrice/petro/index';
+import PetroRetail from '../Components/retailPrice/petro/PetroIndex.jsx';
 
 //Pricing
 import DownloadEssoCent from '../Components/pricing/download_essocent/index';
@@ -51,15 +51,15 @@ import SubLOgin from '../Components/company/subLogin/index.jsx';
 //Fuel Card
 import AddFuel from '../Components/fuelCards/addFuel/index';
 import ViewFuel from '../Components/fuelCards/view/ViewFuelCard.jsx';
-import EFSFuel from '../Components/fuelCards/viewEFS/index';
+import EFSFuel from '../Components/fuelCards/viewEFS/ViewIndex.jsx';
 import HistoryFuel from '../Components/fuelCards/history/index';
 import EditInformation from '../Components/fuelCards/editInformation/index.jsx'
 
 //Transaction
 import ViewTransaction from '../Components/transaction/view/ViewTransaction.jsx'
 import UploadTransaction from '../Components/transaction/upload/index'
-import TransactionList from '../Components/transaction/transactionList/index';
-import UnknownTransaction from '../Components/transaction/unKnownTransaction/index';
+import TransactionList from '../Components/transaction/transactionList/IndexList.jsx';
+import UnknownTransaction from '../Components/transaction/unKnownTransaction/UnknownIndex.jsx';
 import EssoFtpLive from '../Components/transaction/essoFtpLive/index';
 import CheckTransaction from '../Components/transaction/checkTransaction/index';
 import RackToRetail from '../Components/transaction/rackToRetail/index';
@@ -111,8 +111,8 @@ import ManageLoc from '../Components/location/manageLoc/index'
 import ManageGroup from '../Components/location/manageGroup/index'
 
 //Setting
-import UserLogin from '../Components/setting/userLogin/index'
-import TrackVisitor from '../Components/setting/trackVisitor/index'
+import UserLogin from '../Components/setting/userLogin/UserLoginIndex.jsx'
+import TrackVisitor from '../Components/setting/trackVisitor/ListIndex.jsx'
 import CompanyLogin from '../Components/setting/companyLogin/index'
 import ManageUser from '../Components/setting/manageUser/ManageUserIndex.jsx'
 import ManageSalesman from '../Components/setting/manageSalesman/ManageSalesManIndex.jsx';
