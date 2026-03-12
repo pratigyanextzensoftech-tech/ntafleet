@@ -10,12 +10,7 @@ import $ from "jquery";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
 import SubLoginForm from "./SubLoginForm";
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+
 
 const Index = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -153,6 +148,9 @@ const handleEdit =async (row)=>{
   params.append("search", data.search.value || "");
   params.append("orderColumn", data.columns[data.order[0].column].data);
   params.append("orderDir", data.order[0].dir);
+    Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
     const tableRes = await response.json();
@@ -219,7 +217,24 @@ $(document)
    const refreshTable = () => {
    GetDataTAble()
   };
+  let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
 
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+    const company_id = document.querySelector('[name=company]')?.value || "";
+    const company_status = document.querySelector('[name=status]')?.value || "";
+
+    GetDataTAble(company_id, company_status, searchValues);
+  }, 1000); // 500ms after last keystroke
+};
 
   return (
     <Fragment>
@@ -265,6 +280,17 @@ $(document)
                         <th>Action</th>
                       </tr>
                     </thead>
+                    <tr>
+                       <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    </tr>
                     <tbody></tbody>
                   </table>
                 </div>

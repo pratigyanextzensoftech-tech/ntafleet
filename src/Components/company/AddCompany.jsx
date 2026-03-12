@@ -116,6 +116,10 @@ const Index = () => {
         ta_retail_invoice: formData.ta_retail_invoice || '',
         esso_retail_invoice: formData.esso_retail_invoice || '',
         esso_inv_type: formData.esso_inv_type?.value || '',
+        cen_inv_type: formData.cen_inv_type?.value || '',
+        cen_rcent: formData.cen_rcent?.value || '',
+        cen_owner_operator_invoice: formData.cen_owner_operator_invoice?.value || '',
+        cen_cust_inv_type: formData.cen_cust_inv_type?.value || '',
         cust_inv_type: formData.cust_inv_type?.value || '',
         ul_cust_inv_type: formData.ul_cust_inv_type?.value || '',
         ul_inv_type: formData.ul_inv_type?.value || '',
@@ -143,6 +147,8 @@ const Index = () => {
         esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || '',
         love_daily_pricing: formData.love_daily_pricing || '',
         ul_daily_pricing: formData.ul_daily_pricing || '',
+        cen_daily_pricing_wtax: formData.cen_daily_pricing_wtax || '',
+         cen_daily_pricing: formData.cen_daily_pricing || '',
         ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || '',
         irv_daily_pricing: formData.irv_daily_pricing || '',
         irv_daily_pricing_wtax: formData.irv_daily_pricing_wtax || '',
@@ -899,7 +905,7 @@ const Index = () => {
                       <fieldset>
                         <legend>Ultramar INVOICE TYPE</legend>
                         <Row className="mt-3">
-                          <Col sm="4">
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -913,8 +919,21 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                        
-                          <Col sm="4">
+                          <Col sm="3">
+                                                     <FormGroup className="m-form__group">
+                                                       <InputGroup>
+                                                         <InputGroupText>
+                                                           Discount Cent
+                                                         </InputGroupText>
+                                                         <input
+                                                           className="form-control"
+                                                           name="ul_rcent"
+                                                           type="text"
+                                                         />
+                                                       </InputGroup>
+                                                     </FormGroup>
+                                                   </Col>
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -928,7 +947,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="4">
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -950,7 +969,7 @@ const Index = () => {
                       <fieldset>
                         <legend>Irving INVOICE TYPE</legend>
                         <Row className="my-3">
-                          <Col sm="4">
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -965,8 +984,21 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                         
-                          <Col sm="4">
+                           <Col sm="3">
+                                                     <FormGroup className="m-form__group">
+                                                       <InputGroup>
+                                                         <InputGroupText>
+                                                           Discount Cent
+                                                         </InputGroupText>
+                                                         <input
+                                                           className="form-control"
+                                                           name="irv_rcent"
+                                                           type="text"
+                                                         />
+                                                       </InputGroup>
+                                                     </FormGroup>
+                                                   </Col>
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -981,7 +1013,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="4">
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1002,7 +1034,7 @@ const Index = () => {
                       <fieldset>
                         <legend>ESSO INVOICE TYPE</legend>
                         <Row className="my-3">
-                          <Col sm="4">
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1016,8 +1048,21 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                         
-                          <Col sm="4">
+                          <Col sm="3">
+                                                     <FormGroup className="m-form__group">
+                                                       <InputGroup>
+                                                         <InputGroupText>
+                                                           Discount Cent
+                                                         </InputGroupText>
+                                                         <input
+                                                           className="form-control"
+                                                           name="esso_rcent"
+                                                           type="text"
+                                                         />
+                                                       </InputGroup>
+                                                     </FormGroup>
+                                                   </Col>
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1032,7 +1077,7 @@ const Index = () => {
                               </InputGroup>
                             </FormGroup>
                           </Col>
-                          <Col sm="4">
+                          <Col sm="3">
                             <FormGroup className=" m-form__group">
                               <InputGroup>
                                 <InputGroupText>
@@ -1049,6 +1094,71 @@ const Index = () => {
                         </Row>
                       </fieldset>
                     </Col>
+                       <Col sm="12">
+                      <fieldset>
+                        <legend>CENOVUS INVOICE TYPE</legend>
+                        <Row className="my-3">
+                          <Col sm="3">
+                            <FormGroup className=" m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Cenovus INVOICE TYPE
+                                </InputGroupText>
+                                <Select
+                                  options={invoiceType1}
+                                  className="form-control p-0 border-0"
+                                  name="cen_inv_type"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                           <Col sm="3">
+                                                     <FormGroup className="m-form__group">
+                                                       <InputGroup>
+                                                         <InputGroupText>
+                                                           Discount Cent
+                                                         </InputGroupText>
+                                                         <input
+                                                           className="form-control"
+                                                           name="cen_rcent"
+                                                           type="text"
+                                                         />
+                                                       </InputGroup>
+                                                     </FormGroup>
+                                                   </Col>
+                          <Col sm="3">
+                            <FormGroup className=" m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Owner Operator Invoice
+                                </InputGroupText>
+
+                                <Select
+                                  options={YesNo}
+                                  className="form-control p-0 border-0"
+                                  name="cen_owner_operator_invoice"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                          <Col sm="3">
+                            <FormGroup className=" m-form__group">
+                              <InputGroup>
+                                <InputGroupText>
+                                  Customized Invoice Type
+                                </InputGroupText>
+                                <Select
+                                  options={customizedTypeType}
+                                  className="form-control p-0 border-0"
+                                  name="cen_cust_inv_type"
+                                />
+                              </InputGroup>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </fieldset>
+                    </Col>
+                       
                     <Col sm="12">
                       <fieldset>
                         <legend>Other Details</legend>
@@ -1319,7 +1429,50 @@ const Index = () => {
                      </Label>
                    </div>
                  </Col>
+
+                                    <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="Cen_daily_pricing"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox12"
+                           type="checkbox"
+                           checked={field.value=='Yes'}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked?'Yes':'')
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox12">
+                        Cenovus Daily Pricing PDF (With Tax)
+                     </Label>
+                   </div>
+                 </Col>
                  
+                   <Col sm="3">
+                   <div className="checkbox checkbox-dark">
+                     <Controller
+                       name="cen_daily_pricing_wtax"
+                       control={control}
+                       render={({ field }) => (
+                         <Input
+                           id="checkbox13"
+                           type="checkbox"
+                           checked={field.value=='Yes'}
+                           onChange={(e) =>
+                             field.onChange(e.target.checked?"Yes":"")
+                           }
+                         />
+                       )}
+                     />
+                     <Label for="checkbox13">
+                       Cenovus Daily Pricing PDF (Without Tax)
+                     </Label>
+                   </div>
+                 </Col>
                                      </Row>
                                    </fieldset>
 

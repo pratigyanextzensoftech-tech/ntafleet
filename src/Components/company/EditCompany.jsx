@@ -87,6 +87,8 @@ const Index = () => {
     setValue("first_name", res.data?.first_name);
     setValue("special_instructions", res.data?.special_instructions);
     setValue( "love_daily_pricing",res.data.love_daily_pricing);
+    setValue( "Cen_daily_pricing",res.data.Cen_daily_pricing);
+    setValue( "cen_daily_pricing_wtax",res.data.cen_daily_pricing_wtax);
     setValue( "ul_daily_pricing_wtax",res.data.ul_daily_pricing_wtax);
     setValue( "ul_daily_pricing",res.data.ul_daily_pricing);
     setValue( "shell_pricing",res.data.shell_pricing);
@@ -100,8 +102,6 @@ const Index = () => {
     setValue("irv_daily_pricing",res.data.irv_daily_pricing );
     setValue("irv_daily_pricing_wtax",res.data.irv_daily_pricing_wtax);
     setValue("country_id",res.data.country_id)
-   
-    
   }
       })
       .catch((err) => {
@@ -110,6 +110,8 @@ const Index = () => {
   }, []);
 
   const onSubmit = async (formData) => {
+    console.log(formData);
+    
     try {
       if(FullData.length!==0){
 const payload = {
@@ -150,12 +152,14 @@ const payload = {
         esso_inv_type: formData.esso_inv_type?.value || "",
         cust_inv_type: formData.cust_inv_type?.value || "",
         ul_cust_inv_type: formData.ul_cust_inv_type?.value || "",
+        cen_inv_type: formData.cen_inv_type?.value || "",
+        cen_owner_operator_invoice: formData.cen_owner_operator_invoice?.value || "",
+        cen_cust_inv_type: formData.cen_cust_inv_type?.value || "",
         ul_inv_type: formData.ul_inv_type?.value || "",
         esso_rcent: formData.esso_rcent || "0",
         ul_rcent: formData.ul_rcent || "0",
         irv_rcent: formData.irv_rcent || "0",
         cen_rcent: formData.cen_rcent || "0",
-
         esso_rack: formData.esso_rack || "0",
         esso_rack_on: formData.esso_rack_on?.value || "0",
         esso_rack_oon: formData.esso_rack_oon?.value || "0",
@@ -180,6 +184,8 @@ const payload = {
         love_daily_pricing: formData.love_daily_pricing?'Yes' : "",
         ul_daily_pricing: formData.ul_daily_pricing || "",
         ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || "",
+        Cen_daily_pricing: formData.Cen_daily_pricing || "",
+        cen_daily_pricing_wtax: formData.cen_daily_pricing_wtax || "",
         irv_daily_pricing: formData.irv_daily_pricing || '',
         irv_daily_pricing_wtax: formData.irv_daily_pricing_wtax || '',
         invoice_creation: formData.invoice_creation?.value || "",
@@ -257,6 +263,7 @@ const payload = {
                                 *
                               </span>
                             </InputGroupText>
+
                             <input
                               className="form-control"
                               name="email"
@@ -264,7 +271,6 @@ const payload = {
                               defaultValue={FullData?.email}
                               disabled
                               {...register("email", {
-                              
                                 pattern: {
                                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                   message: "Invalid email address",
@@ -272,7 +278,6 @@ const payload = {
                               })}
                             />
                           </InputGroup>
-                       
                         </FormGroup>
                       </Col>
                       <Col sm="3">
@@ -1532,7 +1537,7 @@ const payload = {
       control={control}
       render={({ field }) => (
         <Input
-          id="checkbox11"
+          id="checkbox12"
           type="checkbox"
           checked={field.value=='Yes'}
           onChange={(e) =>
@@ -1554,7 +1559,7 @@ const payload = {
       control={control}
       render={({ field }) => (
         <Input
-          id="checkbox12"
+          id="checkbox13"
           type="checkbox"
           checked={field.value=='Yes'}
           onChange={(e) =>
@@ -1563,7 +1568,7 @@ const payload = {
         />
       )}
     />
-    <Label for="checkbox12">
+    <Label for="checkbox13">
       Cenovus Daily Pricing PDF (Without Tax)
     </Label>
   </div>

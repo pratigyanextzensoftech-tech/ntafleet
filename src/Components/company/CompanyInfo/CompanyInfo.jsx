@@ -53,7 +53,7 @@ const CompanyInfo = () => {
       $(document).off("click", ".update-btn");
     };
   }, []);
-  function GetDataTAble(company_id, company_status) {
+  function GetDataTAble(company_id, company_status,value) {
     const columns = [
       { data: "company_name", title: "Company Name" },
       { data: "qty7US", title: "Volume US(7days)" },
@@ -95,6 +95,9 @@ const CompanyInfo = () => {
         params.append("orderDir", data.order[0].dir);
         params.append("company_id", company_id ? company_id : "");
         params.append("company_status", company_status ? company_status : "");
+        Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
 
         fetch(`${company_info}?${params.toString()}`)
           .then((res) => res.json())
@@ -156,6 +159,24 @@ const CompanyInfo = () => {
     GetDataTAble(company_id, company_status);
     setLoading(false);
   };
+let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+    const company_id = document.querySelector('[name=company]')?.value || "";
+    const company_status = document.querySelector('[name=status]')?.value || "";
+
+    GetDataTAble(company_id, company_status, searchValues);
+  }, 1000); // 500ms after last keystroke
+};
   return (
     <Fragment>
       <Breadcrumbs parent="Company" title="Company List" />
@@ -208,25 +229,13 @@ const CompanyInfo = () => {
                     </thead>
                     <thead>
                       <tr>
-                    {/* <th> <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      options={companyData}
-                      className="form-control p-0 border-0"
-                      placeholder="Select  Company"
-                    />
-                  )}
-                /></th> */}
-                    <th><input type="text" id="1" className="input-search"/></th>
-                    <th><input type="text" id="1" className="input-search"/></th>
-                    <th><input type="text" id="2" className="input-search"/></th>
-                    <th><input type="text" id="3" className="input-search"/></th>
-                    <th><input type="text" id="4" className="input-search"/></th>
-                    <th><input type="text" id="5" className="input-search"/></th>
-                    <th><input type="text" id="6" className="input-search"/></th>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
                    
                     
                     <td></td>

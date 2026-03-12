@@ -116,9 +116,9 @@ import TrackVisitor from '../Components/setting/trackVisitor/ListIndex.jsx'
 import CompanyLogin from '../Components/setting/companyLogin/index'
 import ManageUser from '../Components/setting/manageUser/ManageUserIndex.jsx'
 import ManageSalesman from '../Components/setting/manageSalesman/ManageSalesManIndex.jsx';
-import ManageMenu from '../Components/setting/manageMenu/Index'
+import ManageMenu from '../Components/setting/manageMenu/Menu.jsx'
 
-//Tcheck
+//Tcheckzz
 import UploadTcheck from '../Components/tcheck/upload/index'
 import TcheckList from '../Components/tcheck/list/TcheckList.jsx'
 import TcheckEditForm from '../Components/tcheck/list/TcheckEditForm'

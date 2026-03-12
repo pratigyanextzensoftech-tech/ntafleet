@@ -1,20 +1,17 @@
-import React, { Fragment, useState, useEffect,useRef } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import DataTableComponent from "../../Tables/DataTable/DataTableComponent";
 import axios from "axios";
 import { transactions,tranaction_total } from "../../../api";
 import ViewForm from "./ViewForm";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FaFileExcel,FaFileCsv,FaFilePdf } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { download } from "../../../api";
 import {H6} from "../../../AbstractElements";
 import $ from "jquery";
 import 'datatables.net';
 import 'datatables.net-fixedcolumns';
-import qs from "qs"; // npm install qs
 
 import {
   Dropdown,
@@ -192,6 +189,10 @@ console.log(supplier);
   params.append("from", from);
   params.append("currency", formData?.currency?formData?.currency:"");
   params.append("card_no", formData?.card_no?formData?.card_no:"");
+  params.append("orderDir", data.order[0].dir);
+    Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
   try {
 
     // 🔥 Call both APIs together
@@ -299,6 +300,25 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
  window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
 
 } 
+
+let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+ 
+
+    GetDataTAble();
+  }, 1000); // 500ms after last keystroke
+};
+
   return (
     <Fragment>
       <Breadcrumbs parent="Transaction" title="View Transaction" />
@@ -387,6 +407,28 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
                         <th>Currency</th>
                       </tr>
                     </thead>
+                          <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input17" id="17" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input18" id="18" onChange={handleInputChange} className="input-search"/></th>
+                  
+                    <td></td>
+                  </tr>
                     <tbody></tbody>
                   </table>
                 </div>

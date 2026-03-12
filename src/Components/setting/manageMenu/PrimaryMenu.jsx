@@ -9,7 +9,8 @@ import DropDown from '../../Forms/FormControl/formInput/DropDown';
 import { menu } from '../../../api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
+const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit,reloadTable}) => {
+    
     const {
         register,
         control,
@@ -18,10 +19,10 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
         handleSubmit,
         formState: { errors, isSubmitted, isValid },
     } = useForm();
-
-
     useEffect(() => {
   if (Edit && selectedRow) {
+        console.log(selectedRow)
+
     reset({
       name: selectedRow.name,
       link: selectedRow.link,
@@ -51,7 +52,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
           axios.put(`${menu}/${selectedRow.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
-          if (fetchPmenuData)  fetchPmenuData.fetchData();
+          if (reloadTable)  reloadTable();
            
           setEdit(false);
        
@@ -67,7 +68,7 @@ const PrimaryMenu = ({title,Edit,selectedRow,fetchPmenuData,setEdit}) => {
         console.log(res);
        
           toast.success("Add successfully!");
-            if (fetchPmenuData) fetchPmenuData.fetchData();
+            if (reloadTable) reloadTable();
 
        reset({
         name:"",

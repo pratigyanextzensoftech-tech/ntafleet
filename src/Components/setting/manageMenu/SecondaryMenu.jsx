@@ -11,9 +11,9 @@ import usePmenu from '../../../Hooks/usePmenu';
 import { menu,smenu } from '../../../api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) => {
+const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row,reloadTable }) => {
+ 
     const { pmenu, loading, error } = usePmenu();
-    
     const {
         register,
         control,
@@ -22,18 +22,19 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
         formState: { errors, isSubmitted, isValid },
     } = useForm();
      useEffect(() => {
-      if (Edit && row) {
+
+      if (Edit && selectedRow) {
         console.log(row)
         reset({
-            menuName: row["Menu Name"],
+            menuName: row.name,
           primaryMenu:{
-        //   value:row["Primary Menu"],
-          label:row["Primary Menu"]
+          value:selectedRow.idmenu,
+          label:row.primary_menu
           },
-          menuLink: row["Menu Link"],
+          menuLink: row.link,
            type:{
-            value:row.fulldata["sw"],
-            label:row.fulldata["sw"]==0?"visible":"hidden"
+            value:row.sw,
+            label:row.sw==0?"visible":"hidden"
            }
         });
       }
@@ -44,7 +45,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
      const payload = { 
     "name":formData.menuName?formData.menuName:"",
     "link":formData.menuLink?formData.menuLink:'',
-    "idmenu":formData.primaryMenu.value?formData.primaryMenu.value:"",
+    "idmenu":formData?.primaryMenu.value?formData.primaryMenu.value:"",
     "type":formData.type?formData.type.value:"",
     "dated":new Date(),
     "ord":0,
@@ -59,7 +60,7 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
           axios.put(`${menu}/${selectedRow.id}`, payload)
         .then((res) => {
           toast.success(" updated successfully!");
-          if (fetchSmenuData)  fetchSmenuData.fetchData();
+          if (reloadTable)  reloadTable();
           setEdit(false);
           reset({
        primaryMenu:"",
@@ -77,9 +78,8 @@ const SecondaryMenu = ({ title,Edit,selectedRow,fetchSmenuData,setEdit,row }) =>
     axios.post(menu,payload)
     .then((res)=>{
         console.log(res);
-       
           toast.success("Add successfully!");
-          if (fetchSmenuData)  fetchSmenuData.fetchData();
+          if (reloadTable)  reloadTable();
 
     reset();
     })

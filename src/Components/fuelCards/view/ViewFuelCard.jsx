@@ -31,9 +31,7 @@ const ViewFuelCard = () => {
     fee: 0,
     amtreal: 0,
   });
-
-  useEffect(() => {
-        const cardNo = document.getElementById("card_no")?.value;
+   const cardNo = document.getElementById("card_no")?.value;
         const supplier = document.getElementById("supplier")?.value;
         const  policy= document.getElementById("policy")?.value;
         const unit = document.getElementById("unit")?.value;
@@ -41,10 +39,12 @@ const ViewFuelCard = () => {
         const d_name = document.getElementById("driver_name")?.value;
         const company = document.getElementById("company")?.value;
         const status = document.getElementById("status")?.value;
-      GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status);
+  useEffect(() => {
+     
+      GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status,searchValues);
   }, []);
 
-  function GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status) {
+  function GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status,searchValues) {
      const columns = [
   { data: "card_id", title: "Card" },
   { data: "policy", title: "Policy" },
@@ -131,6 +131,9 @@ const ViewFuelCard = () => {
   params.append("pin", pin?pin :"");
   params.append("status", status?status :"");
   params.append("supplier_id", supplier?supplier :"");
+    Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
     const tableRes = await response.json();
@@ -244,6 +247,24 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
  window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
 
 } 
+let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+    const company_id = document.querySelector('[name=company]')?.value || "";
+    const company_status = document.querySelector('[name=status]')?.value || "";
+
+    GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status, searchValues);
+  }, 1000); // 500ms after last keystroke
+};
   return (
     <Fragment>
       <Breadcrumbs parent="View Fual Cards" title="View Fual Cards" />
@@ -318,6 +339,21 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
                         <th>Action</th>
                       </tr>
                     </thead>
+                       <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                  
+                    <td></td>
+                  </tr>
                     <tbody></tbody>
                   </table>
                 </div>
