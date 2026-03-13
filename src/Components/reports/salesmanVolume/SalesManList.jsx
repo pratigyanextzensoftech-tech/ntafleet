@@ -12,13 +12,6 @@ import 'datatables.net';
 import 'datatables.net-fixedcolumns';
 import { formatDate } from "../../../Hooks/Dropdowns";
 import { downloadPdf } from "../../../Hooks/Dropdowns";
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
-
 const SalesManList = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const[FormData,setFormData]=useState([])
@@ -129,6 +122,10 @@ const SalesManList = () => {
   params.append("search", data.search.value || "");
   params.append("orderColumn", data.columns[data.order[0].column].data);
   params.append("orderDir", data.order[0].dir);
+   params.append("orderDir", data.order[0].dir);
+    Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
     const tableRes = await response.json();
@@ -198,9 +195,7 @@ $(document)
           .catch(() => {
             Swal.fire("Error!", "Failed to delete record.", "error");
           });
-
       }
-
     });
 
 });
@@ -221,15 +216,7 @@ $(document)
 
   }
 
- const handleSearch = (formData) => {
- const company =  formData.company_id ||"";
- const from =  formData.from ||"";
- const to =  formData.to ||"";
- console.log(formData);
- 
 
-    GetDataTAble(); // fetch new data immediately
-  };
     function handleDownload(type) {
 const ids = []; 
 let esso_ftp='';
@@ -252,6 +239,20 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
  window.open(`${download}?type=TRANSACTION&format=${type}&supplier_id=${IDSUP}&from=${from}&to=${to}&state_prov=${state_prov}&unit=${unit}&card_no=${card_no}&company_id=${company}&currency=${currency}&item=${items}&invoiced=${status}&invoice_type=${invoice_type}&esso_ftp=${esso_ftp}`, "_self");
 
 } 
+let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+    GetDataTAble();
+  }, 1000); // 500ms after last keystroke
+};
   return (
     <Fragment>
       <Breadcrumbs parent='Reports' title='Salesman Volume Report'/>
@@ -295,6 +296,17 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
                         <th>Action</th>
                       </tr>
                     </thead>
+                        <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                   
+                  </tr>
                     <tbody></tbody>
                   </table>
                 </div>

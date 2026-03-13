@@ -10,9 +10,6 @@ import { useLocation } from 'react-router';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { menu } from "../../../api";
-
-import ManageMenuTable from './ManageMenuTable'; 
-import useMenuTable from './useMenuTable';
 import {pmenu as pmenuApi, smenu as smenuApi} from '../../../api/index'
 const Menu = () => {
 // const menuTabs = useMenuTable();
@@ -37,7 +34,6 @@ const Menu = () => {
         return smenuApi;      
     }
   };
-
  const getTableIdByTab = (tab) => {
   switch (tab) {
     case "1": return "#primaryMenuTable";
@@ -146,6 +142,26 @@ const handleDelete = (row) => {
     }
   });
 };
+
+  let debounceTimer; 
+const searchValues = {};
+const handleInputChange = (e) => {
+   const tab = getActiveTabFromUrl();
+  const api = getApiByTab(tab);
+  const tableId = getTableIdByTab(tab);
+
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+    GetDataTAble( api,tableId);
+  }, 1000); // 500ms after last keystroke
+};
 const handleEdit = async (row) => {
   setRow(row)
   console.log(row, "row");
@@ -172,7 +188,9 @@ if ($.fn.DataTable.isDataTable(tableId)) {
   $(tableId).DataTable().destroy();
 }
 
-$(tableId).empty(); 
+if ($.fn.DataTable.isDataTable(tableId)) {
+  $(tableId).DataTable().destroy();
+}
 
     $(tableId).DataTable({
       serverSide: true,
@@ -191,6 +209,9 @@ $(tableId).empty();
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
+         Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
         try {
           const response = await fetch(`${api}?${params.toString()}`);
           const json = await response.json();
@@ -272,7 +293,9 @@ useEffect(() => {
     if ($.fn.DataTable.isDataTable(tableId)) {
       $(tableId).DataTable().destroy();
     }
-    $(tableId).empty();
+if ($.fn.DataTable.isDataTable(tableId)) {
+  $(tableId).DataTable().destroy();
+}
   };
 
 }, [location.search]);
@@ -286,10 +309,35 @@ useEffect(() => {
       <Card>
        
         <CardBody>
-          <table
-            id="primaryMenuTable"
-            className="table table-bordered w-100"
-          />
+       <table id="primaryMenuTable" className="table table-bordered w-100">
+  <thead>
+
+    {/* Column Titles */}
+    <tr>
+      <th>ID#</th>
+      <th>Menu Name</th>
+      <th>Menu Link</th>
+      <th>Added By</th>
+      <th>Added On</th>
+      <th>Menu Order</th>
+      <th>Action</th>
+    </tr>
+
+    {/* Search Inputs */}
+   
+
+  </thead>
+   <tr>
+      <th><input name="input1" id="1"  className="input-search" type="text" onChange={handleInputChange} /></th>
+      <th><input name="input2" id="2"  className="input-search" type="text" onChange={handleInputChange} /></th>
+      <th><input name="input3" id="3"  className="input-search" type="text" onChange={handleInputChange} /></th>
+      <th><input name="input4" id="4"  className="input-search" type="text" onChange={handleInputChange} /></th>
+      <th><input name="input5" id="5"  className="input-search" type="text" onChange={handleInputChange} /></th>
+      <th><input name="input6" id="6"  className="input-search" type="text" onChange={handleInputChange} /></th>
+      <th></th>
+    </tr>
+  <tbody></tbody>
+</table>
           </CardBody>
           </Card></Col>
           </Row>
@@ -305,10 +353,33 @@ useEffect(() => {
       <Card>
        
         <CardBody>
-          <table
-            id="secondaryMenuTable"
-            className="table table-bordered w-100"
-          />
+    <table id="secondaryMenuTable" className="table table-bordered w-100">
+       <thead>
+       <tr>
+      <th>ID#</th>
+      <th>Menu Name</th>
+      <th>Primary Menu</th>
+      <th>Menu Link</th>
+      <th>Added By</th>
+      <th>Added On</th>
+      <th>Menu Order</th>
+      <th>Action</th>
+    </tr>
+   </thead>
+    <tr>
+      <th><input type="text" name="input1" onChange={handleInputChange} className="input-search"/></th>
+      <th><input type="text" name="input2" onChange={handleInputChange} className="input-search"/></th>
+      <th><input type="text" name="input3" onChange={handleInputChange} className="input-search"/></th>
+      <th><input type="text" name="input4" onChange={handleInputChange} className="input-search"/></th>
+      <th><input type="text" name="input5" onChange={handleInputChange} className="input-search"/></th>
+      <th><input type="text" name="input6" onChange={handleInputChange} className="input-search"/></th>
+      <th><input type="text" name="input7" onChange={handleInputChange} className="input-search"/></th>
+      <th></th>
+    </tr>
+
+
+  <tbody></tbody>
+</table>
             </CardBody>
           </Card></Col>
           </Row>

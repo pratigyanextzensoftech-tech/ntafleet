@@ -304,6 +304,13 @@ console.log(from,to,state_prov,unit,card_no,company,currency,items,status,invoic
 let debounceTimer; // define outside the function so it persists
 const searchValues = {};
 const handleInputChange = (e) => {
+    const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+       const supplier = Array.from(
+  document.querySelectorAll('input[name="supplier"]:checked')
+).map(cb => cb.value);
+
+console.log(supplier);
   const key = e.target.name; // e.g., 'name', 'link', 'status'
   const value = e.target.value;
   searchValues[key] = value; // store value by name
@@ -313,9 +320,9 @@ const handleInputChange = (e) => {
   debounceTimer = setTimeout(() => {
     console.log("Fetching table with search values:", searchValues);
 
- 
+       GetDataTAble(from,to,supplier,FormData);
 
-    GetDataTAble();
+
   }, 1000); // 500ms after last keystroke
 };
 

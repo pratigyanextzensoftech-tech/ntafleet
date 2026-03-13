@@ -154,6 +154,9 @@ const ManageSalesManIndex = () => {
   params.append("search", data.search.value || "");
   params.append("orderColumn", data.columns[data.order[0].column].data);
   params.append("orderDir", data.order[0].dir);
+     Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
  
   try {
  const response = await fetch(`${APINAME}?${params.toString()}`);
@@ -270,7 +273,20 @@ await axios.put(`${APINAME}/${id}`, {
    const refreshTable = () => {
    GetDataTAble()
   };
+let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
 
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+    GetDataTAble();
+  }, 1000); // 500ms after last keystroke
+}
   return (
     <Fragment>
       <Breadcrumbs parent="Setting" title="Manage Sales Man"/>
@@ -318,6 +334,17 @@ await axios.put(`${APINAME}/${id}`, {
                         <th>Action</th>
                       </tr>
                     </thead>
+                    
+                       <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                  </tr>
                     <tbody></tbody>
                   </table>
                 </div>

@@ -248,6 +248,9 @@ else if (api === owner_invoice) {
         params.append("invcat", invcat?invcat :"");
         params.append("invoice_type", invoice_type?invoice_type : "");
        params.append("cust_inv_type", cust_inv_type?cust_inv_type: "");
+         Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+         })
 
         try {
           const response = await fetch(`${api}?${params.toString()}`);
@@ -338,29 +341,38 @@ else if (api === owner_invoice) {
 
   };
 
-// useEffect(() => {
-//   const tab = getActiveTabFromUrl();
-//   const api = getApiByTab(tab);
-//   const tableId = getTableIdByTab(tab);
-//    const start_date = document.getElementById("start")?.value ||"";
-//         const end_date = document.getElementById("end")?.value ||"";
-//         const supplier = document.getElementById("supplier")?.value ||"";
-//         const company_id = document.getElementById("company_id")?.value ||"";
-//         const country = document.querySelector('[name="country"]')?.value ||"";
-// const invoice_type = document.querySelector('[name="invoice"]')?.value || "";
-//         const invcat = document.getElementById("invcat")?.value ||"";
-//         const cust_inv_type = document.getElementById("customised")?.value ||"";
-//         console.log(country);
-        
-//   setTimeout(() => {
-//     GetDataTAble(api, tableId,start_date,end_date,supplier,country,invoice_type,invcat,company_id,cust_inv_type);
-//   }, 200);
-//    return () => {
-//   if ($.fn.DataTable.isDataTable(tableId)) {
-//     $(tableId).DataTable().clear().destroy();
-//   }
-// };
-// }, [window.location.search]);
+
+ let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  if (!showTable || !filters) return;
+
+  const tab = getActiveTabFromUrl();
+  const api = getApiByTab(tab);
+  const tableId = getTableIdByTab(tab);
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+      GetDataTAble(
+    api,
+    tableId,
+    filters.from,
+    filters.to,
+    filters.supplier_id,
+    filters.country_id,
+    filters.invoice_type,
+    filters.inv_cat,
+    filters.company_id,
+    filters.cust_inv_type
+  );
+  }, 1000); // 500ms after last keystroke
+};
+
 
    const SendBulkTable = [ 
   {
@@ -388,7 +400,21 @@ else if (api === owner_invoice) {
           <table
             id="invoiceCombine"
             className="table table-bordered w-100"
-          />
+          >
+              <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                  
+                  </tr>
+                  </table>
         </CardBody>
         )}
       </Card>
@@ -423,8 +449,24 @@ else if (api === owner_invoice) {
                 </div>
           <table
             id="Ownerinvoice"
-            className="table table-bordered w-100"
-          />
+            className="table table-bordered w-100" >
+            
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                  
+                  </tr>
+                  </table>
         </CardBody>
         )}
       </Card>
@@ -459,7 +501,18 @@ else if (api === owner_invoice) {
           <table
             id="moneycodeTable"
             className="table table-bordered w-100"
-          />
+          >
+               <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                  
+                  </tr>
+                  </table>
         </CardBody>
         )}
       </Card>
@@ -495,7 +548,21 @@ else if (api === owner_invoice) {
           <table
             id="customized"
             className="table table-bordered w-100"
-          />
+          >
+              <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                  
+                  </tr>
+                  </table>
         </CardBody>
         )}
       </Card>
@@ -531,7 +598,17 @@ else if (api === owner_invoice) {
           <table
             id="tcheck"
             className="table table-bordered w-100"
-          />
+          >
+             <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                  
+                  </tr>
+                  </table>
         </CardBody>
         )}
       </Card>
@@ -562,9 +639,9 @@ useEffect(() => {
   );
 
 }, [showTable, filters]);
+
 const handleSearch = (formData) => {
   console.log("🔍 Filters received:", formData);
-
   setFilters(formData);   // save filters
   setShowTable(true);     // show table
 };

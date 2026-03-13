@@ -12,10 +12,6 @@ import 'datatables.net';
 import 'datatables.net-fixedcolumns';
 
 const ViewIndex = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const[FormData,setFormData]=useState([])
-  const toggle = () => setDropdownOpen((prev) => !prev);
-
   useEffect(() => {
         const start = document.getElementById("start")?.value;
         const end = document.getElementById("end")?.value;
@@ -116,6 +112,9 @@ const ViewIndex = () => {
     params.append("end_date", end);
     params.append("country", country);
     params.append("supplier", supplier);
+      Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
 
 
   try {
@@ -207,6 +206,26 @@ const ViewIndex = () => {
  const supplier =  formData.supplier_id ||"";
     GetDataTAble(company,start,end,country,supplier); // fetch new data immediately
   };
+
+   let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+   const handleInputChange = (e) => {
+     const start = document.getElementById("start")?.value;
+        const end = document.getElementById("end")?.value;
+        const company = document.getElementById("company")?.value;
+        const country = document.getElementById("country")?.value;
+        const supplier = document.getElementById("supplier")?.value;
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+    GetDataTAble(company,start,end,country,supplier);
+  }, 1000); // 500ms after last keystroke
+}
    
   return (
     <Fragment>
@@ -238,25 +257,46 @@ const ViewIndex = () => {
                     style={{ width: "100%" }}
                   >
                     <thead>
-                      <tr> 
+                     <tr> 
                         <th>ID#</th>
-                        <th>Company </th>
-                        <th>Start Date </th>
-                        <th>End Date </th>
-                        <th>Country </th>
-                        <th>Supplier </th>
-                        <th>Discount Cent (CA) </th> 
+                        <th>Company</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Country</th>
+                        <th>Supplier</th>
+                        <th>Discount Cent (CA)</th>
                         <th>Discount Cent (US)</th>
                         <th>Total (CA)</th>
                         <th>Total (US)</th>
                         <th>Retail Total (CA)</th>
+                        <th>Retail Total (US)</th>
                         <th>Qty (CA)</th>
                         <th>Qty (US)</th>
                         <th>Discount (CA)</th>
                         <th>Discount (US)</th>
                         <th>Action</th>
-                      </tr>
+                        </tr>
+                
                     </thead>
+                         <tr>
+                        <th><input type="text" name="input1" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input2" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input3" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input4" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input5" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input6" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input7" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input8" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input9" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input10" className="input-search"  onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input10" className="input-search"  onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input11" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input12" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input13" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input14" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input15" className="input-search" onChange={handleInputChange}/></th>
+                        <th><input type="text" name="input16" className="input-search" onChange={handleInputChange}/></th>
+                  </tr>
                     <tbody></tbody>
                   </table>
                 </div>

@@ -364,6 +364,7 @@ const EssoOwnerRackList = ({ title, btnTitle }) => {
                         <th>Action</th>
                       </tr>
                     </thead>
+                    
                     <tbody></tbody>
                   </table>
                 </div>

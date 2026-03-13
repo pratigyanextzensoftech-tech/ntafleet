@@ -139,6 +139,9 @@ const Index = () => {
         params.append("company_id", companyId);
         params.append("from_date", startDate);
         params.append("upto_date", endDate); 
+          Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
         fetch(`${Esso_cent_Data}?${params.toString()}`)
           .then((res) => res.json())
           .then((json) => {
@@ -175,6 +178,27 @@ const Index = () => {
       },
     });
   }
+    let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+
+const handleInputChange = (e) => {
+  const key = e.target.name;
+  const value = e.target.value;
+  searchValues[key] = value;
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+    if ($.fn.DataTable.isDataTable("#example")) {
+      $("#example").DataTable().clear().destroy();
+    }
+
+    GetDataTAble();
+
+  }, 1000);
+};
 
   return (
     <Fragment>
@@ -267,17 +291,43 @@ const Index = () => {
                     className="display table table-striped table-bordered nowrap"
                     style={{ width: "100%" }}
                   >
-                    <thead>
-                      <tr>
-                        <th>Company Name</th>
-                        <th>Pricing Date</th>
-                        <th>Action</th>
-                        {dynamicColumns.map((col, idx) => (
-                          <th key={idx}>{col}</th>
-                        ))}
-                        <th>Action</th>
-                      </tr>
-                    </thead>
+                  <thead>
+<tr>
+<th>Company Name</th>
+<th>Pricing Date</th>
+<th>Action</th>
+{dynamicColumns.map((col, idx) => (
+<th key={idx}>{col}</th>
+))}
+<th>Action</th>
+</tr>
+</thead>
+<tr>
+<th>
+<input type="text" name="input1" onChange={handleInputChange} className="input-search"/>
+</th>
+
+<th>
+<input type="text" name="input2" onChange={handleInputChange} className="input-search"/>
+</th>
+
+<th></th>
+
+{dynamicColumns.map((col, idx) => (
+<th key={idx}>
+<input
+type="text"
+name={`input${idx + 4}`}
+onChange={handleInputChange}
+className="input-search"
+/>
+</th>
+))}
+
+<th></th>
+
+</tr>
+
                     <tbody></tbody>
                   </table>
                 </div>

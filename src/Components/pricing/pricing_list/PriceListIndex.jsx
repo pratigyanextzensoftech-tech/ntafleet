@@ -451,6 +451,9 @@ else{
         params.append("search", data.search.value || "");
         params.append("pricing_date", pricing_date?pricing_date:"");
         params.append("supplier", supplier?supplier :"");
+         Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
 
         try {
           const response = await fetch(`${api}?${params.toString()}`);
@@ -654,6 +657,37 @@ const handleDelete = ({ ids = [], deleteApi, refetch }) => {
   });
 
 };
+  let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const tab = getActiveTabFromUrl();
+  const api = getApiByTab(tab);
+  const tableId = getTableIdByTab(tab);
+const pricing_date=document.getElementById("pricing_date")?.value
+const supplier=document.getElementById("supplier")?.value
+
+
+
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+ 
+
+     GetDataTAble(
+    api,
+    tableId,
+  pricing_date,
+  supplier
+   
+  );
+  }, 1000); // 500ms after last keystroke
+};
 const handleDeleteClick = () => {
 
   const tab = getActiveTabFromUrl();
@@ -688,7 +722,27 @@ const handleDeleteClick = () => {
           <table
             id="pricing"
             className="table table-bordered w-100"
-          />
+          >
+              <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
     
       </Card>
@@ -718,7 +772,30 @@ const handleDeleteClick = () => {
           <table
             id="ta-capped"
             className="table table-bordered w-100"
-          />
+          >
+              <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input17" id="17" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input18" id="18" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input19" id="19" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
        
       </Card>
@@ -750,7 +827,30 @@ const handleDeleteClick = () => {
           <table
             id="ta-actual"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                      <th><input type="text" name="input17" id="17" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input18" id="18" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input19" id="19" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -777,7 +877,27 @@ const handleDeleteClick = () => {
           <table
             id="esso-pricing"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -808,7 +928,29 @@ const handleDeleteClick = () => {
           <table
             id="love-capped"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                      <th><input type="text" name="input17" id="17" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input18" id="18" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -840,7 +982,29 @@ const handleDeleteClick = () => {
           <table
             id="love-actual"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input17" id="17" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input18" id="18" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -868,7 +1032,26 @@ const handleDeleteClick = () => {
           <table
             id="ultramar"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -896,7 +1079,30 @@ const handleDeleteClick = () => {
           <table
             id="irving"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                      <th><input type="text" name="input17" id="17" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input18" id="18" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input19" id="19" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -923,7 +1129,27 @@ const handleDeleteClick = () => {
           <table
             id="cen-pricing"
             className="table table-bordered w-100"
-          />
+          >
+            <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input16" id="16" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+            </table>
         </CardBody>
       
       </Card>
@@ -967,6 +1193,7 @@ const handleSearch = (formData) => {
    
   );
 };
+
 const PricingTab = [
     {
       id: '1',

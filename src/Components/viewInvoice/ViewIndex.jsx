@@ -277,6 +277,9 @@ const ViewIndex = () => {
         params.append("invoice_type", invoice_type || "");
         params.append("show_hide", show_hide || "");
         params.append("cust_inv_type", cust_inv_type || "");
+         Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
 
         try {
           const response = await fetch(`${api}?${params.toString()}`);
@@ -592,6 +595,52 @@ const ViewIndex = () => {
     ); // fetch new data immediately
   };
 
+  let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const tab = getActiveTabFromUrl();
+    const api = getApiByTab(tab);
+    const tableId = getTableIdByTab(tab);
+     const from = document.getElementById("from").value || "";
+    const to = document.getElementById("to").value || "";
+    const company_id = document.getElementById("company_id")?.value || "";
+    const country = document.querySelector('[name="country"]')?.value || "";
+   const invoice_type = document.querySelector('[name="invoiceType"]')?.value || "";
+
+const invcat = document.querySelector('[name="category"]')?.value || "";
+
+const show_hide = document.querySelector('[name="invoiceShow"]')?.value || "";
+    const cust_inv_type = document.getElementById("customised")?.value || "";
+    const supplier = Array.from(
+      document.querySelectorAll('input[name="supplier"]:checked'),
+    ).map((cb) => cb.value);
+
+    console.log(supplier);
+
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+ 
+
+    GetDataTAble( api,
+        tableId, from,
+      to,
+      company_id,
+      country,
+      invoice_type,
+      invcat,
+      show_hide,
+      cust_inv_type,
+      supplier,);
+  }, 1000); // 500ms after last keystroke
+};
+
   const View_Invoice = [
     {
       id: "1",
@@ -701,7 +750,26 @@ const ViewIndex = () => {
                 <table
                   id="invoiceCombine"
                   className="table table-bordered w-100"
-                />
+                >
+                    <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+                  </table>
               </CardBody>
             </Card>
           </Col>
@@ -766,8 +834,27 @@ const ViewIndex = () => {
               <CardBody>
                 <table
                   id="Ownerinvoice"
-                  className="table table-bordered w-100"
-                />
+                  className="table table-bordered w-100">
+
+                  <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+                </table>
               </CardBody>
             </Card>
           </Col>
@@ -835,7 +922,26 @@ const ViewIndex = () => {
                 <table
                   id="customizedTable"
                   className="table table-bordered w-100"
-                />
+                >
+                    <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input9" id="9" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input10" id="10" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input11" id="11" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input12" id="12" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input13" id="13" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input14" id="14" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input15" id="15" onChange={handleInputChange} className="input-search"/></th>
+                    <th></th>
+                  </tr>
+                  </table>
               </CardBody>
             </Card>
           </Col>

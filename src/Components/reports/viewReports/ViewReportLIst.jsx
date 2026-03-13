@@ -152,6 +152,9 @@ const ViewReportList = () => {
         params.append("start", data.start);
         params.append("length", data.length);
         params.append("search", data.search.value || "");
+          Object.keys(searchValues).forEach((key) => {
+    params.append(key, searchValues[key] || "");
+  });
         try {
           const response = await fetch(`${api}?${params.toString()}`);
           const json = await response.json();
@@ -279,6 +282,27 @@ useEffect(() => {
   }
 };
 }, [window.location.search]);
+let debounceTimer; // define outside the function so it persists
+const searchValues = {};
+const handleInputChange = (e) => {
+  const tab = getActiveTabFromUrl();
+    const api = getApiByTab(tab);
+    const tableId = getTableIdByTab(tab);
+  
+
+  const key = e.target.name; // e.g., 'name', 'link', 'status'
+  const value = e.target.value;
+  searchValues[key] = value; // store value by name
+
+  clearTimeout(debounceTimer);
+
+  debounceTimer = setTimeout(() => {
+    console.log("Fetching table with search values:", searchValues);
+
+    GetDataTAble( api,
+        tableId);
+  }, 1000); // 500ms after last keystroke
+};
 
   const View_Invoice_Table = [
     {
@@ -297,7 +321,18 @@ useEffect(() => {
           <table
             id="reportNew"
             className="table table-bordered w-100"
-          />
+>
+      <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    </tr>
+                  </table>
         </CardBody>
       </Card>
     </Col>
@@ -317,7 +352,18 @@ useEffect(() => {
         />
 
         <CardBody>
-        <table id="OwnerReport" className="table table-bordered w-100" />
+        <table id="OwnerReport" className="table table-bordered w-100" >
+           <tr>
+                    <th><input type="text" name="input1" id="1" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input2" id="2" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input3" id="3" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input4" id="4" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input5" id="5" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input6" id="6" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input7" id="7" onChange={handleInputChange} className="input-search"/></th>
+                    <th><input type="text" name="input8" id="8" onChange={handleInputChange} className="input-search"/></th>
+                    </tr>
+                  </table>
         </CardBody>
          </Card>
     </Col>
