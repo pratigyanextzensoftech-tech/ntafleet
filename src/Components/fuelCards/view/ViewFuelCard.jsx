@@ -68,7 +68,7 @@ const ViewFuelCard = () => {
       <button class="btn btn-sm btn-success dropdown-toggle" 
               type="button" 
               data-bs-toggle="dropdown">
-        Action
+      <i class="fa fa-cog me-1"></i>  Action
       </button>
 
       <ul class="dropdown-menu">

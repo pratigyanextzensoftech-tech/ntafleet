@@ -61,12 +61,14 @@ const Index = () => {
   const {
     reset,
     register,
+    setValue,
     control,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
  const onSubmit = async (formData) => {
+  console.log(formData )
     try { 
       const payload = {  
         company_name: formData.company_name || '',
@@ -117,7 +119,7 @@ const Index = () => {
         esso_retail_invoice: formData.esso_retail_invoice || '',
         esso_inv_type: formData.esso_inv_type?.value || '',
         cen_inv_type: formData.cen_inv_type?.value || '',
-        cen_rcent: formData.cen_rcent?.value || '',
+        cen_rcent: formData?.cen_rcent?.value || 0.0,
         cen_owner_operator_invoice: formData.cen_owner_operator_invoice?.value || '',
         cen_cust_inv_type: formData.cen_cust_inv_type?.value || '',
         cust_inv_type: formData.cust_inv_type?.value || '',
@@ -125,9 +127,9 @@ const Index = () => {
         ul_inv_type: formData.ul_inv_type?.value || '',
         esso_rcent: formData.esso_rcent || '0',
         ul_rcent: formData.ul_rcent || '0',
-        esso_rack: formData.esso_rack || '0',
-        esso_rack_on: formData.esso_rack_on || '0',
-        esso_rack_oon: formData.esso_rack_oon || '0',
+        esso_rack: formData?.esso_rack?.value || '0',
+        esso_rack_on: formData?.esso_rack_on?.value || '0',
+        esso_rack_oon: formData?.esso_rack_oon?.value || '0',
         fee: formData.fee || '',
         owner_operator_invoice: formData.owner_operator_invoice?.value || '',
         ul_owner_operator_invoice: formData.ul_owner_operator_invoice?.value || '',
@@ -753,6 +755,7 @@ const Index = () => {
                           name="esso_rack"
                           label="ESSO Rack"
                           control={control}
+                          setValue={setValue}
                           placeholder="Select ESSO Rack"
                           defaultValueId={0}
                           options={essoRacks}
@@ -845,6 +848,7 @@ const Index = () => {
                           name="esso_rack_on"
                           label="ESSO Rack"
                           control={control}
+                          setValue={setValue}
                           placeholder="Select ESSO Rack"
                           defaultValueId={0}
                           options={essoRacks}
@@ -854,6 +858,7 @@ const Index = () => {
                         <DropDown
                           name="esso_rack_oon"
                           label="ESSO Rack"
+                        setValue={setValue}
                           control={control}
                           placeholder="Select ESSO Rack"
                           defaultValueId={0}

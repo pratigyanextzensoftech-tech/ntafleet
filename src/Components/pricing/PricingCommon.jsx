@@ -27,7 +27,6 @@ import Swal from "sweetalert2";
 import $ from "jquery";
 import "datatables.net";
 import { downloadPdf } from "../../Hooks/Dropdowns";
-import { Link } from 'react-router-dom';
 
 const PricingCommon = ({
   title,
@@ -886,6 +885,7 @@ useEffect(() => {
                   <div className='text-end mb-3'>
                  <Btn
   attrBtn={{
+    
     color: "danger",
     onClick: handleBulkDelete
   }}
@@ -913,7 +913,6 @@ useEffect(() => {
     </table>
   </div>
 )}
-        
        </CardBody>
                                 </Card>
                                </Col>

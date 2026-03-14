@@ -213,7 +213,7 @@ const ViewIndex = () => {
       },
       {
         data: null,
-        title: "Action",
+        title: `  Action `,
         orderable: false,
         render: function (data, type, row) {
           let btnType;
@@ -228,7 +228,7 @@ const ViewIndex = () => {
           const viewUrl = `/card-admin/viewInvoice/ViewPdf/${btoa(row.invoice_id)}?type=${btnType}`;
 
         let actionItems = "";
-        actionItems = `<li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}" data-type="${btnType}"> <i class="fa fa-download me-2 text-danger"></i>Download</button></li>`;
+        actionItems = ` <li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}" data-type="${btnType}"> <i class="fa fa-download me-2 text-danger"></i>Download</button></li>`;
 
         actionItems +=`<li><button class="dropdown-item download-btn"  data-link="${row.download_link}"  data-id="${row.invoice_id}" data-type="${btnType}"> <i class="fa fa-eye me-2 text-success"></i>View</button></li>`;
 
@@ -241,7 +241,7 @@ const ViewIndex = () => {
         <button class="btn btn-sm btn-success dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown">
-          Action
+         <i class="fa fa-cog me-1"></i>  Action
         </button>
         <ul class="dropdown-menu">
           ${actionItems}

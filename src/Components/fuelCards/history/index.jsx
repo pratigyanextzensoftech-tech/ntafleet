@@ -139,7 +139,6 @@ const Index = () => {
               />
             );
           }
-
           return row[key];
         },
         sortable: true,

@@ -51,15 +51,17 @@ const Index = () => {
           [column]: value.toLowerCase(),
         }));
       };
-       const filteredData = data.filter((row) =>
+const filteredData = data.filter((row) =>
   Object.keys(filters).every((key) => {
     if (!filters[key]) return true;
-    return (
-      row[key] &&
-      row[key].toString().toLowerCase().includes(filters[key])
-    );
+
+    const value = row[key];
+
+    if (!value) return false;
+
+    return String(value).toLowerCase().includes(filters[key]);
   })
-); 
+);
      useEffect(() => {
       const cols = Object.keys(columnsMap).map((key) => {
 
@@ -91,7 +93,7 @@ const Index = () => {
           ? (row) => (
               <div
                 className="notification-content"
-                dangerouslySetInnerHTML={{ __html: row[key] }}
+                dangerouslySetInnerHTML={{ __html: row[key] ||""}}
               />
             )
           : (row) => row[key],
@@ -107,12 +109,12 @@ const Index = () => {
            <div className="position-relative dropdown-action">
              <button
                className="btn btn-sm btn-primary px-2"
-               onClick={() => setOpenRowId(openRowId === row["City ID"] ? null : row["City ID"])}
+               onClick={() => setOpenRowId(openRowId === row["ID #"] ? null : row["ID #"])}
              >
                Action
              </button>
    
-             {openRowId === row["City ID"]&& (
+             {openRowId === row["ID #"]&& (
                <div
                  className="position-absolute bg-white border rounded shadow"
                  style={{
@@ -147,7 +149,7 @@ const Index = () => {
        });
    
        setTableColumns(cols);
-     }, [openRowId]);
+     }, [openRowId, columnsMap]);
      
      useEffect(() => {
        const handleClickOutside = (event) => {
@@ -182,7 +184,7 @@ const Index = () => {
          if (result.isConfirmed) {
            axios.delete(`${APINAME}/${row["ID #"]}`)
              .then(() => {
-               setData((prevData) => prevData.filter((item) => item[["ID #"]] !== row["ID #"]));
+               setData((prevData) => prevData.filter((item) => item["ID #"] !== row["ID #"]));
                Swal.fire('Deleted!', 'Record deleted successfully.', 'success');
              })
              .catch(() => {

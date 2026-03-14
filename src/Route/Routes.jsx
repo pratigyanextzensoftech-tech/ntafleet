@@ -52,7 +52,7 @@ import SubLOgin from '../Components/company/subLogin/index.jsx';
 import AddFuel from '../Components/fuelCards/addFuel/index';
 import ViewFuel from '../Components/fuelCards/view/ViewFuelCard.jsx';
 import EFSFuel from '../Components/fuelCards/viewEFS/ViewIndex.jsx';
-import HistoryFuel from '../Components/fuelCards/history/index';
+import HistoryFuel from '../Components/fuelCards/history/HistoryIndex.jsx';
 import EditInformation from '../Components/fuelCards/editInformation/index.jsx'
 
 //Transaction
@@ -113,7 +113,7 @@ import ManageGroup from '../Components/location/manageGroup/index'
 //Setting
 import UserLogin from '../Components/setting/userLogin/UserLoginIndex.jsx'
 import TrackVisitor from '../Components/setting/trackVisitor/ListIndex.jsx'
-import CompanyLogin from '../Components/setting/companyLogin/index'
+import CompanyLogin from '../Components/setting/companyLogin/CompanyLoginIndex.jsx'
 import ManageUser from '../Components/setting/manageUser/ManageUserIndex.jsx'
 import ManageSalesman from '../Components/setting/manageSalesman/ManageSalesManIndex.jsx';
 import ManageMenu from '../Components/setting/manageMenu/Menu.jsx'
@@ -133,7 +133,7 @@ import How_Card_Discount from '../Components/help/how_card_discount';
 import EditUnknownTransaction from '../Components/transaction/unKnownTransaction/EditUnknownTransaction';
  import EditFuel from '../Components/fuelCards/editFuel/index'
 import EditMoneyCodeForm from '../Components/moneyCode/addMoneyCode/EditMoneyCode';
-import Notification from '../Components/notification/index';
+import Notification from '../Components/notification/NotificationIndex.jsx';
 import CreateIrving from '../Components/createIrving/CreateIrving.jsx';
 export const routes = [
     //Dashboard

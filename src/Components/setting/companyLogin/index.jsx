@@ -25,16 +25,6 @@ const Index = () => {
       document.addEventListener("mousedown", handleClickOutside);
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-    const handleChange = (id, field, value) => {
-      setData((prevData) =>
-        prevData.map((item) =>
-          item.id === id ? { ...item, [field]: value } : item
-        )
-      );
-  
-  
-    };
-    // ✅ Column mapping between UI and API
     const columnsMap = {
       "Sr.No": "id",
       "Company": "company_name",

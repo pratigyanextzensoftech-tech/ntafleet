@@ -41,8 +41,7 @@ const ViewEfsList = () => {
         const currency = document.getElementById("currency")?.value;
         const items = document.getElementById("items")?.value;
         const invoice_type = document.getElementById("invType")?.value;
-        const supplier = document.getElementById("supplier")?.value;
-      
+        const supplier = document.querySelector('[name="supplier"]')?.value;      
 
       GetDataTAble(from,to,state_prov,unit,cardNo,company,currency,items,invoice_type,supplier);
   }, []);
@@ -78,7 +77,7 @@ const ViewEfsList = () => {
         <button class="btn btn-sm btn-success dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown">
-          Action
+       <i class="fa fa-cog me-1"></i>    Action
         </button>
 
         <ul class="dropdown-menu">

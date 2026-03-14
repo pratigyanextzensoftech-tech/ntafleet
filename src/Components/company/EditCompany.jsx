@@ -69,8 +69,7 @@ const Index = () => {
     setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } =useForm({
-  });
+  } =useForm();
   useEffect(() => {
     axios
       .get(`${company}/${company_id}`)
@@ -102,6 +101,17 @@ const Index = () => {
     setValue("irv_daily_pricing",res.data.irv_daily_pricing );
     setValue("irv_daily_pricing_wtax",res.data.irv_daily_pricing_wtax);
     setValue("country_id",res.data.country_id)
+    setValue("cen_rcent",res.data.cen_rcent)
+    setValue("esso_rack",res.data.esso_rack)
+    setValue("invoice_week",{
+      value:res.data.invoice_week,
+      label:res.data.invoice_week,
+        })
+    setValue("customer_type", {
+  value: res.data.customer_type,
+  label: res.data.customer_type
+});
+  
   }
       })
       .catch((err) => {
@@ -160,7 +170,7 @@ const payload = {
         ul_rcent: formData.ul_rcent || "0",
         irv_rcent: formData.irv_rcent || "0",
         cen_rcent: formData.cen_rcent || "0",
-        esso_rack: formData.esso_rack || "0",
+        esso_rack: formData.esso_rack?.value || "0",
         esso_rack_on: formData.esso_rack_on?.value || "0",
         esso_rack_oon: formData.esso_rack_oon?.value || "0",
         fee: formData.fee || "",
@@ -803,8 +813,11 @@ const payload = {
                           label="ESSO Rack"
                           control={control}
                           placeholder="Select ESSO Rack"
-                          defaultValueId={FullData.esso_rack}
+                           setValue={setValue}
+                          defaultValueId={FullData?.esso_rack}
                           options={essoRacks}
+
+                  
                         />
                       </Col>
                       <Col sm="3">
@@ -969,6 +982,7 @@ const payload = {
                                 <input
                                   className="form-control"
                                   name="ul_rcent"
+                                  defaultValue={FullData?.ul_rcent}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1025,6 +1039,8 @@ const payload = {
                                 <input
                                   className="form-control"
                                   name="irv_rcent"
+                                  defaultValue={FullData?.irv_rcent}
+
                                   type="text"
                                 />
                               </InputGroup>
@@ -1079,6 +1095,7 @@ const payload = {
                                 <input
                                   className="form-control"
                                   name="esso_rcent"
+                                  defaultValue={FullData?.esso_rcent}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1132,6 +1149,7 @@ const payload = {
                                 <input
                                   className="form-control"
                                   name="cen_rcent"
+                                  defaultValue={FullData?.cen_rcent}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1189,6 +1207,7 @@ const payload = {
                                 <input
                                   className="form-control"
                                   name="discount_canada"
+                                  defaultValue={FullData?.discount_canada}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1675,7 +1694,7 @@ const payload = {
                               name="invoice_week"
                               control={control}
                               rules={{ required: "Invoice week is required" }}
-                                 defaultValue={invoiceWeek?.find(opt => opt.value === FullData.invoice_week) || null}
+                                defaultValue={invoiceWeek?.find(opt => opt.value === FullData.invoice_week) || null}
                               render={({ field }) => (
                                 
                                 <Select
