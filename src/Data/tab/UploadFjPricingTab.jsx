@@ -4,7 +4,7 @@ import FjPricing from "../../Components/pricing/uploadPricing/FjPricing";
 import LovePricing from "../../Components/pricing/uploadPricing/LovePricing";
 import TaPetro from "../../Components/pricing/uploadPricing/TaPetro";
 import Ultramar from "../../Components/pricing/uploadPricing/UltramarPricing";
-
+import CenovusPricing from "../../Components/pricing/uploadPricing/CenovusPricing";
 export const UploadFjPricingTab = [
   {
     id: "1",
@@ -97,6 +97,13 @@ export const UploadFjPricingTab = [
         title=" Irving Group Rack cent List"
         btnTitle="Upload Irving Pricing"
       />
+    ),
+  },
+  {
+    id: "9",
+    label: " Cenovus Pricing",
+    component: (
+      <CenovusPricing title="Upload Cenovus Pricing" btnTtitle="Upload Cenovus Pricing" />
     ),
   },
 ];

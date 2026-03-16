@@ -35,13 +35,9 @@ export const chooseSupplierCheckBox = [
 
 ]
  export const CompanySupplierCheckbox=[
-    {value:"1",label:"DEFD"},
-     {value:"1",label:"ULSD"},
-    {value:"1",label:"ULSR"},
-  
-
-
-    
+    {value:"5",label:"DEFD"},
+     {value:"9",label:"ULSD"},
+    {value:"10",label:"ULSR"}, 
 ]
 export const discountSheetCheckBox = [
     { id: '1', label: 'Exclude Flying J.', value: 'Exclude Flying J' },

@@ -64,6 +64,7 @@ const Index = () => {
     setValue,
     control,
     handleSubmit,
+
     formState: { errors, isSubmitted, isValid },
   } = useForm();
 
@@ -83,10 +84,10 @@ const Index = () => {
         street: formData.street || '',
         city: formData.city || '',
         location: formData.location || '',
-        auth_location: formData.auth_location || '',
+        auth_location: formData?.auth_location || '',
         province: formData.province || '',
         postal_code: formData.postal_code || '',
-        country_name: formData.country_name || '',
+        country_name: formData.country_name.label || '',
         phone: formData.phone || '',
         fax: formData.fax || '',
         mobile: formData.mobile || '',
@@ -98,10 +99,10 @@ const Index = () => {
         policy_number: formData.policy_number || '',
         company_status: formData.company_status?.value || '', 
         susp_comp: formData.susp_comp?.value || '',
-        defd_mark_up: formData.defd_mark_up || '',
-        daily_report: formData.daily_report || '',
-        identifier: formData.identifier || '',
-        irving: formData.irving || '',
+        defd_mark_up: formData?.defd_mark_up?.value || '',
+        daily_report: formData?.daily_report?.value || '',
+        identifier: formData?.identifier || '',
+        irving: formData?.irving || '',
         fees: formData.fees || '',
         shell_pricing: formData.shell_pricing || '0',
         pilot_pricing: formData.pilot_pricing || '0', 
@@ -109,40 +110,42 @@ const Index = () => {
         discount_usa: formData.discount_usa || '0',
         rack_ca: formData.rack_ca || '0',
         rack_us: formData.rack_us || '0',
-        aoi: formData.aoi || '',
-        drivers_license: formData.drivers_license || '',
-        signed_agreement: formData.signed_agreement || '',
-        void_cheque: formData.void_cheque || '',
-        check_rebate: formData.check_rebate || '',
-        retail_invoice: formData.retail_invoice || '',
-        ta_retail_invoice: formData.ta_retail_invoice || '',
-        esso_retail_invoice: formData.esso_retail_invoice || '',
-        esso_inv_type: formData.esso_inv_type?.value || '',
-        cen_inv_type: formData.cen_inv_type?.value || '',
-        cen_rcent: formData?.cen_rcent?.value || 0.0,
+        aoi: formData?.aoi?.value || '',
+        drivers_license: formData.drivers_license?.value || '',
+        signed_agreement: formData?.signed_agreement?.value || '',
+        void_cheque: formData?.void_cheque?.value || '',
+        check_rebate: formData.check_rebate?.value || '',
+        retail_invoice: formData.retail_invoice?.value || '',
+        ta_retail_invoice: formData.ta_retail_invoice?.value || '',
+        esso_retail_invoice: formData?.esso_retail_invoice?.value || '',
+        esso_inv_type: formData?.esso_inv_type?.value || '',
+        cen_inv_type: formData?.cen_inv_type?.value || '',
+        cen_rcent: formData?.cen_rcent || 0.0,
         cen_owner_operator_invoice: formData.cen_owner_operator_invoice?.value || '',
         cen_cust_inv_type: formData.cen_cust_inv_type?.value || '',
         cust_inv_type: formData.cust_inv_type?.value || '',
         ul_cust_inv_type: formData.ul_cust_inv_type?.value || '',
         ul_inv_type: formData.ul_inv_type?.value || '',
+        irv_inv_type: formData.irv_inv_type?.value || '',
         esso_rcent: formData.esso_rcent || '0',
         ul_rcent: formData.ul_rcent || '0',
+        irv_rcent: formData.irv_rcent || '0',
         esso_rack: formData?.esso_rack?.value || '0',
         esso_rack_on: formData?.esso_rack_on?.value || '0',
         esso_rack_oon: formData?.esso_rack_oon?.value || '0',
-        fee: formData.fee || '',
-        owner_operator_invoice: formData.owner_operator_invoice?.value || '',
-        ul_owner_operator_invoice: formData.ul_owner_operator_invoice?.value || '',
-        sw_owner_invoice: formData.sw_owner_invoice?.value || '',
-        self_owner_invoice: formData.self_owner_invoice?.value || '',
-        sw_customised_inv: formData.sw_customised_inv?.value || '',
-        default_unit: formData.default_unit || '',
-        default_driver: formData.default_driver || '',
-        love_retail_invoice: formData.love_retail_invoice || '',
-        supplier_fee: formData.supplier_fee || '',
-        ibp_adjustment: formData.ibp_adjustment || '',
-        pumping_fee: formData.pumping_fee || '',
-        net_price: formData.net_price || '',
+        fee: formData?.fee?.value || '',
+        owner_operator_invoice: formData?.owner_operator_invoice?.value || '',
+        ul_owner_operator_invoice: formData?.ul_owner_operator_invoice?.value || '',
+        sw_owner_invoice: formData?.sw_owner_invoice?.value || '',
+        self_owner_invoice: formData?.self_owner_invoice?.value || '',
+        sw_customised_inv: formData?.sw_customised_inv?.value || '',
+        default_unit: formData?.default_unit?.value || '',
+        default_driver: formData?.default_driver?.value || '',
+        love_retail_invoice: formData?.love_retail_invoice?.value || '',
+        supplier_fee: formData?.supplier_fee?.value || '',
+        ibp_adjustment: formData?.ibp_adjustment?.value || '',
+        pumping_fee: formData?.pumping_fee?.value || '',
+        net_price: formData?.net_price?.value || '',
         daily_pricing: formData.daily_pricing || '',
         ta_daily_pricing: formData.ta_daily_pricing || '',
         esso_daily_pricing: formData.esso_daily_pricing || '',
@@ -153,26 +156,26 @@ const Index = () => {
          cen_daily_pricing: formData.cen_daily_pricing || '',
         ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || '',
         irv_daily_pricing: formData.irv_daily_pricing || '',
-        irv_daily_pricing_wtax: formData.irv_daily_pricing_wtax || '',
-        invoice_creation: formData.invoice_creation?.value || '',
-        invoice_day: formData.invoice_day?.value || '',
-        invoice_week: formData.invoice_week?.value || '',
-        customer_type: formData.customer_type?.value || '',
-        special_instructions: formData.special_instructions || '',
-        first_name: formData.first_name || '',
-        last_name: formData.last_name || '',
-        card_discount: formData.card_discount || '',
-        username: formData.username || '',
-        password: formData.password || '',
-        date: formData.date || '1970-01-01 00:00:00',
-        esso_live: formData.esso_live || '',
-        remarks: formData.remarks || '',
-        rest_OTP: formData.rest_OTP || '',
-        last_login: formData.last_login || '1970-01-01 00:00:00',
-        lang: formData.lang || '',
-        lat: formData.lat || '',
-        login_failed: formData.login_failed || '0',
-        last_failed: formData.last_failed || '1970-01-01 00:00:00', 
+        irv_daily_pricing_wtax: formData?.irv_daily_pricing_wtax || '',
+        invoice_creation: formData?.invoice_creation?.value || '',
+        invoice_day: formData?.invoice_day?.value || '',
+        invoice_week: formData?.invoice_week?.value || '',
+        customer_type: formData?.customer_type?.value || '',
+        special_instructions: formData?.special_instructions || '',
+        first_name: formData?.first_name || '',
+        last_name: formData?.last_name || '',
+        card_discount: formData?.card_discount?.value || '',
+        username: formData?.username || '',
+        password: formData?.password || '',
+        date: formData?.date || '1970-01-01 00:00:00',
+        esso_live: formData?.esso_live?.value || '',
+        remarks: formData?.remarks || '',
+        rest_OTP: formData?.rest_OTP || '',
+        last_login: formData?.last_login || '1970-01-01 00:00:00',
+        lang: formData?.lang || '',
+        lat: formData?.lat || '',
+        login_failed: formData?.login_failed || '0',
+        last_failed: formData?.last_failed || '1970-01-01 00:00:00', 
         added_on: new Date().toISOString().slice(0, 19).replace('T', ' '), 
       }; 
 
@@ -181,7 +184,8 @@ const Index = () => {
       const res = await axios.post(table_name, payload);  
       toast.success("Company Add Succesfully") 
       reset(); // Reset the form on success
-    } catch (error) {
+    }
+     catch (error) {
       console.error("❌ Error submitting form:", error);
     }
   };
@@ -394,6 +398,7 @@ const Index = () => {
                             </InputGroupText>
                             <input
                               className="form-control"
+                               {...register("address")}
                               type="text"
                               name="address"
                             />
@@ -407,8 +412,9 @@ const Index = () => {
                               <RiBuilding4Fill className="mx-1 " /> Authorized
                               Location
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
+                                {...register("auth_location")}
                               type="text"
                               name="auth_location"
                             />
@@ -420,22 +426,44 @@ const Index = () => {
                       <Col sm="3">
                         <InputGroup className="mb-3">
                           <InputGroupText>Country</InputGroupText>
-                          <Select
-                            options={countries}
-                            className="form-control p-0 border-0"
-                            name="country_name"
-                          />
+                          <Controller
+      name="country_name"
+      control={control}
+      defaultValue={null}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={countries}
+          className="form-control p-0 border-0"
+          placeholder="Select Country"
+          value={field.value || null}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
+
                         </InputGroup>
                       </Col>
                       <Col sm="3">
                         <InputGroup className="mb-3">
                           <InputGroupText>Company Type</InputGroupText>
-                          <Select
-                            options={optionscompany}
-                            className="form-control p-0 border-0"
-                            name="company_type"
-                            
-                          />
+                          <Controller
+      name="company_type"
+      control={control}
+      defaultValue={null}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={optionscompany}
+          className="form-control p-0 border-0"
+          placeholder="Select company type"
+          value={field.value || null}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
+
+                          
                         </InputGroup>
                       </Col>
                       <Col sm="3">
@@ -443,9 +471,10 @@ const Index = () => {
                           <InputGroupText> 
                             <FaPhoneAlt className="mx-1" /> Phone
                           </InputGroupText>
-                          <Input
+                          <input
                             className="form-control"
                             type="text"
+                               {...register("phone")}
                             name="phone"
                             placeholder="+1 (999) 999-9999"
                           />
@@ -457,10 +486,11 @@ const Index = () => {
                        
                             <FaPhoneAlt className="mx-1 " /> Mobile
                           </InputGroupText>
-                          <Input
+                          <input
                             className="form-control"
                             type="text"
                             name="mobile"
+                           {...register("mobile")}
                             placeholder="+1 (999) 999-9999"
                           />
                         </InputGroup>
@@ -473,9 +503,10 @@ const Index = () => {
                             <InputGroupText>
                               <FaPhoneAlt className="mx-1 " /> Fax
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
+                                {...register("fax")}
                               name="fax"
                               placeholder="+1 (999) 999-9999"
                             />
@@ -496,8 +527,9 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText> Policy Number</InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
+                                {...register("policy_number")}
                               type="text"
                               name="policy_number"
                             />
@@ -507,11 +539,20 @@ const Index = () => {
                       <Col sm="3">
                         <InputGroup>
                           <InputGroupText>Company Status</InputGroupText>
-                          <Select
-                            options={companyStatus}
-                            className="form-control p-0 border-0"
-                            name="company_status"
-                          />
+                          <Controller
+      name="company_status"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={companyStatus}
+          className="form-control p-0 border-0"
+          placeholder="Select status"
+          value={field.value}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
                         </InputGroup>
                       </Col>
                     </Row>
@@ -523,9 +564,10 @@ const Index = () => {
                               {" "}
                               Sub Fleet Identifier
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
+                                {...register("identifier")}
                               name="identifier"
                             />
                           </InputGroup>
@@ -538,9 +580,10 @@ const Index = () => {
                               {" "}
                               Irving Sub Fleet Name
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
+                              {...register("irving")}
                               name="irving"
                             />
                           </InputGroup>
@@ -550,10 +593,11 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText> Rack-Canada</InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                               name="rack_ca"
+                            {...register("rack_ca")}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -562,10 +606,11 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Rack-USA</InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                               name="rack_us"
+                              {...register("rack_us")}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -575,41 +620,77 @@ const Index = () => {
                       <Col sm="3">
                         <InputGroup>
                           <InputGroupText>AOI</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="aoi"
-                          />
+                         <Controller
+      name="aoi"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={YesNo}
+          className="form-control p-0 border-0"
+          placeholder="Select AOI"
+          value={field.value}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
                         </InputGroup>
                       </Col>
                       <Col sm="3">
                         <InputGroup>
                           <InputGroupText>Drivers License</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="drivers_license"
-                          />
+                         <Controller
+      name="drivers_license"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={YesNo}
+          className="form-control p-0 border-0"
+          placeholder="Select option"
+          value={field.value}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
                         </InputGroup>
                       </Col>
                       <Col sm="3">
                         <InputGroup>
                           <InputGroupText>Signed Agreement</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="signed_agreement"
-                          />
+                          <Controller
+      name="signed_agreement"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={YesNo}
+          className="form-control p-0 border-0"
+          placeholder="Select option"
+          value={field.value}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
                         </InputGroup>
                       </Col>
                       <Col sm="3">
                         <InputGroup>
                           <InputGroupText>Void Cheque</InputGroupText>
-                          <Select
-                            options={YesNo}
-                            className="form-control p-0 border-0"
-                            name="void_cheque"
-                          />
+                        <Controller
+      name="void_cheque"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          options={YesNo}
+          className="form-control p-0 border-0"
+          placeholder="Select option"
+          value={field.value}
+          onChange={(val) => field.onChange(val)}
+        />
+      )}
+    />
                         </InputGroup>
                       </Col>
                     </Row>
@@ -618,11 +699,20 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Check Rebate</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="check_rebate"
-                            />
+                             <Controller
+        name="check_rebate"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -630,11 +720,21 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>FJ Rack Invoice</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="retail_invoice"
-                            />
+                            <Controller
+        name="retail_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -644,11 +744,20 @@ const Index = () => {
                             <InputGroupText>
                               TA Petro Rack Invoice
                             </InputGroupText>
-                            <Select
-                              options={TaretailInvoice}
-                              className="form-control p-0 border-0"
-                              name="ta_retail_invoice"
-                            />
+                            <Controller
+        name="ta_retail_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={TaretailInvoice}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -656,11 +765,20 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Esso Rack Invoice</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="esso_retail_invoice"
-                            />
+                            <Controller
+        name="esso_retail_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -670,11 +788,21 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Loves Rack Invoice</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="love_retail_invoice"
-                            />
+                           <Controller
+        name="love_retail_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -684,11 +812,21 @@ const Index = () => {
                             <InputGroupText>
                               Show Supplier Fee (FJ)
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="supplier_fee"
-                            />
+                             <Controller
+        name="supplier_fee"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -698,11 +836,20 @@ const Index = () => {
                             <InputGroupText>
                               Show IBP Adjustment (TA)
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="ibp_adjustment"
-                            />
+                           <Controller
+        name="ibp_adjustment"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -712,11 +859,20 @@ const Index = () => {
                             <InputGroupText>
                               Show Pumping Fee(LOVES)
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="pumping_fee"
-                            />
+                              <Controller
+        name="pumping_fee"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -728,11 +884,21 @@ const Index = () => {
                             <InputGroupText>
                               Show Net Price (ESSO)
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="net_price"
-                            />
+                            <Controller
+        name="net_price"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -742,34 +908,68 @@ const Index = () => {
                             <InputGroupText>
                               Show (ESSO) Live Data
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="esso_live"
-                            />
+                          <Controller
+        name="esso_live"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
                       <Col sm="3">
-                        <DropDown
-                          name="esso_rack"
-                          label="ESSO Rack"
-                          control={control}
-                          setValue={setValue}
-                          placeholder="Select ESSO Rack"
-                          defaultValueId={0}
-                          options={essoRacks}
-                        />
+                           <FormGroup className=" m-form__group">
+                          <InputGroup>
+                            <InputGroupText>
+                            ESSO Rack
+                            </InputGroupText>
+                          <Controller
+        name="esso_rack"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={essoRacks}
+            className="form-control p-0 border-0"
+            placeholder="Select ESSO Rack"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
+                          </InputGroup>
+                        </FormGroup>
+                  
                       </Col>
                       <Col sm="3">
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>CADV FEE</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="fee"
-                            />
+                           <Controller
+        name="fee"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -781,11 +981,20 @@ const Index = () => {
                             <InputGroupText>
                               Show Owner Operator Invoice
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="sw_owner_invoice"
-                            />
+                           <Controller
+        name="sw_owner_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -795,11 +1004,22 @@ const Index = () => {
                             <InputGroupText>
                               Self Owner Operator Report
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="self_owner_invoice"
-                            />
+                            <Controller
+        name="self_owner_invoice"
+        control={control}
+        defaultValue={null}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value || null}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -809,11 +1029,21 @@ const Index = () => {
                             <InputGroupText>
                               Show Customised Invoices
                             </InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="sw_customised_inv"
-                            />
+                              <Controller
+        name="sw_customised_inv"
+        control={control}
+        defaultValue={null}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value || null}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -821,11 +1051,21 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Default Unit</InputGroupText>
-                            <Select
-                              options={DefaultUnits}
-                              className="form-control p-0 border-0"
-                              name="default_unit"
-                            />
+                              <Controller
+        name="default_unit"
+        control={control}
+        defaultValue={null}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={DefaultUnits}
+            className="form-control p-0 border-0"
+            placeholder="Select unit"
+            value={field.value || null}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -835,11 +1075,20 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Default Driver</InputGroupText>
-                            <Select
-                              options={DefaultUnits}
-                              className="form-control p-0 border-0"
-                              name="default_driver"
-                            />
+                            <Controller
+        name="default_driver"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={DefaultUnits}
+            className="form-control p-0 border-0"
+            placeholder="Select driver"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -869,11 +1118,21 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Suspicious Company</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="susp_comp"
-                            />
+                            <Controller
+        name="susp_comp"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -883,11 +1142,21 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>DEFD Mark Up</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="defd_mark_up"
-                            />
+                               <Controller
+        name="defd_mark_up"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -895,11 +1164,21 @@ const Index = () => {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Daily Volume Report</InputGroupText>
-                            <Select
-                              options={YesNo}
-                              className="form-control p-0 border-0"
-                              name="daily_report"
-                            />
+                          <Controller
+        name="daily_report"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -916,11 +1195,20 @@ const Index = () => {
                                 <InputGroupText>
                                   Ultramar INVOICE TYPE
                                 </InputGroupText>
-                                <Select
-                                  options={invoiceType1}
-                                  className="form-control p-0 border-0"
-                                  name="ul_inv_type"
-                                />
+                                <Controller
+        name="ul_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={invoiceType1}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -933,6 +1221,7 @@ const Index = () => {
                                                          <input
                                                            className="form-control"
                                                            name="ul_rcent"
+                                                          {...register("ul_rcent")}
                                                            type="text"
                                                          />
                                                        </InputGroup>
@@ -944,11 +1233,20 @@ const Index = () => {
                                 <InputGroupText>
                                   Owner Operator Invoice
                                 </InputGroupText>
-                                <Select
-                                  options={YesNo}
-                                  className="form-control p-0 border-0"
-                                  name="ul_owner_operator_invoice"
-                                />
+                                 <Controller
+        name="ul_owner_operator_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -958,11 +1256,20 @@ const Index = () => {
                                 <InputGroupText>
                                   Customized Invoice Type
                                 </InputGroupText>
-                                <Select
-                                  options={customizedTypeType}
-                                  className="form-control p-0 border-0"
-                                  name="ul_cust_inv_type"
-                                />
+                               <Controller
+        name="ul_cust_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={customizedTypeType}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -981,11 +1288,20 @@ const Index = () => {
                                   Irving INVOICE TYPE
                                 </InputGroupText>
 
-                                <Select
-                                  options={invoiceType1}
-                                  className="form-control p-0 border-0"
-                                  name="irv_inv_type"
-                                />
+                                   <Controller
+        name="irv_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={invoiceType1}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -998,8 +1314,12 @@ const Index = () => {
                                                          <input
                                                            className="form-control"
                                                            name="irv_rcent"
+                                                          {...register("irv_rcent")}
                                                            type="text"
+                                                           
+                                                           
                                                          />
+
                                                        </InputGroup>
                                                      </FormGroup>
                                                    </Col>
@@ -1010,11 +1330,20 @@ const Index = () => {
                                   Owner Operator Invoice
                                 </InputGroupText>
 
-                                <Select
-                                  options={YesNo}
-                                  className="form-control p-0 border-0"
-                                  name="irv_owner_operator_invoice"
-                                />
+                                    <Controller
+        name="irv_owner_operator_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1024,11 +1353,20 @@ const Index = () => {
                                 <InputGroupText>
                                   Customized Invoice Type
                                 </InputGroupText>
-                                <Select
-                                  options={customizedTypeType}
-                                  className="form-control p-0 border-0"
-                                  name="irv_cust_inv_type"
-                                />
+                               <Controller
+        name="irv_cust_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={customizedTypeType}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1045,11 +1383,20 @@ const Index = () => {
                                 <InputGroupText>
                                   ESSO INVOICE TYPE
                                 </InputGroupText>
-                                <Select
-                                  options={invoiceType1}
-                                  className="form-control p-0 border-0"
-                                  name="esso_inv_type"
-                                />
+                               <Controller
+        name="esso_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={invoiceType1}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1062,6 +1409,7 @@ const Index = () => {
                                                          <input
                                                            className="form-control"
                                                            name="esso_rcent"
+                                                          {...register("esso_rcent")}
                                                            type="text"
                                                          />
                                                        </InputGroup>
@@ -1073,12 +1421,21 @@ const Index = () => {
                                 <InputGroupText>
                                   Owner Operator Invoice
                                 </InputGroupText>
+                                  <Controller
+        name="owner_operator_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
 
-                                <Select
-                                  options={YesNo}
-                                  className="form-control p-0 border-0"
-                                  name="owner_operator_invoice"
-                                />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1088,11 +1445,20 @@ const Index = () => {
                                 <InputGroupText>
                                   Customized Invoice Type
                                 </InputGroupText>
-                                <Select
-                                  options={customizedTypeType}
-                                  className="form-control p-0 border-0"
-                                  name="cust_inv_type"
-                                />
+                                <Controller
+        name="cust_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={customizedTypeType}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1109,11 +1475,20 @@ const Index = () => {
                                 <InputGroupText>
                                   Cenovus INVOICE TYPE
                                 </InputGroupText>
-                                <Select
-                                  options={invoiceType1}
-                                  className="form-control p-0 border-0"
-                                  name="cen_inv_type"
-                                />
+                                <Controller
+        name="cen_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={invoiceType1}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1126,6 +1501,7 @@ const Index = () => {
                                                          <input
                                                            className="form-control"
                                                            name="cen_rcent"
+                                                           {...register("cen_rcent")}
                                                            type="text"
                                                          />
                                                        </InputGroup>
@@ -1138,11 +1514,21 @@ const Index = () => {
                                   Owner Operator Invoice
                                 </InputGroupText>
 
-                                <Select
-                                  options={YesNo}
-                                  className="form-control p-0 border-0"
-                                  name="cen_owner_operator_invoice"
-                                />
+                                <Controller
+        name="cen_owner_operator_invoice"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
+
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1152,11 +1538,21 @@ const Index = () => {
                                 <InputGroupText>
                                   Customized Invoice Type
                                 </InputGroupText>
-                                <Select
-                                  options={customizedTypeType}
-                                  className="form-control p-0 border-0"
-                                  name="cen_cust_inv_type"
-                                />
+                              
+      <Controller
+        name="cen_cust_inv_type"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={customizedTypeType}
+            className="form-control p-0 border-0"
+            placeholder="Select invoice type"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                               </InputGroup>
                             </FormGroup>
                           </Col>
@@ -1179,7 +1575,8 @@ const Index = () => {
                               rules={{message:"Country is Required"}}
                               errors={errors}
                               options={countries}
-                            />                   
+                            /> 
+                                          
                           </Col>
                           <Col sm="2">
                             <div className="checkbox checkbox-dark">
@@ -1199,8 +1596,7 @@ const Index = () => {
 <Label for="checkbox1">Fees</Label>
                             </div>
                           </Col>
-                         
-                        
+                                  
                         </Row>
                       </fieldset>
                     </Col>
@@ -1620,7 +2016,7 @@ const Index = () => {
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText>Special Instructions</InputGroupText>
-                          <Input className="form-control" type="text" name="special_instructions" />
+                          <input className="form-control" type="text"   {...register("special_instructions")} name="special_instructions"  />
                         </InputGroup>
                       </FormGroup>
                     </Row>
@@ -1635,7 +2031,7 @@ const Index = () => {
                             <InputGroupText> 
                               <FaUser className="mx-1 " /> First Name 
                             </InputGroupText>
-                            <Input className="form-control" type="text" name="first_name" />
+                            <input className="form-control" type="text" name="first_name"  {...register("first_name")}/>
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -1645,7 +2041,7 @@ const Index = () => {
                             <InputGroupText> 
                               <FaUser className="mx-1 " /> Last Name
                             </InputGroupText>
-                            <Input className="form-control" type="text" name="last_name" />
+                            <input className="form-control" type="text" name="last_name" {...register("last_name")}/>
                           </InputGroup>
                         </FormGroup>
                       </Col>
@@ -1661,7 +2057,20 @@ const Index = () => {
                             <InputGroupText>
                               Card Discount Sheet Menu
                             </InputGroupText> 
-                            <Select options={YesNo} className="form-control p-0 border-0" name="card_discount" />
+                             <Controller
+        name="card_discount"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={YesNo}
+            className="form-control p-0 border-0"
+            placeholder="Select option"
+            value={field.value}
+            onChange={(val) => field.onChange(val)}
+          />
+        )}
+      />
                           </InputGroup>
                         </FormGroup>
                       </Col>

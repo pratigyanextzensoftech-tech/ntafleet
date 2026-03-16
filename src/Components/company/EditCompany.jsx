@@ -7,6 +7,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import Select from "react-select";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { company_update } from "../../api";
 import { CompanySupplierCheckbox } from "../Forms/FormWidget/FormSelect2/OptionDatas";
 import { companyall, company as table_name, company } from "../../api";
 import {
@@ -49,6 +50,7 @@ import {
   useSupplier,
   useEssoRack,
   useCountry,
+  
 } from "../../Hooks/Dropdowns";
 import { useParams } from "react-router-dom";
 const Index = () => {
@@ -69,7 +71,11 @@ const Index = () => {
     setValue,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
-  } =useForm();
+  } =useForm({
+  defaultValues: {
+    first_name: FullData?.first_name || "",
+  }
+});
   useEffect(() => {
     axios
       .get(`${company}/${company_id}`)
@@ -100,9 +106,7 @@ const Index = () => {
     setValue("fees",res.data.fees);
     setValue("irv_daily_pricing",res.data.irv_daily_pricing );
     setValue("irv_daily_pricing_wtax",res.data.irv_daily_pricing_wtax);
-    setValue("country_id",res.data.country_id)
     setValue("cen_rcent",res.data.cen_rcent)
-    setValue("esso_rack",res.data.esso_rack)
     setValue("invoice_week",{
       value:res.data.invoice_week,
       label:res.data.invoice_week,
@@ -111,6 +115,23 @@ const Index = () => {
   value: res.data.customer_type,
   label: res.data.customer_type
 });
+    setValue("card_discount",{
+      value:res.data?.card_discount,
+      label:res.data?.card_discount
+    } );
+
+    //  setValue("esso_rack",{
+    //   value:res.data?.esso_rack,
+    //   label:res.data?.esso_rack
+    // } );
+
+     setValue("country_id",{
+      value:res.data?.country_id,
+      label:res.data?.country_name
+    } );
+
+
+
   
   }
       })
@@ -118,7 +139,26 @@ const Index = () => {
         console.log(err);
       });
   }, []);
+function feeSetting(item_id, supplier_id, company_id, status) {
+  console.log(item_id);
+  console.log(supplier_id);
+  console.log(company_id);
+  console.log(status);
 
+  axios
+    .post(company_update, {
+      item_id: item_id,
+      supplier_id: supplier_id,
+      company_id: company_id,
+      status: status,
+    })
+    .then((res) => {
+      toast.success(res.data.message); // use res.data.message
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
   const onSubmit = async (formData) => {
     console.log(formData);
     
@@ -128,90 +168,89 @@ const payload = {
         company_name: formData?.company_name || "",
         otp_phone: formData.otp_phone || "",
         address: formData.address || "",
-        auth_location: formData.auth_location || "",
+        auth_location: formData?.auth_location || "",
         country_name: formData?.country_name?.label,
-        salesman_id:formData.salesman_id?.value ||0,
+        salesman_id:formData?.salesman_id?.value ||0,
         phone: formData.phone || "",
         fax: formData.fax || "",
         mobile: formData.mobile || "",
-        company_type: formData.company_type?.value || "0",
-        country_id: formData.country_id?.value || "0",
+        company_type: formData?.company_type?.value || "0",
+        country_id: formData?.country_id?.value || "0",
         country: formData.country || "",
-        policy_number: formData.policy_number || "",
-        company_status: formData.company_status?.value || "",
-        susp_comp: formData.susp_comp?.value || "",
-        defd_mark_up: formData.defd_mark_up.value || "",
-        daily_report: formData.daily_report.value || "",
+        policy_number: formData?.policy_number || "",
+        company_status: formData?.company_status?.value || "",
+        susp_comp: formData?.susp_comp?.value || "",
+        defd_mark_up: formData?.defd_mark_up?.value || "",
+        daily_report: formData?.daily_report?.value || "",
         identifier: formData.identifier || "",
         irving: formData.irving || "",
         fees: formData?.fees || "",
-        shell_pricing: formData.shell_pricing || "0",
-        pilot_pricing: formData.pilot_pricing || "0",
-        discount_canada: formData.discount_canada || "0",
-        discount_usa: formData.discount_usa || "0",
-        rack_ca: formData.rack_ca || "0",
-        rack_us: formData.rack_us || "0",
-        aoi: formData.aoi?.value ||"0",
-        drivers_license: formData.drivers_license?.value || "",
-        signed_agreement: formData.signed_agreement?.value || "",
-        void_cheque: formData.void_cheque?.value || "",
+        shell_pricing: formData?.shell_pricing || "0",
+        pilot_pricing: formData?.pilot_pricing || "0",
+        discount_canada: formData?.discount_canada || "0",
+        discount_usa: formData?.discount_usa || "0",
+        rack_ca: formData?.rack_ca || "0",
+        rack_us: formData?.rack_us || "0",
+        aoi: formData?.aoi?.value ||"0",
+        drivers_license: formData?.drivers_license?.value || "",
+        signed_agreement: formData?.signed_agreement?.value || "",
+        void_cheque: formData?.void_cheque?.value || "",
         check_rebate: formData?.check_rebate?.value || "",
-        retail_invoice: formData.retail_invoice || "",
-        ta_retail_invoice: formData.ta_retail_invoice?.value || "",
-        esso_retail_invoice: formData.esso_retail_invoice || "",
-        esso_inv_type: formData.esso_inv_type?.value || "",
-        cust_inv_type: formData.cust_inv_type?.value || "",
-        ul_cust_inv_type: formData.ul_cust_inv_type?.value || "",
-        cen_inv_type: formData.cen_inv_type?.value || "",
-        cen_owner_operator_invoice: formData.cen_owner_operator_invoice?.value || "",
-        cen_cust_inv_type: formData.cen_cust_inv_type?.value || "",
-        ul_inv_type: formData.ul_inv_type?.value || "",
-        esso_rcent: formData.esso_rcent || "0",
-        ul_rcent: formData.ul_rcent || "0",
-        irv_rcent: formData.irv_rcent || "0",
-        cen_rcent: formData.cen_rcent || "0",
-        esso_rack: formData.esso_rack?.value || "0",
-        esso_rack_on: formData.esso_rack_on?.value || "0",
-        esso_rack_oon: formData.esso_rack_oon?.value || "0",
-        fee: formData.fee || "",
-        owner_operator_invoice: formData.owner_operator_invoice?.value || "",
-        ul_owner_operator_invoice:
-          formData.ul_owner_operator_invoice?.value || "",
-        sw_owner_invoice: formData.sw_owner_invoice?.value || "",
-        self_owner_invoice: formData.self_owner_invoice?.value || "",
-        sw_customised_inv: formData.sw_customised_inv?.value || "",
-        default_unit: formData.default_unit || "",
-        default_driver: formData.default_driver || "",
-        love_retail_invoice: formData.love_retail_invoice || "",
-        supplier_fee: formData.supplier_fee || "",
-        ibp_adjustment: formData.ibp_adjustment || "",
-        pumping_fee: formData.pumping_fee || "",
-        net_price: formData.net_price || "",
-        daily_pricing: formData.daily_pricing || "",
-        ta_daily_pricing: formData.ta_daily_pricing || "",
-        esso_daily_pricing: formData.esso_daily_pricing || "",
-        esso_daily_pricing_wtax: formData.esso_daily_pricing_wtax || "",
-        love_daily_pricing: formData.love_daily_pricing?'Yes' : "",
-        ul_daily_pricing: formData.ul_daily_pricing || "",
-        ul_daily_pricing_wtax: formData.ul_daily_pricing_wtax || "",
-        Cen_daily_pricing: formData.Cen_daily_pricing || "",
-        cen_daily_pricing_wtax: formData.cen_daily_pricing_wtax || "",
-        irv_daily_pricing: formData.irv_daily_pricing || '',
-        irv_daily_pricing_wtax: formData.irv_daily_pricing_wtax || '',
-        invoice_creation: formData.invoice_creation?.value || "",
-        invoice_day: formData.invoice_day?.value || "",
-        invoice_week: formData.invoice_week?.value || "",
-        customer_type: formData.customer_type?.value || "",
-        special_instructions: formData.special_instructions || "",
-        first_name: formData.first_name || "",
-        last_name: formData.last_name || "",
-        card_discount: formData.card_discount.value || "",
-        username: formData.username || "",
+        retail_invoice: formData?.retail_invoice?.value || "",
+        ta_retail_invoice: formData?.ta_retail_invoice?.value || "",
+        esso_retail_invoice: formData?.esso_retail_invoice?.value || "",
+        esso_inv_type: formData?.esso_inv_type?.value || "",
+        cust_inv_type: formData?.cust_inv_type?.value || "",
+        ul_cust_inv_type: formData?.ul_cust_inv_type?.value || "",
+        cen_inv_type: formData?.cen_inv_type?.value || "",
+        cen_owner_operator_invoice: formData?.cen_owner_operator_invoice?.value || "",
+        cen_cust_inv_type: formData?.cen_cust_inv_type?.value || "",
+        ul_inv_type: formData?.ul_inv_type?.value || "",
+        esso_rcent: formData?.esso_rcent || "0",
+        ul_rcent: formData?.ul_rcent || "0",
+        irv_rcent: formData?.irv_rcent || "0",
+        cen_rcent: formData?.cen_rcent || "0",
+        esso_rack: formData?.esso_rack?.value || "0",
+        esso_rack_on: formData?.esso_rack_on?.value || "0",
+        esso_rack_oon: formData?.esso_rack_oon?.value || "0",
+        fee: formData?.fee?.value || "",
+        owner_operator_invoice: formData?.owner_operator_invoice?.value || "",
+        ul_owner_operator_invoice:formData?.ul_owner_operator_invoice?.value || "",
+        sw_owner_invoice: formData?.sw_owner_invoice?.value || "",
+        self_owner_invoice: formData?.self_owner_invoice?.value || "",
+        sw_customised_inv: formData?.sw_customised_inv?.value || "",
+        default_unit: formData?.default_unit?.value || "",
+        default_driver: formData?.default_driver?.value || "",
+        love_retail_invoice: formData?.love_retail_invoice?.value || "",
+        supplier_fee: formData?.supplier_fee?.value || "",
+        ibp_adjustment: formData?.ibp_adjustment?.value || "",
+        pumping_fee: formData?.pumping_fee?.value || "",
+        net_price: formData?.net_price?.value || "",
+        daily_pricing: formData?.daily_pricing || "",
+        ta_daily_pricing: formData?.ta_daily_pricing || "",
+        esso_daily_pricing: formData?.esso_daily_pricing || "",
+        esso_daily_pricing_wtax: formData?.esso_daily_pricing_wtax || "",
+        love_daily_pricing: formData?.love_daily_pricing?'Yes' : "",
+        ul_daily_pricing: formData?.ul_daily_pricing || "",
+        ul_daily_pricing_wtax: formData?.ul_daily_pricing_wtax || "",
+        Cen_daily_pricing: formData?.Cen_daily_pricing || "",
+        cen_daily_pricing_wtax: formData?.cen_daily_pricing_wtax || "",
+        irv_daily_pricing: formData?.irv_daily_pricing || '',
+        irv_daily_pricing_wtax: formData?.irv_daily_pricing_wtax || '',
+        invoice_creation: formData?.invoice_creation?.value || "",
+        invoice_day: formData?.invoice_day?.value || "",
+        invoice_week: formData?.invoice_week?.value || "",
+        customer_type: formData?.customer_type?.value || "",
+        special_instructions: formData?.special_instructions || "",
+        first_name: formData?.first_name || "",
+        last_name: formData?.last_name || "",
+        card_discount: formData?.card_discount?.value || "",
+        username: formData?.username || "",
 
-        password: formData.password || "",
-        date: formData.date || "1970-01-01 00:00:00",
-        esso_live: formData.esso_live || "",
-        remarks: formData.remarks || "",
+        password: formData?.password || "",
+        date: formData?.date || "1970-01-01 00:00:00",
+        esso_live: formData?.esso_live.value || "",
+        remarks: formData?.remarks || "",
       };
       console.log(formData)
       console.log("📤 Submitting data:", payload);
@@ -455,9 +494,10 @@ const payload = {
                               <RiBuilding4Fill className="mx-1 " /> Authorized
                               Location
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
+                                {...register("auth_location")}
                               defaultValue={FullData.auth_location}
                               name="auth_location"
                             />
@@ -745,7 +785,7 @@ const payload = {
                           label="Loves Rack Invoice"
                              setValue={setValue}
                           control={control}
-                          defaultValueId={FullData.ta_retail_invoice}
+                          defaultValueId={FullData.love_retail_invoice}
                           options={YesNo}
                         />
                       
@@ -983,6 +1023,7 @@ const payload = {
                                   className="form-control"
                                   name="ul_rcent"
                                   defaultValue={FullData?.ul_rcent}
+                                    {...register("ul_rcent")}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1040,7 +1081,7 @@ const payload = {
                                   className="form-control"
                                   name="irv_rcent"
                                   defaultValue={FullData?.irv_rcent}
-
+                                  {...register("irv_rcent")}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1095,6 +1136,7 @@ const payload = {
                                 <input
                                   className="form-control"
                                   name="esso_rcent"
+                                 {...register("esso_rcent")}
                                   defaultValue={FullData?.esso_rcent}
                                   type="text"
                                 />
@@ -1150,6 +1192,7 @@ const payload = {
                                   className="form-control"
                                   name="cen_rcent"
                                   defaultValue={FullData?.cen_rcent}
+                                   {...register("cen_rcent")}
                                   type="text"
                                 />
                               </InputGroup>
@@ -1277,9 +1320,17 @@ const payload = {
                       type="checkbox"
                       className="mx-2"
                       checked={field.value === "Yes"}
-                      onChange={(e) =>
-                        field.onChange(e.target.checked ? "Yes" : "")
-                      }
+                       onChange={(e) => {
+            const checked = e.target.checked;
+            field.onChange(checked ? 1 : 0);
+
+            feeSetting(
+              item.id,        // item_id
+              "all",          // supplier_id
+              company_id,     // company_id
+              checked ? "Yes" : "No"
+            );
+          }}
                     />
                   )}
                 />
@@ -1293,6 +1344,14 @@ const payload = {
                       id={`esso-${index}`}
                       type="checkbox"
                       className="mx-3"
+                        onChange={(e) =>
+            feeSetting( 
+              22,
+               item.value,
+              company_id,
+              e.target.checked ? 1 : 0
+            )
+          }
                     />
                     <Label for={`esso-${index}`}>E-85</Label>
                   </>
@@ -1303,6 +1362,15 @@ const payload = {
                         id={`chk-${index}-${i}`}
                         type="checkbox"
                         className="mx-3"
+                          onChange={(e) =>
+              feeSetting(
+                       v.value,    // item_id
+                        item.value,  
+                // supplier_id
+                company_id,       // company_id
+                e.target.checked ? 1 : 0
+              )
+            }
                       />
                       <Label for={`chk-${index}-${i}`}>
                         {v.label}
@@ -1565,7 +1633,7 @@ const payload = {
         />
       )}
     />
-    <Label for="checkbox11">
+    <Label for="checkbox12">
       	Cenovus Daily Pricing PDF (With Tax)
     </Label>
   </div>
@@ -1756,11 +1824,12 @@ const payload = {
                       <FormGroup className=" m-form__group">
                         <InputGroup>
                           <InputGroupText>Special Instructions</InputGroupText>
-                          <Input
+                          <input
                             className="form-control"
                             type="text"
                             name="special_instructions"
                             defaultValue={FullData.special_instructions}
+                              {...register("special_instructions")}
                           />
                         </InputGroup>
                       </FormGroup>
@@ -1776,11 +1845,12 @@ const payload = {
                             <InputGroupText>
                               <FaUser className="mx-1 " /> First Name
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
-                              defaultValue={FullData.first_name}
+                               defaultValue={FullData?.first_name}
                               name="first_name"
+                              {...register("first_name")}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -1791,10 +1861,11 @@ const payload = {
                             <InputGroupText>
                               <FaUser className="mx-1 " /> Last Name
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
-                              defaultValue={FullData.last_name}
+                              {...register("last_name")}
+                              defaultValue={FullData?.last_name}
                               name="last_name"
                             />
                           </InputGroup>
@@ -1815,7 +1886,7 @@ const payload = {
                               Card Discount Sheet Menu
                              
                             </InputGroupText>
-                               {FullData.card_discount && (
+                            
                             <Controller
                               name="card_discount"
                               control={control}
@@ -1834,7 +1905,8 @@ const payload = {
                                 />
                               )}
                             />
-                               )}
+                            
+                              
                           </InputGroup>
                           
                         </FormGroup>
@@ -1852,7 +1924,7 @@ const payload = {
                               className="form-control"
                               type="text"
                               name="username"
-                              value={FullData.email}
+                              value={FullData.username}
                              disabled
                               {...register("username")}
                             />
