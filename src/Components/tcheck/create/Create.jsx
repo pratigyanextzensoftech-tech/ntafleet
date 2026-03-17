@@ -34,8 +34,6 @@ const Create = ({ title, btnTitle }) => {
       from: data.startDate ? formatDate(data.startDate) : "",
       to: data.endDate ? formatDate(data.endDate) : "",
       invoice_creation:"weekly",
-
-
     };
 
 setLoading(true)

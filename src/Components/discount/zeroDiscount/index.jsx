@@ -134,7 +134,7 @@ const Index = () => {
           </Col>
         </Row> 
         <DataTableComponent
-          title="TA-Petro Location List  "
+          title="Zero Discount List  "
           tableColumns={tableColumns}
           tableData={data}
           progressPending={loading}

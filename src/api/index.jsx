@@ -12,6 +12,8 @@ export const company_info = `${baseurl}/api/company/company_info`;
 export const send_mail = `${baseurl}/api/send_mail`;
 export const  regenerate= `${baseurl}/api/regenerate`;
 
+
+
 export const companyall = `${baseurl}/api/company/all`;
 export const tacompany = `${baseurl}/api/company/taall`;
 export const essoOwnercompany = `${baseurl}/api/company/essoownerall`;
@@ -23,11 +25,15 @@ export const irvcompany = `${baseurl}/api/company/irvall`;
 export const cencompany = `${baseurl}/api/company/cenall`;
 export const company_log = `${baseurl}/api/company_log`;
 export const transactions = `${baseurl}/api/transactions`;
+export const transactions_missed = `${baseurl}/api/transactions_missed`;
+export const transactions_invoiced = `${baseurl}/api//transactions_invoiced`;
 export const pmenu = `${baseurl}/api/pmenu`;
 export const pmenuAll = `${baseurl}/api/pmenu/all`; 
 export const login = `${baseurl}/api/admin/login`;
 export const loginlog = `${baseurl}/api/admin/user_log`;
 export const money_code = `${baseurl}/api/mond_code`;
+export const moneycode_invoice_detail = `${baseurl}/api/moneycode_invoice_detail`;
+export const miss_moneycode = `${baseurl}/api/miss_moneycode`;
 export const items = `${baseurl}/api/items`;
 export const itemsAll = `${baseurl}/api/items/all`;
 export const user_tracking = `${baseurl}/api/user_tracking`;
@@ -206,7 +212,6 @@ export const loc_group = `${baseurl}/api/loc_group`;
 export const loc_group_new = `${baseurl}/api/loc_group_new`;
 export const love_group = `${baseurl}/api/love_group`;
 export const menu = `${baseurl}/api/menu`;
-export const moneycode_invoice_detail = `${baseurl}/api/moneycode_invoice_detail`;
 export const multidate_pricing_excel = `${baseurl}/api/multidate_pricing_excel`;
 export const oauth_tokens = `${baseurl}/api/oauth_tokens`;
 export const owner_invoice_detail = `${baseurl}/api/owner_invoice_detail`;

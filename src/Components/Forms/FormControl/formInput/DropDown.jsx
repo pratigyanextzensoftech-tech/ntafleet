@@ -27,7 +27,7 @@ useEffect(() => {
   if (defaultValueId === null || defaultValueId === undefined) return;
   if (!options.length) return;
 
-  const option = options.find(o => o.value === defaultValueId);
+  const option = options.find(o => o.value == defaultValueId);
 
   if (!option) return;
 

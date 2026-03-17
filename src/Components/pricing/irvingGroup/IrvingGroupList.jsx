@@ -6,356 +6,281 @@ import {
   FormGroup,
   InputGroup,
   InputGroupText,
-  Container,
-  Card,
-  CardBody,
   Input,
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
+import { useSupplier } from "../../../Hooks/Dropdowns";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import {
-  irv_group_irvgroup as APINAME,
-  irv_group_irvgroupInput,
-  irv_cent,irvcompany
-} from "../../../api";
-import $ from "jquery";
+import Papa from "papaparse";
 import axios from "axios";
+import { upload_esso_pricing } from "../../../api";
+import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import { supplierById } from "../../../api";
 const IrvingGroupList = ({ title, btnTitle }) => {
-  const [companyId, setCompnyId] = useState("");
-  const [startDate, setStatrtDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [dynamicColumns, setDynamicColumns] = useState([]);
-  const[company,setCompany]=useState()
-  const [dynamicGroupIds, setGroupIds] = useState([]);
-  const [open, setOpen] = useState(false);
-  
- 
+  const [csvData, setCsvData] = useState([]);
+  const [file, setFile] = useState(null);
+    const [supplierData,setSupplierData]=useState([])
+  const [pricingDate, setPricingDate] = useState(new Date());
+  const { data: suppliers, loading } = useSupplier();
+const [fileKey, setFileKey] = useState(Date.now());
   const {
-    register,
     control,
-     setValue,
+    setValue,
     handleSubmit,
-    formState: { errors, isSubmitted, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
-    company: null,
-  },
+      supplier: null,
+      pricingDate: new Date(),
+    },
   });
-   useEffect(() => {
-    if (company && company.length > 0) {
-      setValue("company", company[0]); // set first option
-    }
-  }, [company, setValue]);
-  useEffect(() => {
-    fetch(APINAME)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setDynamicColumns(data.map((item) =>item.name));
-          setGroupIds(data.map((item) => item.id));
-        } 
-        else {
-          console.error("APINAME response is not an array:", data);
-        }
-      })
-      .catch((err) => console.error(err));
 
-         axios.get(irvcompany)
-      .then((res) => {
-        const data = res.data;
-          const options = [
-  { value: '', label: 'All Companies' },
-  ...data.map(company => ({
-    value: company.company_id,
-    label: company.company_name,
-  }))
-];
-
-     setCompany(options)
-      })
-      .catch((err) => console.error(err));
-  }, []);
-
+  // 🧠 Auto-select default supplier
+ useEffect(() => {
+     
+      axios
+     .get(`${supplierById}/5`)
+     .then((res) => {
+       const formatted = res.data.map((s) => ({
+         value: s.id,
+         label: s.supplier_name,
+       }));
  
-  
-  // Step 2: Initialize DataTable
-  useEffect(() => {
-
-    $(document).off("click", ".update-btn");  
-  $(document).on("click", ".update-btn", function () {
-    const id = $(this).data("id");
-    const updateData = {  };
+       setSupplierData(formatted);
+       setValue("supplier", formatted[0]);
  
-    dynamicGroupIds.forEach((groupid) => {
-      const inputId = `#c${id}g${groupid}`;
-      updateData[`group_${groupid}`] = $(inputId).val();
-    });
- 
-    axios
-      .put(`${irv_cent}/${id}`, updateData)
-      .then(() => {
-        toast.success("Data updated");
-      })
-      .catch(() => {
-        toast.error("Error In Data update");
-      });
-  });
- 
-  return () => {   $(document).off("click", ".update-btn"); }; 
+       // ⭐ Automatically set default supplier based on type
+       
+     })
+     .catch((err) => console.log(err));
     
-  }, [dynamicColumns, companyId]);
+   }, [setValue]);
 
-useEffect(() => {
-    if (dynamicColumns.length > 0) {
-      GetDataTAble();
-    }
-  }, [dynamicColumns]);
+  // 🧩 Handle CSV file upload
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setFile(file);
 
-  function GetDataTAble(company_id,from_date,upto_date) {
-  const columns = [
-        { data: "company_name", title: "Company Name" },
-        { data: "pricing_date", title: "Pricing Date" },
-        ...dynamicColumns.map((col, idx) => ({ data: `col_${idx}`, title: col })),
-        { data: "Action", title: "Action", orderable: false },
-      ];
-  
-      $("#example").DataTable({
-        serverSide: true,
-        destroy:true,
-        processing: true,
-        responsive: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        pageLength: 25,
-        columns: columns,
-        columnDefs: [
-          {
-            targets: "_all",
-            orderable: false,
-          },
-          {
-            targets: [0, 1], // allow ordering only here
-            orderable: true,
-          },
-        ],
-      ajax: function (data, callback) {
-        const params = new URLSearchParams();
-          params.append("start", data.start);
-        params.append("length", data.length);
-        params.append("search", data.search.value || "");
-        params.append("orderColumn", data.columns[data.order[0].column].data);
-        params.append("orderDir", data.order[0].dir);
-        params.append("company_id", company_id?company_id:"");
-         params.append("from_date", from_date?from_date:"");
-        params.append("upto_date", upto_date?upto_date:""); 
-       fetch(`${irv_group_irvgroupInput}?${params.toString()}`)
-                .then((res) => res.json())
-                .then((json) => {
-                  const url = `${irv_group_irvgroupInput}?${params.toString()}`;
-                  console.log("🔗 API URL:", url);
-                  const tableData = json.data.map((row) => {
-                    const obj = {
-                      company_name: row[0],
-                      pricing_date: row[1],
-                      Action: row[2],
-                    };
-                    dynamicColumns.forEach((col, idx) => {
-                      obj[`col_${idx}`] = row[idx + 3] || "";
-                    });
-      
-                    return obj;
-                  });
-                  console.log(tableData);
-      
-                  callback({
-                    draw: data.draw,
-                    recordsTotal: json.recordsTotal,
-                    recordsFiltered: json.recordsFiltered,
-                    data: tableData,
-                  });
-                })
-                .catch((err) => {
-                  console.error("Error fetching table data:", err);
-                  callback({
-                    draw: data.draw,
-                    recordsTotal: 0,
-                    recordsFiltered: 0,
-                    data: [],
-                  });
-                });
-            },
-          });
-  }
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-  const onSubmit = (data) => {
-   const company_id = data.company?.value? data.company?.value:"";
-    const from_date = data.from
-      ? formatDate(data.to)
-      : "";
-    const upto_date = data.to
-      ? formatDate(data.to)
-      : "";
-  
-    console.log("Submitting:", {
-      company_id,
-      from_date,
-      upto_date,
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        console.log("Parsed CSV Data:", results.data);
+        setCsvData(results.data);
+      },
     });
-  
-    if ($.fn.DataTable.isDataTable("#example")) {
-      $("#example").DataTable().destroy();
-    }
-  
-    GetDataTAble(company_id, from_date, upto_date);
   };
+
+const formatDate = (value) => {
+  if (!value) return "-";
+  return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "-";
+};
+
+  // 🧰 Key rename logic
+  const keyMap = {
+    "SITE NUMBER": "SITE_NUMBER",
+    LOCATION: "LOCATION",
+    "PRICE_LTR": "PROV",
+    PRODUCT: "PRODUCT",
+    "PROV.": "PROV",
+    "NET PRICE": "NET_PRICE",
+    FET: "FET",
+    PFT: "PFT",
+    PCT: "PCT",
+    LOCAL: "LOCAL",
+    "PRICE/LTR.": "PRICE_LTR",
+    "GST/HST/FNT": "GST_HST_FNT",
+    "PST/QST": "PST_QST",
+    "TOTAL PRICE": "TOTAL_PRICE",
+  };
+
+const renameKeys = (row, keyMap) => {
+  const newRow = {};
+
+  for (const key in row) {
+    if (!Object.prototype.hasOwnProperty.call(row, key)) continue;
+
+    const trimmedKey = typeof key === "string" ? key.trim() : key;
+    const newKey = keyMap[trimmedKey] || trimmedKey;
+
+    newRow[newKey] = row[key];
+  }
+
+  return newRow; // ✅ return object, NOT trim
+};
+
+
+  // 🧾 Handle form submission
+  const onSubmit = async (data) => {
+    if (!file) {
+      alert("Please upload a CSV file first.");
+      return;
+    }
+
+    // ✅ Transform the CSV data
+    const enrichedData = csvData.map((row) => {
+      const renamed = renameKeys(row, keyMap);
+      return {
+        ...renamed,
+        supplier: String(data.supplier?.label || "").trim(),
+        pricing_date: String(formatDate(pricingDate) || "").trim(),
+        idby: Number(localStorage.getItem("userId")),
+        dated: Date.now(),
+      };
+    });
+    
+
+    console.log("🧾 Final Data Sent:", enrichedData);
+    
+ 
+    try {
+      const response = await axios.post(upload_esso_pricing, enrichedData);
+      console.log("✅ Upload Success:", response.data);
+      
+      toast.success(`Upload successful! ${response.data.count || ""}`)
+       setFile(null);
+   setFileKey(Date.now()); 
+  setPricingDate("");
+      // alert(`Upload successful! ${response.data.count || ""}`);
+    } catch (error) {
+      console.error("❌ Upload Error:", error);
+            toast.error(`Upload failed: ${error.response?.data?.error || error.message}`)
+
+      // alert(`Upload failed: ${error.response?.data?.error || error.message}`);
+    }
+  };
+
   return (
     <Fragment>
       <Row>
-        <Col>
+        <Col sm="12">
           <fieldset>
             <legend>{title}</legend>
-            <Form
-              className="px-2"
-              noValidate=""
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Row className="mt-3">
-                <Col xl="4" md="6" sm="12">
-                  <FormGroup className="m-form__group">
+            <Form className="px-2" onSubmit={handleSubmit(onSubmit)}>
+              <Row className="my-3">
+                {/* 📁 File Upload */}
+                <Col xxl="3" xl="4"  md="6" sm="12">
+                  <Row className="mb-3">
                     <InputGroup>
-                      <InputGroupText>Company</InputGroupText>
+                    <Col  xs="3">
+                      <InputGroupText>File</InputGroupText>
+                    </Col>
+                    <Col  xs="9">
+                      <Input
+                        type="file"
+                        className="form-control"
+                        style={{ border: "1px solid #ccc" }}
+                        accept=".csv"
+                        key={fileKey}
+                        onChange={handleFileChange}
+                      />
+                    </Col>
+                    </InputGroup>
+                  </Row>
+                </Col>
+
+                {/* 📅 Pricing Date */}
+                <Col xxl="3" xl="4"  md="6" sm="12">
+                
+                  <FormGroup>
+                    <InputGroup>
+                      <Col xs="4">
+                        <InputGroupText>Pricing Date</InputGroupText>
+                      </Col>
+                      <Col xs="8">
+                        <Controller
+                          name="pricingDate"
+                          control={control}
+                          rules={{ required: "Pricing Date is required" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              className="form-control"
+                              selected={pricingDate}
+                              onChange={(date) => {
+                                setPricingDate(date);
+                                field.onChange(date);
+                              }}
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="Select Pricing Date"
+                                portalId="root"
+                               popperPlacement="bottom-start"
+                            />
+                          )}
+                        />
+                        {errors.pricingDate && (
+                          <span className="text-danger">
+                            {errors.pricingDate.message}
+                          </span>
+                        )}
+                      </Col>
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+
+                {/* 🏢 Supplier Dropdown */}
+                <Col xxl="3" xl="4"  md="6" sm="12">
+                  <FormGroup>
+                    <InputGroup>
+                      <InputGroupText>Supplier</InputGroupText>
                       <Controller
-                        name="company"
+                        name="supplier"
                         control={control}
+                        defaultValue={supplierData}
+                        rules={{ required: "Supplier is required" }}
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={company}
+                            
                             className="form-control p-0 border-0"
-                            placeholder="Select a company"
-                             menuPortalTarget={document.body}
-                                menuPosition="fixed"
-                                styles={{
-                                  menuPortal: (base) => ({
-                                    ...base,
-                                    zIndex: 99999,
-                                  }),
-                                }}
+                            placeholder={
+                              loading
+                                ? "Loading suppliers..."
+                                : "Select supplier"
+                            }
+                            isLoading={loading}
+                            onChange={(option) => field.onChange(option)}
+                            value={field.value}
+                              menuPortalTarget={document.body}
+                          menuPosition="fixed"
+                                 styles={{
+                menuPortal: base => ({
+                  ...base,
+                  zIndex: 99999
+                })
+              }}
                           />
                         )}
                       />
                     </InputGroup>
+                    {errors.supplier && (
+                      <span className="text-danger">
+                        {errors.supplier.message}
+                      </span>
+                    )}
                   </FormGroup>
                 </Col>
-             
-                <Col xl="3" md="6" sm="12">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>From</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="from"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
-                              />
-                            )}
-                          />
-                        </Col>
-                      </InputGroup>
-                    </FormGroup>
-                  </Row>
-                </Col>
-                <Col xl="3" md="6" sm="12">
-                  <Row>
-                    <FormGroup className="m-form__group">
-                      <InputGroup>
-                        <Col xs="4">
-                          <InputGroupText>Upto</InputGroupText>
-                        </Col>
-                        <Col xs="8">
-                          <Controller
-                            name="to"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                className={`form-control `}
-                                selected={field.value}
-                                onChange={(date) => field.onChange(date)}
-                                dateFormat="yyyy-MM-dd"
-                              />
-                            )}
-                          />
-                        </Col>
-                      </InputGroup>
-                    </FormGroup>
-                  </Row>
-                </Col>
 
-                <Col className="ms-auto" xl="2" md="2" sm="12">
-                  <div className="text-end">
-                    <Btn
-                      attrBtn={{
-                        color: "primary",
-                        type: "submit",
-                      }}
-                    >
-                      {btnTitle}
-                    </Btn>
-                  </div>
+                {/* 🚀 Submit Button */}
+                <Col  xxl="3" xl="4"  md="6" sm="12" className="text-end ms-auto">
+                  <Btn
+                    attrBtn={{
+                      color: "primary",
+                      className: "m-r-15",
+                      type: "submit",
+                    }}
+                  >
+                    {btnTitle}
+                  </Btn>
                 </Col>
               </Row>
             </Form>
           </fieldset>
         </Col>
       </Row>
-      <Container fluid>
-        <Row>
-          <Col sm="12">
-            <Card>
-              <CardBody>
-                <div className="table-responsive">
-                  <table
-                    id="example"
-                    className="display table table-striped table-bordered nowrap"
-                    style={{ width: "100%" }}
-                  >
-                    <thead>
-                      <tr>
-                        <th>Company Name</th>
-                        <th>Pricing Date</th>
-                        {dynamicColumns.map((col, idx) => (
-                          <th key={idx}>{col}</th>
-                        ))}
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
     </Fragment>
   );
 };

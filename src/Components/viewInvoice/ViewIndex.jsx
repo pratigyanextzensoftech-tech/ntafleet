@@ -18,7 +18,6 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import $ from "jquery";
 import "datatables.net";
-import { formatDate } from "../../Hooks/Dropdowns";
 import { download,send_mail,regenerate } from "../../api";
 import { downloadPdf } from "../../Hooks/Dropdowns";
 import {

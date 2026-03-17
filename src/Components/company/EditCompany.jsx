@@ -481,7 +481,7 @@ const payload = {
                               className="form-control"
                               type="text"
                                defaultValue={FullData.address}
-
+                           {...register("address")}
                               name="address"
                             />
                           </InputGroup>
@@ -544,11 +544,12 @@ const payload = {
                           <InputGroupText>
                             <FaPhoneAlt className="mx-1" /> Phone
                           </InputGroupText>
-                          <Input
+                          <input
                             className="form-control"
                             type="text"
                             name="phone"
                             defaultValue={FullData.phone}
+                               {...register("phone")}
                             placeholder="+1 (999) 999-9999"
                           />
                         </InputGroup>
@@ -558,11 +559,12 @@ const payload = {
                           <InputGroupText>
                             <FaPhoneAlt className="mx-1 " /> Mobile
                           </InputGroupText>
-                          <Input
+                          <input
                             className="form-control"
                             type="text"
                             defaultValue={FullData.mobile}
                             name="mobile"
+                             {...register("mobile")}
                             placeholder="+1 (999) 999-9999"
                           />
                         </InputGroup>
@@ -575,11 +577,12 @@ const payload = {
                             <InputGroupText>
                               <FaPhoneAlt className="mx-1 " /> Fax
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                               name="fax"
                               defaultValue={FullData.fax}
+                                 {...register("fax")}
                               placeholder="+1 (999) 999-9999"
                             />
                           </InputGroup>
@@ -600,11 +603,13 @@ const payload = {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText> Policy Number</InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                               name="policy_number"
+                                {...register("policy_number")}
                               defaultValue={FullData.policy_number}
+
                             />
                           </InputGroup>
                         </FormGroup>
@@ -630,10 +635,11 @@ const payload = {
                               {" "}
                               Sub Fleet Identifier
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                               defaultValue={FullData.identifier}
+                               {...register("identifier")}
                               name="identifier"
                             />
                           </InputGroup>
@@ -646,11 +652,11 @@ const payload = {
                               {" "}
                               Irving Sub Fleet Name
                             </InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                                defaultValue={FullData.irving}
-
+                              {...register("irving")}
                               name="irving"
                             />
                           </InputGroup>
@@ -854,11 +860,12 @@ const payload = {
                           control={control}
                           placeholder="Select ESSO Rack"
                            setValue={setValue}
-                          defaultValueId={FullData?.esso_rack}
+                          defaultValueId={FullData.esso_rack}
                           options={essoRacks}
 
                   
                         />
+                      
                       </Col>
                       <Col sm="3">
                         <DropDown
@@ -1251,6 +1258,7 @@ const payload = {
                                   className="form-control"
                                   name="discount_canada"
                                   defaultValue={FullData?.discount_canada}
+                                  {...register("discount_canada")}
                                   type="text"
                                 />
                               </InputGroup>

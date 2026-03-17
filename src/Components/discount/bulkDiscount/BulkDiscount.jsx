@@ -1,13 +1,10 @@
 import React from "react";
 import Select from "react-select";
-import { optionscountry } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import { Row, Col, Form } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm } from "react-hook-form";
 import DatePickerInput from "../../Forms/FormControl/formInput/DatePickerInput";
 import DropDown from "../../Forms/FormControl/formInput/DropDown";
-import HeaderCard from "../../Common/Component/HeaderCard";
-import useCompany from "../../../Hooks/useCompany";
 import { useSupplier } from "../../../Hooks/Dropdowns";
 import { useCountry } from "../../../Hooks/Dropdowns";
 
@@ -28,8 +25,14 @@ const formatDate = (date) => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
   const onSubmit = (data) => {
-    console.log("Form Data:", data); // ✅ This will print your inputs
-    // alert("Form submitted successfully!");
+    const payload={
+      start_date:formatDate(data.startDate),
+      end_date:formatDate(data.endDate),
+      country_id:data.country.value,
+      supplier:data.supplier.value
+    }
+        console.log("Form Data:", payload); 
+
   };
 
   return (

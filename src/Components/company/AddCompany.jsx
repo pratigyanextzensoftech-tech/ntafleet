@@ -927,7 +927,16 @@ const Index = () => {
                         </FormGroup>
                       </Col>
                       <Col sm="3">
-                           <FormGroup className=" m-form__group">
+                         <DropDown
+                          name="esso_rack"
+                          label=" ESSO Rack"
+                          control={control}
+                          setValue={setValue}
+                          placeholder="Select ESSO Rack"
+                          defaultValueId={0}
+                          options={essoRacks}
+                        />
+                           {/* <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>
                             ESSO Rack
@@ -949,7 +958,7 @@ const Index = () => {
 
                           </InputGroup>
                         </FormGroup>
-                  
+                   */}
                       </Col>
                       <Col sm="3">
                         <FormGroup className=" m-form__group">
