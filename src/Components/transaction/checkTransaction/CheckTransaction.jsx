@@ -107,8 +107,7 @@ const CheckTransaction = ({ btnTitle, btnTitle1,onSearch }) => {
 
                                     <Controller
                                         name="to"
-                                        control={control}
-                                      
+                                        control={control}                                   
                                         render={({ field }) => (
                                             <DatePicker
                                                 className={`form-control digits`}

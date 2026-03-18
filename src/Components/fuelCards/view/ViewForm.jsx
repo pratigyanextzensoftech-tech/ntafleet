@@ -66,7 +66,6 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
       company_id: data.company?.value || "",
       status: data.status?.value || "",
     };
-
     if (onSearch) onSearch(fullData);
   };
 

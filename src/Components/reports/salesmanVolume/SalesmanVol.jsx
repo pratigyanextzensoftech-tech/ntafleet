@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import Select from 'react-select'
-import { optionscompany,optionscountry,supplier,salesman } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
+// import { salesman } from '../../Forms/FormWidget/FormSelect2/OptionDatas';
 import { Row, Col, Form, FormGroup, Label, Input, InputGroup, InputGroupText, Container } from 'reactstrap';
 import { Btn } from '../../../AbstractElements';
 import { useForm, Controller } from 'react-hook-form';
@@ -8,12 +8,13 @@ import DatePicker from "react-datepicker";
 import { salesman_volume as APINAME } from '../../../api';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useCountry } from '../../../Hooks/Dropdowns';
+import { useCountry,useSalesman } from '../../../Hooks/Dropdowns';
 import { supplierById } from '../../../api';
-const SalesmanVol = ({btnTitle}) => {
+const SalesmanVol = ({btnTitle,onSearch}) => {
     const[supplierData,setSupplierData]=useState([])
   
   const{data:country}=useCountry()
+  const{data:salesman}=useSalesman()
     const {
         register,
         control,
@@ -52,22 +53,24 @@ useEffect(() => {
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
      const onSubmit = (formData) => {
-                        console.log("Form Data:", formData);  // ✅ This will print your inputs
+                             console.log("Form Data:", formData);  // ✅ This will print your inputs
 
      const payload = {
     salesman_id: formData.salesman.value,
-    date_from:formatDate(formData.startDate.value),
-    date_to:formatDate(formData.endDate.value),
+    date_from:formatDate(formData.startDate),
+    date_to:formatDate(formData.endDate),
     country:formData.country.value,
-supplier_id:0,
-us_total:"",
-ca_total:"",
-total_gln:"",
-total_ltr:"",
+supplier_id:formData.supplier.value,
+us_total:0,
+ca_total:0,
+total_gln:0,
+total_ltr:0,
 dated:new Date(),
 idby:localStorage.getItem("userId"),
-del:""
+del:0
      }
+                             console.log("Form Data:", payload);  // ✅ This will print your inputs
+
     axios.post(APINAME,payload)
     .then((res)=>{
         console.log(res);
@@ -75,7 +78,7 @@ del:""
 
    reset();
 
-        // if (onDataAdded) onDataAdded();
+        if (onSearch) onSearch();
     })
     .catch((err)=>{
         console.log(err);

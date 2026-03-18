@@ -41,10 +41,10 @@ const ViewFuelCard = () => {
         const status = document.getElementById("status")?.value;
   useEffect(() => {
      
-      GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status,searchValues);
+      GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status);
   }, []);
 
-  function GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status,searchValues) {
+  function GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status) {
      const columns = [
   { data: "card_id", title: "Card" },
   { data: "policy", title: "Policy" },
@@ -214,15 +214,15 @@ $(document)
   }
 
  const handleSearch = (formData) => {
- const company =  formData.company_id ||"";
- const unit =  formData.unit_number ||"";
- const cardNo =  formData.card_no ||"";
- const policy =  formData.policy ||"";
- const pin =  formData.pin_number ||"";
- const d_name =  formData.driver_name ||"";
- const status =  formData.status ||"";
- const supplier =  formData.supplier_id ||"";
-
+ const company =  formData?.company_id ||"";
+ const unit =  formData?.unit_number ||"";
+ const cardNo =  formData?.card_no ||"";
+ const policy =  formData?.policy ||"";
+ const pin =  formData?.pin_number ||"";
+ const d_name =  formData?.driver_name ||"";
+ const status =  formData?.status ||"";
+ const supplier =  formData?.supplier_id ||"";
+    console.log(formData)
     GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status); // fetch new data immediately
   };
     function handleDownload(type) {
@@ -262,7 +262,7 @@ const handleInputChange = (e) => {
     const company_id = document.querySelector('[name=company]')?.value || "";
     const company_status = document.querySelector('[name=status]')?.value || "";
 
-    GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status, searchValues);
+    GetDataTAble(cardNo,supplier,policy,unit,pin,d_name,company,status);
   }, 1000); // 500ms after last keystroke
 };
   return (

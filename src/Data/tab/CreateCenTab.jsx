@@ -18,8 +18,8 @@ export const CenInvoiceTab = [
         invoice_creation="weekly"
         api_name={CreateCenInvoice}
         invoice_type_dropdown={true} 
-        btnTtitle="Create Esso Invoice"
-        title="Create Single Esso Invoice "
+        btnTtitle="Create Cenovus Invoice"
+        title="Create Single Cenovus Invoice "
 
       />
     ),
@@ -36,8 +36,8 @@ export const CenInvoiceTab = [
         invoice_creation="weekly"
         api_name={CreateCenInvoice}
         invoice_type_dropdown={true}
-        btnTtitle="Create Bulk Esso Invoice"
-        title="Create Bulk Esso Invoice"
+        btnTtitle="Create Bulk Cenovus Invoice"
+        title="Create Bulk Cenovus Invoice"
       />
     ),
   },
@@ -137,8 +137,8 @@ export const CenInvoiceTab = [
         invoice_creation="many_times"
         api_name={CreateCenInvoice}
         invoice_type_dropdown={true}
-        btnTtitle="Create  Esso Invoice"
-        title="Create Single Esso Invoice-[Multi]"
+        btnTtitle="Create  Cenovus Invoice"
+        title="Create Single Cenovus Invoice-[Multi]"
       />
     ),
   },
@@ -158,8 +158,8 @@ export const CenInvoiceTab = [
         invoice_creation="many_times"
         api_name={CreateCenInvoice}
         invoice_type_dropdown={true}
-        btnTtitle="Create Bulk Esso Invoice"
-        title="Create Bulk Esso Invoice"
+        btnTtitle="Create Bulk Cenovus Invoice"
+        title="Create Bulk Cenovus Invoice"
       />
     ),
   },

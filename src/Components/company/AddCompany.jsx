@@ -478,6 +478,7 @@ const Index = () => {
                             name="phone"
                             placeholder="+1 (999) 999-9999"
                           />
+                         
                         </InputGroup>
                       </Col>
                       <Col sm="3">

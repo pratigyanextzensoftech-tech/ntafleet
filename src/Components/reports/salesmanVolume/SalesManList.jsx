@@ -253,6 +253,10 @@ const handleInputChange = (e) => {
     GetDataTAble();
   }, 1000); // 500ms after last keystroke
 };
+const refreshTable=()=>{
+  GetDataTAble();
+}
+
   return (
     <Fragment>
       <Breadcrumbs parent='Reports' title='Salesman Volume Report'/>
@@ -262,7 +266,7 @@ const handleInputChange = (e) => {
             <Card>
               <HeaderCard title="Create Salesman Report" />
               <CardBody>
-                <SalesmanVol btnTitle="Create Volume Report" />
+                <SalesmanVol btnTitle="Create Volume Report" onSearch={refreshTable}/>
               </CardBody>
             </Card>
           </Col>

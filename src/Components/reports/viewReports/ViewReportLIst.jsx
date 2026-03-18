@@ -126,7 +126,7 @@ const ViewReportList = () => {
 
     return `
       <button class="btn btn-sm btn-danger delete-btn"
-              data-id="${row.id}"
+              data-id="${row.report_id}"
               data-api="${api}"
               data-table="${tableId}">
         <i class="fa fa-trash me-1"></i> Delete

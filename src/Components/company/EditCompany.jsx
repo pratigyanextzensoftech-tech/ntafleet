@@ -82,11 +82,21 @@ const Index = () => {
       .then((res) => {
         setFullData(res.data);
         if (res.data) {
-          console.log(res.data);
-          
+          console.log(res.data);  
     setValue("company_name", res.data?.company_name);
     setValue("auth_location", res.data?.auth_location);
     setValue("address", res.data?.address);
+    setValue("phone", res.data?.phone);
+    setValue("mobile", res.data?.mobile);
+    setValue("username", res.data?.username);
+    setValue("identifier", res.data?.identifier);
+    setValue("irving", res.data?.irving);
+    setValue("rack_ca", res.data?.rack_ca);
+    setValue("rack_us", res.data?.rack_us);
+    setValue("irv_rcent", res.data?.irv_rcent);
+    setValue("esso_rcent", res.data?.esso_rcent);
+    setValue("policy", res.data?.policy);
+    setValue("fax", res.data?.fax);
     setValue("country", res.data?.country);
     setValue("last_name", res.data?.last_name);
     setValue("first_name", res.data?.first_name);
@@ -107,6 +117,9 @@ const Index = () => {
     setValue("irv_daily_pricing",res.data.irv_daily_pricing );
     setValue("irv_daily_pricing_wtax",res.data.irv_daily_pricing_wtax);
     setValue("cen_rcent",res.data.cen_rcent)
+    setValue("ul_rcent",res.data.ul_rcent)
+    setValue("discount_canada",res.data.discount_canada)
+
     setValue("invoice_week",{
       value:res.data.invoice_week,
       label:res.data.invoice_week,
@@ -245,9 +258,8 @@ const payload = {
         first_name: formData?.first_name || "",
         last_name: formData?.last_name || "",
         card_discount: formData?.card_discount?.value || "",
-        username: formData?.username || "",
 
-        password: formData?.password || "",
+        // password: formData?.password || "",
         date: formData?.date || "1970-01-01 00:00:00",
         esso_live: formData?.esso_live.value || "",
         remarks: formData?.remarks || "",
@@ -667,11 +679,12 @@ const payload = {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText> Rack-Canada</InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                               type="text"
                               defaultValue={FullData.rack_ca}
                               name="rack_ca"
+                                {...register("rack_ca")}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -680,10 +693,10 @@ const payload = {
                         <FormGroup className=" m-form__group">
                           <InputGroup>
                             <InputGroupText>Rack-USA</InputGroupText>
-                            <Input
+                            <input
                               className="form-control"
                                defaultValue={FullData.rack_us}
-
+                           {...register("rack_us")}
                               type="text"
                               name="rack_us"
                             />
