@@ -85,16 +85,12 @@ const Upload = ({ btnTitle }) => {
       toast.error("Please upload a CSV file first.");
       return;
     }
-
     if (csvData.length === 0) {
       toast.error("Parsed CSV data is empty.");
       return;
     }
 
-  
-
     const enrichedData = csvData.map((row) => {
-
       const dollar_amt = parseFloat(row[2] || 0); 
       const a = Math.floor(dollar_amt / 500); // 0
       const b = dollar_amt % 500;             // 120

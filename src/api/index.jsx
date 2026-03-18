@@ -1,5 +1,5 @@
 const baseurl="https://newapi.ntafleetsolutions.com"
-const api = `${process.env.PUBLIC_URL}/api`;
+// const api = `${process.env.PUBLIC_URL}/api`;
 export const MenuApi=`${baseurl}/api/usermenu`;
 
 export const download=`${baseurl}/api/download`;
@@ -11,9 +11,6 @@ export const company_update = `${baseurl}/api/company/update-Fee`;
 export const company_info = `${baseurl}/api/company/company_info`;
 export const send_mail = `${baseurl}/api/send_mail`;
 export const  regenerate= `${baseurl}/api/regenerate`;
-
-
-
 export const companyall = `${baseurl}/api/company/all`;
 export const tacompany = `${baseurl}/api/company/taall`;
 export const essoOwnercompany = `${baseurl}/api/company/essoownerall`;
