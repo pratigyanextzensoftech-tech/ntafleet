@@ -31,9 +31,16 @@ const ViewForm = ({ btnTitle, btnTitle1, onSearch }) => {
   const { companies } = useCompany();
   const { data: items } = useItems();
   const { data: supplier } = useSupplierAll();
-const sevenDaysAgo = new Date();
 const today = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+const lastMonday = new Date(today);
+const day = today.getDay(); // 0 = Sunday, 1 = Monday, ...
+
+// Calculate how many days to go back
+const diff = (day === 0 ? 6 : day - 1); 
+
+lastMonday.setDate(today.getDate() - diff);
+
   const {
     control,
     reset,
@@ -42,7 +49,7 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     formState: { errors },
   } = useForm({
     defaultValues: {
-       from: sevenDaysAgo,
+       from: lastMonday,
       to: today,
       state_prov: "",
       unit: "",

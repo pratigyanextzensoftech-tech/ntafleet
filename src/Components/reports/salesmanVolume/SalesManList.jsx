@@ -256,7 +256,6 @@ const handleInputChange = (e) => {
 const refreshTable=()=>{
   GetDataTAble();
 }
-
   return (
     <Fragment>
       <Breadcrumbs parent='Reports' title='Salesman Volume Report'/>
