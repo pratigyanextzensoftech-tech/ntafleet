@@ -7,8 +7,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { fual_card as APINAME } from "../../../api"; // your fuel card API endpoint
 import axios from 'axios';
 import { useCompany } from '../../../Hooks/Dropdowns';
-import { toast } from 'react-toastify';
 import { supplierById } from '../../../api';
+import { toast } from 'react-toastify';
 const AddFuel = ({btnTitle}) => {
     const [supplierData,setSupplierData]=useState([])
         const [selectedValues, setSelectedValues] = useState([]);
@@ -16,6 +16,7 @@ const AddFuel = ({btnTitle}) => {
         control,
         register,
         reset,
+         watch,
         handleSubmit,
         setValue,
 
@@ -25,6 +26,26 @@ const AddFuel = ({btnTitle}) => {
           supplier: null,
         },
       });
+        const selectedSupplier = watch("supplier");
+
+      const yearOptions = Array.from({ length: 10 }, (_, i) => {
+  const year = new Date().getFullYear() + i;
+  return { label: year.toString(), value: year.toString() };
+});
+const monthOptions = [
+  { label: " Jan", value: "01" },
+  { label: " Feb", value: "02" },
+  { label: " Mar", value: "03" },
+  { label: " Apr", value: "04" },
+  { label: " May", value: "05" },
+  { label: " Jun", value: "06" },
+  { label: " Jul", value: "07" },
+  { label: " Aug", value: "08" },
+  { label: " Sep", value: "09" },
+  { label: " Oct", value: "10" },
+  { label: " Nov", value: "11" },
+  { label: " Dec", value: "12" },
+];
     
       useEffect(() => {
         
@@ -63,6 +84,8 @@ status:formData.cardStatus.label,
 supplier_name:formData.supplier.label,
 cardno:"",
 company_name:formData.company.label,
+exp_month:formData.exp_month ||"",
+exp_year:formData.exp_year ||"",
 update_otp:""
 
      }
@@ -253,18 +276,86 @@ update_otp:""
                     )}
                   </FormGroup>
                 </Col>
-                       <Col xl='8'>
+                  <Col xl="4" md="6">
 
+<FormGroup className="m-form__group">
+    <InputGroup>
+      <InputGroupText>Expiry </InputGroupText>
+
+      <Controller
+        name="exp_month"
+        control={control}
+        rules={{
+    validate: () => {
+      if (selectedSupplier?.label !== "ESSO") return true;
+
+      const month = watch("exp_month");
+      const year = watch("exp_year");
+
+      if (!month && !year) return "Month and Year are required";
+      if (!month) return "Month is required";
+      if (!year) return "Year is required";
+
+      return true;
+    }
+  }}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={monthOptions}
+            className="form-control p-0 border-0"
+            placeholder=" Month"
+            onChange={(selected) => field.onChange(selected?.value)}
+            value={monthOptions.find(opt => opt.value === field.value)}
+          />
+        )}
+      />
+         <Controller
+        name="exp_year"
+        control={control}
+  rules={{
+    validate: () => {
+      if (selectedSupplier?.label !== "ESSO") return true;
+
+      const month = watch("exp_month");
+      const year = watch("exp_year");
+
+      if (!month && !year) return "Month and Year are required";
+      if (!month) return "Month is required";
+      if (!year) return "Year is required";
+
+
+      return true;
+    }
+  }}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={yearOptions}
+            className="form-control p-0 border-0"
+            placeholder=" Year"
+            onChange={(selected) => field.onChange(selected?.value)}
+            value={yearOptions.find(opt => opt.value === field.value)}
+          />
+        )}
+      />
+    </InputGroup>
+
+   {(errors.exp_month || errors.exp_year) && (
+  <div className="text-danger mt-1">
+    {errors.exp_month?.message || errors.exp_year?.message}
+  </div>
+)}
+  </FormGroup>
+  
+</Col>                
+ <Col xl='8' className='ms-auto'>
 <div className='text-end'>
                             <Btn attrBtn={{ color: "primary", className: "m-r-15", type: "submit" }} >{btnTitle}</Btn>
 
                         </div>
                         </Col>
                         </Row>
-            
-           
-
-
         </Form>
     )
 }

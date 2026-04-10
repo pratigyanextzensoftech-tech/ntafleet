@@ -1,11 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Select from "react-select";
 import {
-  optionscompany,
-  Upload_Supplier,
-  currency,
-  YesNo,
-  InvoiceStatus,
   cardStatus,
 } from "../../Forms/FormWidget/FormSelect2/OptionDatas";
 import {
@@ -13,7 +8,6 @@ import {
   Col,
   Form,
   FormGroup,
-  Input,
   InputGroup,
   InputGroupText,
   Container,
@@ -22,11 +16,8 @@ import {
 } from "reactstrap";
 import { Btn } from "../../../AbstractElements";
 import { useForm, Controller } from "react-hook-form";
-import DatePicker from "react-datepicker";
 import { Breadcrumbs } from "../../../AbstractElements";
 import HeaderCard from "../../Common/Component/HeaderCard";
-import InputText from "../../Forms/FormControl/formInput/InputText";
-import { useCountry } from "../../../Hooks/Dropdowns";
 import { useLocation,useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fual_card } from "../../../api";
@@ -43,16 +34,17 @@ const Index = () => {
   const navigate=useNavigate()
    const { id } = useParams();
     const Id = atob(decodeURIComponent(id));
-  // const rowData = state?.data;
   console.log("Received Edit Data:", Id);
   const { data } = useCompany();
   const {
     register,
     control,
     reset,
+     watch,
     handleSubmit,
     formState: { errors, isSubmitted, isValid },
   } = useForm();
+  const selectedSupplier = watch("supplier");
  useEffect(() => {
   const fetchFuelCard = async () => {
     try {
@@ -67,7 +59,6 @@ const Index = () => {
           driverName: res.data.driver_name,
           driverMobile: res.data.d_mobile1,
           driverMobile2: res.data.d_mobile2,
-
           company: {
             value: res.data.company_id,
             label: res.data.company_name,
@@ -80,9 +71,18 @@ const Index = () => {
             value: res.data.status,
             label: res.data.status,
           },
+
+           exp_month: {
+            value: res.data.exp_month,
+            label: res.data.exp_month,
+          },
+            exp_year: {
+            value: res.data.exp_year,
+            label: res.data.exp_year,
+          },
         });
         setLoading(false)
-setOldData(res.data)
+        setOldData(res.data)
       }
     } catch (error) {
       console.error("Error fetching full row data", error);
@@ -92,7 +92,24 @@ setOldData(res.data)
     fetchFuelCard();
   }
 }, [Id, reset]);
-
+  const yearOptions = Array.from({ length: 10 }, (_, i) => {
+  const year = new Date().getFullYear() + i;
+  return { label: year.toString(), value: year.toString() };
+});
+const monthOptions = [
+  { label: " Jan", value: "01" },
+  { label: " Feb", value: "02" },
+  { label: " Mar", value: "03" },
+  { label: " Apr", value: "04" },
+  { label: " May", value: "05" },
+  { label: " Jun", value: "06" },
+  { label: " Jul", value: "07" },
+  { label: " Aug", value: "08" },
+  { label: " Sep", value: "09" },
+  { label: " Oct", value: "10" },
+  { label: " Nov", value: "11" },
+  { label: " Dec", value: "12" },
+];
   const onSubmit = (formData) => {
     setLoading(true)
     console.log("Form Data:", formData);
@@ -110,6 +127,8 @@ setOldData(res.data)
       supplier_name: formData.supplier.label,
       cardno: formData.cardNo.slice(-5),
       company_name: formData.company.label,
+      exp_month:formData.exp_month ||"",
+      exp_year:formData.exp_year || "",
       update_otp: "",
     };
      const otpres=   axios.put(`${fual_card_update}/${Id}`, payload)
@@ -328,7 +347,44 @@ setOldData(res.data)
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                    <Col  xl='8' md="12">
+                          <Col xl="4" md="6">
+
+<FormGroup className="m-form__group">
+    <InputGroup>
+      <InputGroupText>Expiry </InputGroupText>
+
+      <Controller
+        name="exp_month"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={monthOptions}
+            className="form-control p-0 border-0"
+            placeholder=" Month"
+            onChange={(selected) => field.onChange(selected?.value)}
+            value={monthOptions.find(opt => opt.value === field.value)}
+          />
+        )}
+      />
+         <Controller
+        name="exp_year"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={yearOptions}
+            className="form-control p-0 border-0"
+            placeholder=" Year"
+            onChange={(selected) => field.onChange(selected?.value)}
+            value={yearOptions.find(opt => opt.value === field.value)}
+          />
+        )}
+      />
+    </InputGroup>
+  </FormGroup>
+</Col>           
+                    <Col className="ms-auto"  xl='4' md="12">
                       <div className="text-end">
                         <Btn
                           attrBtn={{
