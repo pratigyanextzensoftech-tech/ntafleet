@@ -28,9 +28,14 @@ const AddFuel = ({btnTitle}) => {
       });
         const selectedSupplier = watch("supplier");
 
-      const yearOptions = Array.from({ length: 10 }, (_, i) => {
-  const year = new Date().getFullYear() + i;
-  return { label: year.toString(), value: year.toString() };
+    const currentYear = new Date().getFullYear();
+
+const yearOptions = Array.from({ length: 21 }, (_, i) => {
+  const year = currentYear - 10 + i; // start from -10 to +10
+  return {
+    label: year.toString(),
+    value: year.toString(),
+  };
 });
 const monthOptions = [
   { label: " Jan", value: "01" },
@@ -86,7 +91,9 @@ cardno:"",
 company_name:formData.company.label,
 exp_month:formData.exp_month ||"",
 exp_year:formData.exp_year ||"",
-update_otp:""
+exp_date:`${formData.exp_year}-${formData.exp_month}-01`,
+update_otp:"",
+
 
      }
     axios.post(APINAME,payload)

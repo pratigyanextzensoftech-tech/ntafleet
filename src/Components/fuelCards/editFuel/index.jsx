@@ -92,9 +92,14 @@ const Index = () => {
     fetchFuelCard();
   }
 }, [Id, reset]);
-  const yearOptions = Array.from({ length: 10 }, (_, i) => {
-  const year = new Date().getFullYear() + i;
-  return { label: year.toString(), value: year.toString() };
+const currentYear = new Date().getFullYear();
+
+const yearOptions = Array.from({ length: 21 }, (_, i) => {
+  const year = currentYear - 10 + i; // start from -10 to +10
+  return {
+    label: year.toString(),
+    value: year.toString(),
+  };
 });
 const monthOptions = [
   { label: " Jan", value: "01" },
@@ -129,6 +134,7 @@ const monthOptions = [
       company_name: formData.company.label,
       exp_month:formData.exp_month ||"",
       exp_year:formData.exp_year || "",
+      exp_date:`${formData.exp_year}-${formData.exp_month}-01`,
       update_otp: "",
     };
      const otpres=   axios.put(`${fual_card_update}/${Id}`, payload)
